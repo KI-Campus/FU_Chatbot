@@ -43,7 +43,7 @@ def health() -> str:
     """Health check endpoint. Returns 'OK' if the service is running."""
     return "OK"
 
-
+# Definert aber nicht genutzt!
 class RetrievalRequest(BaseModel):
     message: str = Field(
         description="The query to find the most fitting sources to.",
