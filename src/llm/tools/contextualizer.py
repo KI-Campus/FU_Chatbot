@@ -30,7 +30,7 @@ Query that can be used to retrieve documents from a knowledge base.
 REMEMBER: Be precise and concise. Avoid unnecessary detail or unrelated additions. Do NOT add new sub-questions.
 Ensure the question is understandable and retrieval-ready.
 """
-
+# studying property law?
 
 class Contextualizer:
     """Contextualizes a message based on the chat history, so that it can effectively used as input for RAG retrieval."""
@@ -42,6 +42,7 @@ class Contextualizer:
     def contextualize(self, query: str, chat_history: list[ChatMessage], model: Models) -> str:
         """Contextualize a message based on the chat history, so that it can effectively used as input for RAG retrieval."""
 
+        # Sollte die Nachricht nicht trotzdem refined werden, wenn es keine Chat History gibt?
         if len(chat_history) == 0:
             return query
 

@@ -46,7 +46,7 @@ class KICampusAssistant:
             is_moodle=False,
             course_id=None,
         )
-
+        # Hier werden [docN]-Marker in klickbare Quellenlinks umgewandelt
         response.content = self.output_formatter.parse(answer=response.content, source_documents=retrieved_chunks)
         return response
 
