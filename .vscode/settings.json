@@ -1,0 +1,27 @@
+{
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+
+    "launches": {
+        "KIC-CoursesPipeline": "Python Debugger: KI Campus courses pipeline",
+    },
+
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingTypeStubs": "none"
+},
+"azureFunctions.deploySubpath": "src/loaders",
+"azureFunctions.scmDoBuildDuringDeployment": true,
+"azureFunctions.pythonVenv": ".venv",
+"azureFunctions.projectLanguage": "Python",
+"azureFunctions.projectRuntime": "~4",
+"debug.internalConsoleOptions": "neverOpen",
+"azureFunctions.projectLanguageModel": 2,
+"azureFunctions.projectSubpath": "src/loaders",
+"python.analysis.extraPaths": [
+    "./src/loaders/models",
+    "./src/loaders"
+]
+}
