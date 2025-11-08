@@ -1,0 +1,95 @@
+{
+  "created_at": "2025-11-08T16:29:40",
+  "results": [
+    {
+      "question": "what is the history of AI",
+      "answer": "The history of AI began in 1956 during the Dartmouth workshop, which marked the emergence of AI as a formal discipline. Initially, there was significant optimism about the potential of AI. However, during the 1970s, the field faced the \"AI winter,\" a period of reduced funding and interest. In the 1980s, interest in AI was revived through expert systems, although this too was followed by another slowdown. A major renaissance in AI began around 2012 with advancements in deep learning, notably through the ImageNet challenge. The introduction of transformers in 2017 further advanced the field, leading to the development of large language models such as ChatGPT in 2022.",
+      "retrieved_contexts": [
+        "Artificial intelligence (AI) emerged as a discipline in 1956 at the Dartmouth workshop. Early optimism gave way to funding cuts in the 1970s 'AI winter'. Expert systems in the 1980s revived interest before another slowdown. The deep learning renaissance began around 2012 with ImageNet. Transformers in 2017 led to large language models like ChatGPT (2022)."
+      ],
+      "reference": "AI began as a field in 1956 at the Dartmouth workshop. Early optimism led to an AI winter in the 1970s. Expert systems revived interest in the 1980s. Deep learning advances around 2012 (ImageNet) sparked a resurgence. Transformers (2017) enabled large language models such as ChatGPT (2022).",
+      "metrics": {
+        "context_precision": {
+          "score": 1.0,
+          "reason": "The retrieved contexts provide a comprehensive overview of the history of AI, covering key events and developments in chronological order. They are directly relevant to the user's question and are ranked appropriately, with the most significant milestones mentioned first."
+        },
+        "context_recall": {
+          "score": 1.0,
+          "reason": "The retrieved contexts provide a comprehensive overview of the history of AI, covering key events and periods such as the Dartmouth workshop in 1956, the AI winter in the 1970s, the revival through expert systems in the 1980s, and the advancements in deep learning and transformers leading to modern AI developments. This information collectively answers the user's question about the history of AI."
+        },
+        "faithfulness": {
+          "score": 1.0,
+          "reason": "The response accurately summarizes the history of AI as outlined in the retrieved contexts, including key events and timelines without introducing unsupported claims."
+        },
+        "answer_relevancy": {
+          "score": 1.0,
+          "reason": "The response directly addresses the question about the history of AI by providing a chronological overview of significant events and developments in the field."
+        },
+        "context_relevance": {
+          "score": 1.0,
+          "reason": "The retrieved contexts provide a comprehensive overview of the history of AI, covering key milestones and developments relevant to the user's question."
+        }
+      }
+    },
+    {
+      "question": "how can I reset my password on KI Campus?",
+      "answer": "To reset your password on KI Campus, you can typically use the \"Passwort vergessen\" (Forgot Password) option on the login page.",
+      "retrieved_contexts": [
+        "Auf KI Campus finden Lernende unter 'Meine Kurse' ihre aktiv belegten Lehrangebote. Ein Passwort lässt sich in der Regel über 'Passwort vergessen' auf der Login-Seite zurücksetzen."
+      ],
+      "reference": "AI began as a field in 1956 at the Dartmouth workshop. Early optimism led to an AI winter in the 1970s. Expert systems revived interest in the 1980s. Deep learning advances around 2012 (ImageNet) sparked a resurgence. Transformers (2017) enabled large language models such as ChatGPT (2022).",
+      "metrics": {
+        "context_precision": {
+          "score": 1.0,
+          "reason": "The retrieved context directly addresses the user's question about resetting the password on KI Campus, providing relevant information about the 'Passwort vergessen' option. It is ranked appropriately as it is the only relevant context provided."
+        },
+        "context_recall": {
+          "score": 1.0,
+          "reason": "The retrieved contexts provide the necessary information about resetting the password on KI Campus, specifically mentioning the 'Passwort vergessen' option on the login page, which directly answers the user's question."
+        },
+        "faithfulness": {
+          "score": 1.0,
+          "reason": "The response accurately reflects the information provided in the retrieved context, specifically mentioning the 'Passwort vergessen' option for resetting the password on the KI Campus login page."
+        },
+        "answer_relevancy": {
+          "score": 1.0,
+          "reason": "The response directly addresses the user's question about resetting the password on KI Campus by providing the relevant option to use on the login page."
+        },
+        "context_relevance": {
+          "score": 1.0,
+          "reason": "The retrieved context directly addresses the user's question about resetting their password on KI Campus by mentioning the 'Passwort vergessen' option, making it relevant and useful."
+        }
+      }
+    },
+    {
+      "question": "how can I see my course plan on KI Campus?",
+      "answer": "You can see your course plan on KI Campus by navigating to 'Meine Kurse' (My Courses), where you will find your actively enrolled courses.",
+      "retrieved_contexts": [
+        "Auf KI Campus finden Lernende unter 'Meine Kurse' ihre aktiv belegten Lehrangebote. Ein Passwort lässt sich in der Regel über 'Passwort vergessen' auf der Login-Seite zurücksetzen."
+      ],
+      "reference": "AI began as a field in 1956 at the Dartmouth workshop. Early optimism led to an AI winter in the 1970s. Expert systems revived interest in the 1980s. Deep learning advances around 2012 (ImageNet) sparked a resurgence. Transformers (2017) enabled large language models such as ChatGPT (2022).",
+      "metrics": {
+        "context_precision": {
+          "score": 1.0,
+          "reason": "The retrieved context directly addresses the user's question about viewing the course plan on KI Campus, providing relevant information about navigating to 'Meine Kurse'. However, the additional information about password reset is not directly relevant to the question, which may affect the overall relevance ranking."
+        },
+        "context_recall": {
+          "score": 1.0,
+          "reason": "The retrieved context provides the necessary information about accessing the course plan on KI Campus, specifically mentioning 'Meine Kurse' where users can find their enrolled courses. However, it does not directly address how to navigate to this section or any additional steps that may be required, which could be important for a complete answer."
+        },
+        "faithfulness": {
+          "score": 1.0,
+          "reason": "The response accurately reflects the information provided in the retrieved context, which states that learners can find their actively enrolled courses under 'Meine Kurse'."
+        },
+        "answer_relevancy": {
+          "score": 1.0,
+          "reason": "The response directly addresses the user's question about how to see their course plan on KI Campus by providing specific navigation instructions."
+        },
+        "context_relevance": {
+          "score": 1.0,
+          "reason": "The retrieved context directly addresses the user's question about viewing their course plan on KI Campus, providing relevant information about navigating to 'Meine Kurse'."
+        }
+      }
+    }
+  ]
+}
