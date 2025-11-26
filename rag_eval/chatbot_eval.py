@@ -10,15 +10,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 # RAGAS
 from ragas import SingleTurnSample
 from ragas.metrics import AnswerRelevancy, ContextRelevance, Faithfulness
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from ragas.llms import LangchainLLMWrapper
 
 # Backend imports
 from src.llm.LLMs import Models
 from src.llm.assistant import KICampusAssistant
-
-# Embedder wrapper
-from ragas_embedder_wrapper import RagasE5Embedder
 
 
 # ---------------- GET ANSWER + CONTEXT ----------------
@@ -65,8 +62,8 @@ async def main():
         ChatOpenAI(model="gpt-4o-mini", temperature=0)
     )
 
-    # Replace embeddings with the wrapper
-    embeddings = RagasE5Embedder()
+    # EMBEDDING METHOD 
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
     metrics = [
         AnswerRelevancy(llm=evaluator_llm, embeddings=embeddings),
