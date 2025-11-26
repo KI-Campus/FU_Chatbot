@@ -1,39 +1,76 @@
+import sys
+import os
 import asyncio
 import json
 from datetime import datetime
-from typing import List
-from openai import OpenAI
 
+# Allow imports from project root
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+# RAGAS
+from ragas import SingleTurnSample
+from ragas.metrics import AnswerRelevancy, ContextRelevance, Faithfulness
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from ragas.llms import LangchainLLMWrapper
-from ragas.metrics import AnswerRelevancy, ContextRelevance, Faithfulness
-from ragas import SingleTurnSample
+
+# Backend imports
+from src.api.rest import chat, ChatRequest
+from src.api.models.serializable_chat_message import SerializableChatMessage
+from src.llm.LLMs import Models
+from src.llm.assistant import KICampusAssistant
+from llama_index.core.llms import MessageRole
 
 
-# ---------------- CHATBOT CALL ----------------
-def get_chatbot_answer(question: str) -> str:
-    client = OpenAI()
+# ---------------- GET ANSWER + CONTEXT ----------------
+def get_answer_and_context(question: str):
+    """
+    Returns:
+    - answer from chatbot
+    - contexts retrieved from Qdrant (list[str])
+    """
 
-    resp = client.chat.completions.create(
-        model="gpt-4o-mini",
+    # Build ChatRequest just like FastAPI
+    chat_request = ChatRequest(
         messages=[
-            {"role": "system", "content": "You are the production chatbot."},
-            {"role": "user", "content": question},
+            SerializableChatMessage(
+                content=question,
+                role=MessageRole.USER
+            )
         ],
+        course_id=None,
+        module_id=None,
+        model=Models.GPT4
     )
 
-    return resp.choices[0].message.content.strip()
+    assistant = KICampusAssistant()
+
+    # 1) Retrieve context (RAG retrieval BEFORE generation)
+    retrieved_nodes = assistant.retriever.retrieve(question)
+
+    contexts = []
+    for node in retrieved_nodes:
+        try:
+            contexts.append(node.text)
+        except:
+            pass  # skip broken nodes
+
+    # 2) Generate answer using full RAG pipeline
+    response = chat(chat_request)
+
+    return response.message, contexts
 
 
 # ---------------- MAIN ----------------
 async def main():
-    # Evaluator LLM used only for scoring
-    evaluator_llm = LangchainLLMWrapper(ChatOpenAI(model="gpt-4o-mini"))
+    print("\nStarting evaluation...\n")
 
-    # Embeddings needed for AnswerRelevancy
+    # Evaluator LLM for RAGAS (async-safe)
+    evaluator_llm = LangchainLLMWrapper(
+        ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    )
+
     embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
-    # Metrics
     metrics = [
         AnswerRelevancy(llm=evaluator_llm, embeddings=embeddings),
         ContextRelevance(llm=evaluator_llm),
@@ -42,60 +79,68 @@ async def main():
 
     questions = [
         "What is artificial intelligence?",
-        "What is supervised learning?",
+        "What is K-means clustering?",
+        "Wo finde ich meine Kurse?"
     ]
 
     all_results = []
     metric_sums = {m.name: 0.0 for m in metrics}
 
-    print("\n Starting evaluation...\n")
-
     for q in questions:
-        print(f"\n============================\n Question: {q}")
+        print(f"\n============================\nQuestion: {q}")
 
-        answer = get_chatbot_answer(q)
-        contexts = []   # no documents
+        answer, contexts = get_answer_and_context(q)
 
-        print("\n Answer:")
+        print("\nAnswer:")
         print(answer)
 
+        print("\nRetrieved Contexts (first 2):")
+        for c in contexts[:2]:
+            print("-", c[:200], "...")
+
+        # Build RAGAS sample
         sample = SingleTurnSample(
             user_input=q,
             response=answer,
             retrieved_contexts=contexts,
         )
 
-        q_result = {"question": q, "answer": answer, "contexts": contexts, "metrics": {}}
+        q_result = {
+            "question": q,
+            "answer": answer,
+            "contexts": contexts,
+            "metrics": {},
+        }
 
-        print("\n Scores:")
+        print("\nScores:")
         for m in metrics:
             score = await m.single_turn_ascore(sample)
-            score_val = float(score)
-            q_result["metrics"][m.name] = score_val
-            metric_sums[m.name] += score_val
-            print(f"  - {m.name}: {score_val:.3f}")
+            score = float(score)
+            q_result["metrics"][m.name] = score
+            metric_sums[m.name] += score
+            print(f"  - {m.name}: {score:.3f}")
 
         all_results.append(q_result)
 
     # Average metrics
-    avg_scores = {name: metric_sums[name] / len(questions) for name in metric_sums}
+    avg_scores = {k: metric_sums[k] / len(questions) for k in metric_sums}
 
     print("\n============================")
-    print(" AVERAGE METRICS:")
+    print("AVERAGE METRICS:")
     for name, avg in avg_scores.items():
         print(f"  - {name}: {avg:.3f}")
 
     # Save results
-    out = {
+    output = {
         "results": all_results,
         "average_metrics": avg_scores,
     }
 
-    outfile = f"noref_eval_all_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    outfile = f"chatbot_eval_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     with open(outfile, "w", encoding="utf-8") as f:
-        json.dump(out, f, indent=2, ensure_ascii=False)
+        json.dump(output, f, indent=2, ensure_ascii=False)
 
-    print(f"\n Scores saved to {outfile}")
+    print(f"\nSaved results to {outfile}")
 
 
 if __name__ == "__main__":
