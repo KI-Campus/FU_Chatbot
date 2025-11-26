@@ -10,66 +10,63 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 # RAGAS
 from ragas import SingleTurnSample
 from ragas.metrics import AnswerRelevancy, ContextRelevance, Faithfulness
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_openai import ChatOpenAI
 from ragas.llms import LangchainLLMWrapper
 
 # Backend imports
-from src.api.rest import chat, ChatRequest
-from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.LLMs import Models
 from src.llm.assistant import KICampusAssistant
-from llama_index.core.llms import MessageRole
+
+# Embedder wrapper
+from ragas_embedder_wrapper import RagasE5Embedder
 
 
 # ---------------- GET ANSWER + CONTEXT ----------------
 def get_answer_and_context(question: str):
-    """
-    Returns:
-    - answer from chatbot
-    - contexts retrieved from Qdrant (list[str])
-    """
+    assistant = KICampusAssistant()
+    chat_history = []
 
-    # Build ChatRequest just like FastAPI
-    chat_request = ChatRequest(
-        messages=[
-            SerializableChatMessage(
-                content=question,
-                role=MessageRole.USER
-            )
-        ],
-        course_id=None,
-        module_id=None,
-        model=Models.GPT4
+    # contextualize the query through the pipeline
+    rag_query = assistant.contextualizer.contextualize(
+        query=question,
+        chat_history=chat_history,
+        model=Models.GPT4,
     )
 
-    assistant = KICampusAssistant()
-
-    # 1) Retrieve context (RAG retrieval BEFORE generation)
-    retrieved_nodes = assistant.retriever.retrieve(question)
+    # retrieve RAG nodes
+    retrieved_nodes = assistant.retriever.retrieve(rag_query)
 
     contexts = []
     for node in retrieved_nodes:
         try:
-            contexts.append(node.text)
+            if hasattr(node, "get_content"):
+                contexts.append(node.get_content())
+            else:
+                contexts.append(node.text)
         except:
-            pass  # skip broken nodes
+            pass
 
-    # 2) Generate answer using full RAG pipeline
-    response = chat(chat_request)
+    # generate the final chatbot answer
+    llm_response = assistant.chat(
+        query=question,
+        chat_history=chat_history,
+        model=Models.GPT4,
+    )
 
-    return response.message, contexts
+    return llm_response.content, contexts
 
 
 # ---------------- MAIN ----------------
 async def main():
     print("\nStarting evaluation...\n")
 
-    # Evaluator LLM for RAGAS (async-safe)
+    # Evaluator LLM for RAGAS (unchanged)
     evaluator_llm = LangchainLLMWrapper(
         ChatOpenAI(model="gpt-4o-mini", temperature=0)
     )
 
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    # Replace embeddings with the wrapper
+    embeddings = RagasE5Embedder()
 
     metrics = [
         AnswerRelevancy(llm=evaluator_llm, embeddings=embeddings),
