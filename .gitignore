@@ -9,9 +9,6 @@
 # Local environment variables and keys
 .env
 
-## Local dev
-outputs
-
 ## tmp
 tmp
 .DS_Store
