@@ -1,0 +1,107 @@
+[
+  {
+    "index": 0,
+    "duration": {
+      "from": 317.593,
+      "to": 317.593
+    },
+    "library_name": "H5P.MultiChoice 1.16",
+    "x_position": 10.91703056768559,
+    "y_position": 0.970402717127608,
+    "params": {
+      "media": {
+        "disableImageZooming": false
+      },
+      "answers": [
+        {
+          "correct": false,
+          "tipsAndFeedback": {
+            "tip": "",
+            "chosenFeedback": "",
+            "notChosenFeedback": ""
+          },
+          "text": "<div>AI refers the study of neural networks, while ML focuses on constructing predictive models.</div>\n"
+        },
+        {
+          "correct": true,
+          "tipsAndFeedback": {
+            "tip": "",
+            "chosenFeedback": "",
+            "notChosenFeedback": ""
+          },
+          "text": "<div>In many AI applications, ML is used for training machines to perform tasks that were previously solved by humans.</div>\n"
+        },
+        {
+          "correct": false,
+          "tipsAndFeedback": {
+            "tip": "",
+            "chosenFeedback": "",
+            "notChosenFeedback": ""
+          },
+          "text": "<div>AI is limited to natural language processing, while ML encompasses a broader range of techniques.</div>\n"
+        },
+        {
+          "correct": false,
+          "tipsAndFeedback": {
+            "tip": "",
+            "chosenFeedback": "",
+            "notChosenFeedback": ""
+          },
+          "text": "<div>AI and ML are separate fields that do not have any overlapping concepts or applications.</div>\n"
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 100
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": true,
+        "type": "auto",
+        "singlePoint": false,
+        "randomAnswers": true,
+        "showSolutionsRequiresInput": true,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": false,
+        "passPercentage": 100,
+        "showScorePoints": true
+      },
+      "UI": {
+        "checkAnswerButton": "Überprüfen",
+        "submitAnswerButton": "Absenden",
+        "showSolutionButton": "Lösung anzeigen",
+        "tryAgainButton": "Wiederholen",
+        "tipsLabel": "Hinweis anzeigen",
+        "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+        "tipAvailable": "Hinweis verfügbar",
+        "feedbackAvailable": "Rückmeldung verfügbar",
+        "readFeedback": "Rückmeldung vorlesen",
+        "wrongAnswer": "Falsche Antwort",
+        "correctAnswer": "Richtige Antwort",
+        "shouldCheck": "Hätte gewählt werden müssen",
+        "shouldNotCheck": "Hätte nicht gewählt werden sollen",
+        "noInput": "Bitte antworte, bevor du die Lösung ansiehst",
+        "a11yCheck": "Die Antworten überprüfen. Die Auswahlen werden als richtig, falsch oder fehlend markiert.",
+        "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+        "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet."
+      },
+      "confirmCheck": {
+        "header": "Beenden?",
+        "body": "Ganz sicher beenden?",
+        "cancelLabel": "Abbrechen",
+        "confirmLabel": "Beenden"
+      },
+      "confirmRetry": {
+        "header": "Wiederholen?",
+        "body": "Ganz sicher wiederholen?",
+        "cancelLabel": "Abbrechen",
+        "confirmLabel": "Bestätigen"
+      },
+      "question": "<p>Which of the following statements best describes the relationship between Artificial Intelligence (AI) and Machine Learning (ML)?</p>\n"
+    }
+  }
+]

@@ -1,0 +1,443 @@
+﻿course_id,module_id,activity_name,has_vtt_file,has_vimeo_video,vimeo_video_id,transcript_available,transcript_source
+27,5550,"Vorstellung der Phase ""Initiierung des Vorhabens""",False,True,968600243,True,vimeo
+27,17078,Strategische Zieldefinition für KI-Einsatz,False,True,986379284,True,vimeo
+27,17083,Analyse der KI-Reife im Unternehmen - Teil 1,False,True,968610491,True,vimeo
+27,17088,Analyse der KI-Reife im Unternehmen - Teil 2,False,True,968614595,True,vimeo
+27,17091,Projektplanung für miKİa,False,True,968618977,True,vimeo
+27,17581,Übersicht der Phase Fokussierung des Anwendungsbereichs,False,True,988755800,True,vimeo
+27,17806,Formulierung konkreter Problemstellungen zur Fokussierung des Anwendungsbereichs,False,True,988755978,True,vimeo
+27,17585,Mögliche Problemstellungen: Betrachtung der Geschäftsprozesse - Teil 1,False,True,988757035,True,vimeo
+27,17586,Mögliche Problemstellungen: Betrachtung der Geschäftsprozesse - Teil 2,False,True,984849285,True,vimeo
+27,17590,Mögliche Problemstellungen: Betrachtung der Produkte und Marktsegmente,False,True,984850222,True,vimeo
+27,17905,"Vorstellung der Phase ""Bedarfsanalyse""",False,True,984951744,True,vimeo
+27,17907,Allgemeine Methoden zur Bedarfsanalyse,False,True,984851827,True,vimeo
+27,17908,Prozessorientierte Methoden zur Bedarfsanalyse,False,True,984852569,True,vimeo
+27,17909,Kundenorientierte Methoden zur Bedarfsanalyse,False,True,984853268,True,vimeo
+27,17911,Vorstellung der Phase „Ideenfindung“,False,True,984854742,True,vimeo
+27,17912,Grundlagen der Ideenfindung,False,True,984855451,True,vimeo
+27,17913,Ansätze zur Ideenfindung – Teil 1,False,True,984856660,True,vimeo
+27,17914,Ansätze zur Ideenfindung – Teil 2,False,True,984857473,True,vimeo
+27,17915,Priorisierung KI-spezifischer Lösungsideen,False,True,984858386,True,vimeo
+27,17932,"Vorstellung der Phase ""Prototypische Umsetzung""",False,True,984880427,True,vimeo
+27,17933,Grundlagen der Prototypischen Umsetzung,False,True,984881214,True,vimeo
+27,17937,Entwicklung von KI-Modell-Prototypen,False,True,984882990,True,vimeo
+27,17939,"Vorstellung der Phase ""Evaluation""",False,True,984885323,True,vimeo
+27,17940,Überblick und Evaluation des Nutzens,False,True,984886370,True,vimeo
+27,17941,Technische Evaluation von KI-Systemen,False,True,984887367,True,vimeo
+27,17944,"Evaluation ethischer, rechtlicher, sozialer und ökologischer Aspekte",False,True,984889372,True,vimeo
+141,9220,Interaktives Video: Moral und Algorithmen,True,True,558964357,True,vtt_file
+127,11300,Künstliche und menschliche Intelligenz,True,True,922360498,True,vtt_file
+127,11299,Welche Anforderungen verbergen sich eigentlich hinter dem Begriff des Datenschutzes?,True,True,921996642,True,vtt_file
+127,9409,Gibt es besondere Herausforderungen bei Künstlicher Intelligenz und Datenschutz?,True,True,808357611,True,vtt_file
+28,10101,Größenberatung mit KI bei Breuninger,False,True,883219463,True,vimeo
+28,10100,Vermeidung von Kundenabwanderung bei Kaufland,False,True,885123766,True,vimeo
+28,10102,Altersnachweis mit KI bei Diebold Nixdorf,False,True,883220069,True,vimeo
+28,10103,Kontextbezogene Produktempfehlungen bei Würth,False,True,883221024,True,vimeo
+224,21424,Einführung in die Methoden der Bias-Reduktion,False,True,1017827361,True,vimeo
+224,17181,1. Ein Beispiel zum Einstieg,False,True,1016966382,True,vimeo
+224,17183,2. Wissenschaftlicher Hintergrund,False,True,1016967039,True,vimeo
+224,17184,3. Das Vorgehen,False,True,1018201470,True,vimeo
+224,21421,1. Ein Beispiel zum Einstieg,False,True,1017824383,True,vimeo
+224,21422,2. Wisenschaftlicher Hintergrund,False,True,1017828890,True,vimeo
+224,21423,3. Das Vorgehen,False,True,1017822555,True,vimeo
+224,21262,1. Ein Beispiel zum Einstieg,False,True,1016979370,True,vimeo
+224,21263,2. Wissenschaftlicher Hintergrund,False,True,1016981025,True,vimeo
+224,21270,3. Das Vorgehen,False,True,1016983967,True,vimeo
+224,21256,1. Ein Beispiel zum Einstieg,False,True,1016970212,True,vimeo
+224,21257,2. Wissenschaftlicher Hintergrund,False,True,1016971720,True,vimeo
+224,21259,3. Das Vorgehen,False,True,1016975771,True,vimeo
+291,25517,Einführung in den Kurs,False,True,1039928900,True,vimeo
+291,25518,Grundlagen der Künstlichen Intelligenz,False,True,1039932615,True,vimeo
+291,25519,Gestaltungselemente der Digitalen Transformation,False,True,1039934351,True,vimeo
+291,25520,Einordnung Unternehmens- und Digitalstrategie,False,True,1039970802,True,vimeo
+291,25521,Grundlagen Geschäftsmodelle,False,True,1039978918,True,vimeo
+291,25522,Darstellung von Geschäftsmodellen,False,True,1040313396,True,vimeo
+291,25523,Geschäftsmodellinnovation,False,True,1040314679,True,vimeo
+291,25524,Treiber der Wertschöpfung durch KI,False,True,1047033167,True,vimeo
+291,25525,Die Rolle von KI in Geschäftsmodellen,False,True,1047033536,True,vimeo
+291,25526,Geschäftsmodellinnovation durch KI - Teil 1,False,True,1040370135,True,vimeo
+291,25527,Geschäftsmodellinnovation durch KI - Teil 2,False,True,1040371332,True,vimeo
+291,25528,Grundlagen Geschäftsmodellmuster,False,True,1040681179,True,vimeo
+291,25529,Geschäftsmodellmuster mit KI,False,True,1040393603,True,vimeo
+291,25530,Geschäftsmodellmuster in der Praxis,False,True,1040396395,True,vimeo
+291,25531,Fähigkeiten zur Umsetzung von Geschäftsmodellinnovation,False,True,1047033878,True,vimeo
+291,25532,Die Rolle von Ökosystemen in der Geschäftsmodellinnovation,False,True,1047034470,True,vimeo
+291,25533,Geschäftsmodellinnovation als kontinuierlicher Prozess,False,True,1040411602,True,vimeo
+202,14936,Welche Bedeutung haben Daten?,True,True,535876237,True,vtt_file
+202,14937,"Welche Datentypen gibt es in der Statistik, Mathematik und Informatik?",True,True,535875884,True,vtt_file
+202,14940,Wie unterscheiden sich gute von schlechten Daten?,True,True,535874958,True,vtt_file
+202,14941,Wann sind Daten repräsentativ?,True,True,535874729,True,vtt_file
+202,14942,Daten für maschinelles Lernen,True,True,545870341,True,vtt_file
+202,14952,KI in der Diagnostik,True,True,535877154,True,vtt_file
+202,14965,KI in der Onkologie - Einführung,False,False,,False,
+202,14967,KI in der Onkologie – Vertiefung,False,True,623440821,False,
+202,14969,Gesundheits-Apps: Anwendungsfall,False,False,,False,
+202,14973,KI in der OP-Robotik – Anwendungsfall,False,False,,False,
+202,14987,Robotik für die Pflege - Berufspolitische Relevanz,False,True,702000769,False,
+202,14988,Robotik für die Pflege - Berufspolitische Relevanz Teil II,False,True,701998471,False,
+202,14990,Robotik für die Pflege aus Perspektive der Pflegewissenschaft,False,True,702000563,False,
+202,14991,Robotik in der Pflege - Ethische Implikationen,False,True,701999697,False,
+121,12764,1. KI-Gestaltung: Worum geht es dabei?,False,True,938537199,True,vimeo
+121,12766,2. Verhaltensdesign als Basis,False,True,938541234,True,vimeo
+121,12776,1. Round Robin: Ein Beispiel zum Einstieg,False,True,938645394,True,vimeo
+121,12782,2. Round Robin: Wissenschaftlicher Hintergrund,False,True,938646077,True,vimeo
+121,12785,3. Round Robin: Das Vorgehen,False,True,938545827,True,vimeo
+121,12787,4. Round Robin: zusätzliches Beispiel,False,True,940776851,True,vimeo
+121,12789,1. Ausgewogene Aufgabenverteilung: Ein Beispiel zum Einstieg,False,True,940823939,True,vimeo
+121,12792,2. Ausgewogene Aufgabenverteilung: Wissenschaftlicher Hintergrund,False,True,938651656,True,vimeo
+121,12794,3. Ausgewogene Aufgabenverteilung: Das Vorgehen,False,True,938551841,True,vimeo
+121,12775,1. Team-Manifest: Ein Beispiel zum Einstieg,False,True,940811582,True,vimeo
+121,13199,2. Team-Manifest: Wissenschaftlicher Hintergrund,False,True,940784001,True,vimeo
+121,12788,3. Team-Manifest: Das Vorgehen,False,True,938632797,True,vimeo
+121,12774,1. Teampraktik Review-Meeting: Ein Beispiel zum Einstieg,False,True,940834212,True,vimeo
+121,12778,2. Teampraktik Review-Meeting: Wissenschaftlicher Hintergrund,False,True,938655091,True,vimeo
+121,12893,3. Review-Meeting: Das Vorgehen,False,True,940826313,True,vimeo
+199,25367,Kodierung von Seltenen Erkrankungen,False,True,1055139444,True,vimeo
+199,25859,Beschreibung des Phänotyps,False,True,1055140363,True,vimeo
+199,23704,Datenschutz-Grundlagen in der Medizin,False,True,1055137201,True,vimeo
+282,22640,Grundlagen der Arzt-Patienten-Kommunikation,False,True,787520440,True,vimeo
+282,22639,Modelle der Arzt-Patienten-Kommunikation,False,True,787502990,True,vimeo
+282,22642,Chatbots in der Arzt-Patienten-Kommunikation,False,True,787502382,True,vimeo
+282,22646,Was ist Ethik in der KI?,False,True,787520912,True,vimeo
+282,22644,KI in der Medizin,False,True,787520808,True,vimeo
+282,22645,Explainable AI,False,True,787520713,True,vimeo
+282,22651,Wie funktioniert ein Chatbot?,False,True,789620721,True,vimeo
+282,22655,Chatbot-Architekturen,False,True,787503390,True,vimeo
+282,22653,Digitale Entscheidungsunterstützung,False,True,787503439,True,vimeo
+282,22657,Anthropomorphismus von KI,False,True,787503344,True,vimeo
+282,22899,Uncanny Valley,False,True,787520585,True,vimeo
+250,20771,Was ist Intelligenz?,True,True,535877921,True,vtt_file
+250,20773,Was sind wichtige Formen von Künstlicher Intelligenz?,True,True,535877599,True,vtt_file
+250,20775,Wo wird Künstliche Intelligenz schon angewandt?,True,True,535869144,True,vtt_file
+250,20779,Welches sind zentrale KI-Systeme in der Diagnostik?,True,True,535877154,True,vtt_file
+250,20781,Was ist Maschinelles Lernen und welche Rolle spielen dabei Daten?,True,True,545870341,True,vtt_file
+250,20783,Wodurch unterscheiden sich Maschinelles Lernen und Deep Learning?,True,True,535876509,True,vtt_file
+250,22429,Wann sind Daten repräsentativ?,True,True,535874729,True,vtt_file
+250,20787,Welche Bedeutung hat Data Science in der Medizin?,True,True,535876237,True,vtt_file
+250,20789,"Welche Datentypen gibt es in der Statistik, Mathematik und Informatik?",True,True,535875884,True,vtt_file
+250,20791,Wie können Daten strukturell unterschieden werden?,True,True,535875639,True,vtt_file
+250,22426,Welche Datentypen werden in der Medizin verwendet?,True,True,535875196,True,vtt_file
+250,22428,Wie unterscheiden sich gute von schlechten Daten?,True,True,535874958,True,vtt_file
+250,22431,Welche Daten werden in der Medizin bereits standardisiert erhoben?,True,True,544484169,True,vtt_file
+250,20794,Warum sind standardisierte Daten wichtig?,True,True,535874488,True,vtt_file
+250,20795,Welche Klassifikationsszenarien gibt es?,True,True,535874131,True,vtt_file
+250,20797,Wie lassen sich ML-Modelle vergleichen?,True,True,578037484,True,vtt_file
+250,20799,Wie werden neue Daten klassifiziert?,True,True,535873613,True,vtt_file
+250,20801,Welche ML-Challenges gibt es im Bereich Medizin?,True,True,535873303,True,vtt_file
+250,20803,Was ist lineare Regression?,True,True,535872771,True,vtt_file
+250,20805,Was sind Entscheidungsbäume?,True,True,535872457,True,vtt_file
+250,20807,Was macht einen Algorithmus “einfach”?,True,True,535872199,True,vtt_file
+250,20809,Was bedeutet Robustheit?,True,True,535871902,True,vtt_file
+250,20810,Kommen klassische Algorithmen aus der Mode?,True,True,535871712,True,vtt_file
+250,20812,Was ist Deep Learning?,True,True,535871385,True,vtt_file
+250,20814,Was sind die wichtigsten historischen Fortschritte des DL?,True,True,535871240,True,vtt_file
+250,20815,Wo werden DL Algorithmen in der Medizin eingesetzt?,True,True,535870951,True,vtt_file
+250,20816,Was sind die Probleme von DL in der Medizin?,True,True,544489992,True,vtt_file
+250,20818,Was sind künstliche neuronale Netzwerke?,True,True,535870378,True,vtt_file
+250,20820,Wie lernt ein neuronales Netzwerk?,True,True,535869944,True,vtt_file
+250,20823,Was sind die Herausforderungen bei der Entwicklung von neuronalen Netzwerken?,True,True,535869780,True,vtt_file
+250,20824,Welche Potenziale haben KI-Methoden in der Medizin?,True,True,535869515,True,vtt_file
+250,20826,Was ist generative KI?,True,True,922888509,True,vtt_file
+250,20828,Wie lassen sich Texte oder Bilder mithilfe generativer KI erzeugen?,True,True,922888566,True,vtt_file
+250,20830,Welche Rolle spielt generative KI im Feld der Medizin?,True,True,922888633,True,vtt_file
+250,20834,Welche Herausforderungen bringt das Feld der generativen KI mit sich?,True,True,922888755,True,vtt_file
+250,20897,KI in der Diagnostik,True,True,535877154,True,vtt_file
+250,20910,KI in der Onkologie - Einführung,False,False,,False,
+250,20912,KI in der Onkologie – Vertiefung,False,True,623440821,False,
+250,20914,Gesundheits-Apps: Anwendungsfall,False,False,,False,
+250,20918,KI in der OP-Robotik – Anwendungsfall,False,False,,False,
+250,20932,Robotik für die Pflege - Berufspolitische Relevanz,False,True,702000769,False,
+250,20933,Robotik für die Pflege - Berufspolitische Relevanz Teil II,False,True,701998471,False,
+250,20935,Robotik für die Pflege aus Perspektive der Pflegewissenschaft,False,True,702000563,False,
+250,20936,Robotik in der Pflege - Ethische Implikationen,False,True,701999697,False,
+235,20984,1. Motivation For Deep Learning,False,False,,False,
+235,21002,2. Representation Learning and Deep Learning,False,False,,False,
+235,21003,3. Standard ML Concepts We Build On,False,False,,False,
+235,21004,4. Basics of Neural Networks,False,False,,False,
+235,21005,5. Flexibility of Deep Learning,False,False,,False,
+235,21006,6. History of Deep Learning,False,False,,False,
+235,26990,7. (Optional) Properties of Gaussians,False,False,,False,
+235,26991,8. (Optional) Bayesian Linear Regression,False,False,,False,
+235,20759,1. Recap of Logistic Regression,False,False,,False,
+235,21291,"2. Cross Entropy Loss, KL Divergence, and Maximum Likelihood",False,False,,False,
+235,20760,3. Logistic Regression as a Neural Network: The Perceptron,False,False,,False,
+235,20761,4. Multilayer Perceptrons,False,False,,False,
+235,20762,5. Matrix Dimensions,False,False,,False,
+235,20763,6. Activation Functions,False,False,,False,
+235,20764,7. Representational Power,False,False,,False,
+235,20265,1. Recap of Multilayer Perceptrons,False,False,,False,
+235,20266,2. Recap of Chain Rule of Calculus,False,False,,False,
+235,20267,3.1 Calculating Gradients with Backpropagation,False,False,,False,
+235,20268,3.2. Calculating Gradients with Backpropagation,False,False,,False,
+235,20269,4. Backprop for Linear Layer in Matrix Form,False,False,,False,
+235,20270,5. Full Matrix Form of Backprop Equations,False,False,,False,
+235,20248,1. Learning vs Pure Optimization,False,False,,False,
+235,20249,2. Basics of Gradient-Based Optimization,False,False,,False,
+235,20250,3. Ill-Conditioning and Possible Solutions,False,False,,False,
+235,20251,4. Challenges in Optimization of Neural Networks,False,False,,False,
+235,20252,5. Stochastic Gradient Descent &amp; Minibatch Size,False,False,,False,
+235,20253,6.1. Choosing the Learning Rate,False,False,,False,
+235,20254,6.2. Choosing the Learning Rate,False,False,,False,
+235,20255,7. Stochastic Gradient Descent with Momentum,False,False,,False,
+235,20256,8. Adaptive Gradient Algorithms,False,False,,False,
+235,20525,1. Motivation for Regularization in Deep Learning,False,False,,False,
+235,20526,2. Preference for Small Weights,False,False,,False,
+235,20527,3. Parameter Sharing and Parameter Tying,False,False,,False,
+235,20528,4. Dropout,False,False,,False,
+235,20529,5. Data Augmentation,False,False,,False,
+235,20530,6. Ensemble Methods,False,False,,False,
+235,20531,7. Regularization Cocktails,False,False,,False,
+56,5830,Was ist Intelligenz?,True,True,535877921,True,vtt_file
+56,5831,Was sind wichtige Formen von Künstlicher Intelligenz?,True,True,535877599,True,vtt_file
+56,5832,Wo wird Künstliche Intelligenz schon angewandt?,True,True,535869144,True,vtt_file
+56,5833,Welches sind zentrale KI-Systeme in der Diagnostik?,True,True,535877154,True,vtt_file
+56,5834,Was ist Maschinelles Lernen und welche Rolle spielen dabei Daten?,True,True,545870341,True,vtt_file
+56,5835,Wodurch unterscheiden sich Maschinelles Lernen und Deep Learning?,True,True,535876509,True,vtt_file
+56,5836,Welche Bedeutung hat Data Science in der Medizin?,True,True,535876237,True,vtt_file
+56,5837,"Welche Datentypen gibt es in der Statistik, Mathematik und Informatik?",True,True,535875884,True,vtt_file
+56,5838,Wie können Daten strukturell unterschieden werden?,True,True,535875639,True,vtt_file
+56,5844,Welche Datentypen werden in der Medizin verwendet?,True,True,535875196,True,vtt_file
+56,5845,Wie unterscheiden sich gute von schlechten Daten?,True,True,535874958,True,vtt_file
+56,5846,Wann sind Daten repräsentativ?,True,True,535874729,True,vtt_file
+56,5847,Welche Daten werden in der Medizin bereits standardisiert erhoben?,True,True,544484169,True,vtt_file
+56,5848,Warum sind standardisierte Daten wichtig?,True,True,535874488,True,vtt_file
+56,5849,Welche Klassifikationsszenarien gibt es?,True,True,535874131,True,vtt_file
+56,5850,Wie lassen sich ML-Modelle vergleichen?,True,True,578037484,True,vtt_file
+56,5851,Wie werden neue Daten klassifiziert?,True,True,535873613,True,vtt_file
+56,5852,Welche ML-Challenges gibt es im Bereich Medizin?,True,True,535873303,True,vtt_file
+56,5867,Was ist lineare Regression?,True,True,535872771,True,vtt_file
+56,5869,Was sind Entscheidungsbäume?,True,True,535872457,True,vtt_file
+56,5870,Was macht einen Algorithmus “einfach”?,True,True,535872199,True,vtt_file
+56,5873,Was bedeutet Robustheit?,True,True,535871902,True,vtt_file
+56,5875,Kommen klassische Algorithmen aus der Mode?,True,True,535871712,True,vtt_file
+56,5877,Was ist Deep Learning?,True,True,535871385,True,vtt_file
+56,5878,Was sind die wichtigsten historischen Fortschritte des DL?,True,True,535871240,True,vtt_file
+56,5879,Wo werden DL Algorithmen in der Medizin eingesetzt?,True,True,535870951,True,vtt_file
+56,5880,Was sind die Probleme von DL in der Medizin?,True,True,544489992,True,vtt_file
+56,5881,Was sind künstliche neuronale Netzwerke?,True,True,535870378,True,vtt_file
+56,5884,Wie lernt ein neuronales Netzwerk?,True,True,535869944,True,vtt_file
+56,5885,Was sind die Herausforderungen bei der Entwicklung von neuronalen Netzwerken?,True,True,535869780,True,vtt_file
+56,5887,Welche Potenziale haben KI-Methoden in der Medizin?,True,True,535869515,True,vtt_file
+56,11523,Was ist generative KI?,True,True,922888509,True,vtt_file
+56,11524,Wie lassen sich Texte oder Bilder mithilfe generativer KI erzeugen?,True,True,922888566,True,vtt_file
+56,11525,Welche Rolle spielt generative KI im Feld der Medizin?,True,True,922888633,True,vtt_file
+56,11531,Welche Herausforderungen bringt das Feld der generativen KI mit sich?,True,True,922888755,True,vtt_file
+80,3931,Daten und KI in der klinischen Neurobildgebung,False,True,617880994,False,
+80,3934,Deep Learning und Erklärbare KI bei Hirnerkrankungen,False,True,617891157,False,
+80,3936,Erkennung psychischer Erkrankungen und semi-automatisierte Entscheidungsprozesse,False,True,617871941,False,
+80,3937,Datenbanken und Verwendungsszenarien in der Nephrologie,False,True,622265764,False,
+80,3938,Parameter von Patient:innen bei der Erfassung in Datenbanken,False,True,622286618,False,
+80,3940,Entwicklung eines Vorhersagemodells für Transplantatversagen,False,True,622298539,False,
+80,3942,Interoperable Daten als Grundlage der Klassifikationsgenauigkeit,False,True,623381057,False,
+80,3943,Potentiale bei der klinischen Anwendung von Vorhersagemodellen in der Nephrologie,False,True,623425338,False,
+80,3945,Personalisierte Medizin für Krebspatient*innen,False,True,623440821,False,
+80,3946,Patient:innendaten oder Zelllinien beim Trainieren von KI-Modellen,False,True,623451087,False,
+80,3947,Übergreifende Nutzung von Daten zur Entwicklung effektiverer KI-Modelle,False,True,623467400,False,
+80,3956,Entwicklung und Einsatzbereiche der Neurotechnologie,False,True,641124263,False,
+80,3957,Quantensensoren und Maschinelles Lernen bei Gehirn-Computer-Schnittstellen,False,True,631143036,False,
+80,3959,Einsatzszenarien von Gehirn-Computer-Schnittstellen,False,True,641118968,False,
+80,3961,Herausforderungen bei der Datenerhebung,False,True,631147965,False,
+80,3963,Klinische Routinedaten in der Intensivmedizin,False,True,636535402,False,
+80,3965,Standardisierung und Clustering von Daten beim Maschinellen Lernen,False,True,637437339,False,
+80,3966,Aufbereitung und Verwendung von klinischen Routinedaten,False,True,636521981,False,
+80,3968,Qualität und Verlässlichkeit von Algorithmen,False,True,636543966,False,
+80,3969,Ausgangspunkt bei Wirkstoffdesign- und Medikamentenentwicklung,False,True,625246541,False,
+80,3971,Fingerabdruck von Molekülen,False,True,629006006,False,
+80,3972,Kollaboration und Standardisierung beim Aufbau von Datenbanken,False,True,629008058,False,
+80,3973,Problemlösung durch Machine Learning und Deep Learning,False,True,629027514,False,
+80,3974,Die Rolle von Algorithmen bei der Vorhersage von Toxizität,False,True,629012232,False,
+80,3975,Möglichkeiten der Nutzung der Modelle zur Reduzierung von Tierversuchen,False,True,630129753,False,
+10,572,Was sind gute und was sind schlechte Daten im medizinischen Alltag?,True,True,808315507,True,vtt_file
+10,573,Wie entstehen (internationale) Standards im Gesundheitssystem?,True,True,808315861,True,vtt_file
+10,574,Wie sieht der Weg zu neuen Standards in Deutschland aus?,True,True,808316092,True,vtt_file
+10,579,Wie geht die Entwicklung weiter?,True,True,808316368,True,vtt_file
+10,575,Welche Anforderungen verbergen sich eigentlich hinter dem Begriff des Datenschutzes?,True,True,808357327,True,vtt_file
+10,576,Führt die Nutzung von KI-Verfahren zu besonderen Herausforderungen beim Datenschutz?,True,True,808357611,True,vtt_file
+10,577,Wie können Anonymisierungsverfahren im Kontext von KI-Daten bewertet werden?,True,True,808357803,True,vtt_file
+10,578,Was sind die Vorteile der Standardisierung von Gesundheitsdaten im Kontext von Datenschutz und KI?,True,True,808358109,True,vtt_file
+10,580,Was ist digitale Diskriminierung und wie kommt sie zustande?,True,True,808344015,True,vtt_file
+10,623,Wie kann ein bewusster Umgang mit der Gefahr digitaler Diskriminierung aussehen?,True,True,808344176,True,vtt_file
+10,624,Sind Deep-Learning Modelle besonders anfällig für Diskriminierung?,True,True,808344520,True,vtt_file
+10,625,Welche Rolle spielt Interdisziplinarität in einem ethisch vertretbaren Entwicklungsprozess?,True,True,808344736,True,vtt_file
+10,626,Die Perspektive der Medizinethik auf KI - Welche Fragen sollten wir uns stellen?,True,True,809759566,True,vtt_file
+10,627,Wie kann an ethische Fragestellungen im Zusammenhang mit neuen Technologien in der Medizin herangegangen werden?,True,True,809763419,True,vtt_file
+10,628,Welche medizinethischen Fragen ergeben sich beim Einsatz von Augmented Reality?,True,True,809776895,True,vtt_file
+10,629,Welche Auswirkungen hat der sogenannte Todesalgorithmus auf unsere Wertvorstellungen?,True,True,809780450,True,vtt_file
+10,1937,Ändert sich durch den Einsatz von KI das Verhältnis zwischen Ärzt:innen und Patient:innen?,True,True,854383378,True,vtt_file
+10,630,"Warum versucht wird, Black Box KI erklärbar zu machen",True,True,810515759,True,vtt_file
+10,631,Vor- und Nachteile von XAI-Methoden,True,True,810515853,True,vtt_file
+10,632,(Wann) können wir einer XAI-Erklärung trauen?,True,True,810516064,True,vtt_file
+10,633,Die Rolle praktischer Erfahrung bei der Wahrheitsbewertung von KI-Systemen,True,True,810516104,True,vtt_file
+10,634,Wie könnte die Zukunft von XAI in der Medizin aussehen?,True,True,810516134,True,vtt_file
+10,635,Was sind Medizinprodukte und warum müssen sie reguliert werden?,True,True,808365125,True,vtt_file
+10,636,Wie sieht der Entwicklungs- und Regulierungsprozess bei Medizinprodukten aus?,True,True,808365339,True,vtt_file
+10,637,Was bedeutet Regulierung für Hersteller:innen von Medizinprodukten?,True,True,808365568,True,vtt_file
+10,638,Welche Regularien und Standards gibt es für die Softwareentwicklung?,True,True,810539614,True,vtt_file
+10,639,Wie wirkt sich die Regulierung von KI-Methoden auf die Innovation aus?,True,True,808365962,True,vtt_file
+10,640,Welche Anwendungsbereiche gibt es für KI- Start-Ups in der Medizin?,True,True,808789797,True,vtt_file
+10,641,Wie können Start-Ups ihre Technologie erfolgreich in den klinischen Alltag integrieren?,True,True,808790221,True,vtt_file
+10,642,Mit welchen Herausforderungen sind KI-Start-Ups im medizinischen Bereich konfrontiert?,True,True,808791010,True,vtt_file
+10,643,Inwiefern können Start-Ups als Innovationstreiber im Gesundheitssystem wirken?,True,True,808791930,True,vtt_file
+10,644,Was sind Chatbots und wie funktionieren sie?,True,True,807909401,True,vtt_file
+10,645,Wo können Chatbots in der Medizin eingesetzt werden?,True,True,807909923,True,vtt_file
+10,647,Was sind die spezifischen Risiken von Chatbots im medizinischen Bereich?,True,True,807913108,True,vtt_file
+10,649,Welche Vorteile bietet die Anwendung von Chatbots in der Gesundheitsversorgung?,True,True,807915724,True,vtt_file
+10,654,Welche Rolle spielt die Gesellschaft für die Entwicklung von Chatbots?,True,True,807918523,True,vtt_file
+100,6548,Was sind Daten?,False,True,674788114,False,
+100,6549,(Forschungs-) Datenlebenszyklus,False,True,674790323,False,
+100,6557,Datenschutz: Was und warum?,False,True,674793968,False,
+100,6558,Anwendungen und Grundregeln des Datenschutzes,False,True,674795617,False,
+100,6559,Umgang mit personenbezogenen Daten,False,True,677872152,False,
+100,6561,Datensicherheit aus rechtlicher Sicht,False,True,677879960,False,
+100,6568,Open Data,False,True,695628732,False,
+100,6591,Open Access,False,True,695643918,False,
+100,6592,Sekundär- und Primärforschung,False,True,695634863,False,
+100,6593,Hypothesen bilden,False,True,695635200,False,
+100,6602,Daten formal aufbereiten,False,True,695641225,False,
+100,6615,Mittelwerte,False,True,696565381,False,
+100,6616,Mittelwerte: Arithmetisches und Geometrisches Mittel,False,True,723338672,True,vimeo
+100,6618,Streuungswerte,False,True,696566347,False,
+100,6670,Bias,False,True,695662309,False,
+100,6672,Typologien von Visualisierungen,False,True,695663546,False,
+100,6680,3 Schritte - Einordnung des eigenen Ergebnisses,False,True,731449533,True,vimeo
+100,6691,Repositories,False,False,,False,
+103,7038,Mit welcher Hardware arbeiten wir?,False,True,701132858,False,
+103,7039,Wie schließen wir die Sensoren an?,False,True,701129615,False,
+109,7414,Video 1: Datenvorbereitung im end-to-end Projekt,False,True,680380428,False,
+109,7415,Video 2: Modellierung im end-to-end Projekt,False,True,680381359,False,
+109,7419,Video 1: Abschluss des end-to-end Projektes,False,True,680382017,False,
+109,7420,Video 2: Datenverständnis und Datenvorbereitung,False,True,680787712,False,
+109,7427,Video 1: Grundlagen und Gütemaße,False,True,680788296,False,
+109,7428,Video 2: Verfahren der Klassifikation,False,True,686174647,False,
+109,7432,Video 1: Grundlagen linearer Regression,False,True,680789049,False,
+109,7433,Video 2: Weitere Regressionsverfahren,False,True,684566506,False,
+109,7439,Video 1: Grundlagen k-Means,False,True,681342166,False,
+109,7440,Video 2: k-Means mit Python,False,True,681342620,False,
+109,8904,Video 1: Clusteranalyse mit DBSCAN,False,True,682774510,False,
+109,8905,Video 2: Assoziationsanalyse,False,True,720996829,True,vimeo
+6,2195,Session 1: What is Machine Learning - Artifical Intelligence and Machine Learning,False,True,867856392,True,vimeo
+6,2872,Session 1: What is Machine Learning - Different Types of Machine Learning,False,True,867856445,True,vimeo
+6,2877,Session 2: Data - Features &amp; Target Variables,False,True,867855821,True,vimeo
+6,2884,"Session 2: Data -Data Type, Labels, and Notation",False,True,867855871,True,vimeo
+6,2887,Session 2: Data -Data Generating Process,False,False,,False,
+6,2888,Session 3: Supervised Tasks,False,True,867856361,True,vimeo
+6,2998,Session 4: Models and Parameters - Hypothesis Space and Parameterization,False,True,867856137,True,vimeo
+6,2999,Session 4: Models and Parameters - Parameterization and Examples,False,True,867856181,True,vimeo
+6,3028,Session 5: Learner,False,True,867855998,True,vimeo
+6,3158,Session 6: Losses &amp; Risk Minimization - Loss Function and Risk,False,True,867856028,True,vimeo
+6,3160,Session 6: Losses &amp; Risk Minimization - Empirical Risk Minimization,False,True,867856078,True,vimeo
+6,3434,Session 7: Optimization - Global and Local Minima,False,True,867856227,True,vimeo
+6,3435,Session 7: Optimization - The Least Squares Estimator and Gradient Descent,False,True,867856278,True,vimeo
+6,3451,"Session 8: Components of a Learner - Hypothesis Space, Risk and Optimization",False,True,867855673,True,vimeo
+6,3482,Session 8: Components of a Learner - Formalized Supervised Learning and Examples,False,True,867855752,True,vimeo
+6,3489,Session 1: Linear Models with L2 Loss - Linear Regression,False,True,867863334,True,vimeo
+6,3503,Session 1: Linear Models with L2 Loss - Design Matrix and Effect Interpretation,False,True,867863394,True,vimeo
+6,3508,Session 1: Linear Models with L2 Loss - Model Fit and L2 Loss,False,True,867863460,True,vimeo
+6,3530,Session 1: Linear Models with L2 Loss - Loss Plots and Optimization,False,True,867863499,True,vimeo
+6,3531,Session 1: Linear Models with L2 Loss - Analytical Optimization and Statistical Properties of Linear Model,False,True,867863571,True,vimeo
+6,3535,Session 2: Deep Dive: Proof Ordinary Least Squares Regression,False,True,867863197,True,vimeo
+6,3536,Session 3: Linear Models with L1 Loss - Differences Between L1 and L2 Losses,False,True,867863233,True,vimeo
+6,3537,Session 3: Linear Models with L1 Loss - Robustness and Optimization Cost,False,True,867863297,True,vimeo
+6,3540,Session 4: Polynomial Regression Models - Increased Flexibility and Its Relation to Linear Model,False,True,867863616,True,vimeo
+6,3546,Session 4: Polynomial Regression Models - Polynomial Regression with Examples,False,True,867863695,True,vimeo
+6,3549,Session 4: Polynomial Regression Models - Complexity of Polynomials and Concluding Example,False,True,867863761,True,vimeo
+6,3559,Session 1: Classification Tasks - Introduction and Binary Classification Tasks,False,True,867864121,True,vimeo
+6,3576,Session 1: Classification Tasks - Multiclass Classification and Its Examples,False,True,867864186,True,vimeo
+6,3577,Session 2: Basic Definitions - Mathmatical Structures and Model Output,False,True,867863823,True,vimeo
+6,3733,Session 2: Basic Definitions - Scoring Classifiers,False,True,867863879,True,vimeo
+6,3747,Session 2: Basic Definitions - Probabilistic Classifiers,False,True,867863924,True,vimeo
+6,3745,Session 2: Basic Definitions - Decision Regions and Boundaries,False,True,867863990,True,vimeo
+6,3749,Session 2: Basic Definitions - Generative and Discriminant Approaches,False,True,867864044,True,vimeo
+6,3792,Session 3: Linear Classifiers,False,True,867864336,True,vimeo
+6,3750,Session 4: Logistic Regression - Logistic Regression Basics,False,True,867864369,True,vimeo
+6,3793,Session 4: Logistic Regression - Bernoulli Loss and Logistic Regression in 2D,False,True,867864435,True,vimeo
+6,3798,Session 5: Discriminant Analysis - Linear Discriminant Analysis (LDA),False,True,867864244,True,vimeo
+6,3804,Session 5: Discriminant Analysis - Quadratic Discriminant Analysis (QDA),False,True,867864288,True,vimeo
+6,3807,Session 6: Naive Bayes,False,True,867864492,True,vimeo
+66,2556,Session 1: K-Nearest Neighbors - Basics,False,True,867928977,True,vimeo
+66,4996,Session 1: K-Nearest Neighbors - k-NN as Regressor &amp; Classifier,False,True,867929019,True,vimeo
+66,5019,Session 1: K-Nearest Neighbors - Standardization &amp; Weights,False,True,867929099,True,vimeo
+66,5020,Session 1: K-Nearest Neighbors - Gower Distance,False,True,867929159,True,vimeo
+66,5024,Session 1: Predictions with CART - Classification Tree,False,True,868071459,True,vimeo
+66,5025,Session 1: Predictions with CART - Regression Tree &amp; Mathematical Understanding,False,True,868071571,True,vimeo
+66,5026,Session 2: Growing a Tree,False,True,868071381,True,vimeo
+66,5027,Session 3: Splitting Criteria for Regression - Understanding Splitting Rules,False,True,884014996,True,vimeo
+66,5609,Session 3: Splitting Criteria for Regression - Formalization of Tree Split,False,True,884015208,True,vimeo
+66,5028,Session 4: Splitting Criteria for Classification - Splitting with Brier Score,False,True,868071742,True,vimeo
+66,5093,Session 4: Splitting Criteria for Classification - Brier Score &amp; Log Loss,False,True,868071813,True,vimeo
+66,5610,Session 5: Computational Aspects of Finding Splits - Monotone Feature Transformation &amp; Categorical Features Split,False,True,868071131,True,vimeo
+66,5616,Session 5: Computational Aspects of Finding Splits - Surrogate Splits,False,True,868071224,True,vimeo
+66,5619,Session 6: Stopping Criteria &amp; Pruning - Stopping Criteria &amp; Horizon Effect,False,True,868071897,True,vimeo
+66,5622,Session 6: Stopping Criteria &amp; Pruning - Cost-complexity Pruning,False,True,868071977,True,vimeo
+66,5623,Session 7: Discussion,False,True,868071317,True,vimeo
+66,5655,Session 1: Bagging Ensembles - Basics,False,True,868072248,True,vimeo
+66,5711,Session 1: Bagging Ensembles - Losses &amp; Instability of Ensemble Learners,False,True,868072304,True,vimeo
+66,5716,Session 1: Bagging Ensembles - Calculating Instability of Ensemble Learners,False,True,868072422,True,vimeo
+66,5719,Session 1: Bagging Ensembles - How to Improve Bagging,False,True,868072516,True,vimeo
+66,5660,Session 2: Introduction,False,True,868072129,True,vimeo
+66,5661,"Session 3: Benchmarking Trees, Forests, and Bagging k-NN",False,True,868072574,True,vimeo
+66,5662,Session 4: Feature Importance,False,True,868072076,True,vimeo
+66,5663,Session 5: Proximities,False,True,868072188,True,vimeo
+66,5664,Session 6: Discussion,False,True,868072610,True,vimeo
+66,5665,Session 1: Introduction - Deep Learning Basics,False,True,868072641,True,vimeo
+66,5854,Session 1: Introduction - Deep Learning Use Cases,False,True,868072710,True,vimeo
+66,5667,Session 2: Single Neuron - Key Concepts,False,True,868073070,True,vimeo
+66,5886,"Session 2: Single Neuron - Graphical Representation, Hypothesis Space &amp; Risk",False,True,868073121,True,vimeo
+66,5668,Session 3: Single Hidden Layer Neural Networks - Properties of Hidden Layers,False,True,868072949,True,vimeo
+66,5890,Session 3: Single Hidden Layer Neural Networks - Calculating Outputs &amp; Activation Functions,False,True,868073025,True,vimeo
+66,5669,Session 4: Single Hidden Layer Networks for Multi-Class Classification,False,True,868072862,True,vimeo
+66,5670,Session 5: MLP: Multi-Layer Feedforward Neural Networks - Structures,False,True,868072753,True,vimeo
+66,6144,Session 5: MLP: Multi-Layer Feedforward Neural Networks - Deep Neural Networks,False,True,868072803,True,vimeo
+67,4087,Session 1: Generalization Error - Basic Concepts,False,True,867925548,True,vimeo
+67,4211,Session 1: Generalization Error - Inner vs. Outer Loss and Model vs. Learner Generalizaiton Error,False,True,867925661,True,vimeo
+67,4217,Session 1: Generalization Error - Generalizaiton Error for Inducer,False,True,867925782,True,vimeo
+67,4193,"Session 2: Measures Regression - MSE, MAE, and MAPE",False,True,867926033,True,vimeo
+67,4219,Session 2: Measures Regression - R-squared Metrics,False,True,867926109,True,vimeo
+67,4220,Session 2: Measures Regression - R-squared Metrics vs. Spearman's Rho,False,True,867926190,True,vimeo
+67,4194,Session 3: Training Error - the Basics,False,True,867925238,True,vimeo
+67,4224,Session 3: Training Error - Deep Dive,False,True,867925314,True,vimeo
+67,4195,Session 4: Test Error -the Basics and Training Error vs. Test Error,False,True,867927484,True,vimeo
+67,4248,Session 4: Test Error -Bias and Variance,False,True,867927561,True,vimeo
+67,4286,Session 4: Test Error -An Experiment of Hold-out Split,False,True,867925147,True,vimeo
+67,4196,Session 5: Overfitting &amp; Underfitting - Properties,False,True,867926261,True,vimeo
+67,4290,Session 5: Overfitting &amp; Underfitting - Mathematical Definitions &amp; Overfitting Trade-offs,False,True,867926338,True,vimeo
+67,4291,Session 5: Overfitting &amp; Underfitting - Avoiding Overfitting,False,True,867926426,True,vimeo
+67,4197,Session 6: Resampling 1 - Introduction &amp; Sampling Strategies,False,True,867926534,True,vimeo
+67,4292,Session 6: Resampling 1 -Cross Validation and Stratification,False,True,867926600,True,vimeo
+67,4294,Session 6: Resampling 1 - Different Types of Cross-Validation and Subsampling,False,True,867926659,True,vimeo
+67,4293,Session 6: Resampling 1 -Bootstrap Sampling and Leave-one-out CV,False,True,867926701,True,vimeo
+67,4198,Session 7: Resampling 2 - Hold-out vs. Subsampling,False,True,867926782,True,vimeo
+67,4302,Session 7: Resampling 2 -A Dedicated Testset Scenario,False,True,867926838,True,vimeo
+67,4305,Session 7: Resampling 2 -Pessimistic Bias,False,True,867926940,True,vimeo
+67,4413,Session 7: Resampling 2 -No Independence of CV results &amp; Cross-validation Guideline,False,True,867927050,True,vimeo
+67,4199,"Session 8: Measure Classification - Accuracy, Error Rate and Confusion Matrix",False,True,867925849,True,vimeo
+67,4471,Session 8: Measure Classification - Evaluating Classifiers with Probability,False,True,867925952,True,vimeo
+67,4200,Session 9: ROC Basics - Lable Imbalance &amp; Introduction to ROC Metrics,False,True,867927117,True,vimeo
+67,4624,Session 9: ROC Basics - Alternative Terminologies &amp; Choosing an Appropriate Metric,False,True,867927179,True,vimeo
+67,4201,Session 10: ROC Curves - Trade-off of TPR &amp; FPR in ROC Space,False,True,867927242,True,vimeo
+67,4625,Session 10: ROC Curves -Understanding ROC Diagonal,False,True,867927292,True,vimeo
+67,4673,Session 10: ROC Curves -Drawing ROC Curves,False,True,867927358,True,vimeo
+67,4674,Session 10: ROC Curves - ROC Curve Properties &amp; Choosing Decision Threshold,False,True,867927421,True,vimeo
+67,4202,Session 11: Partial AUC,False,True,867925398,True,vimeo
+67,4705,Session 12: Multi-Class AUC,False,True,867925478,True,vimeo
+67,4203,Session 13: Precision-Recall Curves,False,True,867926483,True,vimeo
+67,6468,Session 1: Introduction to Tuning,False,True,868073934,True,vimeo
+67,6470,Session 2: Problem Definition - Hyperparameter Optimization,False,True,868074221,True,vimeo
+67,7424,Session 2: Problem Definition - Challenges in Hyperparameter Tuning,False,True,868074292,True,vimeo
+67,6476,Session 3: Basic Techniques - Grid Search Basics,False,True,868073807,True,vimeo
+67,7425,Session 3: Basic Techniques - Random Search,False,True,868073861,True,vimeo
+67,6477,Session 4: Advanced Tuning Techniques - An Overview,False,True,868073349,True,vimeo
+67,7438,Session 4: Advanced Tuning Techniques - Evolutionary Algorithm,False,True,868073398,True,vimeo
+67,7450,Session 4: Advanced Tuning Techniques - Bayesian Optimization,False,True,868073477,True,vimeo
+67,7452,Session 4: Advanced Tuning Techniques - Surrogate Model and Acquisition Functions,False,True,868073555,True,vimeo
+67,7456,Session 4: Advanced Tuning Techniques - Bayesian Optimization Deepdive,False,True,868073625,False,
+67,7692,Session 4: Advanced Tuning Techniques -  Multifidelity Optimization Basics,False,True,868073683,True,vimeo
+67,7829,Session 4: Advanced Tuning Techniques -  Hyperband in Successive Halving,False,True,868073747,True,vimeo
+67,6478,Session 5: Piplines and AutoML - Introduction,False,True,868073984,True,vimeo
+67,7841,Session 5: Piplines and AutoML - What are the Pipelines,False,True,868074029,True,vimeo
+67,7876,Session 5: Piplines and AutoML - HPO with Pipelines,False,True,868074101,True,vimeo
+67,7975,Session 5: Piplines and AutoML - Challenges of AutoML,False,True,868074176,True,vimeo
+67,6483,Session 1: Motivation - Problems Introduced by Same Resampling Splits,False,True,868073172,True,vimeo
+67,8046,Session 1: Motivation - Untouched Test Set Principle,False,True,868073229,True,vimeo
+67,6486,Session 2: Training - Validation - Testing,False,True,868073294,True,vimeo
+67,6488,Session 3: Nested Resampling,False,True,868073311,True,vimeo

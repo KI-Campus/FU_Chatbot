@@ -1,0 +1,313 @@
+[
+  {
+    "index": 0,
+    "duration": {
+      "from": 553.645,
+      "to": 563.645
+    },
+    "library_name": "H5P.TrueFalse 1.8",
+    "x_position": 49.12663755458515,
+    "y_position": 17.467248908296945,
+    "params": {
+      "media": {
+        "disableImageZooming": false
+      },
+      "correct": "true",
+      "behaviour": {
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "enableCheckButton": true,
+        "confirmCheckDialog": false,
+        "confirmRetryDialog": false,
+        "autoCheck": false,
+        "feedbackOnCorrect": "Super!",
+        "feedbackOnWrong": "Das ist leider nicht richtig. Versuchen Sie es gerne noch einmal."
+      },
+      "l10n": {
+        "trueText": "Wahr",
+        "falseText": "Falsch",
+        "score": "Du hast @score von @total Punkten erreicht.",
+        "checkAnswer": "Überprüfen",
+        "submitAnswer": "Absenden",
+        "showSolutionButton": "Lösung anzeigen",
+        "tryAgain": "Wiederholen",
+        "wrongAnswerMessage": "Falsche Antwort",
+        "correctAnswerMessage": "Richtige Antwort",
+        "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+        "a11yCheck": "Die Antworten überprüfen. Die Antwort wird als richtig, falsch oder unbeantwortet markiert.",
+        "a11yShowSolution": "Die Lösung anzeigen. Die richtige Lösung wird in der Aufgabe angezeigt.",
+        "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt, und die Aufgabe wird erneut gestartet."
+      },
+      "confirmCheck": {
+        "header": "Beenden?",
+        "body": "Ganz sicher beenden?",
+        "cancelLabel": "Abbrechen",
+        "confirmLabel": "Beenden"
+      },
+      "confirmRetry": {
+        "header": "Wiederholen?",
+        "body": "Ganz sicher wiederholen?",
+        "cancelLabel": "Abbrechen",
+        "confirmLabel": "Bestätigen"
+      },
+      "question": "<p>Eine fortgeschrittene KI-Reife erkennt man unter anderem daran, dass das höhere Management sich für den Aufbau von KI-Kenntnissen im eigenen Unternehmen engagiert.</p>\n"
+    }
+  },
+  {
+    "index": 1,
+    "duration": {
+      "from": 405.82,
+      "to": 415.82
+    },
+    "library_name": "H5P.SingleChoiceSet 1.11",
+    "x_position": 49.10905265363494,
+    "y_position": 21.34898407948033,
+    "params": {
+      "choices": [
+        {
+          "subContentId": "e3d00e5f-f343-4751-b1df-1f1dc54d4309",
+          "question": "<p>Es gibt mehrere Strategien, im Wettbewerb konkurrenzfähig zu bleiben. Porter sieht in der Kostenführerschaft, in der Differenzierung und in der Fokussierung Wettbewerbsvorteile. Welches Problem gibt es dennoch eventuell, wenn man sich für die Fokussierung als Strategie entscheidet?</p>\n",
+          "answers": [
+            "<p>Spezialisiert man sich auf eine Nische, sind die Markterfolge geringer.</p>\n",
+            "<p>Eine Nischenstrategie kann dazu führen, dass die Bedürfnisse der Kunden schwierig zu identifizieren sind.</p>\n",
+            "<p>Sich auf eine Nische festzulegen, birgt das Risiko als Monopol Bußgelder von Kartellbehörden in Kauf zu nehmen.</p>\n"
+          ]
+        },
+        {
+          "subContentId": "876e0cfb-d24b-479f-98bc-946521d7ac90"
+        }
+      ],
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 95,
+          "feedback": "Das ist leider nicht richtig. Probieren Sie es erneut!"
+        },
+        {
+          "from": 96,
+          "to": 100,
+          "feedback": "Super! Sie haben es richtig erkannt."
+        }
+      ],
+      "behaviour": {
+        "autoContinue": true,
+        "timeoutCorrect": 2000,
+        "timeoutWrong": 3000,
+        "soundEffectsEnabled": true,
+        "enableRetry": true,
+        "enableSolutionsButton": true,
+        "passPercentage": 100
+      },
+      "l10n": {
+        "nextButtonLabel": "Weiter",
+        "showSolutionButtonLabel": "Lösung anzeigen",
+        "retryButtonLabel": "Wiederholen",
+        "solutionViewTitle": "Lösung",
+        "correctText": "Richtig!",
+        "incorrectText": "Falsch!",
+        "shouldSelect": "Hätte gewählt werden müssen",
+        "shouldNotSelect": "Hätte nicht gewählt werden sollen",
+        "muteButtonLabel": "Stumm schalten",
+        "closeButtonLabel": "Schließen",
+        "slideOfTotal": "Seite :num von :total",
+        "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+        "solutionListQuestionNumber": "Frage :num",
+        "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+        "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet."
+      }
+    }
+  },
+  {
+    "index": 2,
+    "duration": {
+      "from": 583.21,
+      "to": 592
+    },
+    "library_name": "H5P.DragQuestion 1.14",
+    "x_position": 48.03493449781659,
+    "y_position": 15.526443474041727,
+    "params": {
+      "scoreShow": "Überprüfen",
+      "submit": "Übermitteln",
+      "tryAgain": "Wiederholen",
+      "scoreExplanation": "Richtige Antworten geben +1 Punkte. Bei falschen Antworten gibt es -1 Punkt. Die kleinstmögliche Punktzahl ist 0.",
+      "question": {
+        "settings": {
+          "size": {
+            "width": 620,
+            "height": 310
+          }
+        },
+        "task": {
+          "elements": [
+            {
+              "x": 72.58064516129032,
+              "y": 6.451612903225806,
+              "width": 8.75,
+              "height": 2.4,
+              "dropZones": [
+                "0"
+              ],
+              "type": {
+                "library": "H5P.AdvancedText 1.1",
+                "params": {
+                  "text": "<p>Kundennähe</p>\n"
+                },
+                "subContentId": "68624af1-188c-4567-8034-14fc3f1eb3c6",
+                "metadata": {
+                  "contentType": "Text",
+                  "license": "U",
+                  "title": "Unbenannter Text"
+                }
+              },
+              "backgroundOpacity": 100,
+              "multiple": false
+            },
+            {
+              "x": 64.51612903225806,
+              "y": 29.032258064516128,
+              "width": 11.7744375,
+              "height": 3.025,
+              "dropZones": [
+                "0"
+              ],
+              "type": {
+                "library": "H5P.AdvancedText 1.1",
+                "params": {
+                  "text": "<p>besondere Organisationskultur</p>\n"
+                },
+                "subContentId": "58e5279a-f689-4457-b342-b5781499687c",
+                "metadata": {
+                  "contentType": "Text",
+                  "license": "U",
+                  "title": "Unbenannter Text"
+                }
+              },
+              "backgroundOpacity": 100,
+              "multiple": false
+            },
+            {
+              "x": 66.12903225806451,
+              "y": 54.83870967741935,
+              "width": 11.150375,
+              "height": 2.4,
+              "dropZones": [
+                "0"
+              ],
+              "type": {
+                "library": "H5P.AdvancedText 1.1",
+                "params": {
+                  "text": "<p>Anpassungsfähigkeit</p>\n"
+                },
+                "subContentId": "d9192ab6-daf8-420d-8357-ea3cae73ea60",
+                "metadata": {
+                  "contentType": "Text",
+                  "license": "U",
+                  "title": "Unbenannter Text"
+                }
+              },
+              "backgroundOpacity": 100,
+              "multiple": false
+            },
+            {
+              "x": 64.51612903225806,
+              "y": 77.41935483870968,
+              "width": 11.7744375,
+              "height": 2.9999999999999996,
+              "dropZones": [
+                "0"
+              ],
+              "type": {
+                "library": "H5P.AdvancedText 1.1",
+                "params": {
+                  "text": "<p>Technische Führerschaft</p>\n"
+                },
+                "subContentId": "841a7f37-9dbc-403d-9f2c-cd97df399cd0",
+                "metadata": {
+                  "contentType": "Text",
+                  "license": "U",
+                  "title": "Unbenannter Text"
+                }
+              },
+              "backgroundOpacity": 100,
+              "multiple": false
+            }
+          ],
+          "dropZones": [
+            {
+              "x": 3.225806451612903,
+              "y": 6.451606447832648,
+              "width": 18.749999941360475,
+              "height": 16.25,
+              "correctElements": [
+                "0",
+                "1",
+                "2",
+                "3"
+              ],
+              "showLabel": true,
+              "backgroundOpacity": 100,
+              "tipsAndFeedback": {
+                "tip": ""
+              },
+              "single": false,
+              "autoAlign": false,
+              "label": "<div>Korrekte Begriffe</div>\n"
+            }
+          ]
+        }
+      },
+      "overallFeedback": [
+        {
+          "from": 0,
+          "to": 25,
+          "feedback": "Da geht noch was! Probieren Sie noch einmal!"
+        },
+        {
+          "from": 26,
+          "to": 50,
+          "feedback": "Sie sind schon auf einem guten Weg. Die Hälfte ist richtig."
+        },
+        {
+          "from": 51,
+          "to": 75,
+          "feedback": "Gut! Fast richtig!"
+        },
+        {
+          "from": 76,
+          "to": 100,
+          "feedback": "Top! Sie haben alle Begriffe korrekt zugeordnet."
+        }
+      ],
+      "behaviour": {
+        "enableRetry": true,
+        "enableCheckButton": true,
+        "singlePoint": false,
+        "applyPenalties": true,
+        "enableScoreExplanation": true,
+        "dropZoneHighlighting": "dragging",
+        "autoAlignSpacing": 2,
+        "enableFullScreen": false,
+        "showScorePoints": true,
+        "showTitle": true
+      },
+      "grabbablePrefix": "Ziehbares Element {num} von {total}.",
+      "grabbableSuffix": "Abgelegt in Ablagezone {num}.",
+      "dropzonePrefix": "Ablagezone {num} von {total}.",
+      "noDropzone": "Keine Ablagezone.",
+      "tipLabel": "Hinweis zeigen",
+      "tipAvailable": "Hinweis verfügbar",
+      "correctAnswer": "Richtige Antwort",
+      "wrongAnswer": "Falsche Antwort",
+      "feedbackHeader": "Rückmeldung",
+      "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+      "scoreExplanationButtonLabel": "Zeige Erklärung der Punktevergabe",
+      "a11yCheck": "Die Antworten überprüfen. Die Eingaben werden als richtig, falsch oder unbeantwortet markiert.",
+      "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet.",
+      "localize": {
+        "fullscreen": "Vollbild",
+        "exitFullscreen": "Vollbild beenden"
+      }
+    }
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "index": 0,
+    "filename": "structure",
+    "fileurl": null,
+    "type": ""
+  },
+  {
+    "index": 1,
+    "filename": "index.html",
+    "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40628/mod_book/chapter/287/index.html",
+    "type": null
+  },
+  {
+    "index": 2,
+    "filename": "Programming Exercise - Introduction.zip",
+    "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40628/mod_book/chapter/287/Programming%20Exercise%20-%20Introduction.zip",
+    "type": "zip"
+  },
+  {
+    "index": 3,
+    "filename": "Programming Exercise - Introduction.pdf",
+    "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40628/mod_book/chapter/287/Programming%20Exercise%20-%20Introduction.pdf",
+    "type": "pdf"
+  },
+  {
+    "index": 4,
+    "filename": "index.html",
+    "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40628/mod_book/chapter/288/index.html",
+    "type": null
+  },
+  {
+    "index": 5,
+    "filename": "index.html",
+    "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40628/mod_book/chapter/289/index.html",
+    "type": null
+  },
+  {
+    "index": 6,
+    "filename": "index.html",
+    "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40628/mod_book/chapter/290/index.html",
+    "type": null
+  }
+]

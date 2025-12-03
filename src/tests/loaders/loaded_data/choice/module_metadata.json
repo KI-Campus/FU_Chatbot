@@ -1,0 +1,10 @@
+{
+  "id": 25036,
+  "name": "Datenweitergabe an die Landesärztekammer Baden-Württemberg",
+  "modname": "choice",
+  "type": null,
+  "url": "https://moodle.ki-campus.org/mod/choice/view.php?id=25036",
+  "visible": 1,
+  "course_id": 160,
+  "course_name": "Dr. med. KI - Ethik und Daten für Ärztinnen und Ärzte"
+}

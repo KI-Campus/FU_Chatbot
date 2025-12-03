@@ -1,0 +1,33 @@
+<h3>1. Introduction</h3><div class="no-overflow"><h5><span style=""><span class="" style="font-weight: normal; color: rgb(0, 0, 0);">
+<p dir="ltr"></p>
+<p dir="ltr">This programming exercise is to set you up and give you an idea how the programming exercises will look like. During the course, you will then implement various concepts from the different modules.<br></p>
+<p dir="ltr">Please download the<a href="Programming%20Exercise%20-%20Introduction.zip" title="programming code"> <strong>programming code</strong></a> before starting. You can also download the <strong><a href="Programming%20Exercise%20-%20Introduction.pdf" title="programming exercise description">programming exercise description</a></strong>, if you prefer that to clicking through this book. The contents will be the same.</p>
+<h4>Disclaimer</h4>
+<p dir="ltr">We are reusing a project from <a href="http://ai.berkeley.edu" target="_blank">UC Berkeley</a> and its updated version. The whole documentation can be found <a href="https://inst.eecs.berkeley.edu/~cs188/fa23/projects/proj0" target="_blank">here</a>. The required code is available <a href="https://inst.eecs.berkeley.edu/~cs188/fa23/assets/projects/tutorial.zip" target="_blank">here</a>.<br><a href="https://inst.eecs.berkeley.edu/~cs188/fa23/assets/projects/tutorial.zip" target="_blank" title="https://inst.eecs.berkeley.edu/~cs188/fa23/assets/projects/tutorial.zip"><br></a>If you encounter any bugs, please report them to franziska.neuhof@l3s.de.</p>
+<h4 dir="ltr">Python Installation<br></h4>
+<p dir="ltr">To participate in the programming exercises, you need a <strong>python3</strong> environment of the version python 3.6 or higher. Additionally you will need <strong><a href="https://pypi.org/project/pip/" target="_blank">pip</a></strong> or<strong> <a href="https://docs.conda.io/en/latest/" target="_blank">conda</a></strong>. You can check via <span class="" style="color: rgb(40, 145, 186);">python -V</span> or <span class="" style="color: rgb(40, 145, 186);">python3 -V</span> your python version and with <span class="" style="color: rgb(40, 145, 186);">conda -V</span> or <span class="" style="color: rgb(40, 145, 186);">pip -V</span> / <span class="" style="color: rgb(40, 145, 186);">pip3 -V</span> your conda or pip version.</p>
+<p dir="ltr">If you need to install python, I personally suggest to use conda, which automatically comes with python. Installation instructions for Windows, Mac and Linux can be found <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html" target="_blank">here</a>.</p>
+<p dir="ltr">If there is a <span class="" style="color: rgb(40, 145, 186);">tkinter</span> import error, it’s likely because Python is atypical, and from Homebrew. Uninstall that and install python from Homebrew with tkinter support, or use the another installer.</p>
+<p dir="ltr">When running the autograder you might encounter an exception on modern python versions. The cause of this is that the method <span class="" style="color: rgb(40, 145, 186);">cgi.escape</span> has been deprecated sine 2011 and removed with Python 3.8. To fix this you can either use an earlier version (3.6 works fine) or make the following two changes to the autograder: Replace <span class="" style="color: rgb(40, 145, 186);">import cgi</span> with <span class="" style="color: rgb(40, 145, 186);">from html import escape</span>. Replace <span class="" style="color: rgb(40, 145, 186);">message = cgi.escape(message)</span> with <span class="" style="color: rgb(40, 145, 186);">message = escape(message)</span>.<br></p>
+<h4>Programming Exercise Structure &amp; Autograding</h4>
+<p dir="ltr">You can check you progress by running the following command: <br><em><span class="" style="color: rgb(40, 145, 186);">python autograder.py&nbsp;</span></em></p>
+<p dir="ltr">Files you will edit:<br></p>
+<ul>
+    <li>
+        <p>addition.py</p>
+    </li>
+    <li>
+        <p>buyLotsOfFruit.py</p>
+    </li>
+    <li>
+        <p>shopSmart.py</p>
+    </li>
+</ul>
+<p dir="ltr">Files you might want to look at:<br></p>
+<ul>
+    <li>
+        <p>shop.py</p>
+    </li>
+</ul>
+<p>Do not change any other files and do not change any of the provided function names as this will create problems for the autograder and you will not be able to check your progress.<br></p>
+<p></p></span></span></h5></div>

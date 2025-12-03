@@ -235,27 +235,35 @@ class Moodle:
                 content = json.load(json_file)
             if "interactiveVideo" in content.keys():
                 videourl = content["interactiveVideo"]["video"]["files"][0]["path"]
+                video = None
                 try:
                     video = Video(id=0, vimeo_url=videourl)
                 except ValidationError:
                     # No link to external Video-Service
                     pass
+                
+                if not video:
+                    # Kein Vimeo-Video gefunden
+                    return "Kein Vimeo-Video im H5P gefunden"
+                
                 vimeo = Vimeo()
-
                 texttrack = None
-                # Try to locate the fallback transcript file
+                fallback_transcript_path = None
+                
+                # Try to locate the fallback transcript file in H5P
                 try:
                     fallback_transcript_file = f"content/{content['interactiveVideo']['video']['textTracks']['videoTrack'][0]['track']['path']}"
                     with zipfile.ZipFile(local_filename, "r") as zip_ref:
                         zip_ref.extract(fallback_transcript_file, tmp_dir)
                     fallback_transcript_path = f"{tmp_dir}/{fallback_transcript_file}"
-                    if video:
-                        texttrack, err_message = vimeo.get_transcript(
-                            video.video_id, fallback_transcript=fallback_transcript_path
-                        )
-                except KeyError:
+                except (KeyError, IndexError):
+                    # Kein VTT-File im H5P, versuche trotzdem Vimeo
                     fallback_transcript_path = None
-                    err_message = "Kein Transcript auf Video _und_ in H5P-Datei gefunden"
+                
+                # Versuche Transkript von Vimeo zu holen (mit oder ohne Fallback)
+                texttrack, err_message = vimeo.get_transcript(
+                    video.video_id, fallback_transcript=fallback_transcript_path
+                )
 
                 module.transcripts.append(texttrack)
         return err_message if err_message is not None else None

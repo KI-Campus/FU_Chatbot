@@ -1,0 +1,110 @@
+course_id,module_id,activity_name,has_vimeo_video,vimeo_video_id
+6,2887,Session 2: Data -Data Generating Process,False,
+67,7456,Session 4: Advanced Tuning Techniques - Bayesian Optimization Deepdive,True,868073625.0
+80,3931,Daten und KI in der klinischen Neurobildgebung,True,617880994.0
+80,3934,Deep Learning und Erklärbare KI bei Hirnerkrankungen,True,617891157.0
+80,3936,Erkennung psychischer Erkrankungen und semi-automatisierte Entscheidungsprozesse,True,617871941.0
+80,3937,Datenbanken und Verwendungsszenarien in der Nephrologie,True,622265764.0
+80,3938,Parameter von Patient:innen bei der Erfassung in Datenbanken,True,622286618.0
+80,3940,Entwicklung eines Vorhersagemodells für Transplantatversagen,True,622298539.0
+80,3942,Interoperable Daten als Grundlage der Klassifikationsgenauigkeit,True,623381057.0
+80,3943,Potentiale bei der klinischen Anwendung von Vorhersagemodellen in der Nephrologie,True,623425338.0
+80,3945,Personalisierte Medizin für Krebspatient*innen,True,623440821.0
+80,3946,Patient:innendaten oder Zelllinien beim Trainieren von KI-Modellen,True,623451087.0
+80,3947,Übergreifende Nutzung von Daten zur Entwicklung effektiverer KI-Modelle,True,623467400.0
+80,3956,Entwicklung und Einsatzbereiche der Neurotechnologie,True,641124263.0
+80,3957,Quantensensoren und Maschinelles Lernen bei Gehirn-Computer-Schnittstellen,True,631143036.0
+80,3959,Einsatzszenarien von Gehirn-Computer-Schnittstellen,True,641118968.0
+80,3961,Herausforderungen bei der Datenerhebung,True,631147965.0
+80,3963,Klinische Routinedaten in der Intensivmedizin,True,636535402.0
+80,3965,Standardisierung und Clustering von Daten beim Maschinellen Lernen,True,637437339.0
+80,3966,Aufbereitung und Verwendung von klinischen Routinedaten,True,636521981.0
+80,3968,Qualität und Verlässlichkeit von Algorithmen,True,636543966.0
+80,3969,Ausgangspunkt bei Wirkstoffdesign- und Medikamentenentwicklung,True,625246541.0
+80,3971,Fingerabdruck von Molekülen,True,629006006.0
+80,3972,Kollaboration und Standardisierung beim Aufbau von Datenbanken,True,629008058.0
+80,3973,Problemlösung durch Machine Learning und Deep Learning,True,629027514.0
+80,3974,Die Rolle von Algorithmen bei der Vorhersage von Toxizität,True,629012232.0
+80,3975,Möglichkeiten der Nutzung der Modelle zur Reduzierung von Tierversuchen,True,630129753.0
+100,6548,Was sind Daten?,True,674788114.0
+100,6549,(Forschungs-) Datenlebenszyklus,True,674790323.0
+100,6557,Datenschutz: Was und warum?,True,674793968.0
+100,6558,Anwendungen und Grundregeln des Datenschutzes,True,674795617.0
+100,6559,Umgang mit personenbezogenen Daten,True,677872152.0
+100,6561,Datensicherheit aus rechtlicher Sicht,True,677879960.0
+100,6568,Open Data,True,695628732.0
+100,6591,Open Access,True,695643918.0
+100,6592,Sekundär- und Primärforschung,True,695634863.0
+100,6593,Hypothesen bilden,True,695635200.0
+100,6602,Daten formal aufbereiten,True,695641225.0
+100,6615,Mittelwerte,True,696565381.0
+100,6618,Streuungswerte,True,696566347.0
+100,6670,Bias,True,695662309.0
+100,6672,Typologien von Visualisierungen,True,695663546.0
+100,6691,Repositories,False,
+103,7038,Mit welcher Hardware arbeiten wir?,True,701132858.0
+103,7039,Wie schließen wir die Sensoren an?,True,701129615.0
+109,7414,Video 1: Datenvorbereitung im end-to-end Projekt,True,680380428.0
+109,7415,Video 2: Modellierung im end-to-end Projekt,True,680381359.0
+109,7419,Video 1: Abschluss des end-to-end Projektes,True,680382017.0
+109,7420,Video 2: Datenverständnis und Datenvorbereitung,True,680787712.0
+109,7427,Video 1: Grundlagen und Gütemaße,True,680788296.0
+109,7428,Video 2: Verfahren der Klassifikation,True,686174647.0
+109,7432,Video 1: Grundlagen linearer Regression,True,680789049.0
+109,7433,Video 2: Weitere Regressionsverfahren,True,684566506.0
+109,7439,Video 1: Grundlagen k-Means,True,681342166.0
+109,7440,Video 2: k-Means mit Python,True,681342620.0
+109,8904,Video 1: Clusteranalyse mit DBSCAN,True,682774510.0
+202,14965,KI in der Onkologie - Einführung,False,
+202,14967,KI in der Onkologie – Vertiefung,True,623440821.0
+202,14969,Gesundheits-Apps: Anwendungsfall,False,
+202,14973,KI in der OP-Robotik – Anwendungsfall,False,
+202,14987,Robotik für die Pflege - Berufspolitische Relevanz,True,702000769.0
+202,14988,Robotik für die Pflege - Berufspolitische Relevanz Teil II,True,701998471.0
+202,14990,Robotik für die Pflege aus Perspektive der Pflegewissenschaft,True,702000563.0
+202,14991,Robotik in der Pflege - Ethische Implikationen,True,701999697.0
+235,20248,1. Learning vs Pure Optimization,False,
+235,20249,2. Basics of Gradient-Based Optimization,False,
+235,20250,3. Ill-Conditioning and Possible Solutions,False,
+235,20251,4. Challenges in Optimization of Neural Networks,False,
+235,20252,5. Stochastic Gradient Descent &amp; Minibatch Size,False,
+235,20253,6.1. Choosing the Learning Rate,False,
+235,20254,6.2. Choosing the Learning Rate,False,
+235,20255,7. Stochastic Gradient Descent with Momentum,False,
+235,20256,8. Adaptive Gradient Algorithms,False,
+235,20265,1. Recap of Multilayer Perceptrons,False,
+235,20266,2. Recap of Chain Rule of Calculus,False,
+235,20267,3.1 Calculating Gradients with Backpropagation,False,
+235,20268,3.2. Calculating Gradients with Backpropagation,False,
+235,20269,4. Backprop for Linear Layer in Matrix Form,False,
+235,20270,5. Full Matrix Form of Backprop Equations,False,
+235,20525,1. Motivation for Regularization in Deep Learning,False,
+235,20526,2. Preference for Small Weights,False,
+235,20527,3. Parameter Sharing and Parameter Tying,False,
+235,20528,4. Dropout,False,
+235,20529,5. Data Augmentation,False,
+235,20530,6. Ensemble Methods,False,
+235,20531,7. Regularization Cocktails,False,
+235,20759,1. Recap of Logistic Regression,False,
+235,20760,3. Logistic Regression as a Neural Network: The Perceptron,False,
+235,20761,4. Multilayer Perceptrons,False,
+235,20762,5. Matrix Dimensions,False,
+235,20763,6. Activation Functions,False,
+235,20764,7. Representational Power,False,
+235,20984,1. Motivation For Deep Learning,False,
+235,21002,2. Representation Learning and Deep Learning,False,
+235,21003,3. Standard ML Concepts We Build On,False,
+235,21004,4. Basics of Neural Networks,False,
+235,21005,5. Flexibility of Deep Learning,False,
+235,21006,6. History of Deep Learning,False,
+235,21291,"2. Cross Entropy Loss, KL Divergence, and Maximum Likelihood",False,
+235,26990,7. (Optional) Properties of Gaussians,False,
+235,26991,8. (Optional) Bayesian Linear Regression,False,
+250,20910,KI in der Onkologie - Einführung,False,
+250,20912,KI in der Onkologie – Vertiefung,True,623440821.0
+250,20914,Gesundheits-Apps: Anwendungsfall,False,
+250,20918,KI in der OP-Robotik – Anwendungsfall,False,
+250,20932,Robotik für die Pflege - Berufspolitische Relevanz,True,702000769.0
+250,20933,Robotik für die Pflege - Berufspolitische Relevanz Teil II,True,701998471.0
+250,20935,Robotik für die Pflege aus Perspektive der Pflegewissenschaft,True,702000563.0
+250,20936,Robotik in der Pflege - Ethische Implikationen,True,701999697.0
