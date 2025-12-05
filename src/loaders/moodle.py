@@ -18,7 +18,15 @@ from src.loaders.failed_transcripts import (
     save_failed_transcripts_to_excel,
 )
 from src.loaders.models.coursetopic import CourseTopic
-from src.loaders.models.hp5activities import H5PActivities
+from src.loaders.models.hp5activities import (
+    H5PActivities, 
+    InteractiveVideo, 
+    QuizQuestion, 
+    TrueFalseQuestion,
+    FillInBlanksQuestion,
+    DragDropQuestion,
+    TextBanner
+)
 from src.loaders.models.module import ModuleTypes
 from src.loaders.models.moodlecourse import MoodleCourse
 from src.loaders.models.videotime import Video, VideoPlatforms
@@ -266,6 +274,170 @@ class Moodle:
                 )
 
                 module.transcripts.append(texttrack)
+                
+                # === INTERAKTIONEN EXTRAHIEREN ===
+                interactions = []
+                
+                # Prüfe, ob überhaupt Interaktionen vorhanden sind
+                # Interaktionen können in zwei Strukturen sein:
+                # 1. content["interactiveVideo"]["interactions"] (alte Struktur)
+                # 2. content["interactiveVideo"]["assets"]["interactions"] (neue Struktur)
+                interaction_list = []
+                if "interactiveVideo" in content:
+                    iv = content["interactiveVideo"]
+                    if "assets" in iv and "interactions" in iv["assets"]:
+                        interaction_list = iv["assets"]["interactions"]
+                    elif "interactions" in iv:
+                        interaction_list = iv["interactions"]
+                
+                if interaction_list:
+                    try:
+                        for interaction in interaction_list:
+                            action = interaction.get("action", {})
+                            library = action.get("library", "")
+                            params = action.get("params", {})
+                            
+                            # MultiChoice Fragen
+                            if "H5P.MultiChoice" in library:
+                                question_text = params.get("question", "").strip()
+                                
+                                correct = []
+                                incorrect = []
+                                for answer in params.get("answers", []):
+                                    text = answer.get("text", "").strip()
+                                    if text:
+                                        if answer.get("correct"):
+                                            correct.append(text)
+                                        else:
+                                            incorrect.append(text)
+                                
+                                if question_text and correct:
+                                    interactions.append(QuizQuestion(
+                                        type=library,
+                                        question=question_text,
+                                        correct_answers=correct,
+                                        incorrect_answers=incorrect
+                                    ))
+                            
+                            # SingleChoiceSet (different structure)
+                            elif "H5P.SingleChoiceSet" in library:
+                                choices = params.get("choices", [])
+                                
+                                for choice in choices:
+                                    question_text = choice.get("question", "").strip()
+                                    answers = choice.get("answers", [])
+                                    
+                                    if question_text and answers:
+                                        # First answer is always correct in SingleChoiceSet
+                                        correct = [answers[0].strip()] if answers else []
+                                        incorrect = [a.strip() for a in answers[1:] if a.strip()]
+                                        
+                                        if correct:
+                                            interactions.append(QuizQuestion(
+                                                type=library,
+                                                question=question_text,
+                                                correct_answers=correct,
+                                                incorrect_answers=incorrect
+                                            ))
+                            
+                            # Wahr/Falsch-Fragen
+                            elif "H5P.TrueFalse" in library:
+                                question_text = params.get("question", "").strip()
+                                correct_str = params.get("correct", "").lower()
+                                
+                                if question_text and correct_str in ["true", "false"]:
+                                    correct_answer = (correct_str == "true")
+                                    interactions.append(TrueFalseQuestion(
+                                        type=library,
+                                        question=question_text,
+                                        correct_answer=correct_answer
+                                    ))
+                            
+                            # Lückentext-Fragen
+                            elif "H5P.Blanks" in library:
+                                intro_text = params.get("text", "").strip()
+                                questions = params.get("questions", [])
+                                
+                                if questions:
+                                    # Erstes Element ist der eigentliche Lückentext
+                                    text_with_blanks = questions[0].strip() if questions else ""
+                                    
+                                    if intro_text or text_with_blanks:
+                                        question_text = intro_text if intro_text else "Lückentext"
+                                        interactions.append(FillInBlanksQuestion(
+                                            type=library,
+                                            question=question_text,
+                                            text_with_blanks=text_with_blanks
+                                        ))
+                            
+                            # Drag & Drop-Fragen
+                            elif "H5P.DragQuestion" in library:
+                                task = params.get("question", {}).get("task", {})
+                                dropzones = task.get("dropZones", [])
+                                elements = task.get("elements", [])
+                                
+                                question_text = "Ordne die Elemente den Kategorien zu:"
+                                
+                                # Extrahiere Kategorien (Dropzones) mit Index
+                                categories = []
+                                category_map = {}  # Index -> Label
+                                for idx, dz in enumerate(dropzones):
+                                    label = dz.get("label", "").strip()
+                                    if label:
+                                        categories.append(label)
+                                        category_map[str(idx)] = label
+                                
+                                # Extrahiere ziehbare Elemente mit Index
+                                draggable_items = []
+                                element_map = {}  # Index -> Text
+                                for idx, elem in enumerate(elements):
+                                    text = elem.get("type", {}).get("params", {}).get("text", "").strip()
+                                    if text:
+                                        draggable_items.append(text)
+                                        element_map[str(idx)] = text
+                                
+                                # Erstelle korrekte Zuordnungen
+                                correct_mappings = {}
+                                for idx, dz in enumerate(dropzones):
+                                    label = dz.get("label", "").strip()
+                                    correct_elem_ids = dz.get("correctElements", [])
+                                    
+                                    if label and correct_elem_ids:
+                                        correct_items = []
+                                        for elem_id in correct_elem_ids:
+                                            elem_text = element_map.get(str(elem_id))
+                                            if elem_text:
+                                                correct_items.append(elem_text)
+                                        
+                                        if correct_items:
+                                            correct_mappings[label] = correct_items
+                                
+                                if categories and draggable_items and correct_mappings:
+                                    interactions.append(DragDropQuestion(
+                                        type=library,
+                                        question=question_text,
+                                        categories=categories,
+                                        draggable_items=draggable_items,
+                                        correct_mappings=correct_mappings
+                                    ))
+                            
+                            # Text-Banner
+                            elif "H5P.Text" in library:
+                                text = params.get("text", "").strip()
+                                if text:
+                                    interactions.append(TextBanner(
+                                        type=library,
+                                        text=text
+                                    ))
+                    except (KeyError, TypeError, AttributeError) as e:
+                        self.logger.warning(f"Fehler beim Parsen von Interaktionen in Modul {module.id}: {e}")
+                
+                # InteractiveVideo-Objekt erstellen
+                module.interactive_video = InteractiveVideo(
+                    video_url=videourl,
+                    vimeo_id=video.video_id,
+                    interactions=interactions
+                )
         return err_message if err_message is not None else None
 
 

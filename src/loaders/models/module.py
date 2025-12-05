@@ -7,6 +7,7 @@ from pydantic import BaseModel, HttpUrl, computed_field
 from src.loaders.models.downloadablecontent import DownloadableContent
 from src.loaders.models.texttrack import TextTrack
 from src.loaders.models.videotime import Video
+from src.loaders.models.hp5activities import InteractiveVideo
 
 
 class ModuleTypes(StrEnum):
@@ -27,6 +28,7 @@ class Module(BaseModel):
     contents: list[DownloadableContent] | None = None
     videotime: Video | None = None
     transcripts: list[TextTrack] = []
+    interactive_video: InteractiveVideo | None = None
 
     @computed_field  # type: ignore[misc]
     @property
@@ -42,14 +44,27 @@ class Module(BaseModel):
                 return None
 
     def to_document(self, course_id) -> Document:
-        text = ""
-        text_content = ""
-        text_transcripts = ""
+        text_parts = []
+        
+        # Name
+        text_parts.append(f"Module Name: {self.name}")
+        
+        # Text-Content
         if self.text is not None:
-            text_content += f"\nText: {self.text}"
+            text_parts.append(f"\nText: {self.text}")
+        
+        # Transkript
         if len(self.transcripts) > 0:
-            text_transcripts += "\nTranscript:\n".join([str(transcript) for transcript in self.transcripts])
-        text = f"""Module Name: {self.name}{text_content}{text_transcripts}"""
+            text_parts.append("\nTranscript:")
+            text_parts.extend([str(transcript) for transcript in self.transcripts])
+        
+        # Interactive Video Fragen
+        if self.interactive_video and self.interactive_video.interactions:
+            text_parts.append("\n--- Quizfragen im Video ---")
+            for interaction in self.interactive_video.interactions:
+                text_parts.append(interaction.to_text())
+        
+        text = "\n".join(text_parts)
 
         metadata = {
             "course_id": course_id,
