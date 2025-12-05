@@ -1,0 +1,84 @@
+{
+  "id": 12340,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=12340",
+  "name": "Willkommen zur KI-Lernreise!",
+  "instance": 3391,
+  "contextid": 26192,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 1,
+    "timecompleted": 1722408957,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 1,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": true
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "drmedki_DrMedKI-Teaser_210429-2-high.gif",
+      "filepath": "/",
+      "filesize": 10277909,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/26192/mod_page/content/4/drmedki_DrMedKI-Teaser_210429-2-high.gif?forcedownload=1",
+      "timecreated": 1710920308,
+      "timemodified": 1710920505,
+      "sortorder": 0,
+      "mimetype": "image/gif",
+      "isexternalfile": false,
+      "userid": 46,
+      "author": "Mike Bernd",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/26192/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1713784694,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 2,
+    "filessize": 10277909,
+    "lastmodified": 1713784694,
+    "mimetypes": [
+      "image/gif"
+    ],
+    "repositorytype": ""
+  }
+}

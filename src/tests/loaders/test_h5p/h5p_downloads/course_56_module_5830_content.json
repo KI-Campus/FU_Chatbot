@@ -1,0 +1,335 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Was ist Intelligenz?",
+        "hideStartTitle": false
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "de",
+            "track": {
+              "path": "file-d5sTIx4q.vtt",
+              "mime": "application/octet-stream",
+              "copyright": {
+                "license": "U"
+              }
+            }
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://player.vimeo.com/external/535877921.hd.mp4?s=c6240dee18334debbf0a2446f64ae028c53fc772&amp;profile_id=175",
+          "mime": "video/mp4",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 63.08411214953271,
+          "y": 72.61410788381743,
+          "width": 10,
+          "height": 10,
+          "duration": {
+            "from": 289.06600000000003,
+            "to": 300.066
+          },
+          "libraryTitle": "Drag Text",
+          "action": {
+            "library": "H5P.DragText 1.10",
+            "params": {
+              "taskDescription": "<p>Drag the words into the correct boxes</p>\n",
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "checkAnswer": "Check",
+              "tryAgain": "Retry",
+              "showSolution": "Show solution",
+              "dropZoneIndex": "Drop Zone @index.",
+              "empty": "Drop Zone @index is empty.",
+              "contains": "Drop Zone @index contains draggable @draggable.",
+              "ariaDraggableIndex": "@index of @count draggables.",
+              "tipLabel": "Show tip",
+              "correctText": "Correct!",
+              "incorrectText": "Incorrect!",
+              "resetDropTitle": "Reset drop",
+              "resetDropDescription": "Are you sure you want to reset this drop zone?",
+              "grabbed": "Draggable is grabbed.",
+              "cancelledDragging": "Cancelled dragging.",
+              "correctAnswer": "Correct answer:",
+              "feedbackHeader": "Feedback",
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "instantFeedback": false
+              },
+              "scoreBarLabel": "You got :num out of :total points",
+              "textField": "Computer sind gut darin, Daten sehr *schnell*, in großer *Menge* und ohne *Fehler* zu verarbeiten. Menschliche Intelligenz zeichnet sich durch *Flexibilität* aus, Menschen sind *empathisch* und können gut *generalisieren*.",
+              "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+              "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+              "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+              "submitAnswer": "Submit",
+              "media": {
+                "disableImageZooming": false
+              }
+            },
+            "subContentId": "38ff2bc6-3ebf-4e29-946a-b0e43ca4cd0a",
+            "metadata": {
+              "contentType": "Drag the Words",
+              "license": "U",
+              "title": "Unbenannt: Drag Text"
+            }
+          },
+          "pause": false,
+          "displayType": "button",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": "<p>Click here!</p>\n"
+        },
+        {
+          "x": 22.19626168224299,
+          "y": 72.61410788381743,
+          "width": 10,
+          "height": 10,
+          "duration": {
+            "from": 195.066,
+            "to": 205.066
+          },
+          "libraryTitle": "Multiple Choice",
+          "action": {
+            "library": "H5P.MultiChoice 1.16",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "answers": [
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>die Auffassungsgabe in ungewohnten Situationen.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>die Auffassungsgabe in gewohnten Situationen.</div>\n"
+                },
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>schnelles, effektives Erkennen und Assozieren.&nbsp;</div>\n"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "type": "auto",
+                "singlePoint": false,
+                "randomAnswers": true,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "UI": {
+                "checkAnswerButton": "Check",
+                "showSolutionButton": "Show solution",
+                "tryAgainButton": "Retry",
+                "tipsLabel": "Show tip",
+                "scoreBarLabel": "You got :num out of :total points",
+                "tipAvailable": "Tip available",
+                "feedbackAvailable": "Feedback available",
+                "readFeedback": "Read feedback",
+                "wrongAnswer": "Wrong answer",
+                "correctAnswer": "Correct answer",
+                "shouldCheck": "Should have been checked",
+                "shouldNotCheck": "Should not have been checked",
+                "noInput": "Please answer before viewing the solution",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+                "submitAnswerButton": "Submit"
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>Unter Intelligenz versteht man ..</p>\n"
+            },
+            "subContentId": "fdcad12e-b282-4322-8b84-a9f853fa5596",
+            "metadata": {
+              "contentType": "Multiple Choice",
+              "license": "U",
+              "title": "Unbenannt: Multiple Choice"
+            }
+          },
+          "pause": false,
+          "displayType": "button",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": "<p>Click here!</p>\n"
+        }
+      ],
+      "endscreens": [
+        {
+          "time": 405.013333,
+          "label": "6:45 Submit Screen"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "Choose the correct statement.",
+          "summaries": [
+            {
+              "subContentId": "9dd1066e-8c40-4df9-ae10-5570609a57e2",
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "902a2e14-c5c9-421b-b0e3-88b8713d00b9",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Unbenannt: Summary"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": true,
+    "deactivateSound": false,
+    "preventSkippingMode": "none"
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions.",
+    "more": "Mehr Abspieloptionen",
+    "navForwardDisabled": "Navigation vorwärts ist deaktiviert",
+    "videoProgressBar": "Video-Fortschritt",
+    "howToCreateInteractions": "Play the video to start creating interactions"
+  }
+}

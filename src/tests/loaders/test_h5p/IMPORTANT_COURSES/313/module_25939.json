@@ -1,0 +1,45 @@
+{
+  "id": 25939,
+  "url": "https://moodle.ki-campus.org/mod/data/view.php?id=25939",
+  "name": "Test_Lernpfad AI-Act",
+  "instance": 11,
+  "contextid": 63035,
+  "visible": 0,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/data/1764058974/monologo?filtericon=1",
+  "modname": "data",
+  "purpose": "collaboration",
+  "branded": false,
+  "modplural": "Databases",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "{\"customcompletionrules\":{\"completionentries\":\"0\"}}",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0
+}

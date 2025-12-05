@@ -1,0 +1,45 @@
+{
+  "id": 15860,
+  "url": "https://moodle.ki-campus.org/mod/videotime/view.php?id=15860",
+  "name": "Video: Wie war das nochmal? – Überblick und Ausblick",
+  "instance": 3392,
+  "contextid": 34606,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/videotime/1764058974/monologo?filtericon=1",
+  "modname": "videotime",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Video Time instances",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "{\"customcompletionrules\":{\"completion_on_finish\":\"0\"},\"labelmode\":null}",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0
+}

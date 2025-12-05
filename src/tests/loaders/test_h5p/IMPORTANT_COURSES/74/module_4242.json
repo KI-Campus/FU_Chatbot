@@ -1,0 +1,144 @@
+{
+  "id": 4242,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=4242",
+  "name": "Das Gradientenverfahren",
+  "instance": 1209,
+  "contextid": 11759,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Datensicherheit_ persönliche Daten sind überall_2.png",
+      "filepath": "/",
+      "filesize": 91841,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/11759/mod_page/content/29/Datensicherheit_%20pers%C3%B6nliche%20Daten%20sind%20%C3%BCberall_2.png?forcedownload=1",
+      "timecreated": 1698141525,
+      "timemodified": 1698141525,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2467,
+      "author": "Christian Dufentester",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "01_KI-E_M2_Das Gradientenverfahren.png",
+      "filepath": "/",
+      "filesize": 8482,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/11759/mod_page/content/29/01_KI-E_M2_Das%20Gradientenverfahren.png?forcedownload=1",
+      "timecreated": 1698141606,
+      "timemodified": 1698141804,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2467,
+      "author": "Ricarda Seidel",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "02_KI-E_M2_Das Gradientenverfahren.png",
+      "filepath": "/",
+      "filesize": 224887,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/11759/mod_page/content/29/02_KI-E_M2_Das%20Gradientenverfahren.png?forcedownload=1",
+      "timecreated": 1698141701,
+      "timemodified": 1698141804,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2467,
+      "author": "Ricarda Seidel",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "03_KI-E_M2_Das Gradientenverfahren.png",
+      "filepath": "/",
+      "filesize": 15542,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/11759/mod_page/content/29/03_KI-E_M2_Das%20Gradientenverfahren.png?forcedownload=1",
+      "timecreated": 1698141767,
+      "timemodified": 1698141869,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2467,
+      "author": "Ricarda Seidel",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "04_KI-E_M2_Das Gradientenverfahren.png",
+      "filepath": "/",
+      "filesize": 88334,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/11759/mod_page/content/29/04_KI-E_M2_Das%20Gradientenverfahren.png?forcedownload=1",
+      "timecreated": 1698141897,
+      "timemodified": 1698141915,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2467,
+      "author": "Ricarda Seidel",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/11759/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1733825440,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 6,
+    "filessize": 429086,
+    "lastmodified": 1733825440,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Session 5: Learner",
+        "hideStartTitle": true
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "en"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://vimeo.com/867855998?share=copy",
+          "mime": "video/unknown",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 11.999995636365224,
+          "y": 0,
+          "width": 30.981806915706574,
+          "height": 22.50815181521752,
+          "duration": {
+            "from": 350.526,
+            "to": 350.526
+          },
+          "libraryTitle": "Single Choice Set",
+          "action": {
+            "library": "H5P.SingleChoiceSet 1.11",
+            "params": {
+              "choices": [
+                {
+                  "subContentId": "d68f312f-794c-456b-b70e-814fa912514a",
+                  "answers": [
+                    "<p>Selecting the best model from a given hypothesis space.</p>\n",
+                    "<p>Evaluating the performance of the model.</p>\n",
+                    "<p>Generating new data for training.</p>\n",
+                    "<p>Defining the feature space for the model.</p>\n"
+                  ],
+                  "question": "<p>What is the role of the learner in supervised machine learning?</p>\n"
+                },
+                {
+                  "subContentId": "dfdb8f43-d2a1-452b-8451-c0a09752a0ed",
+                  "question": "<p>What does the learner use to produce a model?</p>\n",
+                  "answers": [
+                    "<p>Training data and a learner </p>\n",
+                    "<p>Parameters and hyperparameters</p>\n",
+                    "<p>Labeled and unlabeled data</p>\n",
+                    "<p>Features and target values</p>\n"
+                  ]
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "autoContinue": true,
+                "timeoutCorrect": 2000,
+                "timeoutWrong": 3000,
+                "soundEffectsEnabled": false,
+                "enableRetry": true,
+                "enableSolutionsButton": false,
+                "passPercentage": 100
+              },
+              "l10n": {
+                "nextButtonLabel": "Next question",
+                "showSolutionButtonLabel": "Show solution",
+                "retryButtonLabel": "Retry",
+                "solutionViewTitle": "Solution list",
+                "correctText": "Correct!",
+                "incorrectText": "Incorrect!",
+                "shouldSelect": "Should have been selected",
+                "shouldNotSelect": "Should not have been selected",
+                "muteButtonLabel": "Mute feedback sound",
+                "closeButtonLabel": "Close",
+                "slideOfTotal": "Slide :num of :total",
+                "scoreBarLabel": "You got :num out of :total points",
+                "solutionListQuestionNumber": "Question :num",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              }
+            },
+            "subContentId": "f1aa4bea-e971-4af2-9271-6ddbe41a6b9d",
+            "metadata": {
+              "contentType": "Single Choice Set",
+              "license": "U",
+              "title": "Learner in machine learning"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        }
+      ],
+      "endscreens": [
+        {
+          "time": 409,
+          "label": "6:49 Submit screen"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "<p>Now you are at the end of this video, recall what you have just learned about the pseudo code template and choose the <strong>false statement </strong>from the following statements:</p>\n",
+          "summaries": [
+            {
+              "subContentId": "bb903b77-6a3e-4eea-8636-3dacb6181e95",
+              "summary": [
+                "<p>The learner guarantees to find the best possible model within the hypothesis space for any given training set.</p>\n",
+                "<p>Different learners can have different hypothesis spaces even when using the same data and control settings.</p>\n",
+                "<p>The learner's hypothesis space defines all possible models it can create based on its chosen parameterization.</p>\n",
+                "<p>The control settings provided by the user directly control the parameters of the learner's model.</p>\n"
+              ],
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "44d0c31e-1f48-40fa-8a0c-e5cd3ba88e98",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Question"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": false,
+    "preventSkippingMode": "none",
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute, currently unmuted",
+    "unmute": "Unmute, currently muted",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "more": "More player options",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "navForwardDisabled": "Navigating forward is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "videoProgressBar": "Video progress",
+    "howToCreateInteractions": "Play the video to start creating interactions"
+  }
+}

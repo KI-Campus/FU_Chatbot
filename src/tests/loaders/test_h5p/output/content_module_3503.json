@@ -1,0 +1,416 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Session 1: Linear Models with L2 Loss P2",
+        "hideStartTitle": true
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "en"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://vimeo.com/867863394?share=copy",
+          "mime": "video/unknown",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 5.454543471075102,
+          "y": 0,
+          "width": 32.7272608264506,
+          "height": 22.25453736198641,
+          "duration": {
+            "from": 174.691,
+            "to": 174.691
+          },
+          "libraryTitle": "Multiple Choice",
+          "action": {
+            "library": "H5P.MultiChoice 1.16",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "answers": [
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>[[1, 2], [3, 4]]</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>[[1, 0], [0, 1]]</div>\n"
+                },
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>[[1], [2]]</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>[[1, 2, 3], [4, 5, 6]]</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>[[1, 2], [3, 4], [5, 6]]</div>\n"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "type": "auto",
+                "singlePoint": false,
+                "randomAnswers": true,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "UI": {
+                "checkAnswerButton": "Check",
+                "submitAnswerButton": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgainButton": "Retry",
+                "tipsLabel": "Show tip",
+                "scoreBarLabel": "You got :num out of :total points",
+                "tipAvailable": "Tip available",
+                "feedbackAvailable": "Feedback available",
+                "readFeedback": "Read feedback",
+                "wrongAnswer": "Wrong answer",
+                "correctAnswer": "Correct answer",
+                "shouldCheck": "Should have been checked",
+                "shouldNotCheck": "Should not have been checked",
+                "noInput": "Please answer before viewing the solution",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>Which of the following is NOT a valid design matrix for a linear regression model with two features?</p>\n"
+            },
+            "subContentId": "d9b9546f-786e-4f97-80ba-dbc733192d85",
+            "metadata": {
+              "contentType": "Multiple Choice",
+              "license": "U",
+              "title": "Understanding Design Matrix"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        },
+        {
+          "x": 4.363634776860081,
+          "y": 0,
+          "width": 31.85453387107859,
+          "height": 22.25453736198641,
+          "duration": {
+            "from": 284.11,
+            "to": 284.11
+          },
+          "libraryTitle": "Multiple Choice",
+          "action": {
+            "library": "H5P.MultiChoice 1.16",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "answers": [
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>The average change in the target variable for a one-unit increase in the first feature, holding all other features constant.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>The average change in the target variable for a one-unit increase in the first feature, weighted by the values of the other features.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>The slope of the line that best fits the data points in the scatter plot of the target variable versus the first feature.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>None of those</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>All of those</div>\n"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "type": "auto",
+                "singlePoint": false,
+                "randomAnswers": true,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "UI": {
+                "checkAnswerButton": "Check",
+                "submitAnswerButton": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgainButton": "Retry",
+                "tipsLabel": "Show tip",
+                "scoreBarLabel": "You got :num out of :total points",
+                "tipAvailable": "Tip available",
+                "feedbackAvailable": "Feedback available",
+                "readFeedback": "Read feedback",
+                "wrongAnswer": "Wrong answer",
+                "correctAnswer": "Correct answer",
+                "shouldCheck": "Should have been checked",
+                "shouldNotCheck": "Should not have been checked",
+                "noInput": "Please answer before viewing the solution",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>Which of the following is the interpretation of the coefficient for the first feature in a linear regression model?</p>\n"
+            },
+            "subContentId": "a4f6267a-4e80-4bae-bfcb-4f6fded215ee",
+            "metadata": {
+              "contentType": "Multiple Choice",
+              "license": "U",
+              "title": "Interpret Effects of Linear Model"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        }
+      ],
+      "endscreens": [
+        {
+          "time": 349,
+          "label": "5:49 Submit screen"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "<p>Now you are at the end of this video, recall what you have just learned in the video and judge which one is the<strong> false statement</strong> among the following statements.&nbsp;</p>\n",
+          "summaries": [
+            {
+              "subContentId": "8185072f-c6af-4ee1-bf36-08af1ef8c02d",
+              "summary": [
+                "<p>The intercept term is always necessary in supervised linear regression.&nbsp;</p>\n",
+                "<p>The design matrix is a matrix that contains all of the feature variables in the training data.</p>\n",
+                "<p>The design matrix must have a column of ones to represent the intercept.</p>\n",
+                "<p>The intercept is the value of the predicted variable when all of the independent variables are equal to zero.</p>\n"
+              ],
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "155ab4b3-5c2a-4415-b1be-d81bdb2da76b",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Question"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": false,
+    "preventSkippingMode": "none",
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute, currently unmuted",
+    "unmute": "Unmute, currently muted",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "more": "More player options",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "navForwardDisabled": "Navigating forward is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "videoProgressBar": "Video progress",
+    "howToCreateInteractions": "Play the video to start creating interactions"
+  }
+}

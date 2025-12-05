@@ -1,0 +1,144 @@
+{
+  "id": 30088,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=30088",
+  "name": "Prompt: Das richtige Tool",
+  "instance": 8622,
+  "contextid": 88774,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "sprechblase_04.png",
+      "filepath": "/",
+      "filesize": 5285,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/88774/mod_page/content/21/sprechblase_04.png?forcedownload=1",
+      "timecreated": 1756398621,
+      "timemodified": 1756398621,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": "Stefan Göllner",
+      "license": "cc-4.0"
+    },
+    {
+      "type": "file",
+      "filename": "ChatGPT Image 31. Aug. 2025, 22_19_55.png",
+      "filepath": "/",
+      "filesize": 2933993,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/88774/mod_page/content/21/ChatGPT%20Image%2031.%20Aug.%202025%2C%2022_19_55.png?forcedownload=1",
+      "timecreated": 1756677511,
+      "timemodified": 1756677599,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2070,
+      "author": "Mira Epremashvili",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "ChatGPT Image 31. Aug. 2025, 23_56_21.png",
+      "filepath": "/",
+      "filesize": 489,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/88774/mod_page/content/21/ChatGPT%20Image%2031.%20Aug.%202025%2C%2023_56_21.png?forcedownload=1",
+      "timecreated": 1756677578,
+      "timemodified": 1756677599,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2070,
+      "author": "Mira Epremashvili",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "ChatGPT Image 31. Aug. 2025, 23_56_21 (1).png",
+      "filepath": "/",
+      "filesize": 489,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/88774/mod_page/content/21/ChatGPT%20Image%2031.%20Aug.%202025%2C%2023_56_21%20%281%29.png?forcedownload=1",
+      "timecreated": 1756677719,
+      "timemodified": 1756677760,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2070,
+      "author": "Mira Epremashvili",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "ChatGPT Image 1. Sept. 2025, 00_24_58.png",
+      "filepath": "/",
+      "filesize": 2386582,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/88774/mod_page/content/21/ChatGPT%20Image%201.%20Sept.%202025%2C%2000_24_58.png?forcedownload=1",
+      "timecreated": 1756679142,
+      "timemodified": 1756679181,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 2070,
+      "author": "Mira Epremashvili",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/88774/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1756679299,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 6,
+    "filessize": 5326838,
+    "lastmodified": 1756679299,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

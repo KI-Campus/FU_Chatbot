@@ -1,0 +1,101 @@
+{
+  "id": 19275,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=19275",
+  "name": "4.1. Sind sich menschliche und künstliche Neuronen ähnlich?",
+  "instance": 5127,
+  "contextid": 40166,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "image-juxtaposition-9017.h5p",
+      "filepath": "/",
+      "filesize": 1268942,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40166/mod_page/content/8/image-juxtaposition-9017.h5p?forcedownload=1",
+      "timecreated": 1724712101,
+      "timemodified": 1724712045,
+      "sortorder": 0,
+      "mimetype": "application/zip.h5p",
+      "isexternalfile": true,
+      "repositorytype": "contentbank",
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "image-juxtaposition-9019.h5p",
+      "filepath": "/",
+      "filesize": 1535987,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40166/mod_page/content/8/image-juxtaposition-9019.h5p?forcedownload=1",
+      "timecreated": 1724715199,
+      "timemodified": 1724715109,
+      "sortorder": 0,
+      "mimetype": "application/zip.h5p",
+      "isexternalfile": true,
+      "repositorytype": "contentbank",
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40166/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1730118868,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 3,
+    "filessize": 2804929,
+    "lastmodified": 1730118868,
+    "mimetypes": [
+      "application/zip.h5p"
+    ],
+    "repositorytype": "contentbank"
+  }
+}

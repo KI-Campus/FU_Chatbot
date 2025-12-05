@@ -1,0 +1,99 @@
+{
+  "id": 12840,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=12840",
+  "name": "💡 Wie dieser Kurs funktioniert",
+  "instance": 3585,
+  "contextid": 27761,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Screenshot 2024-04-10 121324.png",
+      "filepath": "/",
+      "filesize": 82227,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27761/mod_page/content/53/Screenshot%202024-04-10%20121324.png?forcedownload=1",
+      "timecreated": 1712744124,
+      "timemodified": 1739294770,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Screenshot 2024-04-10 121702.png",
+      "filepath": "/",
+      "filesize": 697,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27761/mod_page/content/53/Screenshot%202024-04-10%20121702.png?forcedownload=1",
+      "timecreated": 1712744253,
+      "timemodified": 1739294770,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27761/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1739953638,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 3,
+    "filessize": 82924,
+    "lastmodified": 1739953638,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

@@ -1,0 +1,398 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Session 8: Components of a Learner P1",
+        "hideStartTitle": true
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "en"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://vimeo.com/867855673?share=copy",
+          "mime": "video/unknown",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 11.999995636365224,
+          "y": 0,
+          "width": 30.545443438020566,
+          "height": 22.50815181521752,
+          "duration": {
+            "from": 223.247,
+            "to": 223.247
+          },
+          "libraryTitle": "Multiple Choice",
+          "action": {
+            "library": "H5P.MultiChoice 1.16",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "answers": [
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Hyperparameters</div>\n"
+                },
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Hypothesis space</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Risk</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Optimization</div>\n"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "type": "auto",
+                "singlePoint": false,
+                "randomAnswers": true,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "UI": {
+                "checkAnswerButton": "Check",
+                "submitAnswerButton": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgainButton": "Retry",
+                "tipsLabel": "Show tip",
+                "scoreBarLabel": "You got :num out of :total points",
+                "tipAvailable": "Tip available",
+                "feedbackAvailable": "Feedback available",
+                "readFeedback": "Read feedback",
+                "wrongAnswer": "Wrong answer",
+                "correctAnswer": "Correct answer",
+                "shouldCheck": "Should have been checked",
+                "shouldNotCheck": "Should not have been checked",
+                "noInput": "Please answer before viewing the solution",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>Which component of supervised learning defines and restrics the type of model that can be learned from the data? Select the best answer.</p>\n"
+            },
+            "subContentId": "a2dddd51-5c41-428f-9c3e-9c403237c995",
+            "metadata": {
+              "contentType": "Multiple Choice",
+              "license": "U",
+              "title": "Components of Supervised Learning"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        },
+        {
+          "x": 11.998859134425869,
+          "y": 0,
+          "width": 30.545443438020566,
+          "height": 22.50815181521752,
+          "duration": {
+            "from": 290.129,
+            "to": 290.129
+          },
+          "libraryTitle": "Multiple Choice",
+          "action": {
+            "library": "H5P.MultiChoice 1.16",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "answers": [
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Evaluate how well a specific model performs on a given dataset.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Define the hypothesis space.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Search for the best model in the hypothesis space.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Search for the best model across hypothesis spaces.</div>\n"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "type": "auto",
+                "singlePoint": false,
+                "randomAnswers": true,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "UI": {
+                "checkAnswerButton": "Check",
+                "submitAnswerButton": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgainButton": "Retry",
+                "tipsLabel": "Show tip",
+                "scoreBarLabel": "You got :num out of :total points",
+                "tipAvailable": "Tip available",
+                "feedbackAvailable": "Feedback available",
+                "readFeedback": "Read feedback",
+                "wrongAnswer": "Wrong answer",
+                "correctAnswer": "Correct answer",
+                "shouldCheck": "Should have been checked",
+                "shouldNotCheck": "Should not have been checked",
+                "noInput": "Please answer before viewing the solution",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>The risk function is used to:</p>\n"
+            },
+            "subContentId": "4281def4-cffc-4e8f-8d88-8e30cd36f980",
+            "metadata": {
+              "contentType": "Multiple Choice",
+              "license": "U",
+              "title": "Risk Functions"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        }
+      ],
+      "endscreens": [
+        {
+          "time": 382,
+          "label": "6:22 Submit screen"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "<p>Now you are at the end of this video, recall what you have just learned and judge which one of the following statements is <strong>true</strong>.&nbsp;</p>\n",
+          "summaries": [
+            {
+              "subContentId": "3a65fa50-bbc3-42d5-af33-5e5616a142bb",
+              "summary": [
+                "<p>The risk of a machine learning model is the expected loss on new data that the model has never seen before.&nbsp;</p>\n",
+                "<p>The hypothesis space is the set of all possible models that can be learned from a given dataset.</p>\n",
+                "<p>Optimization in machine learning is the process of finding the model with the lowest risk.&nbsp;</p>\n",
+                "<p>There is always a single optimal model in a given hypothesis space.</p>\n"
+              ],
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "13705527-6ac4-4fc6-93fc-a87f9ba01cab",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Question"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": false,
+    "preventSkippingMode": "none",
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute, currently unmuted",
+    "unmute": "Unmute, currently muted",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "more": "More player options",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "navForwardDisabled": "Navigating forward is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "videoProgressBar": "Video progress",
+    "howToCreateInteractions": "Play the video to start creating interactions"
+  }
+}

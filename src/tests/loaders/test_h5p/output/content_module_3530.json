@@ -1,0 +1,416 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Session 1:  Linear Models with L2 Loss P4",
+        "hideStartTitle": true
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "en"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://vimeo.com/867863499?share=copy",
+          "mime": "video/unknown",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 5.453406969135747,
+          "y": 0,
+          "width": 31.85453387107859,
+          "height": 22.50815181521752,
+          "duration": {
+            "from": 183.3,
+            "to": 183.3
+          },
+          "libraryTitle": "Multiple Choice",
+          "action": {
+            "library": "H5P.MultiChoice 1.16",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "answers": [
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Plotting the loss function as a function of the model parameters.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Plotting the loss function as a function of the training data.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Plotting the loss function as a function of the predicted values.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>All of those</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>None of those.</div>\n"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "type": "auto",
+                "singlePoint": false,
+                "randomAnswers": true,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "UI": {
+                "checkAnswerButton": "Check",
+                "submitAnswerButton": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgainButton": "Retry",
+                "tipsLabel": "Show tip",
+                "scoreBarLabel": "You got :num out of :total points",
+                "tipAvailable": "Tip available",
+                "feedbackAvailable": "Feedback available",
+                "readFeedback": "Read feedback",
+                "wrongAnswer": "Wrong answer",
+                "correctAnswer": "Correct answer",
+                "shouldCheck": "Should have been checked",
+                "shouldNotCheck": "Should not have been checked",
+                "noInput": "Please answer before viewing the solution",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>Which of the following is a common way to visualize the loss function of a linear regression model?</p>\n"
+            },
+            "subContentId": "e351b1a4-2009-4fb7-834f-bd0b656a3f1b",
+            "metadata": {
+              "contentType": "Multiple Choice",
+              "license": "U",
+              "title": "Visualizing Loss Functions"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        },
+        {
+          "x": 4.363634776860081,
+          "y": 0,
+          "width": 31.85453387107859,
+          "height": 22.50815181521752,
+          "duration": {
+            "from": 380.824,
+            "to": 380.824
+          },
+          "libraryTitle": "Multiple Choice",
+          "action": {
+            "library": "H5P.MultiChoice 1.16",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "answers": [
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>The total amount of variation in the target variable that is not explained by the model.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>The average squared error of the model's predictions.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>The square of the difference between the model's predictions and the actual values of the target variable.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>All of those.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>None of those.</div>\n"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "type": "auto",
+                "singlePoint": false,
+                "randomAnswers": true,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "UI": {
+                "checkAnswerButton": "Check",
+                "submitAnswerButton": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgainButton": "Retry",
+                "tipsLabel": "Show tip",
+                "scoreBarLabel": "You got :num out of :total points",
+                "tipAvailable": "Tip available",
+                "feedbackAvailable": "Feedback available",
+                "readFeedback": "Read feedback",
+                "wrongAnswer": "Wrong answer",
+                "correctAnswer": "Correct answer",
+                "shouldCheck": "Should have been checked",
+                "shouldNotCheck": "Should not have been checked",
+                "noInput": "Please answer before viewing the solution",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>Which of the following is the correct interpretation of the sum of squared errors (SSE) in a regression model?</p>\n"
+            },
+            "subContentId": "b4224f17-dfd1-4848-9a39-0e32e7d0e0fc",
+            "metadata": {
+              "contentType": "Multiple Choice",
+              "license": "U",
+              "title": "Sum of Squared Errors"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        }
+      ],
+      "endscreens": [
+        {
+          "time": 541,
+          "label": "9:01 Submit screen"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "<p>Now you are at the end of this video, recall what you have just learned and find out the<strong> false statement </strong>about optimization in regression below:</p>\n",
+          "summaries": [
+            {
+              "subContentId": "e1f0d3bd-9c2d-4b74-bb74-3dfcdc5f36ab",
+              "summary": [
+                "<p>The goal of optimization in linear regression is to minimize the empirical risk.</p>\n",
+                "<p>Empircial risk is the average loss function over the training data.</p>\n",
+                "<p>Sum of squared errors (SSE) is a common loss function used in linear regression.</p>\n",
+                "<p>The slope and intercept of a linear regression model are the parameters that are optimized during training.&nbsp;</p>\n"
+              ],
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "6e15d4e1-82bc-46b8-80e9-d0fa7ac6df6a",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Question"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": false,
+    "preventSkippingMode": "none",
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute, currently unmuted",
+    "unmute": "Unmute, currently muted",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "more": "More player options",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "navForwardDisabled": "Navigating forward is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "videoProgressBar": "Video progress",
+    "howToCreateInteractions": "Play the video to start creating interactions"
+  }
+}

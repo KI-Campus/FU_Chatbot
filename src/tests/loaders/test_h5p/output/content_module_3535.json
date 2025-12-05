@@ -1,0 +1,277 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Session2 : Deep Dive: Proof Ordinary Least Squares Regressio",
+        "hideStartTitle": true
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "en"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://vimeo.com/867863197?share=copy",
+          "mime": "video/unknown",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 5.454543471075102,
+          "y": 0,
+          "width": 29.67271648264855,
+          "height": 22.50815181521752,
+          "duration": {
+            "from": 497.9,
+            "to": 497.9
+          },
+          "libraryTitle": "Multiple Choice",
+          "action": {
+            "library": "H5P.MultiChoice 1.16",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "answers": [
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Minimize the sum of squared errors (SSE) with respect to the model parameters.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Show that the OLS estimator is unbiased.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Show that the OLS estimator is consistent.</div>\n"
+                },
+                {
+                  "correct": false,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Show that the OLS estimator is efficient.</div>\n"
+                },
+                {
+                  "correct": true,
+                  "tipsAndFeedback": {
+                    "tip": "",
+                    "chosenFeedback": "",
+                    "notChosenFeedback": ""
+                  },
+                  "text": "<div>Show that the OLS estimator is always the best possible estimator.</div>\n"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "type": "auto",
+                "singlePoint": false,
+                "randomAnswers": true,
+                "showSolutionsRequiresInput": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false,
+                "passPercentage": 100,
+                "showScorePoints": true
+              },
+              "UI": {
+                "checkAnswerButton": "Check",
+                "submitAnswerButton": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgainButton": "Retry",
+                "tipsLabel": "Show tip",
+                "scoreBarLabel": "You got :num out of :total points",
+                "tipAvailable": "Tip available",
+                "feedbackAvailable": "Feedback available",
+                "readFeedback": "Read feedback",
+                "wrongAnswer": "Wrong answer",
+                "correctAnswer": "Correct answer",
+                "shouldCheck": "Should have been checked",
+                "shouldNotCheck": "Should not have been checked",
+                "noInput": "Please answer before viewing the solution",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>Which of the following is NOT a step in the proof of the OLS estimator of supervised machine learning?</p>\n"
+            },
+            "subContentId": "a2aa9e5b-8ca8-4f81-8f1a-83ca40184104",
+            "metadata": {
+              "contentType": "Multiple Choice",
+              "license": "U",
+              "title": "Proofing Ordinary Least Squares"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        }
+      ],
+      "endscreens": [
+        {
+          "time": 546,
+          "label": "9:06 Submit screen"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "<p>Now you are at the end of this video, recall what you have just learned and find out the <strong>true statement</strong> from the statements below:</p>\n",
+          "summaries": [
+            {
+              "subContentId": "ce588c3b-618e-495d-802f-f2b28955d69b",
+              "summary": [
+                "<p>The proof shows that the optimal parameters of a linear regression model are the parameters that minimize the empirical risk.</p>\n",
+                "<p>The proof of analytical optimization of empirical risk in supervised linear regression is based on the calculus of variations.</p>\n",
+                "<p>The proof assumes that the training data is normally distributed.</p>\n",
+                "<p>The proof is only valid for linear regression models with a single feature.</p>\n"
+              ],
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "5ce7d9b0-0b8f-40f4-b7e8-a413bfbdb6e8",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Question"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": false,
+    "preventSkippingMode": "none",
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute, currently unmuted",
+    "unmute": "Unmute, currently muted",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "more": "More player options",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "navForwardDisabled": "Navigating forward is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "videoProgressBar": "Video progress",
+    "howToCreateInteractions": "Play the video to start creating interactions"
+  }
+}

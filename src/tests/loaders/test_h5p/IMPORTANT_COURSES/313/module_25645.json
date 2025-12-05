@@ -1,0 +1,84 @@
+{
+  "id": 25645,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=25645",
+  "name": "4.6. Schulung, Überwachung und Verbesserung",
+  "instance": 7380,
+  "contextid": 61820,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "M4 _ (7).png",
+      "filepath": "/",
+      "filesize": 276532,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/61820/mod_page/content/5/M4%20_%20%287%29.png?forcedownload=1",
+      "timecreated": 1739477986,
+      "timemodified": 1739478002,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/61820/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1741252381,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 2,
+    "filessize": 276532,
+    "lastmodified": 1741252381,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

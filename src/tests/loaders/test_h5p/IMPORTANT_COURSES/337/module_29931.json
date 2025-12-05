@@ -1,0 +1,45 @@
+{
+  "id": 29931,
+  "url": "https://moodle.ki-campus.org/mod/lti/view.php?id=29931",
+  "name": "Jupyter Notebook (template)",
+  "instance": 816,
+  "contextid": 87605,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 0,
+  "modicon": "https://avatars.githubusercontent.com/u/17927519?s=280&v=4",
+  "modname": "lti",
+  "purpose": "other",
+  "branded": false,
+  "modplural": "External tools",
+  "availability": null,
+  "indent": 0,
+  "onclick": "window.open('https://moodle.ki-campus.org/mod/lti/launch.php?id=29931', 'lti-29931'); return false;",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0
+}

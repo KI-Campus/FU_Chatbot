@@ -1,0 +1,99 @@
+{
+  "id": 19257,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=19257",
+  "name": "3.1.1. Textgenerierung und LLMs",
+  "instance": 5116,
+  "contextid": 40084,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "_084e0c3c-8b1e-4180-a922-4c56b5b07834.jpg",
+      "filepath": "/",
+      "filesize": 313554,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40084/mod_page/content/9/_084e0c3c-8b1e-4180-a922-4c56b5b07834.jpg?forcedownload=1",
+      "timecreated": 1724972465,
+      "timemodified": 1724972786,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "_1b8a90df-629e-4181-9404-15e00d26a59a.jpg",
+      "filepath": "/",
+      "filesize": 368024,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40084/mod_page/content/9/_1b8a90df-629e-4181-9404-15e00d26a59a.jpg?forcedownload=1",
+      "timecreated": 1724972718,
+      "timemodified": 1724972786,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40084/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1761571488,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 3,
+    "filessize": 681578,
+    "lastmodified": 1761571488,
+    "mimetypes": [
+      "image/jpeg"
+    ],
+    "repositorytype": ""
+  }
+}

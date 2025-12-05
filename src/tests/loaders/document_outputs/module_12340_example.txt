@@ -1,0 +1,21 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: Willkommen zur KI-Lernreise!
+
+Text: Wir kennen diese Szenarien aus zahlreichen Science-Fiction-Filmen: Empathische humanoide Roboter nehmen Anamnesen vor, stellen Diagnosen und begleiten die Menschen bei einer schweren Behandlung. Im Raumschiff liegt eine Patientin auf einem Behandlungstisch und wird von einem präzisen Laserstrahl operiert oder Nanoroboter kriechen durch die Nase in einen Helden hinein und behandeln ihn, ohne dass er sich dessen bewusst ist.
+Wenngleich wir von Szenarien wie diesen noch weit entfernt sein mögen, spielt Künstliche Intelligenz (KI) in der Medizin eine immer wichtigere Rolle. Health Apps zeichnen Daten in immer komplexerer Form auf und helfen dadurch, Erkrankungen frühzeitig zu erkennen. Durch wachsende Datenbestände in der medizinischen Bildgebung erzielen Algorithmen immer exaktere Diagnosen und Symptomprüfer-Apps unterstützen beim Erkennen seltener Erkrankungen. Gewiss sind diese Entwicklungen mit zahlreichen Herausforderungen verbunden, denen es zu begegnen gilt. Sie umfassen auch die zukunftsträchtige Frage, wie das Verhältnis von Ärztin oder Arzt und Patient:innen in einer Welt mit intelligenten, digitalen Assistenten aussehen kann.
+Wir fänden es großartig, wenn du zu Beginn und am Ende der Lernreise an unserer Umfrage teilnehmen könntest!
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 56,
+  "module_id": 12340,
+  "fullname": "Willkommen zur KI-Lernreise!",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=12340"
+}

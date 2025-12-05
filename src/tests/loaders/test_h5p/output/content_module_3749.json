@@ -1,0 +1,410 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Session 2: Basic Definitions P5",
+        "hideStartTitle": true
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "en"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://vimeo.com/867864044?share=copy",
+          "mime": "video/unknown",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 10.91703056768559,
+          "y": 0,
+          "width": 31.4410480349345,
+          "height": 22.5,
+          "duration": {
+            "from": 420,
+            "to": 420
+          },
+          "libraryTitle": "Drag and Drop",
+          "action": {
+            "library": "H5P.DragQuestion 1.14",
+            "params": {
+              "scoreShow": "Check",
+              "submit": "Submit",
+              "tryAgain": "Retry",
+              "scoreExplanation": "Correct answers give +1 point. Incorrect answers give -1 point. The lowest possible score is 0.",
+              "question": {
+                "settings": {
+                  "size": {
+                    "width": 900,
+                    "height": 450
+                  }
+                },
+                "task": {
+                  "elements": [
+                    {
+                      "x": 13.953488372093023,
+                      "y": 76.74418604651163,
+                      "width": 9.080232122093022,
+                      "height": 1.885464680232558,
+                      "dropZones": [
+                        "0",
+                        "1"
+                      ],
+                      "type": {
+                        "library": "H5P.AdvancedText 1.1",
+                        "params": {
+                          "text": "<p>Neural networks</p>\n"
+                        },
+                        "subContentId": "9f14ca44-1f22-458f-bdd6-aefc29d4aef3",
+                        "metadata": {
+                          "contentType": "Text",
+                          "license": "U",
+                          "title": "Untitled Text"
+                        }
+                      },
+                      "backgroundOpacity": 100,
+                      "multiple": false
+                    },
+                    {
+                      "x": 9.30232558139535,
+                      "y": 88.37209302325581,
+                      "width": 14.312790261627907,
+                      "height": 1.885464680232558,
+                      "dropZones": [
+                        "1",
+                        "0"
+                      ],
+                      "type": {
+                        "library": "H5P.AdvancedText 1.1",
+                        "params": {
+                          "text": "<p>Linear discriminant analysis</p>\n"
+                        },
+                        "metadata": {
+                          "contentType": "Text",
+                          "license": "U",
+                          "title": "Untitled Text"
+                        },
+                        "subContentId": "45465638-04e5-4930-97ec-f34d8e59888e"
+                      },
+                      "backgroundOpacity": 100,
+                      "multiple": false
+                    },
+                    {
+                      "x": 36.04651162790698,
+                      "y": 76.74418604651163,
+                      "width": 13.004650726744186,
+                      "height": 1.885464680232558,
+                      "dropZones": [
+                        "0",
+                        "1"
+                      ],
+                      "type": {
+                        "library": "H5P.AdvancedText 1.1",
+                        "params": {
+                          "text": "<p>Support vector machines</p>\n"
+                        },
+                        "metadata": {
+                          "contentType": "Text",
+                          "license": "U",
+                          "title": "Untitled Text"
+                        },
+                        "subContentId": "5a8dd225-8969-4351-8664-3413f54b4da5"
+                      },
+                      "backgroundOpacity": 100,
+                      "multiple": false
+                    },
+                    {
+                      "x": 65.11627906976744,
+                      "y": 76.74418604651163,
+                      "width": 9.734301889534883,
+                      "height": 1.885464680232558,
+                      "dropZones": [
+                        "0",
+                        "1"
+                      ],
+                      "type": {
+                        "library": "H5P.AdvancedText 1.1",
+                        "params": {
+                          "text": "<p>Logistic regression</p>\n"
+                        },
+                        "metadata": {
+                          "contentType": "Text",
+                          "license": "U",
+                          "title": "Untitled Text"
+                        },
+                        "subContentId": "463905c1-8bc2-4848-a6f9-15d0a53a3112"
+                      },
+                      "backgroundOpacity": 100,
+                      "multiple": false
+                    },
+                    {
+                      "x": 70.93023255813954,
+                      "y": 88.37209302325581,
+                      "width": 9.080232122093022,
+                      "height": 1.885464680232558,
+                      "dropZones": [
+                        "1",
+                        "0"
+                      ],
+                      "type": {
+                        "library": "H5P.AdvancedText 1.1",
+                        "params": {
+                          "text": "<p>Naive Bayes</p>\n"
+                        },
+                        "metadata": {
+                          "contentType": "Text",
+                          "license": "U",
+                          "title": "Untitled Text"
+                        },
+                        "subContentId": "aa9dfd88-21b6-45f1-abcd-b36fde47ea86"
+                      },
+                      "backgroundOpacity": 100,
+                      "multiple": false
+                    },
+                    {
+                      "x": 38.372093023255815,
+                      "y": 88.37209302325581,
+                      "width": 16.27499956395349,
+                      "height": 1.88453851744186,
+                      "dropZones": [
+                        "1",
+                        "0"
+                      ],
+                      "type": {
+                        "library": "H5P.AdvancedText 1.1",
+                        "params": {
+                          "text": "<p>Quadratic discriminant analysis</p>\n"
+                        },
+                        "metadata": {
+                          "contentType": "Text",
+                          "license": "U",
+                          "title": "Untitled Text"
+                        },
+                        "subContentId": "e8d4090f-9156-45e7-8c9a-e455515c766c"
+                      },
+                      "backgroundOpacity": 100,
+                      "multiple": false
+                    }
+                  ],
+                  "dropZones": [
+                    {
+                      "x": 12.790697674418606,
+                      "y": 6.976744186046512,
+                      "width": 20.276162790697672,
+                      "height": 18.968023255813954,
+                      "correctElements": [
+                        "0",
+                        "2",
+                        "3"
+                      ],
+                      "showLabel": true,
+                      "backgroundOpacity": 100,
+                      "tipsAndFeedback": {
+                        "tip": ""
+                      },
+                      "single": false,
+                      "autoAlign": true,
+                      "label": "<div>Discriminant Approach</div>\n"
+                    },
+                    {
+                      "x": 50,
+                      "y": 6.976744186046512,
+                      "width": 20.276162790697672,
+                      "height": 18.968023255813954,
+                      "correctElements": [
+                        "1",
+                        "4",
+                        "5"
+                      ],
+                      "showLabel": true,
+                      "backgroundOpacity": 100,
+                      "tipsAndFeedback": {
+                        "tip": ""
+                      },
+                      "single": false,
+                      "autoAlign": true,
+                      "label": "<div>Generative Approach</div>\n"
+                    }
+                  ]
+                }
+              },
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "enableRetry": true,
+                "enableCheckButton": true,
+                "singlePoint": false,
+                "applyPenalties": true,
+                "enableScoreExplanation": true,
+                "dropZoneHighlighting": "dragging",
+                "autoAlignSpacing": 2,
+                "enableFullScreen": false,
+                "showScorePoints": true,
+                "showTitle": true
+              },
+              "grabbablePrefix": "Grabbable {num} of {total}.",
+              "grabbableSuffix": "Placed in dropzone {num}.",
+              "dropzonePrefix": "Dropzone {num} of {total}.",
+              "noDropzone": "No dropzone.",
+              "tipLabel": "Show tip.",
+              "tipAvailable": "Tip available",
+              "correctAnswer": "Correct answer",
+              "wrongAnswer": "Wrong answer",
+              "feedbackHeader": "Feedback",
+              "scoreBarLabel": "You got :num out of :total points",
+              "scoreExplanationButtonLabel": "Show score explanation",
+              "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+              "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+              "localize": {
+                "fullscreen": "Fullscreen",
+                "exitFullscreen": "Exit fullscreen"
+              }
+            },
+            "subContentId": "8ae5a506-e48e-49b2-b6cb-9f5814b0a7b7",
+            "metadata": {
+              "contentType": "Drag and Drop",
+              "license": "U",
+              "title": "Drag and Drop - Discriminant vs. Generative Approaches"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        }
+      ],
+      "endscreens": [
+        {
+          "time": 421,
+          "label": "7:01 Submit screen"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "<p>Now you are at the end of this video, recall what you have just learned and select the <strong>false statement</strong> about generative and discriminative approaches of classification from the statements below:</p>\n",
+          "summaries": [
+            {
+              "subContentId": "63f8a03d-953c-41db-9b7a-07c9a136f5e2",
+              "summary": [
+                "<p>Discriminative models can be used to explain why a particular data point belongs to a particular class.</p>\n",
+                "<p>Generative models can be used to generate new data points that belong to the same distribution as the training data.</p>\n",
+                "<p>Discriminative models learn the conditional probability distribution of the class labels given the features.</p>\n",
+                "<p>Generative models learn the joint probability distribution of the features and the class labels.&nbsp;</p>\n"
+              ],
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "62d634b5-91d3-45e7-9b72-65742def23ec",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Question"
+        }
+      },
+      "displayAt": 10
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": false,
+    "preventSkippingMode": "none",
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute, currently unmuted",
+    "unmute": "Unmute, currently muted",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "more": "More player options",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "navForwardDisabled": "Navigating forward is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "videoProgressBar": "Video progress",
+    "howToCreateInteractions": "Play the video to start creating interactions"
+  }
+}

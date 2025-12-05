@@ -1,0 +1,99 @@
+{
+  "id": 7242,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=7242",
+  "name": "Fazit zu Lektion 1: Welchen Einfluss hat die KI-Technologie auf die Megatrends unserer Zeit?",
+  "instance": 1978,
+  "contextid": 18157,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "4.1.9._Die_Wahrung_der_Privatspha_re_ist_wichtig.jpg",
+      "filepath": "/",
+      "filesize": 5347491,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18157/mod_page/content/5/4.1.9._Die_Wahrung_der_Privatspha_re_ist_wichtig.jpg?forcedownload=1",
+      "timecreated": 1705334758,
+      "timemodified": 1705334758,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "4_Fazit Lektion 1_KI wird Einfluss auf Megatrends nehmen .jpg",
+      "filepath": "/",
+      "filesize": 170529,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18157/mod_page/content/5/4_Fazit%20Lektion%201_KI%20wird%20Einfluss%20auf%20Megatrends%20nehmen%20.jpg?forcedownload=1",
+      "timecreated": 1726733412,
+      "timemodified": 1726733419,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Michael Kircher",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18157/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1727087126,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 3,
+    "filessize": 5518020,
+    "lastmodified": 1727087126,
+    "mimetypes": [
+      "image/jpeg"
+    ],
+    "repositorytype": ""
+  }
+}

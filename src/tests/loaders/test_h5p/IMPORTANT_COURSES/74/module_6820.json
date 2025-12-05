@@ -1,0 +1,46 @@
+{
+  "id": 6820,
+  "url": "https://moodle.ki-campus.org/mod/forum/view.php?id=6820",
+  "name": "Forum: Hier sammeln wir spannende Labyrinthe!",
+  "instance": 174,
+  "contextid": 17425,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/forum/1764058974/monologo?filtericon=1",
+  "modname": "forum",
+  "purpose": "collaboration",
+  "branded": false,
+  "modplural": "Foren",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "activitybadge": [],
+  "customdata": "{\"customcompletionrules\":{\"completiondiscussions\":\"0\",\"completionreplies\":\"0\",\"completionposts\":\"0\"},\"trackingtype\":\"1\"}",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0
+}

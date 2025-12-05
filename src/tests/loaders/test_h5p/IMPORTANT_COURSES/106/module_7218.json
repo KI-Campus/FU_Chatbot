@@ -1,0 +1,84 @@
+{
+  "id": 7218,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=7218",
+  "name": "3.3. Schwierigkeiten bei der Regulierung von KI: Geschwindigkeit und Umfang des Einsatzes von KI-Lösungen",
+  "instance": 1960,
+  "contextid": 18133,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "3.3.4._Geschwindigkeit_und_Umfang_des_Einsatzes_von_KI-Lo_sungen.jpg",
+      "filepath": "/",
+      "filesize": 1785311,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18133/mod_page/content/11/3.3.4._Geschwindigkeit_und_Umfang_des_Einsatzes_von_KI-Lo_sungen.jpg?forcedownload=1",
+      "timecreated": 1705334757,
+      "timemodified": 1705334757,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18133/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1727072790,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 2,
+    "filessize": 1785311,
+    "lastmodified": 1727072790,
+    "mimetypes": [
+      "image/jpeg"
+    ],
+    "repositorytype": ""
+  }
+}

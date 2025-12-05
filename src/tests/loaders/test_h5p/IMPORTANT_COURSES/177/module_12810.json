@@ -1,0 +1,129 @@
+{
+  "id": 12810,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=12810",
+  "name": "5️⃣ Teil 5: Ein Assistenz-Chatbot mit Aktion",
+  "instance": 3558,
+  "contextid": 27690,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Design_ohne_Titel_4_.png",
+      "filepath": "/",
+      "filesize": 641540,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27690/mod_page/content/16/Design_ohne_Titel_4_.png?forcedownload=1",
+      "timecreated": 1712672552,
+      "timemodified": 1734280348,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "dummy.png",
+      "filepath": "/",
+      "filesize": 380,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27690/mod_page/content/16/dummy.png?forcedownload=1",
+      "timecreated": 1730439957,
+      "timemodified": 1734280348,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Kapitel5.png",
+      "filepath": "/",
+      "filesize": 779125,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27690/mod_page/content/16/Kapitel5.png?forcedownload=1",
+      "timecreated": 1734280342,
+      "timemodified": 1734280348,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 19046,
+      "author": "Elias Weber",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Kapitel5n.png",
+      "filepath": "/",
+      "filesize": 500509,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27690/mod_page/content/16/Kapitel5n.png?forcedownload=1",
+      "timecreated": 1734420155,
+      "timemodified": 1734420181,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27690/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1739298026,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 5,
+    "filessize": 1921554,
+    "lastmodified": 1739298026,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

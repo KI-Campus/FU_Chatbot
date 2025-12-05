@@ -24,9 +24,8 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(name)s: %(messag
 logger = logging.getLogger(__name__)
 
 # ⚙️ KONFIGURATION
-COURSE_NAME_HINT = "Introduction to Machine Learning Part 1"
-TARGET_MODULE_ID = 2195  # Optional: Spezifisches Modul hervorheben
-EXCEL_PATH = Path("Oct_Nov_KIC-course completion rate.xlsx")
+COURSE_ID = 56  # Kurs, der Modul 2195 enthält (Introduction to Machine Learning Part 1)
+TARGET_MODULE_ID = 5830  # Das Modul mit Quiz-Fragen zum Testen
 OUTPUT_DIR = Path(__file__).parent / "document_outputs"
 
 
@@ -140,20 +139,15 @@ def save_document_to_file(doc, filename: str, output_dir: Path):
 
 def main():
     logger.info("=" * 80)
-    logger.info("DOCUMENT EXTRACTION TEST")
+    logger.info("DOCUMENT EXTRACTION TEST - MODUL 2195")
     logger.info("=" * 80)
     
     # Setup
     moodle = setup_production_moodle()
     
-    # Finde Kurs
-    course_id = find_course_in_excel(COURSE_NAME_HINT, EXCEL_PATH)
-    if not course_id:
-        logger.error("❌ Kurs konnte nicht gefunden werden!")
-        return
-    
     # Lade Kurs komplett
-    course = load_course_with_documents(moodle, course_id)
+    logger.info(f"\n📚 Lade Kurs {COURSE_ID}...")
+    course = load_course_with_documents(moodle, COURSE_ID)
     if not course:
         logger.error("❌ Kurs konnte nicht geladen werden!")
         return
@@ -171,7 +165,7 @@ def main():
     course_doc = documents[0]
     save_document_to_file(
         course_doc,
-        f"course_{course_id}_overview.txt",
+        f"course_{COURSE_ID}_overview.txt",
         OUTPUT_DIR
     )
     

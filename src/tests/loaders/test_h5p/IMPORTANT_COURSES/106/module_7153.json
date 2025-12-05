@@ -1,0 +1,161 @@
+{
+  "id": 7153,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=7153",
+  "name": "Lektion 5: ML in Aktion - anhand von Beispielen aus der Anwendung",
+  "instance": 1911,
+  "contextid": 18068,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Abbildung_1.5.1_U_berblick_Modul_1_Sektion_5.jpg",
+      "filepath": "/",
+      "filesize": 579162,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18068/mod_page/content/27/Abbildung_1.5.1_U_berblick_Modul_1_Sektion_5.jpg?forcedownload=1",
+      "timecreated": 1705334755,
+      "timemodified": 1705334755,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "h5p_1-6.h5p",
+      "filepath": "/",
+      "filesize": 881616,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18068/mod_page/content/27/h5p_1-6.h5p?forcedownload=1",
+      "timecreated": 1705334755,
+      "timemodified": 1705334755,
+      "sortorder": 0,
+      "mimetype": "application/zip.h5p",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "h5p_1-5.h5p",
+      "filepath": "/",
+      "filesize": 6493068,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18068/mod_page/content/27/h5p_1-5.h5p?forcedownload=1",
+      "timecreated": 1705334755,
+      "timemodified": 1705334755,
+      "sortorder": 0,
+      "mimetype": "application/zip.h5p",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "h5p_1-4.h5p",
+      "filepath": "/",
+      "filesize": 5496717,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18068/mod_page/content/27/h5p_1-4.h5p?forcedownload=1",
+      "timecreated": 1705334755,
+      "timemodified": 1705334755,
+      "sortorder": 0,
+      "mimetype": "application/zip.h5p",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "ML kann uns helfen neue Lösungen für _alte_ Probleme zu finden (Originalillustration von KI Campus).jpg",
+      "filepath": "/",
+      "filesize": 389105,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18068/mod_page/content/27/ML%20kann%20uns%20helfen%20neue%20L%C3%B6sungen%20f%C3%BCr%20_alte_%20Probleme%20zu%20finden%20%28Originalillustration%20von%20KI%20Campus%29.jpg?forcedownload=1",
+      "timecreated": 1724785028,
+      "timemodified": 1724785043,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Group 78.png",
+      "filepath": "/",
+      "filesize": 182490,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18068/mod_page/content/27/Group%2078.png?forcedownload=1",
+      "timecreated": 1726520012,
+      "timemodified": 1726520024,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18068/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1761569142,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 7,
+    "filessize": 14022158,
+    "lastmodified": 1761569142,
+    "mimetypes": [
+      "image/jpeg",
+      "application/zip.h5p",
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

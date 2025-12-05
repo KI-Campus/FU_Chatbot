@@ -1,0 +1,117 @@
+{
+  "id": 7143,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=7143",
+  "name": "Lektion 1: Warum ist KI relevant?",
+  "instance": 1903,
+  "contextid": 18058,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Abbildung_1.1.1_U_berblick_Modul_1_Sektion_1.jpg",
+      "filepath": "/",
+      "filesize": 178596,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18058/mod_page/content/9/Abbildung_1.1.1_U_berblick_Modul_1_Sektion_1.jpg?forcedownload=1",
+      "timecreated": 1705334729,
+      "timemodified": 1705334729,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "course-presentation-30.h5p",
+      "filepath": "/",
+      "filesize": 4665184,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18058/mod_page/content/9/course-presentation-30.h5p?forcedownload=1",
+      "timecreated": 1705334729,
+      "timemodified": 1705334729,
+      "sortorder": 0,
+      "mimetype": "application/zip.h5p",
+      "isexternalfile": true,
+      "repositorytype": "contentbank",
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Group 72.png",
+      "filepath": "/",
+      "filesize": 66603,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18058/mod_page/content/9/Group%2072.png?forcedownload=1",
+      "timecreated": 1726518762,
+      "timemodified": 1726518785,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18058/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1758178782,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 4,
+    "filessize": 4910383,
+    "lastmodified": 1758178782,
+    "mimetypes": [
+      "image/jpeg",
+      "application/zip.h5p",
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

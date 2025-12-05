@@ -1,0 +1,85 @@
+{
+  "id": 19274,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=19274",
+  "name": "2.3. Zusammenfassung: menschliches und maschinelles Lernen",
+  "instance": 5126,
+  "contextid": 40164,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "drag-and-drop-9014.h5p",
+      "filepath": "/",
+      "filesize": 1323312,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40164/mod_page/content/10/drag-and-drop-9014.h5p?forcedownload=1",
+      "timecreated": 1724703532,
+      "timemodified": 1724702863,
+      "sortorder": 0,
+      "mimetype": "application/zip.h5p",
+      "isexternalfile": true,
+      "repositorytype": "contentbank",
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/40164/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1727079253,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 2,
+    "filessize": 1323312,
+    "lastmodified": 1727079253,
+    "mimetypes": [
+      "application/zip.h5p"
+    ],
+    "repositorytype": "contentbank"
+  }
+}

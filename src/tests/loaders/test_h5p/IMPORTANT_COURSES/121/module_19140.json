@@ -1,0 +1,76 @@
+{
+  "id": 19140,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=19140",
+  "name": "Ähnliche Kurse",
+  "instance": 5107,
+  "contextid": 39889,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 1,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": false,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "LE1_Kurskachel.png",
+      "filepath": "/",
+      "filesize": 829317,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/39889/mod_page/content/5/LE1_Kurskachel.png?forcedownload=1",
+      "timecreated": 1721815189,
+      "timemodified": 1724309826,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 761,
+      "author": "Nicola Marsden",
+      "license": "cc-nc-sa-4.0"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/39889/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1724847380,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 2,
+    "filessize": 829317,
+    "lastmodified": 1724847380,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

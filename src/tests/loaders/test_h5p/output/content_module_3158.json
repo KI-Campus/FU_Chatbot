@@ -1,0 +1,292 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Session 6: Losses &amp; Risk Minimization P1",
+        "hideStartTitle": true
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "en"
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://vimeo.com/867856028?share=copy",
+          "mime": "video/unknown",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 10.907950440210849,
+          "y": 0,
+          "width": 30.981806915706574,
+          "height": 22.50815181521752,
+          "duration": {
+            "from": 143.55,
+            "to": 143.55
+          },
+          "libraryTitle": "True/False Question",
+          "action": {
+            "library": "H5P.TrueFalse 1.8",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "correct": "true",
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false
+              },
+              "l10n": {
+                "trueText": "True",
+                "falseText": "False",
+                "score": "You got @score of @total points",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgain": "Retry",
+                "wrongAnswerMessage": "Wrong answer",
+                "correctAnswerMessage": "Correct answer",
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>The loss function quantifies the \"quality\" of the prediction of a single observation.</p>\n"
+            },
+            "subContentId": "d3a8e07a-3b28-4fd3-ab8c-e4d9b43c3d55",
+            "metadata": {
+              "contentType": "True/False Question",
+              "license": "U",
+              "title": "Loss Function"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        },
+        {
+          "x": 11.998859134425869,
+          "y": 0,
+          "width": 30.545443438020566,
+          "height": 22.50815181521752,
+          "duration": {
+            "from": 178.666,
+            "to": 178.666
+          },
+          "libraryTitle": "True/False Question",
+          "action": {
+            "library": "H5P.TrueFalse 1.8",
+            "params": {
+              "media": {
+                "disableImageZooming": false
+              },
+              "correct": "true",
+              "behaviour": {
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "enableCheckButton": true,
+                "confirmCheckDialog": false,
+                "confirmRetryDialog": false,
+                "autoCheck": false
+              },
+              "l10n": {
+                "trueText": "True",
+                "falseText": "False",
+                "score": "You got @score of @total points",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "showSolutionButton": "Show solution",
+                "tryAgain": "Retry",
+                "wrongAnswerMessage": "Wrong answer",
+                "correctAnswerMessage": "Correct answer",
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+              },
+              "confirmCheck": {
+                "header": "Finish ?",
+                "body": "Are you sure you wish to finish ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Finish"
+              },
+              "confirmRetry": {
+                "header": "Retry ?",
+                "body": "Are you sure you wish to retry ?",
+                "cancelLabel": "Cancel",
+                "confirmLabel": "Confirm"
+              },
+              "question": "<p>The absolute loss and the squared loss are commonly used loss functions in regression.</p>\n"
+            },
+            "subContentId": "93db9894-5072-49a6-9f21-b2af29861bea",
+            "metadata": {
+              "contentType": "True/False Question",
+              "license": "U",
+              "title": "Absolute Loss and Squared Loss"
+            }
+          },
+          "pause": true,
+          "displayType": "poster",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": ""
+        }
+      ],
+      "endscreens": [
+        {
+          "time": 398,
+          "label": "6:38 Submit screen"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "<p>Now you are at the end of this video, recall what you have just learned and select the <strong>false statement</strong> below about loss and risk in machine learning.&nbsp;</p>\n",
+          "summaries": [
+            {
+              "subContentId": "725edbbc-d774-449f-b7de-ff53ee6a010e",
+              "tip": "",
+              "summary": [
+                "<p>Loss and risk are always equal.</p>\n",
+                "<p>Loss is a measure of how well a machine learning model performs on a single training example.</p>\n",
+                "<p>Risk is a measure of how well a machine learning model is expected to perform on new data that it has never seen before.</p>\n",
+                "<p>The goal of machine learning is to minimize loss and risk.</p>\n"
+              ]
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "45c74b83-79bb-4166-9164-7d47ee37215c",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Summary Question"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": false,
+    "preventSkippingMode": "none",
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute, currently unmuted",
+    "unmute": "Unmute, currently muted",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "more": "More player options",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "navForwardDisabled": "Navigating forward is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "videoProgressBar": "Video progress",
+    "howToCreateInteractions": "Play the video to start creating interactions"
+  }
+}

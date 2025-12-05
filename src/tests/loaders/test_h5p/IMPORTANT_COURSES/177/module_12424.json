@@ -1,0 +1,145 @@
+{
+  "id": 12424,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=12424",
+  "name": "💪 Rasa installieren",
+  "instance": 3424,
+  "contextid": 26531,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Eingabeaufforderung.gif",
+      "filepath": "/",
+      "filesize": 29689,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/26531/mod_page/content/49/Eingabeaufforderung.gif?forcedownload=1",
+      "timecreated": 1711365065,
+      "timemodified": 1711365291,
+      "sortorder": 0,
+      "mimetype": "image/gif",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Screenshot 2024-03-15 130343.png",
+      "filepath": "/",
+      "filesize": 86296,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/26531/mod_page/content/49/Screenshot%202024-03-15%20130343.png?forcedownload=1",
+      "timecreated": 1711365226,
+      "timemodified": 1711365291,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Screenshot 2024-03-25 121328.png",
+      "filepath": "/",
+      "filesize": 65864,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/26531/mod_page/content/49/Screenshot%202024-03-25%20121328.png?forcedownload=1",
+      "timecreated": 1711365239,
+      "timemodified": 1711365291,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "grafik.png",
+      "filepath": "/",
+      "filesize": 29660,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/26531/mod_page/content/49/grafik.png?forcedownload=1",
+      "timecreated": 1732258624,
+      "timemodified": 1732259764,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "grafik (1).png",
+      "filepath": "/",
+      "filesize": 29243,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/26531/mod_page/content/49/grafik%20%281%29.png?forcedownload=1",
+      "timecreated": 1732259017,
+      "timemodified": 1732259764,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/26531/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1736938971,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 6,
+    "filessize": 240752,
+    "lastmodified": 1736938971,
+    "mimetypes": [
+      "image/gif",
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

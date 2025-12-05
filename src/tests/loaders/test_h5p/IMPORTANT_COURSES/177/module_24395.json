@@ -1,0 +1,114 @@
+{
+  "id": 24395,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=24395",
+  "name": "⚙️ Das zentrale Projekt: der Chatbot",
+  "instance": 6708,
+  "contextid": 54572,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "CAI-Architektur.png",
+      "filepath": "/",
+      "filesize": 72863,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/54572/mod_page/content/34/CAI-Architektur.png?forcedownload=1",
+      "timecreated": 1734114298,
+      "timemodified": 1734114298,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "CAI-Architektur-1.png",
+      "filepath": "/",
+      "filesize": 72863,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/54572/mod_page/content/34/CAI-Architektur-1.png?forcedownload=1",
+      "timecreated": 1734114298,
+      "timemodified": 1734114298,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Modulkachel.png",
+      "filepath": "/",
+      "filesize": 566202,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/54572/mod_page/content/34/Modulkachel.png?forcedownload=1",
+      "timecreated": 1734114298,
+      "timemodified": 1734114298,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": "Irene Weber",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/54572/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1737922207,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 4,
+    "filessize": 711928,
+    "lastmodified": 1737922207,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

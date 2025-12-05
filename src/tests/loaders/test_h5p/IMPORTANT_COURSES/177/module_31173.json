@@ -1,0 +1,45 @@
+{
+  "id": 31173,
+  "url": "https://moodle.ki-campus.org/mod/questionnaire/view.php?id=31173",
+  "name": "Umfrage zum Kursende",
+  "instance": 1176,
+  "contextid": 103965,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/questionnaire/1764058974/monologo?filtericon=1",
+  "modname": "questionnaire",
+  "purpose": "communication",
+  "branded": false,
+  "modplural": "Befragungen",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "{\"customcompletionrules\":{\"completionsubmit\":\"1\"}}",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionsubmit",
+        "rulevalue": {
+          "status": 0,
+          "description": "Teilnehmer/innen müssen die Befragung abgeben, um abzuschließen."
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0
+}

@@ -1,0 +1,115 @@
+{
+  "id": 7258,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=7258",
+  "name": "Lektion 3: Wie kannst du dich auf die möglichen Veränderungen mit KI vorbereiten?",
+  "instance": 1988,
+  "contextid": 18173,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "4.3.0._U_berblick_Modul_4_copy.jpg",
+      "filepath": "/",
+      "filesize": 635512,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18173/mod_page/content/5/4.3.0._U_berblick_Modul_4_copy.jpg?forcedownload=1",
+      "timecreated": 1705334759,
+      "timemodified": 1705334759,
+      "sortorder": 0,
+      "mimetype": "image/jpeg",
+      "isexternalfile": false,
+      "userid": 59,
+      "author": "Friederike Meier",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Mod4-3.png",
+      "filepath": "/",
+      "filesize": 270078,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18173/mod_page/content/5/Mod4-3.png?forcedownload=1",
+      "timecreated": 1726849316,
+      "timemodified": 1726849344,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Group 112 (1).png",
+      "filepath": "/",
+      "filesize": 270216,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18173/mod_page/content/5/Group%20112%20%281%29.png?forcedownload=1",
+      "timecreated": 1741012721,
+      "timemodified": 1741012738,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/18173/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1761037180,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 4,
+    "filessize": 1175806,
+    "lastmodified": 1761037180,
+    "mimetypes": [
+      "image/jpeg",
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

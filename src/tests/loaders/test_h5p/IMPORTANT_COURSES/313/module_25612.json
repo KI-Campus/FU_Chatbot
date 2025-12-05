@@ -1,0 +1,52 @@
+{
+  "id": 25612,
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=25612",
+  "name": "3.4.1. Anwendungsbeispiel",
+  "instance": 5630,
+  "contextid": 61531,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/h5pactivity/1764058974/monologo?filtericon=1",
+  "modname": "h5pactivity",
+  "purpose": "interactivecontent",
+  "branded": true,
+  "modplural": "H5P",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      },
+      {
+        "rulename": "completionusegrade",
+        "rulevalue": {
+          "status": 0,
+          "description": "Receive a grade"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0
+}

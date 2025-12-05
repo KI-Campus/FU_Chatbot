@@ -1,0 +1,99 @@
+{
+  "id": 1588,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=1588",
+  "name": "Vertiefung zu Entscheidungsbäumen",
+  "instance": 483,
+  "contextid": 5070,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Entscheidungsbaum.png",
+      "filepath": "/",
+      "filesize": 94705,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/5070/mod_page/content/9/Entscheidungsbaum.png?forcedownload=1",
+      "timecreated": 1690554670,
+      "timemodified": 1690554670,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 46,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Entscheidungsbaum (1).png",
+      "filepath": "/",
+      "filesize": 94705,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/5070/mod_page/content/9/Entscheidungsbaum%20%281%29.png?forcedownload=1",
+      "timecreated": 1693482898,
+      "timemodified": 1693482908,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": "Susann Ludorf",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/5070/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1745490540,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 3,
+    "filessize": 189410,
+    "lastmodified": 1745490540,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

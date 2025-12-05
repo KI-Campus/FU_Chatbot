@@ -1,0 +1,159 @@
+{
+  "id": 21946,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=21946",
+  "name": "💡 Node-RED verstehen",
+  "instance": 5840,
+  "contextid": 47529,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Betriebssystemauswahl.png",
+      "filepath": "/",
+      "filesize": 36547,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47529/mod_page/content/16/Betriebssystemauswahl.png?forcedownload=1",
+      "timecreated": 1729957668,
+      "timemodified": 1729957668,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Download_nodejs.png",
+      "filepath": "/",
+      "filesize": 14299,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47529/mod_page/content/16/Download_nodejs.png?forcedownload=1",
+      "timecreated": 1729957668,
+      "timemodified": 1729957668,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Einf_hrungNodeRED.png",
+      "filepath": "/",
+      "filesize": 54262,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47529/mod_page/content/16/Einf_hrungNodeRED.png?forcedownload=1",
+      "timecreated": 1729957668,
+      "timemodified": 1729957668,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "2021-11-10_10_40_26-Window.png",
+      "filepath": "/",
+      "filesize": 38678,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47529/mod_page/content/16/2021-11-10_10_40_26-Window.png?forcedownload=1",
+      "timecreated": 1729957668,
+      "timemodified": 1729957668,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "grafik.png",
+      "filepath": "/",
+      "filesize": 109248,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47529/mod_page/content/16/grafik.png?forcedownload=1",
+      "timecreated": 1734632589,
+      "timemodified": 1734633122,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "grafik (1).png",
+      "filepath": "/",
+      "filesize": 108329,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47529/mod_page/content/16/grafik%20%281%29.png?forcedownload=1",
+      "timecreated": 1734633708,
+      "timemodified": 1734633766,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47529/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1739293409,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 7,
+    "filessize": 361363,
+    "lastmodified": 1739293409,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}

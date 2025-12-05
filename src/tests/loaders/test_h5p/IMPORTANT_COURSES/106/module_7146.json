@@ -1,0 +1,45 @@
+{
+  "id": 7146,
+  "url": "https://moodle.ki-campus.org/mod/hvp/view.php?id=7146",
+  "name": "1.3. Selbsttest",
+  "instance": 114,
+  "contextid": 18061,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/hvp/1764058974/monologo?filtericon=1",
+  "modname": "hvp",
+  "purpose": "other",
+  "branded": false,
+  "modplural": "Interactive Content",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0
+}

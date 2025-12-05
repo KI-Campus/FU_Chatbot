@@ -1,0 +1,47 @@
+{
+  "id": 13696,
+  "url": "https://moodle.ki-campus.org/mod/forum/view.php?id=13696",
+  "name": "KI für Alle 1: Forum",
+  "instance": 321,
+  "contextid": 29566,
+  "description": "<div class=\"no-overflow\"><p dir=\"ltr\" style=\"text-align: left;\">In diesem Forum ist Raum für alle deine Rückfragen, Kommentare oder dein Feedback rund um den Kurs und das Kursmaterial. Um uns und dir die Orientierung zu erleichtern, gibt es ein eigenes Thema für jede Kursseite. <span role=\"mark\" aria-details=\"comment-thread-309090092662519442619931\">Du kannst das Forum beispielsweise durchsuchen, um das passende Thema zu finden, indem du nach dem Namen der jeweiligen Seite suchst, zu der du uns etwas mitteilen möchtest.</span></p>\r\n<div class=\"attostylesbox attostylesbox-outline attostylesbox-outline-green link-in-box\" style=\"overflow: hidden;\"><img class=\"img-fluid atto_image_button_middle\" style=\"float: left;\" role=\"presentation\" src=\"https://moodle.ki-campus.org/pluginfile.php/29566/mod_forum/intro/ai4all_Axl_300pi_solo.png\" alt=\"\" width=\"100\" height=\"73\"> Noch einfacher ist es allerdings, wenn du einfach auf der jeweiligen Kursseite auf den Button <strong>Zum Forum für Feedback und Rückfragen</strong> klickst. So wirst du direkt zum passenden Thema weitergeleitet.</div>\r\n<p></p>\r\n<p>Fragen und Informationen zu technischen Angelegenheiten findest du hier: <a href=\"https://moodle.ki-campus.org/mod/forum/discuss.php?d=693#p2010\" target=\"_blank\" rel=\"noopener\">Alles rund um Technik</a></p></div>",
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/forum/1764058974/monologo?filtericon=1",
+  "modname": "forum",
+  "purpose": "collaboration",
+  "branded": false,
+  "modplural": "Foren",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "activitybadge": [],
+  "customdata": "{\"customcompletionrules\":{\"completiondiscussions\":\"0\",\"completionreplies\":\"0\",\"completionposts\":\"0\"},\"trackingtype\":\"1\"}",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0
+}

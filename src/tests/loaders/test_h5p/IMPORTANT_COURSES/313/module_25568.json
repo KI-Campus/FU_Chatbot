@@ -1,0 +1,161 @@
+{
+  "id": 25568,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=25568",
+  "name": "3.1.1. Szenario",
+  "instance": 7331,
+  "contextid": 60722,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Pages",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "View"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Lea_FB_Front_speak_darkBG (1).png",
+      "filepath": "/",
+      "filesize": 74356,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/60722/mod_page/content/8/Lea_FB_Front_speak_darkBG%20%281%29.png?forcedownload=1",
+      "timecreated": 1738740268,
+      "timemodified": 1738740647,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Ravi_FB_Front_darkBG.png",
+      "filepath": "/",
+      "filesize": 66582,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/60722/mod_page/content/8/Ravi_FB_Front_darkBG.png?forcedownload=1",
+      "timecreated": 1738740618,
+      "timemodified": 1738740647,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Ravi_FB_Front_darkBG (1).png",
+      "filepath": "/",
+      "filesize": 66582,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/60722/mod_page/content/8/Ravi_FB_Front_darkBG%20%281%29.png?forcedownload=1",
+      "timecreated": 1738740794,
+      "timemodified": 1738740812,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "column-12794.h5p",
+      "filepath": "/",
+      "filesize": 826304,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/60722/mod_page/content/8/column-12794.h5p?forcedownload=1",
+      "timecreated": 1738831020,
+      "timemodified": 1738741883,
+      "sortorder": 0,
+      "mimetype": "application/zip.h5p",
+      "isexternalfile": true,
+      "repositorytype": "contentbank",
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "02KCRO24_i2_2_ChatProfile_Lea_w_r_sg 1.png",
+      "filepath": "/",
+      "filesize": 110543,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/60722/mod_page/content/8/02KCRO24_i2_2_ChatProfile_Lea_w_r_sg%201.png?forcedownload=1",
+      "timecreated": 1739124998,
+      "timemodified": 1739125078,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "02KCRO24_i3_ChatProfile_Ravi_w_r_sg 1.png",
+      "filepath": "/",
+      "filesize": 106412,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/60722/mod_page/content/8/02KCRO24_i3_ChatProfile_Ravi_w_r_sg%201.png?forcedownload=1",
+      "timecreated": 1739125043,
+      "timemodified": 1739125078,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/60722/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1739370466,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 7,
+    "filessize": 1250779,
+    "lastmodified": 1739370466,
+    "mimetypes": [
+      "image/png",
+      "application/zip.h5p"
+    ],
+    "repositorytype": ""
+  }
+}

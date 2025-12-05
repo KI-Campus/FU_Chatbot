@@ -1,0 +1,52 @@
+{
+  "id": 26197,
+  "url": "https://moodle.ki-campus.org/mod/resource/view.php?id=26197",
+  "name": "Video-Skripte",
+  "instance": 319,
+  "contextid": 64493,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 0,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/core/1764058974/f/pdf?filtericon=1",
+  "modname": "resource",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Files",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "activitybadge": [],
+  "customdata": "{\"filtericon\":true,\"displayoptions\":\"a:1:{s:10:\\\"printintro\\\";i:1;}\",\"display\":5}",
+  "noviewlink": false,
+  "completion": 0,
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Video-Skripte - EU AI Act Essentials.pdf",
+      "filepath": "/",
+      "filesize": 147076,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/64493/mod_resource/content/5/Video-Skripte%20-%20EU%20AI%20Act%20Essentials.pdf?forcedownload=1",
+      "timecreated": 1741177455,
+      "timemodified": 1741177502,
+      "sortorder": 1,
+      "mimetype": "application/pdf",
+      "isexternalfile": false,
+      "userid": 12129,
+      "author": "Brigitta Buzinszki",
+      "license": "unknown"
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 1,
+    "filessize": 147076,
+    "lastmodified": 1741177502,
+    "mimetypes": [
+      "application/pdf"
+    ],
+    "repositorytype": ""
+  }
+}

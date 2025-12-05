@@ -1,0 +1,144 @@
+{
+  "id": 6248,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=6248",
+  "name": "Was du lernen wirst",
+  "instance": 1687,
+  "contextid": 16013,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Python-Befehle.pdf",
+      "filepath": "/",
+      "filesize": 172665,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/16013/mod_page/content/31/Python-Befehle.pdf?forcedownload=1",
+      "timecreated": 1738834367,
+      "timemodified": 1738834372,
+      "sortorder": 0,
+      "mimetype": "application/pdf",
+      "isexternalfile": false,
+      "userid": 6525,
+      "author": "Ludmila Himmelspach",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Lerninhalte_02.pdf",
+      "filepath": "/",
+      "filesize": 28379,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/16013/mod_page/content/31/Lerninhalte_02.pdf?forcedownload=1",
+      "timecreated": 1739953091,
+      "timemodified": 1739953098,
+      "sortorder": 0,
+      "mimetype": "application/pdf",
+      "isexternalfile": false,
+      "userid": 1920,
+      "author": "Jacqueline Klusik-Eckert",
+      "license": "cc-4.0"
+    },
+    {
+      "type": "file",
+      "filename": "KI1_Lerninhalte_2025.pdf",
+      "filepath": "/",
+      "filesize": 32935,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/16013/mod_page/content/31/KI1_Lerninhalte_2025.pdf?forcedownload=1",
+      "timecreated": 1742978530,
+      "timemodified": 1742978534,
+      "sortorder": 0,
+      "mimetype": "application/pdf",
+      "isexternalfile": false,
+      "userid": 2836,
+      "author": "Ann-Kathrin Selker",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "KI1_Masterskript_2025.pdf",
+      "filepath": "/",
+      "filesize": 79532269,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/16013/mod_page/content/31/KI1_Masterskript_2025.pdf?forcedownload=1",
+      "timecreated": 1742988709,
+      "timemodified": 1743420702,
+      "sortorder": 0,
+      "mimetype": "application/pdf",
+      "isexternalfile": false,
+      "userid": 2836,
+      "author": "Ann-Kathrin Selker",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "KI1_Python-Befehle_2025.pdf",
+      "filepath": "/",
+      "filesize": 176093,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/16013/mod_page/content/31/KI1_Python-Befehle_2025.pdf?forcedownload=1",
+      "timecreated": 1742988743,
+      "timemodified": 1742988783,
+      "sortorder": 0,
+      "mimetype": "application/pdf",
+      "isexternalfile": false,
+      "userid": 2836,
+      "author": "Ann-Kathrin Selker",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/16013/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1758788848,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 6,
+    "filessize": 79942341,
+    "lastmodified": 1758788848,
+    "mimetypes": [
+      "application/pdf"
+    ],
+    "repositorytype": ""
+  }
+}

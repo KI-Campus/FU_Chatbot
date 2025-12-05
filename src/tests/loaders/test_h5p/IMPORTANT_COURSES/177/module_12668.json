@@ -1,0 +1,160 @@
+{
+  "id": 12668,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=12668",
+  "name": "👍 Den Flow mit einem switch Node verbessern",
+  "instance": 3513,
+  "contextid": 27437,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "3000_FlowMitSwitch.png",
+      "filepath": "/",
+      "filesize": 14293,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27437/mod_page/content/17/3000_FlowMitSwitch.png?forcedownload=1",
+      "timecreated": 1712570047,
+      "timemodified": 1712570554,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "templateNodeMeinflow_m.png",
+      "filepath": "/",
+      "filesize": 19440,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27437/mod_page/content/17/templateNodeMeinflow_m.png?forcedownload=1",
+      "timecreated": 1712570067,
+      "timemodified": 1712570554,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "KonfigSwitchNode.gif",
+      "filepath": "/",
+      "filesize": 333650,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27437/mod_page/content/17/KonfigSwitchNode.gif?forcedownload=1",
+      "timecreated": 1712570090,
+      "timemodified": 1712570554,
+      "sortorder": 0,
+      "mimetype": "image/gif",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "3000_switchNodeKonfig.png",
+      "filepath": "/",
+      "filesize": 18233,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27437/mod_page/content/17/3000_switchNodeKonfig.png?forcedownload=1",
+      "timecreated": 1712570109,
+      "timemodified": 1712570554,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 171,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "switch-node.gif",
+      "filepath": "/",
+      "filesize": 897285,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27437/mod_page/content/17/switch-node.gif?forcedownload=1",
+      "timecreated": 1732457285,
+      "timemodified": 1732457494,
+      "sortorder": 0,
+      "mimetype": "image/gif",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": "Irene Weber",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "grafik.png",
+      "filepath": "/",
+      "filesize": 16857,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27437/mod_page/content/17/grafik.png?forcedownload=1",
+      "timecreated": 1734647641,
+      "timemodified": 1734647656,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 1274,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/27437/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1739957968,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 7,
+    "filessize": 1299758,
+    "lastmodified": 1739957968,
+    "mimetypes": [
+      "image/png",
+      "image/gif"
+    ],
+    "repositorytype": ""
+  }
+}

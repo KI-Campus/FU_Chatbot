@@ -1,0 +1,129 @@
+{
+  "id": 23819,
+  "url": "https://moodle.ki-campus.org/mod/page/view.php?id=23819",
+  "name": "Autor:innen",
+  "instance": 6466,
+  "contextid": 52557,
+  "visible": 1,
+  "uservisible": true,
+  "visibleoncoursepage": 1,
+  "modicon": "https://moodle.ki-campus.org/theme/image.php/boost_union/page/1764058974/monologo?filtericon=1",
+  "modname": "page",
+  "purpose": "content",
+  "branded": false,
+  "modplural": "Textseiten",
+  "availability": null,
+  "indent": 0,
+  "onclick": "",
+  "afterlink": null,
+  "customdata": "\"\"",
+  "noviewlink": false,
+  "completion": 2,
+  "completiondata": {
+    "state": 0,
+    "timecompleted": 0,
+    "overrideby": null,
+    "valueused": false,
+    "hascompletion": true,
+    "isautomatic": true,
+    "istrackeduser": false,
+    "uservisible": true,
+    "details": [
+      {
+        "rulename": "completionview",
+        "rulevalue": {
+          "status": 0,
+          "description": "Anzeigen"
+        }
+      }
+    ],
+    "isoverallcomplete": false
+  },
+  "downloadcontent": 1,
+  "dates": [],
+  "groupmode": 0,
+  "contents": [
+    {
+      "type": "file",
+      "filename": "Autor_innen KI-Campus.png",
+      "filepath": "/",
+      "filesize": 265938,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/52557/mod_page/content/29/Autor_innen%20KI-Campus.png?forcedownload=1",
+      "timecreated": 1732985218,
+      "timemodified": 1732985420,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 14079,
+      "author": "Bianca Violet",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "KI-Campus_Authors.png",
+      "filepath": "/",
+      "filesize": 940803,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/52557/mod_page/content/29/KI-Campus_Authors.png?forcedownload=1",
+      "timecreated": 1732986451,
+      "timemodified": 1732986463,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 14080,
+      "author": "Juliane Sperling",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "KI_Campus_Authors.png",
+      "filepath": "/",
+      "filesize": 448193,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/52557/mod_page/content/29/KI_Campus_Authors.png?forcedownload=1",
+      "timecreated": 1732986552,
+      "timemodified": 1733229162,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 14080,
+      "author": "Juliane Sperling",
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "Folie Autor_innen KI-Campus.png",
+      "filepath": "/",
+      "filesize": 374233,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/52557/mod_page/content/29/Folie%20Autor_innen%20KI-Campus.png?forcedownload=1",
+      "timecreated": 1764164611,
+      "timemodified": 1764164676,
+      "sortorder": 0,
+      "mimetype": "image/png",
+      "isexternalfile": false,
+      "userid": 14118,
+      "author": null,
+      "license": "unknown"
+    },
+    {
+      "type": "file",
+      "filename": "index.html",
+      "filepath": "/",
+      "filesize": 0,
+      "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/52557/mod_page/content/index.html?forcedownload=1",
+      "timecreated": null,
+      "timemodified": 1764164676,
+      "sortorder": 1,
+      "userid": null,
+      "author": null,
+      "license": null
+    }
+  ],
+  "contentsinfo": {
+    "filescount": 5,
+    "filessize": 2029167,
+    "lastmodified": 1764164676,
+    "mimetypes": [
+      "image/png"
+    ],
+    "repositorytype": ""
+  }
+}
