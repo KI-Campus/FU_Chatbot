@@ -27,6 +27,7 @@ logger = logging.getLogger(__name__)
 COURSE_ID = 56  # Kurs, der Modul 2195 enthält (Introduction to Machine Learning Part 1)
 TARGET_MODULE_ID = 5830  # Das Modul mit Quiz-Fragen zum Testen
 OUTPUT_DIR = Path(__file__).parent / "document_outputs"
+PROCESS_ONLY_TARGET_MODULE = True  # Wenn True: Nur TARGET_MODULE_ID verarbeiten, sonst alle Module
 
 
 def setup_production_moodle():
@@ -110,7 +111,20 @@ def load_course_with_documents(moodle: Moodle, course_id: int):
     
     # Extrahiere Inhalte aus allen Topics (wie in der echten Pipeline)
     for topic in course.topics:
-        moodle.get_module_contents(topic, h5p_activities)
+        # Optional: Nur TARGET_MODULE_ID verarbeiten
+        if PROCESS_ONLY_TARGET_MODULE:
+            # Filtere Module im Topic
+            original_modules = topic.modules
+            topic.modules = [m for m in original_modules if m.id == TARGET_MODULE_ID]
+            
+            if len(topic.modules) > 0:
+                logger.info(f"  📌 Verarbeite nur Modul {TARGET_MODULE_ID} aus Topic '{topic.name}'")
+                moodle.get_module_contents(topic, h5p_activities)
+            
+            # Stelle Original-Liste wieder her (für spätere Nutzung)
+            topic.modules = original_modules
+        else:
+            moodle.get_module_contents(topic, h5p_activities)
     
     logger.info(f"  ✓ Alle Module verarbeitet\n")
     return course

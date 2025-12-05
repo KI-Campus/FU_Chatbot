@@ -18,16 +18,8 @@ from src.loaders.failed_transcripts import (
     save_failed_transcripts_to_excel,
 )
 from src.loaders.models.coursetopic import CourseTopic
-from src.loaders.models.hp5activities import (
-    H5PActivities, 
-    InteractiveVideo, 
-    QuizQuestion, 
-    TrueFalseQuestion,
-    FillInBlanksQuestion,
-    DragDropQuestion,
-    TextBanner
-)
-from src.loaders.models.module import ModuleTypes
+from src.loaders.models.hp5activities import H5PActivities
+from src.loaders.models.module import ModuleTypes, H5P_HANDLERS
 from src.loaders.models.moodlecourse import MoodleCourse
 from src.loaders.models.videotime import Video, VideoPlatforms
 from src.loaders.vimeo import Vimeo
@@ -38,7 +30,7 @@ class Moodle:
     """class for Moodle API clients
     base_url: base url of moodle instance
     token: token for moodle api"""
-
+    
     def __init__(self) -> None:
         self.logger = logging.getLogger("loader")
         self.base_url = env.DATA_SOURCE_MOODLE_URL
@@ -149,7 +141,7 @@ class Moodle:
                 case ModuleTypes.H5P:
                     for activity in h5p_activities:
                         if activity.coursemodule == module.id:
-                            self.extract_h5p(module, activity)
+                            err_message = self.extract_h5p(module, activity)
             if err_message:
                 failed_modules.append(FailedModule(modul=module, err_message=err_message))
 
@@ -231,214 +223,72 @@ class Moodle:
     # the link to the transcript of that video. Then we download that transcript and add it to the
     # module.transcripts list.
     def extract_h5p(self, module, activity):
-        err_message = None
-
+        """Extrahiert H5P-Inhalte und routet zu entsprechender Klasse."""
         h5pfile_call = APICaller(url=activity.fileurl, params=self.download_params)
+        
         with tempfile.TemporaryDirectory() as tmp_dir:
+            # H5P-Package herunterladen
             local_filename = h5pfile_call.getFile(activity.filename, tmp_dir)
+            
+            # h5p.json für library-Feld extrahieren
             with zipfile.ZipFile(local_filename, "r") as zip_ref:
+                zip_ref.extract("h5p.json", tmp_dir)
                 zip_ref.extract("content/content.json", tmp_dir)
+            
+            # Lade h5p.json für library-Informationen
+            h5p_json = f"{tmp_dir}/h5p.json"
+            with open(h5p_json, "r") as json_file:
+                h5p_data = json.load(json_file)
+            
+            # Lade content.json für eigentliche Inhalte
             content_json = f"{tmp_dir}/content/content.json"
             with open(content_json, "r") as json_file:
                 content = json.load(json_file)
-            if "interactiveVideo" in content.keys():
-                videourl = content["interactiveVideo"]["video"]["files"][0]["path"]
-                video = None
-                try:
-                    video = Video(id=0, vimeo_url=videourl)
-                except ValidationError:
-                    # No link to external Video-Service
-                    pass
-                
-                if not video:
-                    # Kein Vimeo-Video gefunden
-                    return "Kein Vimeo-Video im H5P gefunden"
-                
-                vimeo = Vimeo()
-                texttrack = None
-                fallback_transcript_path = None
-                
-                # Try to locate the fallback transcript file in H5P
-                try:
-                    fallback_transcript_file = f"content/{content['interactiveVideo']['video']['textTracks']['videoTrack'][0]['track']['path']}"
-                    with zipfile.ZipFile(local_filename, "r") as zip_ref:
-                        zip_ref.extract(fallback_transcript_file, tmp_dir)
-                    fallback_transcript_path = f"{tmp_dir}/{fallback_transcript_file}"
-                except (KeyError, IndexError):
-                    # Kein VTT-File im H5P, versuche trotzdem Vimeo
-                    fallback_transcript_path = None
-                
-                # Versuche Transkript von Vimeo zu holen (mit oder ohne Fallback)
-                texttrack, err_message = vimeo.get_transcript(
-                    video.video_id, fallback_transcript=fallback_transcript_path
-                )
-
-                module.transcripts.append(texttrack)
-                
-                # === INTERAKTIONEN EXTRAHIEREN ===
-                interactions = []
-                
-                # Prüfe, ob überhaupt Interaktionen vorhanden sind
-                # Interaktionen können in zwei Strukturen sein:
-                # 1. content["interactiveVideo"]["interactions"] (alte Struktur)
-                # 2. content["interactiveVideo"]["assets"]["interactions"] (neue Struktur)
-                interaction_list = []
-                if "interactiveVideo" in content:
-                    iv = content["interactiveVideo"]
-                    if "assets" in iv and "interactions" in iv["assets"]:
-                        interaction_list = iv["assets"]["interactions"]
-                    elif "interactions" in iv:
-                        interaction_list = iv["interactions"]
-                
-                if interaction_list:
-                    try:
-                        for interaction in interaction_list:
-                            action = interaction.get("action", {})
-                            library = action.get("library", "")
-                            params = action.get("params", {})
-                            
-                            # MultiChoice Fragen
-                            if "H5P.MultiChoice" in library:
-                                question_text = params.get("question", "").strip()
-                                
-                                correct = []
-                                incorrect = []
-                                for answer in params.get("answers", []):
-                                    text = answer.get("text", "").strip()
-                                    if text:
-                                        if answer.get("correct"):
-                                            correct.append(text)
-                                        else:
-                                            incorrect.append(text)
-                                
-                                if question_text and correct:
-                                    interactions.append(QuizQuestion(
-                                        type=library,
-                                        question=question_text,
-                                        correct_answers=correct,
-                                        incorrect_answers=incorrect
-                                    ))
-                            
-                            # SingleChoiceSet (different structure)
-                            elif "H5P.SingleChoiceSet" in library:
-                                choices = params.get("choices", [])
-                                
-                                for choice in choices:
-                                    question_text = choice.get("question", "").strip()
-                                    answers = choice.get("answers", [])
-                                    
-                                    if question_text and answers:
-                                        # First answer is always correct in SingleChoiceSet
-                                        correct = [answers[0].strip()] if answers else []
-                                        incorrect = [a.strip() for a in answers[1:] if a.strip()]
-                                        
-                                        if correct:
-                                            interactions.append(QuizQuestion(
-                                                type=library,
-                                                question=question_text,
-                                                correct_answers=correct,
-                                                incorrect_answers=incorrect
-                                            ))
-                            
-                            # Wahr/Falsch-Fragen
-                            elif "H5P.TrueFalse" in library:
-                                question_text = params.get("question", "").strip()
-                                correct_str = params.get("correct", "").lower()
-                                
-                                if question_text and correct_str in ["true", "false"]:
-                                    correct_answer = (correct_str == "true")
-                                    interactions.append(TrueFalseQuestion(
-                                        type=library,
-                                        question=question_text,
-                                        correct_answer=correct_answer
-                                    ))
-                            
-                            # Lückentext-Fragen
-                            elif "H5P.Blanks" in library:
-                                intro_text = params.get("text", "").strip()
-                                questions = params.get("questions", [])
-                                
-                                if questions:
-                                    # Erstes Element ist der eigentliche Lückentext
-                                    text_with_blanks = questions[0].strip() if questions else ""
-                                    
-                                    if intro_text or text_with_blanks:
-                                        question_text = intro_text if intro_text else "Lückentext"
-                                        interactions.append(FillInBlanksQuestion(
-                                            type=library,
-                                            question=question_text,
-                                            text_with_blanks=text_with_blanks
-                                        ))
-                            
-                            # Drag & Drop-Fragen
-                            elif "H5P.DragQuestion" in library:
-                                task = params.get("question", {}).get("task", {})
-                                dropzones = task.get("dropZones", [])
-                                elements = task.get("elements", [])
-                                
-                                question_text = "Ordne die Elemente den Kategorien zu:"
-                                
-                                # Extrahiere Kategorien (Dropzones) mit Index
-                                categories = []
-                                category_map = {}  # Index -> Label
-                                for idx, dz in enumerate(dropzones):
-                                    label = dz.get("label", "").strip()
-                                    if label:
-                                        categories.append(label)
-                                        category_map[str(idx)] = label
-                                
-                                # Extrahiere ziehbare Elemente mit Index
-                                draggable_items = []
-                                element_map = {}  # Index -> Text
-                                for idx, elem in enumerate(elements):
-                                    text = elem.get("type", {}).get("params", {}).get("text", "").strip()
-                                    if text:
-                                        draggable_items.append(text)
-                                        element_map[str(idx)] = text
-                                
-                                # Erstelle korrekte Zuordnungen
-                                correct_mappings = {}
-                                for idx, dz in enumerate(dropzones):
-                                    label = dz.get("label", "").strip()
-                                    correct_elem_ids = dz.get("correctElements", [])
-                                    
-                                    if label and correct_elem_ids:
-                                        correct_items = []
-                                        for elem_id in correct_elem_ids:
-                                            elem_text = element_map.get(str(elem_id))
-                                            if elem_text:
-                                                correct_items.append(elem_text)
-                                        
-                                        if correct_items:
-                                            correct_mappings[label] = correct_items
-                                
-                                if categories and draggable_items and correct_mappings:
-                                    interactions.append(DragDropQuestion(
-                                        type=library,
-                                        question=question_text,
-                                        categories=categories,
-                                        draggable_items=draggable_items,
-                                        correct_mappings=correct_mappings
-                                    ))
-                            
-                            # Text-Banner
-                            elif "H5P.Text" in library:
-                                text = params.get("text", "").strip()
-                                if text:
-                                    interactions.append(TextBanner(
-                                        type=library,
-                                        text=text
-                                    ))
-                    except (KeyError, TypeError, AttributeError) as e:
-                        self.logger.warning(f"Fehler beim Parsen von Interaktionen in Modul {module.id}: {e}")
-                
-                # InteractiveVideo-Objekt erstellen
-                module.interactive_video = InteractiveVideo(
-                    video_url=videourl,
-                    vimeo_id=video.video_id,
-                    interactions=interactions
-                )
-        return err_message if err_message is not None else None
+            
+            # H5P Content-Typ aus h5p.json extrahieren (nicht content.json!)
+            library = h5p_data.get("mainLibrary", "") or h5p_data.get("preloadedDependencies", [{}])[0].get("machineName", "")
+            if not library:
+                self.logger.error(f"Kein library-Feld in h5p.json für Modul {module.id}")
+                return "Kein library-Feld in h5p.json gefunden"
+            
+            module.h5p_content_type = library
+            self.logger.info(f"Verarbeite H5P-Typ: {library} für Modul {module.id}")
+            
+            # Finde passenden Handler im Mapping
+            handler_class_path = None
+            for h5p_type, class_path in H5P_HANDLERS.items():
+                if h5p_type in library:
+                    handler_class_path = class_path
+                    break
+            
+            if not handler_class_path:
+                self.logger.warning(f"H5P-Typ '{library}' wird noch nicht unterstützt (Modul {module.id})")
+                return f"H5P-Typ '{library}' wird noch nicht unterstützt"
+            
+            # Dynamisch Handler-Klasse importieren
+            module_path, class_name = handler_class_path.rsplit(".", 1)
+            handler_module = __import__(module_path, fromlist=[class_name])
+            handler_class = getattr(handler_module, class_name)
+            
+            self.logger.info(f"Rufe Handler {class_name} auf für Modul {module.id}")
+            
+            # Rufe from_h5p_package direkt auf (befüllt module und gibt error zurück)
+            err = handler_class.from_h5p_package(
+                module=module,
+                content=content,
+                h5p_zip_path=local_filename,
+                vimeo_service=Vimeo(),
+                video_service=Video
+            )
+            
+            if err:
+                self.logger.error(f"Fehler beim Verarbeiten von Modul {module.id}: {err}")
+            else:
+                self.logger.info(f"Modul {module.id} erfolgreich verarbeitet")
+            
+            return err
+        
+        return None
 
 
 if __name__ == "__main__":
