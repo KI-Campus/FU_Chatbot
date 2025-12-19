@@ -1,14 +1,66 @@
 from dataclasses import dataclass, field
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 from src.loaders.models.hp5activities import strip_html
 
-if TYPE_CHECKING:
-    from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
+
+@dataclass
+class DragDropText:
+    """Drag Text - Wörter in Lücken ziehen (H5P.DragText)"""
+    type: str  # "H5P.DragText"
+    task_description: str
+    text_field: str  # Text mit *Wort*-Markierungen für Lücken
+    hint: str = "Wörter in Asterisken (*...*) müssen in die richtige Lücke gezogen werden."
+    
+    @classmethod
+    def from_h5p_package(cls, module, content: dict, h5p_zip_path: str, **kwargs) -> Optional[str]:
+        """
+        Handler für standalone H5P.DragText.
+        Befüllt module.interactive_video mit einer Drag-Text-Aufgabe.
+        """
+        library = content.get("library", "")
+        params = content.get("params", {})
+        
+        drag_text = cls.from_h5p_params(library, params)
+        
+        if drag_text:
+            # Speichere als dict (Dependency Inversion)
+            module.interactive_video = {
+                "video_url": "",
+                "vimeo_id": None,
+                "interactions": [drag_text.to_text()]
+            }
+            return None
+        
+        return "Konnte Drag-Text-Aufgabe nicht extrahieren"
+    
+    @classmethod
+    def from_h5p_params(cls, library: str, params: dict) -> Optional['DragDropText']:
+        """Extrahiert DragDropText aus H5P params."""
+        task_description = params.get("taskDescription", "").strip()
+        text_field = params.get("textField", "").strip()
+        
+        if text_field:
+            # Fallback für task_description, falls leer
+            if not task_description:
+                task_description = "Ziehen Sie die Wörter in die richtigen Lücken."
+            
+            return cls(
+                type=library,
+                task_description=task_description,
+                text_field=text_field
+            )
+        
+        return None
+    
+    def to_text(self) -> str:
+        task_clean = strip_html(self.task_description)
+        text_clean = strip_html(self.text_field)
+        return f"[Drag Text] {task_clean}\n{self.hint}\n{text_clean}"
 
 
 @dataclass
 class DragDropQuestion:
-    """Drag & Drop-Frage im Interactive Video."""
+    """Drag & Drop-Frage"""
     type: str  # "H5P.DragQuestion"
     question: str
     categories: list[str]  # Dropzones/Kategorien
@@ -27,11 +79,12 @@ class DragDropQuestion:
         drag_drop = cls.from_h5p_params(library, params)
         
         if drag_drop:
-            from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
-            module.interactive_video = InteractiveVideo(
-                video_url="",
-                interactions=[drag_drop]
-            )
+            # Speichere als dict (Dependency Inversion)
+            module.interactive_video = {
+                "video_url": "",
+                "vimeo_id": None,
+                "interactions": [drag_drop.to_text()]
+            }
             return None
         
         return "Konnte Drag&Drop-Aufgabe nicht extrahieren"
