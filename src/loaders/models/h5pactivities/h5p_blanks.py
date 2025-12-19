@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Optional
-from src.loaders.models.hp5activities import strip_html
+from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
 
 
 @dataclass
@@ -17,8 +17,8 @@ class FillInBlanksQuestion:
         Handler für standalone H5P.Blanks.
         Befüllt module.interactive_video mit einem Lückentext.
         """
-        library = content.get("library", "")
-        params = content.get("params", {})
+        library = extract_library_from_h5p(h5p_zip_path) or "H5P.Blanks"
+        params = content
         
         blanks = cls.from_h5p_params(library, params)
         
