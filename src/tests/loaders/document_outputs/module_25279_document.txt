@@ -1,0 +1,29 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: 1.1.4. Robustheit und Cybersecurity
+
+--- Spalten-Inhalte ---
+[Text] Mit der inzwischen weit verbreiteten Nutzung von KI-Systemen geht auch die Notwendigkeit einher, sicherzustellen, dass diese Systeme robust und gegen Manipulationen oder Angriffe von außen resistent sind. Robustheit bezieht sich auf die Fähigkeit eines KI-Systems, auch bei unerwarteten Eingaben, Veränderungen in der Umgebung oder Versuchen, die Funktionsweise zu stören, eine gleichbleibende Leistung zu erbringen. Eine robuste KI sollte nicht versagen oder fehlerhafte Ergebnisse produzieren, wenn sich etwas geringfügig ändert, z. B. ein neues Datenformat oder unvorhergesehene Szenarien. Bei der externen Manipulation hingegen wird versucht, ein KI-System auszutricksen oder auszunutzen. Diese Manipulationen können von böswilligen Akteuren ausgehen, die versuchen, das System zu ihrem Vorteil auszunutzen, oder von unbeabsichtigten Fehlern, die das System angreifbar machen.
+[Accordion Panel 1] Warum Robustheit so wichtig ist:
+[Text] Nehmen wir ein KI-System, das von Banken eingesetzt wird, um betrügerische Transaktionen zu erkennen. Dieses System ist auf Muster legitimer und betrügerischer Aktivitäten trainiert und analysiert Millionen von Transaktionen, um verdächtiges Verhalten zu erkennen, wie z. B. ungewöhnliche Ausgabemuster oder Transaktionen von unerwarteten Orten. Das KI-System der Bank muss robust genug sein, um mit authentischen Änderungen im Nutzerverhalten umgehen zu können, ohne unnötige Warnungen auszulösen. Wenn ein Kunde beispielsweise in den Urlaub fährt und seine Kreditkarte in einem anderen Land einsetzt, muss die KI dies nach einer gewissen Überprüfung als normales Verhalten erkennen, anstatt es ständig als verdächtig zu kennzeichnen. Ein KI-System, das nicht robust ist, könnte das Konto eines Kunden jedes Mal einfrieren, wenn sich sein Verhalten ändert, was zu Frustration und mangelndem Vertrauen führt. Robustheit ist auch bei weitreichenden Veränderungen wichtig, etwa bei neuen Ausgabemustern, die durch ein globales Ereignis verursacht werden (z. B. vermehrte Online-Transaktionen während einer Pandemie). Eine robuste KI würde sich an solche Veränderungen anpassen, ohne dass neue Muster fälschlicherweise als Betrug eingestuft werden.
+
+[Accordion Panel 2] Warum Cybersecurity so wichtig ist:
+[Text] Stell dir nun vor, dass eine Gruppe von Hackern eine Möglichkeit entdeckt, dieses KI-System zu manipulieren. Sie fangen an, Transaktionen zu erstellen, die die Muster legitimer Transaktionen nachahmen, aber mit versteckten betrügerischen Elementen. Wenn die KI nicht so konzipiert ist, dass sie gegen diese Versuche resistent ist, könnten die Hacker unentdeckt durchschlüpfen und erhebliche finanzielle Verluste verursachen. Bei solchen Datenvergiftungen könnten die Angreifenden zum Beispiel Eingaben machen, die die KI täuschen sollen. Im Zusammenhang mit der KI zur Betrugserkennung könnten Angreifende beispielsweise absichtlich kleine, subtile Änderungen an ihren Transaktionsmustern vornehmen, die Schwächen im KI-Modell ausnutzen und es dazu bringen, eine betrügerische Transaktion als authentisch einzustufen.
+[Text] Nehmen wir einmal an... Du arbeitest bei einer gemeinnützigen Organisation, die Mittel für Katastrophenhilfe verwaltet, und du verwendest ein KI-basiertes System, um betrügerische Anträge zu verhindern. Während einer großflächigen Überschwemmung taucht ein neues Muster von Anträgen auf, welches das KI-System als verdächtig einstuft, obwohl die Anträge rechtmäßig sind. Was könntest du tun, um sicherzustellen, dass das KI-System in dieser Zeit robust und fair bleibt?
+[Quiz] Mehrere Antworten sind richtig:
+Korrekte Antwort(en): Die KI mit neuen Daten aktualisieren, die die sich ändernden Muster widerspiegeln., Alle Anträge, die von der KI während dieses Zeitraums erkannt wurden, manuell überprüfen und die Empfindlichkeit der KI anpassen.
+Inkorrekte Antwort(en): Die Betrugserkennung der KI abschalten, bis die Flut vorüber ist.
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 313,
+  "module_id": 25279,
+  "fullname": "1.1.4. Robustheit und Cybersecurity",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=25279"
+}

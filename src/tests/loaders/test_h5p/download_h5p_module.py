@@ -22,7 +22,7 @@ from src.loaders.moodle import Moodle
 
 # ⚙️ KONFIGURATION
 COURSE_ID = 56
-MODULE_ID = 1564
+MODULE_ID = 5879
 
 
 def setup_production_moodle():
@@ -86,9 +86,16 @@ def main():
         local_filename = h5pfile_call.getFile(activity.filename, tmp_dir)
         
         with zipfile.ZipFile(local_filename, "r") as zip_ref:
+            # Extrahiere h5p.json und content.json
+            zip_ref.extract("h5p.json", tmp_dir)
             zip_ref.extract("content/content.json", tmp_dir)
         
+        h5p_json_path = Path(tmp_dir) / "h5p.json"
         content_json_path = Path(tmp_dir) / "content" / "content.json"
+        
+        # Lade beide Dateien
+        with open(h5p_json_path, "r", encoding="utf-8") as f:
+            h5p_data = json.load(f)
         
         with open(content_json_path, "r", encoding="utf-8") as f:
             content = json.load(f)
@@ -97,11 +104,17 @@ def main():
         output_dir = Path(__file__).parent / "h5p_downloads"
         output_dir.mkdir(exist_ok=True)
         
-        output_file = output_dir / f"course_{COURSE_ID}_module_{MODULE_ID}_content.json"
-        with open(output_file, "w", encoding="utf-8") as f:
+        h5p_output_file = output_dir / f"course_{COURSE_ID}_module_{MODULE_ID}_h5p.json"
+        content_output_file = output_dir / f"course_{COURSE_ID}_module_{MODULE_ID}_content.json"
+        
+        with open(h5p_output_file, "w", encoding="utf-8") as f:
+            json.dump(h5p_data, f, indent=2, ensure_ascii=False)
+        
+        with open(content_output_file, "w", encoding="utf-8") as f:
             json.dump(content, f, indent=2, ensure_ascii=False)
         
-        print(f"✓ Content saved to: {output_file}\n")
+        print(f"✓ h5p.json saved to: {h5p_output_file}")
+        print(f"✓ Content saved to: {content_output_file}\n")
         
         # Analyze content
         print("=== Content Analysis ===\n")
@@ -165,7 +178,7 @@ def main():
             print("⚠️  Not an Interactive Video H5P!")
             print(f"Content keys: {list(content.keys())}")
         
-        print(f"\n✅ Done! Check {output_file}")
+        print(f"\n✅ Done! Check {content_output_file}")
 
 
 if __name__ == "__main__":

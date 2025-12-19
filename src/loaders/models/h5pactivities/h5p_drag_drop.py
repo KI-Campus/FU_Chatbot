@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from src.loaders.models.hp5activities import strip_html
+from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
 
 
 @dataclass
@@ -17,8 +17,8 @@ class DragDropText:
         Handler für standalone H5P.DragText.
         Befüllt module.interactive_video mit einer Drag-Text-Aufgabe.
         """
-        library = content.get("library", "")
-        params = content.get("params", {})
+        library = extract_library_from_h5p(h5p_zip_path) or "H5P.DragText"
+        params = content
         
         drag_text = cls.from_h5p_params(library, params)
         
@@ -73,8 +73,8 @@ class DragDropQuestion:
         Handler für standalone H5P.DragQuestion.
         Befüllt module.interactive_video mit einer Drag&Drop-Aufgabe.
         """
-        library = content.get("library", "")
-        params = content.get("params", {})
+        library = extract_library_from_h5p(h5p_zip_path) or "H5P.DragQuestion"
+        params = content
         
         drag_drop = cls.from_h5p_params(library, params)
         
@@ -102,27 +102,29 @@ class DragDropQuestion:
         categories = []
         category_map = {}  # Index -> Label
         for idx, dz in enumerate(dropzones):
-            label = dz.get("label", "").strip()
-            if label:
-                categories.append(label)
-                category_map[str(idx)] = label
+            label_html = dz.get("label", "").strip()
+            label_clean = strip_html(label_html).strip()
+            if label_clean:
+                categories.append(label_html)  # Original für to_text() wo nochmal gestrippt wird
+                category_map[str(idx)] = label_clean
         
         # Extrahiere ziehbare Elemente mit Index
         draggable_items = []
-        element_map = {}  # Index -> Text
+        element_map = {}  # Index -> Text (bereits cleaned)
         for idx, elem in enumerate(elements):
-            text = elem.get("type", {}).get("params", {}).get("text", "").strip()
-            if text:
-                draggable_items.append(text)
-                element_map[str(idx)] = text
+            text_html = elem.get("type", {}).get("params", {}).get("text", "").strip()
+            text_clean = strip_html(text_html).strip()
+            if text_clean:
+                draggable_items.append(text_html)  # Original für to_text()
+                element_map[str(idx)] = text_clean
         
         # Erstelle korrekte Zuordnungen
         correct_mappings = {}
         for idx, dz in enumerate(dropzones):
-            label = dz.get("label", "").strip()
+            label_clean = category_map.get(str(idx))
             correct_elem_ids = dz.get("correctElements", [])
             
-            if label and correct_elem_ids:
+            if label_clean and correct_elem_ids:
                 correct_items = []
                 for elem_id in correct_elem_ids:
                     elem_text = element_map.get(str(elem_id))
@@ -130,7 +132,7 @@ class DragDropQuestion:
                         correct_items.append(elem_text)
                 
                 if correct_items:
-                    correct_mappings[label] = correct_items
+                    correct_mappings[label_clean] = correct_items
         
         if categories and draggable_items and correct_mappings:
             return cls(
@@ -161,3 +163,106 @@ class DragDropQuestion:
             result += f"  {category_clean}: {', '.join(items_clean_list)}\n"
         
         return result
+    
+@dataclass
+class ImageHotspotQuestion:
+    """
+    H5P.ImageHotspot oder H5P.DragDrop mit visuellen Elementen auf einem Bild.
+    Elemente (Texte) werden zu DropZones (Labels) zugeordnet.
+    """
+    type: str  # "H5P.ImageHotspot" oder ähnlich
+    mappings: list[tuple[str, str]] = field(default_factory=list)  # (element_text, dropzone_label)
+    
+    @classmethod
+    def from_h5p_package(cls, module, content: dict, h5p_zip_path: str, **kwargs) -> Optional[str]:
+        """
+        Handler für standalone Image Hotspot Question.
+        Befüllt module.interactive_video mit Element-zu-Label Zuordnungen.
+        """
+        library = extract_library_from_h5p(h5p_zip_path) or "H5P.ImageHotspot"
+        params = content
+        
+        question = cls.from_h5p_params(library, params)
+        
+        if question and question.mappings:
+            # Speichere als dict (Dependency Inversion)
+            module.interactive_video = {
+                "video_url": "",
+                "vimeo_id": None,
+                "interactions": [question.to_text()]
+            }
+            return None
+        
+        return "Konnte Image Hotspot Question nicht extrahieren"
+    
+    @classmethod
+    def from_h5p_params(cls, library: str, params: dict) -> Optional['ImageHotspotQuestion']:
+        """
+        Extrahiert Image Hotspot Question aus params.
+        
+        Verarbeitet Struktur: params.question.task.elements[] und params.question.task.dropZones[]
+        """
+        try:
+            question_data = params.get("question", {})
+            task = question_data.get("task", {})
+            
+            elements = task.get("elements", [])
+            drop_zones = task.get("dropZones", [])
+            
+            if not elements or not drop_zones:
+                return None
+            
+            # Baue Map: dropzone_index -> label
+            zone_labels = {}
+            for zone_idx, zone in enumerate(drop_zones):
+                label_html = zone.get("label", f"Zone {zone_idx}")
+                # Entferne HTML-Tags aus Label
+                label_clean = strip_html(label_html).strip()
+                zone_labels[zone_idx] = label_clean
+            
+            mappings = []
+            
+            # Für jedes Element prüfe, ob es Text ist und welcher DropZone es zugeordnet ist
+            for elem_idx, element in enumerate(elements):
+                element_type = element.get("type", {})
+                element_library = element_type.get("library", "")
+                element_params = element_type.get("params", {})
+                
+                # Ignoriere Bilder (H5P.Image)
+                if "Image" in element_library:
+                    continue
+                
+                # Extrahiere Text aus H5P.AdvancedText oder H5P.Text
+                element_text = None
+                if "AdvancedText" in element_library or "Text" in element_library:
+                    text_html = element_params.get("text", "").strip()
+                    if text_html:
+                        element_text = strip_html(text_html).strip()
+                
+                if not element_text:
+                    continue
+                
+                # Finde die korrekte DropZone für dieses Element
+                for zone_idx, zone in enumerate(drop_zones):
+                    correct_elements = zone.get("correctElements", [])
+                    # correctElements sind Strings oder Ints
+                    if str(elem_idx) in [str(ce) for ce in correct_elements]:
+                        zone_label = zone_labels.get(zone_idx, f"Zone {zone_idx}")
+                        mappings.append((element_text, zone_label))
+                        break
+            
+            if mappings:
+                return cls(type=library, mappings=mappings)
+        
+        except Exception:
+            pass
+        
+        return None
+    
+    def to_text(self) -> str:
+        """Formatiert die Zuordnungen als 'element_text: zone_label' Paare."""
+        if not self.mappings:
+            return "[Image Hotspot] Keine Zuordnungen gefunden"
+        
+        lines = [f"{text}: {label}" for text, label in self.mappings]
+        return "\n".join(lines)

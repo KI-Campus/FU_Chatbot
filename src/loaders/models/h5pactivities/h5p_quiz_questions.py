@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Optional
-from src.loaders.models.hp5activities import strip_html
+from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
 
 
 @dataclass
@@ -26,8 +26,8 @@ class QuizQuestion:
         Returns:
             Optional[str]: Fehlermeldung oder None
         """
-        library = content.get("library", "")
-        params = content.get("params", {})
+        library = extract_library_from_h5p(h5p_zip_path)
+        params = content
         
         quiz = cls.from_h5p_params(library, params)
         
@@ -114,8 +114,8 @@ class TrueFalseQuestion:
         Handler für standalone H5P.TrueFalse.
         Befüllt module.interactive_video mit einer True/False-Frage.
         """
-        library = content.get("library", "")
-        params = content.get("params", {})
+        library = extract_library_from_h5p(h5p_zip_path) or "H5P.TrueFalse"
+        params = content
         
         question = cls.from_h5p_params(library, params)
         

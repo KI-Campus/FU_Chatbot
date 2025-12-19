@@ -1,0 +1,309 @@
+{
+  "scoreShow": "Überprüfen",
+  "tryAgain": "Wiederholen",
+  "scoreExplanation": "Richtige Antworten geben +1 Punkte. Bei falschen Antworten gibt es -1 Punkt. Die kleinstmögliche Punktzahl ist 0.",
+  "question": {
+    "settings": {
+      "size": {
+        "width": 1000,
+        "height": 500
+      }
+    },
+    "task": {
+      "elements": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 52.79680365296804,
+          "height": 30.41267197366355,
+          "dropZones": [],
+          "type": {
+            "library": "H5P.Image 1.1",
+            "params": {
+              "contentName": "Bild",
+              "alt": "Expertensystem",
+              "file": {
+                "path": "images/Expertensystem_h5p_neu-W98LBh59.png",
+                "mime": "image/png",
+                "copyright": {
+                  "license": "U"
+                },
+                "width": 1302,
+                "height": 750
+              },
+              "decorative": false,
+              "expandImage": "Bild vergrößern",
+              "minimizeImage": "Bild verkleinern"
+            },
+            "subContentId": "d5df212a-f75d-4831-ba26-bef80c3d4bc9",
+            "metadata": {
+              "contentType": "Image",
+              "license": "U",
+              "title": "Unbenannt: Image"
+            }
+          },
+          "backgroundOpacity": 0,
+          "multiple": false
+        },
+        {
+          "x": 85.73059360730593,
+          "y": 29.680365296803654,
+          "width": 7.547303082191781,
+          "height": 1.4376426940639269,
+          "dropZones": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:0.75em;\">Patient*innendaten</span></p>\n"
+            },
+            "subContentId": "8e330247-fcbe-48e3-881f-4de7259f3003",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            }
+          },
+          "backgroundOpacity": 20,
+          "multiple": false
+        },
+        {
+          "x": 87.44292237442923,
+          "y": 56.16438356164384,
+          "width": 6.116795091324201,
+          "height": 1.4376426940639269,
+          "dropZones": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:0.75em;\">weitere Daten</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "79e6dfdf-828c-43c7-953c-b8be7330a1b7"
+          },
+          "backgroundOpacity": 20,
+          "multiple": false
+        },
+        {
+          "x": 87.89954337899543,
+          "y": 38.81278538812786,
+          "width": 5.075551087622548,
+          "height": 1.4373770680147058,
+          "dropZones": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:0.75em;\">Diagnose</span></p>\n"
+            },
+            "subContentId": "d84ac01d-a3c1-4846-9fe6-27756350d1e1",
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            }
+          },
+          "backgroundOpacity": 20,
+          "multiple": false
+        },
+        {
+          "x": 85.27397260273973,
+          "y": 21.004566210045663,
+          "width": 8.261301013127854,
+          "height": 1.4372292380136986,
+          "dropZones": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:0.75em;\">Interferenzmaschine</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "1e4c48d4-8d28-4f10-8d90-157ce68ac19a"
+          },
+          "backgroundOpacity": 20,
+          "multiple": false
+        },
+        {
+          "x": 87.32876712328768,
+          "y": 47.71689497716895,
+          "width": 6.102547089041096,
+          "height": 1.4376426940639269,
+          "dropZones": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:0.75em;\">Wissensbasis</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "e7985841-7b9e-4979-a1b6-78b6ce0b8216"
+          },
+          "backgroundOpacity": 20,
+          "multiple": false
+        }
+      ],
+      "dropZones": [
+        {
+          "x": 36.18721461187215,
+          "y": 10.730593607305936,
+          "width": 10.093432505707762,
+          "height": 2.9647042665525114,
+          "correctElements": [
+            "1"
+          ],
+          "showLabel": false,
+          "backgroundOpacity": 0,
+          "tipsAndFeedback": {
+            "tip": ""
+          },
+          "single": false,
+          "autoAlign": true,
+          "label": "<div>PatientInnendaten</div>\n"
+        },
+        {
+          "x": 59.24657534246575,
+          "y": 10.730593607305936,
+          "width": 10.21650613584475,
+          "height": 2.9647042665525114,
+          "correctElements": [
+            "2"
+          ],
+          "showLabel": false,
+          "backgroundOpacity": 0,
+          "tipsAndFeedback": {
+            "tip": ""
+          },
+          "single": false,
+          "autoAlign": true,
+          "label": "<div>weitere Daten</div>\n"
+        },
+        {
+          "x": 12.67123287671233,
+          "y": 70.77625570776256,
+          "width": 9.275114155251142,
+          "height": 2.1404109589041096,
+          "correctElements": [
+            "3"
+          ],
+          "showLabel": false,
+          "backgroundOpacity": 0,
+          "tipsAndFeedback": {
+            "tip": ""
+          },
+          "single": false,
+          "autoAlign": true,
+          "label": "<div>Diagnose</div>\n"
+        },
+        {
+          "x": 38.81278538812786,
+          "y": 76.25570776255708,
+          "width": 8.561643835616438,
+          "height": 2.371097317351598,
+          "correctElements": [
+            "4"
+          ],
+          "showLabel": false,
+          "backgroundOpacity": 0,
+          "tipsAndFeedback": {
+            "tip": ""
+          },
+          "single": false,
+          "autoAlign": true,
+          "label": "<div>Interferenzmaschine</div>\n"
+        },
+        {
+          "x": 70.31963470319634,
+          "y": 69.40639269406392,
+          "width": 8.204908675799087,
+          "height": 2.371218607305936,
+          "correctElements": [
+            "5"
+          ],
+          "showLabel": false,
+          "backgroundOpacity": 0,
+          "tipsAndFeedback": {
+            "tip": ""
+          },
+          "single": false,
+          "autoAlign": true,
+          "label": "<div>Wissensbasis</div>\n"
+        }
+      ]
+    }
+  },
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 100
+    }
+  ],
+  "behaviour": {
+    "enableRetry": true,
+    "enableCheckButton": true,
+    "singlePoint": false,
+    "applyPenalties": true,
+    "enableScoreExplanation": true,
+    "dropZoneHighlighting": "dragging",
+    "autoAlignSpacing": 2,
+    "enableFullScreen": false,
+    "showScorePoints": true,
+    "showTitle": false
+  },
+  "grabbablePrefix": "Ziehbares Element {num} von {total}.",
+  "grabbableSuffix": "Abgelegt in Ablagezone {num}.",
+  "dropzonePrefix": "Ablagezone {num} von {total}.",
+  "noDropzone": "Keine Ablagezone.",
+  "tipLabel": "Hinweis zeigen",
+  "tipAvailable": "Hinweis verfügbar",
+  "correctAnswer": "Richtige Antwort",
+  "wrongAnswer": "Falsche Antwort",
+  "feedbackHeader": "Rückmeldung",
+  "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+  "scoreExplanationButtonLabel": "Zeige Erklärung der Punktevergabe",
+  "a11yCheck": "Die Antworten überprüfen. Die Eingaben werden als richtig, falsch oder unbeantwortet markiert.",
+  "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet.",
+  "localize": {
+    "fullscreen": "Vollbild",
+    "exitFullscreen": "Vollbild beenden"
+  },
+  "submit": "Submit"
+}

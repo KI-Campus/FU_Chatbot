@@ -1,0 +1,174 @@
+{
+  "content": [
+    {
+      "content": {
+        "params": {
+          "text": "<p>Gewinnen wir hier über die vier “Risikoklassen” einen knappen Überblick, den wir dann <span style=\"color:#3a2a78;\"><strong>in Modul 2</strong></span> ausbauen werden.</p>\n"
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Unbenannter Text"
+        },
+        "subContentId": "b14b9669-2df7-49f0-81b6-645387141fae"
+      },
+      "useSeparator": "auto"
+    },
+    {
+      "content": {
+        "library": "H5P.Dialogcards 1.9",
+        "params": {
+          "mode": "normal",
+          "dialogs": [
+            {
+              "text": "<p style=\"text-align: center;\"><strong>Inakzeptables Risiko</strong> (Art. 5)</p>\n",
+              "answer": "<p><strong>Definition:</strong> Dies sind die KI-Systeme (Art. 5), die ab Februar 2025 verboten sind, weil sie sich auf die Grundrechte, Gesundheit oder die Sicherheit der Bürger*innen auswirken.<br>\n<strong>Verpflichtungen:</strong> Diese Systeme sind gänzlich verboten, es sei denn, es liegt ein enger Rechtfertigungsgrund vor (z. B. bestimmte Anwendungen zur Strafverfolgung mit richterlicher Genehmigung).<br>\n<strong>Beispiele:</strong> Social-Scoring-Systeme, manipulative KI, die auf bestimmte Personen oder Gruppen abzielt und dieser Person oder anderen erheblichen Schaden zufügen kann, und bestimmte Anwendungen biometrischer Echtzeit-Identifikation im öffentlichen Raum für den Zweck der Strafverfolgung. Wie etwa ein KI-System, das auf der Grundlage von verhaltensbezogenen und psychologischen Konstrukten Risikoskalen für die gewalttätige Rückfälligkeit entwickelt. Das klingt wie aus einem dystopischen Roman, ist aber in den USA unter dem Softwarenamen “COMPAS” bereits Realität.</p>\n\n<p style=\"text-align: center;\">&nbsp;</p>\n",
+              "tips": {}
+            },
+            {
+              "text": "<p style=\"text-align: center;\"><strong>Hohes Risiko </strong>(Art.6, An.I, An.III)</p>\n",
+              "answer": "<p><strong>Definition:</strong> Diese Systeme (Art.6, An.I, An.III) könnten sich auf die Grundrechte, Gesundheit oder die Sicherheit auswirken, etwa im Gesundheitswesen, in der Bildung oder bei der Strafverfolgung.<br>\n<strong>Verpflichtungen:</strong> Hochrisiko KI-Systeme sind grundsätzlich erlaubt, dürfen aber nur in Verkehr gebracht werden, wenn sie nachweislich umfassende Anforderungen einhalten (Art.8-21, Art.4, Art.26).<br>\n<strong>Beispiele:</strong> Eine KI, die Patienten in einer Notaufnahme priorisiert; eine KI, die in der Personalbeschaffungssoftware, bei der Verwaltung des Zugangs zu öffentlichen Diensten oder bei der Auswertung von Beweisen in Rechtsfällen eingesetzt wird. Denken wir etwa an einen Herzschrittmacher; es ist durchaus gut und wichtig, dass es dieses Produkt gibt, sollte jedoch erst dann Patient*innen implantiert werden, wenn das Produkt nachweislich sicher und wirkungsvoll ist.</p>\n\n<p>&nbsp;</p>\n",
+              "tips": {}
+            },
+            {
+              "text": "<p><strong>Zeit für ein Quiz! </strong>Welche der folgenden KI-Anwendungen würde nach der vorhin gelernten Definition als ein System mit “Hohem Risiko” gelten?<br>\n<br>\nA) Eine KI, die die Zuverlässigkeit von Beweisen bei strafrechtlichen Ermittlungen bewertet.<br>\n<br>\nB) Ein KI-System, das in deiner Mailbox Ordnung schafft, indem es die Spam-Nachrichten herausfiltert.<br>\n<br>\nC) Ein Chatbot, der Kunden dabei hilft, ihre jeweiligen Online-Bestellungen zu verfolgen.</p>\n\n<p>&nbsp;</p>\n",
+              "answer": "<p>Antwort <strong>A)&nbsp;</strong>KI-Systeme, die in Strafverfolgungskontexten eingesetzt werden, haben das Potenzial, die Grundrechte und Freiheiten des Einzelnen erheblich zu beeinträchtigen, was sie im Rahmen des EU AI Act zu einem KI System mit hohem Risiko klassifiziert.</p>\n",
+              "tips": {}
+            },
+            {
+              "text": "<p style=\"text-align: center;\"><strong>Begrenztes Risiko</strong>&nbsp;(Art.50)</p>\n",
+              "answer": "<p><strong>Definition:</strong> Diese Systeme (Art.50) bergen ein geringeres Risiko in Bezug auf die Grundrechte, die Gesundheit und die Sicherheit. Der EU AI Act verpflichtet die Anbieter jedoch, die Nutzer über den Einsatz künstlicher Intelligenz zu informieren und die von der KI erzeugten Ergebnisse als solche zu deklarieren.<br>\n<strong>Verpflichtungen:</strong> Anbieter müssen Nutzer informieren, wenn sie mit diesen KI-Systemen interagieren. Anbieter und Betreiber sind zudem verpflichtet relevante Mitarbeitende, andere Stakeholder und betroffene Personen mit geeigneten KI-Kompetenzen auszustatten (Art.50, Art.4).<br>\n<strong>Beispiele:</strong> Chatbots und generative KI (Texte, Bilder, Videos). Stell dir etwa einen Chatbot vor, dem du auf einer Website begegnest und der dir bei einfachen Fragen hilft. Er trifft zwar keine lebenswichtigen Entscheidungen für dich, aber du verdienst es dennoch zu wissen, dass am anderen Ende eine KI antwortet.&nbsp;</p>\n\n<p>&nbsp;</p>\n",
+              "tips": {}
+            },
+            {
+              "text": "<p style=\"text-align: center;\"><strong>Geringes Risiko</strong></p>\n",
+              "answer": "<p><strong>Definition:</strong> KI-Anwendungen im geschäftlichen oder öffentlichen Gebrauch, die in keine der anderen Klassen fallen, also ein geringes Risikopotential darstellen.<br>\n<strong>Verpflichtungen:</strong>&nbsp;Anbieter solcher KI-Systeme und Betreiber sind hier wieder verpflichtet relevante Mitarbeitende, andere Stakeholder und betroffene Personen mit geeigneten KI-Kompetenzen auszustatten (Art.4); zudem wirbt die EU Kommission für die freiwillige Einhaltung der Anforderungen, die sich sonst lediglich auf KI-Systeme mit hohem Risiko beziehen würden.<br>\n<strong>Beispiele:</strong> Spam-Filter, KI-basierte Qualitätskontrolle in der Produktion, KI in Videospielen und automatische E-Mail-Sortierung. Stell dir deine täglichen Interaktionen mit einem virtuellen Assistenten vor, der dir hilft, Erinnerungen zu setzen oder deinen Posteingang zu sortieren. Diese Systeme bergen keine nennenswerten Risiken hinsichtlich Grundrechte, Gesundheit und Sicherheit, aber sie tragen dennoch dazu bei, dein Leben besser zu organisieren.</p>\n\n<p>&nbsp;</p>\n",
+              "tips": {}
+            },
+            {
+              "text": "<p><strong>Denke nochmal </strong>an den vorhin erwähnten virtuellen Assistenten. Wie können die Entwickler*innen sicherstellen, dass Fairness und Transparenz gewährleistet sind, auch wenn dies nicht gesetzlich vorgeschrieben ist?</p>\n",
+              "answer": "<p>Obwohl es keine zusätzlichen verbindlichen Anforderungen durch den AI Act gibt, können Entwickler*innen das Vertrauen stärken, indem sie sich freiwillig an die Vorgaben für Systeme mit hohem Risiko halten. </p>\n",
+              "tips": {}
+            }
+          ],
+          "behaviour": {
+            "enableRetry": true,
+            "disableBackwardsNavigation": false,
+            "scaleTextNotCard": false,
+            "randomCards": false,
+            "maxProficiency": 5,
+            "quickProgression": false
+          },
+          "answer": "Umdrehen",
+          "next": "Weiter",
+          "prev": "Zurück",
+          "retry": "Wiederholen",
+          "correctAnswer": "Ich hatte es richtig!",
+          "incorrectAnswer": "Ich hatte es falsch!",
+          "round": "Runde @round",
+          "cardsLeft": "Verbleibende Karten: @number",
+          "nextRound": "Weiter mit Runde @round",
+          "startOver": "Von vorne anfangen",
+          "showSummary": "Weiter",
+          "summary": "Zusammenfassung",
+          "summaryCardsRight": "Richtige Karten:",
+          "summaryCardsWrong": "Falsche Karten:",
+          "summaryCardsNotShown": "Nicht angezeigt Karten:",
+          "summaryOverallScore": "Gesamtpunkte",
+          "summaryCardsCompleted": "Karten, die du fertig gelernt hast:",
+          "summaryCompletedRounds": "Abgeschlossene Runden:",
+          "summaryAllDone": "Gut gemacht! Du hattest alle @cards Karten @max -mal hintereinander richtig!",
+          "progressText": "Karte @card von @total",
+          "cardFrontLabel": "Kartenvorderseite",
+          "cardBackLabel": "Kartenrückseite",
+          "tipButtonLabel": "Tipp anzeigen",
+          "audioNotSupported": "Dein Browser unterstützt diese Tondatei nicht",
+          "confirmStartingOver": {
+            "header": "Von vorne anfangen?",
+            "body": "Dein gesamter Fortschritt bisher wird gelöscht. Bist du sicher, dass du von vorne anfangen möchtest?",
+            "cancelLabel": "Abbrechen",
+            "confirmLabel": "Ja, von vorne anfangen"
+          },
+          "title": "",
+          "description": ""
+        },
+        "metadata": {
+          "defaultLanguage": "de",
+          "license": "U",
+          "title": "Risikoklassen",
+          "contentType": "Dialog Cards"
+        },
+        "subContentId": "ff769872-9e53-4bed-b263-c1f408ae72a8"
+      },
+      "useSeparator": "auto"
+    },
+    {
+      "content": {
+        "params": {
+          "text": "<p>Nachdem du nun jede Kategorie erkundet hast, ist es Zeit für eine Herausforderung! Im Folgenden findest du mehrere Szenarien mit unterschiedlichen KI-Anwendungen.</p>\n"
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Unbenannter Text"
+        },
+        "subContentId": "6f1bf6df-6901-4887-9626-ab715d354465"
+      },
+      "useSeparator": "auto"
+    },
+    {
+      "content": {
+        "params": {
+          "media": {
+            "disableImageZooming": false
+          },
+          "taskDescription": "<p>Ordne jeder die richtige Risikoklasse zu:</p>\n",
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "checkAnswer": "Überprüfen",
+          "submitAnswer": "Absenden",
+          "tryAgain": "Wiederholen",
+          "showSolution": "Lösung anzeigen",
+          "dropZoneIndex": "Ablagefeld @index.",
+          "empty": "Ablagefeld @index ist leer.",
+          "contains": "Ablagefeld @index enthält ziehbaren Text @draggable.",
+          "ariaDraggableIndex": "@index von @count ziehbaren Texten.",
+          "tipLabel": "Tipp anzeigen",
+          "correctText": "Richtig!",
+          "incorrectText": "Falsch!",
+          "resetDropTitle": "Ablagefelder zurücksetzen",
+          "resetDropDescription": "Bist du sicher, dass du dieses Ablagefeld zurücksetzen möchtest?",
+          "grabbed": "Ziehbarer Text wurde aufgenommen.",
+          "cancelledDragging": "Ziehen abgebrochen.",
+          "correctAnswer": "Korrekte Antwort:",
+          "feedbackHeader": "Rückmeldung",
+          "behaviour": {
+            "enableRetry": true,
+            "enableSolutionsButton": true,
+            "enableCheckButton": true,
+            "instantFeedback": false
+          },
+          "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+          "a11yCheck": "Die Antworten überprüfen. Die Eingaben werden als richtig, falsch oder unbeantwortet markiert.",
+          "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+          "a11yRetry": "Die Aufgabe wiederholen. Alle Eingaben werden zurückgesetzt und die Aufgabe wird erneut gestartet.",
+          "textField": "Szenario 1: Eine KI, die in einer Schule für die Beurteilung von Lernenden eingesetzt wird. *Hohes Risiko*\n\nSzenario 2: Ein Spam-Filter, der bei der Organisation von E-Mails hilft. *Geringes Risiko*\n\nSzenario 3: Ein soziales Punktesystem, das Personen aufgrund ihres Verhaltens bewertet. *Inakzeptables Risiko*\n\nSzenario 4: Ein Chatbot, der den Kundenservice unterstützt. *Begrenztes Risiko*"
+        },
+        "library": "H5P.DragText 1.10",
+        "metadata": {
+          "contentType": "Drag the Words",
+          "license": "U",
+          "title": "Unbenannter Drag the Words"
+        },
+        "subContentId": "b72ffde5-3682-4100-afc8-2204549b2e0d"
+      },
+      "useSeparator": "disabled"
+    }
+  ]
+}

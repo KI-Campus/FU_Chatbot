@@ -11,6 +11,31 @@ class Summary:
     statement_groups: list[list[str]]  # Jede Gruppe: [korrekte Aussage, falsche Aussagen...]
     
     @classmethod
+    def from_h5p_params(cls, library: str, params: dict) -> Optional['Summary']:
+        """Extrahiert Summary aus H5P params (aus Interaction)."""
+        intro = params.get("intro", "").strip()
+        summaries = params.get("summaries", [])
+        
+        statement_groups = []
+        for summary_group in summaries:
+            statements = summary_group.get("summary", [])
+            if statements:
+                # Erstes Statement ist korrekt, Rest sind falsch
+                clean_statements = [s.strip() for s in statements if s.strip()]
+                if clean_statements:
+                    statement_groups.append(clean_statements)
+        
+        # Nur Summary erstellen wenn tatsächlich Statements vorhanden sind
+        if statement_groups:
+            return cls(
+                type=library,
+                intro=intro if intro else "Abschließende Summary-Frage",
+                statement_groups=statement_groups
+            )
+        
+        return None
+    
+    @classmethod
     def from_h5p_summary_data(cls, summary_data: dict) -> Optional['Summary']:
         """Extrahiert Summary aus H5P summary-Struktur (aus interactiveVideo.summary)."""
         if "task" not in summary_data:
@@ -29,7 +54,8 @@ class Summary:
                 if clean_statements:
                     statement_groups.append(clean_statements)
         
-        if intro or statement_groups:
+        # Nur Summary erstellen wenn tatsächlich Statements vorhanden sind
+        if statement_groups:
             return cls(
                 type="H5P.Summary",
                 intro=intro if intro else "Abschließende Summary-Frage",
@@ -40,7 +66,7 @@ class Summary:
     
     def to_text(self) -> str:
         intro_clean = strip_html(self.intro)
-        result = f"[Zusammenfassung] {intro_clean}\n"
+        result = f"[Abschluss] {intro_clean}\n"
         
         for i, statements in enumerate(self.statement_groups, 1):
             result += f"Aussagengruppe {i}:\n"

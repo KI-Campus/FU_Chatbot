@@ -1,0 +1,275 @@
+{
+  "interactiveVideo": {
+    "video": {
+      "startScreenOptions": {
+        "title": "Wo wird Künstliche Intelligenz schon angewandt?",
+        "hideStartTitle": true
+      },
+      "textTracks": {
+        "videoTrack": [
+          {
+            "label": "Subtitles",
+            "kind": "subtitles",
+            "srcLang": "de",
+            "track": {
+              "path": "file-94XMzNmX.vtt",
+              "mime": "application/octet-stream",
+              "copyright": {
+                "license": "U"
+              }
+            }
+          }
+        ]
+      },
+      "files": [
+        {
+          "path": "https://player.vimeo.com/external/535869144.hd.mp4?s=72db699dcec06b73f5ebda75639d2474b53aedae&amp;profile_id=175",
+          "mime": "video/mp4",
+          "copyright": {
+            "license": "U"
+          }
+        }
+      ]
+    },
+    "assets": {
+      "interactions": [
+        {
+          "x": 60.747663551401864,
+          "y": 80.91286307053942,
+          "width": 10,
+          "height": 10,
+          "duration": {
+            "from": 270.066,
+            "to": 280
+          },
+          "libraryTitle": "Statements",
+          "action": {
+            "library": "H5P.Summary 1.10",
+            "params": {
+              "intro": "Choose the correct statement.",
+              "summaries": [
+                {
+                  "subContentId": "fe051ea0-d18f-4298-956f-304ca33b4f62",
+                  "summary": [
+                    "<p>Um das linke Bild zu erschaffen, wurde der Stil vom rechten Bild auf das mittlere übertragen.</p>\n",
+                    "<p>Um das linke Bild zu erschaffen, wurde der Stil vom mittleren Bild auf das rechte übertragen.</p>\n",
+                    "<p>Um das rechte Bild zu erschaffen, wurde der Stil vom linken Bild auf das mittlere übertragen.</p>\n"
+                  ],
+                  "tip": ""
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "solvedLabel": "Progress:",
+              "scoreLabel": "Wrong answers:",
+              "resultLabel": "Your result",
+              "labelCorrect": "Correct.",
+              "labelIncorrect": "Incorrect! Please try again.",
+              "alternativeIncorrectLabel": "Incorrect",
+              "labelCorrectAnswers": "Correct answers.",
+              "tipButtonLabel": "Show tip",
+              "scoreBarLabel": "You got :num out of :total points",
+              "progressText": "Progress :num of :total"
+            },
+            "subContentId": "e78ee02d-cd7c-44aa-9f17-ee84b2b67c97",
+            "metadata": {
+              "contentType": "Summary",
+              "license": "U",
+              "title": "Unbenannt: Summary"
+            }
+          },
+          "pause": false,
+          "displayType": "button",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            }
+          },
+          "label": "<p>Click here!</p>\n"
+        },
+        {
+          "x": 4.672897196261682,
+          "y": 31.12033195020747,
+          "width": 10,
+          "height": 10,
+          "duration": {
+            "from": 95.066,
+            "to": 105.066
+          },
+          "libraryTitle": "Single Choice Set",
+          "action": {
+            "library": "H5P.SingleChoiceSet 1.11",
+            "params": {
+              "choices": [
+                {
+                  "subContentId": "b678f02a-6d02-4340-b86f-79d5350ccd49",
+                  "answers": [
+                    "<p>2012</p>\n",
+                    "<p>2016</p>\n",
+                    "<p>2013</p>\n"
+                  ],
+                  "question": "<p>Dank DL-Algorithmen werden seit ... in der Bildklassifikation sehr niedrige Fehlerquoten erreicht.</p>\n"
+                },
+                {
+                  "subContentId": "c8920100-648f-40f2-b75f-60e5b2e79dd1"
+                }
+              ],
+              "overallFeedback": [
+                {
+                  "from": 0,
+                  "to": 100
+                }
+              ],
+              "behaviour": {
+                "autoContinue": true,
+                "timeoutCorrect": 2000,
+                "timeoutWrong": 3000,
+                "soundEffectsEnabled": true,
+                "enableRetry": true,
+                "enableSolutionsButton": true,
+                "passPercentage": 100
+              },
+              "l10n": {
+                "nextButtonLabel": "Next question",
+                "showSolutionButtonLabel": "Show solution",
+                "retryButtonLabel": "Retry",
+                "solutionViewTitle": "Solution list",
+                "correctText": "Correct!",
+                "incorrectText": "Incorrect!",
+                "muteButtonLabel": "Mute feedback sound",
+                "closeButtonLabel": "Close",
+                "slideOfTotal": "Slide :num of :total",
+                "scoreBarLabel": "You got :num out of :total points",
+                "solutionListQuestionNumber": "Question :num",
+                "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+                "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet.",
+                "shouldSelect": "Should have been selected",
+                "shouldNotSelect": "Should not have been selected"
+              }
+            },
+            "subContentId": "88fef5d0-81be-4ef1-b552-be6c3b5c1aca",
+            "metadata": {
+              "contentType": "Single Choice Set",
+              "license": "U",
+              "title": "Unbenannt: Single Choice Set"
+            }
+          },
+          "pause": false,
+          "displayType": "button",
+          "buttonOnMobile": false,
+          "adaptivity": {
+            "correct": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "wrong": {
+              "allowOptOut": false,
+              "message": ""
+            },
+            "requireCompletion": false
+          },
+          "label": "<p>Click here!</p>\n"
+        }
+      ]
+    },
+    "summary": {
+      "task": {
+        "library": "H5P.Summary 1.10",
+        "params": {
+          "intro": "<p>Choose the correct statement.</p>\n",
+          "summaries": [
+            {
+              "subContentId": "49c4921a-2c24-416a-91d2-198740b131f2",
+              "tip": ""
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "solvedLabel": "Progress:",
+          "scoreLabel": "Wrong answers:",
+          "resultLabel": "Your result",
+          "labelCorrect": "Correct.",
+          "labelIncorrect": "Incorrect! Please try again.",
+          "alternativeIncorrectLabel": "Incorrect",
+          "labelCorrectAnswers": "Correct answers.",
+          "tipButtonLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "progressText": "Progress :num of :total"
+        },
+        "subContentId": "da429674-dca2-4ea5-8bbb-6ff87dce7a10",
+        "metadata": {
+          "contentType": "Summary",
+          "license": "U",
+          "title": "Unbenannt: Summary"
+        }
+      },
+      "displayAt": 3
+    }
+  },
+  "override": {
+    "autoplay": false,
+    "loop": false,
+    "showBookmarksmenuOnLoad": false,
+    "showRewind10": true,
+    "deactivateSound": false
+  },
+  "l10n": {
+    "interaction": "Interaction",
+    "play": "Play",
+    "pause": "Pause",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "quality": "Video Quality",
+    "captions": "Captions",
+    "close": "Close",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit Fullscreen",
+    "summary": "Open summary dialog",
+    "bookmarks": "Bookmarks",
+    "endscreen": "Submit screen",
+    "defaultAdaptivitySeekLabel": "Continue",
+    "continueWithVideo": "Continue with video",
+    "playbackRate": "Playback Rate",
+    "rewind10": "Rewind 10 Seconds",
+    "navDisabled": "Navigation is disabled",
+    "sndDisabled": "Sound is disabled",
+    "requiresCompletionWarning": "You need to answer all the questions correctly before continuing.",
+    "back": "Back",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "currentTime": "Current time:",
+    "totalTime": "Total time:",
+    "singleInteractionAnnouncement": "Interaction appeared:",
+    "multipleInteractionsAnnouncement": "Multiple interactions appeared.",
+    "videoPausedAnnouncement": "Video is paused",
+    "content": "Content",
+    "answered": "@answered answered",
+    "endcardTitle": "@answered Question(s) answered",
+    "endcardInformation": "You have answered @answered questions, click below to submit your answers.",
+    "endcardInformationNoAnswers": "You have not answered any questions.",
+    "endcardInformationMustHaveAnswer": "You have to answer at least one question before you can submit your answers.",
+    "endcardSubmitButton": "Submit Answers",
+    "endcardSubmitMessage": "Your answers have been submitted!",
+    "endcardTableRowAnswered": "Answered questions",
+    "endcardTableRowScore": "Score",
+    "endcardAnsweredScore": "answered",
+    "endCardTableRowSummaryWithScore": "You got @score out of @total points for the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endCardTableRowSummaryWithoutScore": "You have answered the @question that appeared after @minutes minutes and @seconds seconds.",
+    "endcardInformationOnSubmitButtonDisabled": "You have answered @answered questions."
+  }
+}

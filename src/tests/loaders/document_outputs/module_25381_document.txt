@@ -1,0 +1,40 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: 2.2.1. Checkliste für "Inakzeptables Risiko"
+
+--- Spalten-Inhalte ---
+[Text] Gemeinsam nutzen Lea und Martina eine vereinfachte Checkliste basierend auf Artikel 5 des EU AI Acts, um festzustellen, ob “SafetyAnywhere” in diese Risikogruppe fallen könnte.
+[Text] Leas vereinfachte Compliance Checkliste Art. 5
+[Text] (1)(a) Nutzt das System unterschwellige Techniken, um Individuen zu manipulieren?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(b) Nutzt das System Schwachstellen spezifischer Gruppen wie Kinder oder Menschen mit Behinderung aus, die zu Verhaltensweisen führen können, die physischen oder psychischen Schaden verursachen?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(c) Beinhaltet das System soziale Bewertungen (“Social Scoring”) durch öffentliche Stellen, die zu Benachteiligungen führen können?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(d) Nutzt das System Risikobewertungen, um vorherzusagen, ob eine Person eine Straftat begehen wird, basierend auf Profiling oder der Bewertung von Persönlichkeitsmerkmalen?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(f) Nutzt das System emotionale Erkennung in Arbeitsplätzen, Bildungseinrichtungen oder anderen sensiblen Kontexten?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(h) Nutzt das System biometrische Echtzeit-Fernidentifizierung zu Strafverfolgungszwecken?
+[Accordion Panel 1] ?
+[Text] Möglicherweise ja. Begründung: Das System verwendet Gesichtserkennung zur Echtzeitüberwachung, was es in die Risikoklasse "inakzeptables Risiko" einordnen könnte. Artikel 5 verbietet zwar den Einsatz von biometrischen Fernidentifizierungssystemen in Echtzeit in öffentlich zugänglichen Räumen, aber es gibt Ausnahmen für sehr begrenzte Strafverfolgungszwecke (z.B. die Suche nach einem vermissten Kind, die Verhinderung einer spezifischen und unmittelbaren terroristischen Bedrohung oder die Lokalisierung oder Identifizierung einer Person, die eine Straftat begangen hat oder verdächtigt wird). Diese Ausnahmen unterliegen jedoch strengen Schutzvorkehrungen und einer vorherigen Genehmigung. Obwohl diese Ausnahmen hier vielleicht greifen könnten, ist das System dennoch verboten, da es nicht unter die sehr engen Ausnahmen fällt, die in Artikel 5 aufgeführt sind.
+[Text] Ergebnis Die Liste zeigt, dass die Nutzung von Gesichtserkennung zur Echtzeitüberwachung das System “SafetyAnywhere” in die Risikoklasse “inakzeptables Risiko” fallen könnte. Systeme in dieser Kategorie sind unabhängig von ihrem potenziellen Nutzen verboten. Lea legt ihre Erkenntnisse zusammen und lehnt das vorgeschlagene Produkt in dieser Form vorerst ab.
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 313,
+  "module_id": 25381,
+  "fullname": "2.2.1. Checkliste für \"Inakzeptables Risiko\"",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=25381"
+}

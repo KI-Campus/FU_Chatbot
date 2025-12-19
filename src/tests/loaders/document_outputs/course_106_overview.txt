@@ -1,0 +1,34 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Course Title: Einführung in die KI
+ Course Summary: Der Onlinekurs „Einführung in die KI" bringt Euch die wesentlichen technischen Aspekte und Funktionsweisen von Künstlicher Intelligenz (KI) näher. Mithilfe von Videos, Texten und praktischen Übungen wird Euch ein allgemeines Verständnis für KI vermittelt, damit Ihr lernen könnt, KI im privaten und beruflichen Leben einzuschätzen und sinnvoll anzuwenden. Im Onlinekurs beschäftigt Ihr euch mit folgenden Fragen:  Was ist KI? Warum ist es wichtig sich mit dem Thema zu befassen? Welche neuen Fähigkeiten bringt das maschinelle Lernen? Wie kommen diese zustande?Was ist Generative KI - und wie kannst du es verwenden? Welche Risiken entstehen mit KI? Wie können wir damit umgehen? Welchen Einfluss hat KI auf unsere Zukunft? Wie können wir uns vorbereiten? Bescheinigung:  In diesem Onlinekurs erhaltet Ihr eine Teilnahmebestätigung zum Download, wenn Ihr alle Inhalte aufgerufen habt. Zusätzlich erhaltet Ihr einen Leistungsnachweis, wenn Ihr mindestens 60% der Gesamtpunktzahl aller benoteten Aufgaben erreicht habt.  Der Kurs wurde ursprünglich von der applieadAI-Initiative der UnternehmerTUM für den KI-Campus entwickelt und erfuhr durch das appliedAI Institute for Europe ein Update.
+Course Topics:
+Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 106,
+  "shortname": "Einführung KI",
+  "fullname": "Einführung in die KI",
+  "type": "Kurs",
+  "source": "Moodle",
+  "url": "https://moodle.ki-campus.org/course/view.php?id=106"
+}

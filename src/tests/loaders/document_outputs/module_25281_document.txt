@@ -1,0 +1,35 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: 1.2.1. Die Risikoklassen
+
+--- Spalten-Inhalte ---
+[Text] Gewinnen wir hier über die vier “Risikoklassen” einen knappen Überblick, den wir dann in Modul 2 ausbauen werden.
+Inakzeptables Risiko (Art. 5): Definition: Dies sind die KI-Systeme (Art. 5), die ab Februar 2025 verboten sind, weil sie sich auf die Grundrechte, Gesundheit oder die Sicherheit der Bürger*innen auswirken. Verpflichtungen: Diese Systeme sind gänzlich verboten, es sei denn, es liegt ein enger Rechtfertigungsgrund vor (z. B. bestimmte Anwendungen zur Strafverfolgung mit richterlicher Genehmigung). Beispiele: Social-Scoring-Systeme, manipulative KI, die auf bestimmte Personen oder Gruppen abzielt und dieser Person oder anderen erheblichen Schaden zufügen kann, und bestimmte Anwendungen biometrischer Echtzeit-Identifikation im öffentlichen Raum für den Zweck der Strafverfolgung. Wie etwa ein KI-System, das auf der Grundlage von verhaltensbezogenen und psychologischen Konstrukten Risikoskalen für die gewalttätige Rückfälligkeit entwickelt. Das klingt wie aus einem dystopischen Roman, ist aber in den USA unter dem Softwarenamen “COMPAS” bereits Realität.
+
+Hohes Risiko (Art.6, An.I, An.III): Definition: Diese Systeme (Art.6, An.I, An.III) könnten sich auf die Grundrechte, Gesundheit oder die Sicherheit auswirken, etwa im Gesundheitswesen, in der Bildung oder bei der Strafverfolgung. Verpflichtungen: Hochrisiko KI-Systeme sind grundsätzlich erlaubt, dürfen aber nur in Verkehr gebracht werden, wenn sie nachweislich umfassende Anforderungen einhalten (Art.8-21, Art.4, Art.26). Beispiele: Eine KI, die Patienten in einer Notaufnahme priorisiert; eine KI, die in der Personalbeschaffungssoftware, bei der Verwaltung des Zugangs zu öffentlichen Diensten oder bei der Auswertung von Beweisen in Rechtsfällen eingesetzt wird. Denken wir etwa an einen Herzschrittmacher; es ist durchaus gut und wichtig, dass es dieses Produkt gibt, sollte jedoch erst dann Patient*innen implantiert werden, wenn das Produkt nachweislich sicher und wirkungsvoll ist.
+
+Zeit für ein Quiz! Welche der folgenden KI-Anwendungen würde nach der vorhin gelernten Definition als ein System mit “Hohem Risiko” gelten? A) Eine KI, die die Zuverlässigkeit von Beweisen bei strafrechtlichen Ermittlungen bewertet. B) Ein KI-System, das in deiner Mailbox Ordnung schafft, indem es die Spam-Nachrichten herausfiltert. C) Ein Chatbot, der Kunden dabei hilft, ihre jeweiligen Online-Bestellungen zu verfolgen.: Antwort A) KI-Systeme, die in Strafverfolgungskontexten eingesetzt werden, haben das Potenzial, die Grundrechte und Freiheiten des Einzelnen erheblich zu beeinträchtigen, was sie im Rahmen des EU AI Act zu einem KI System mit hohem Risiko klassifiziert.
+
+Begrenztes Risiko (Art.50): Definition: Diese Systeme (Art.50) bergen ein geringeres Risiko in Bezug auf die Grundrechte, die Gesundheit und die Sicherheit. Der EU AI Act verpflichtet die Anbieter jedoch, die Nutzer über den Einsatz künstlicher Intelligenz zu informieren und die von der KI erzeugten Ergebnisse als solche zu deklarieren. Verpflichtungen: Anbieter müssen Nutzer informieren, wenn sie mit diesen KI-Systemen interagieren. Anbieter und Betreiber sind zudem verpflichtet relevante Mitarbeitende, andere Stakeholder und betroffene Personen mit geeigneten KI-Kompetenzen auszustatten (Art.50, Art.4). Beispiele: Chatbots und generative KI (Texte, Bilder, Videos). Stell dir etwa einen Chatbot vor, dem du auf einer Website begegnest und der dir bei einfachen Fragen hilft. Er trifft zwar keine lebenswichtigen Entscheidungen für dich, aber du verdienst es dennoch zu wissen, dass am anderen Ende eine KI antwortet.
+
+Geringes Risiko: Definition: KI-Anwendungen im geschäftlichen oder öffentlichen Gebrauch, die in keine der anderen Klassen fallen, also ein geringes Risikopotential darstellen. Verpflichtungen: Anbieter solcher KI-Systeme und Betreiber sind hier wieder verpflichtet relevante Mitarbeitende, andere Stakeholder und betroffene Personen mit geeigneten KI-Kompetenzen auszustatten (Art.4); zudem wirbt die EU Kommission für die freiwillige Einhaltung der Anforderungen, die sich sonst lediglich auf KI-Systeme mit hohem Risiko beziehen würden. Beispiele: Spam-Filter, KI-basierte Qualitätskontrolle in der Produktion, KI in Videospielen und automatische E-Mail-Sortierung. Stell dir deine täglichen Interaktionen mit einem virtuellen Assistenten vor, der dir hilft, Erinnerungen zu setzen oder deinen Posteingang zu sortieren. Diese Systeme bergen keine nennenswerten Risiken hinsichtlich Grundrechte, Gesundheit und Sicherheit, aber sie tragen dennoch dazu bei, dein Leben besser zu organisieren.
+
+Denke nochmal an den vorhin erwähnten virtuellen Assistenten. Wie können die Entwickler*innen sicherstellen, dass Fairness und Transparenz gewährleistet sind, auch wenn dies nicht gesetzlich vorgeschrieben ist?: Obwohl es keine zusätzlichen verbindlichen Anforderungen durch den AI Act gibt, können Entwickler*innen das Vertrauen stärken, indem sie sich freiwillig an die Vorgaben für Systeme mit hohem Risiko halten.
+[Text] Nachdem du nun jede Kategorie erkundet hast, ist es Zeit für eine Herausforderung! Im Folgenden findest du mehrere Szenarien mit unterschiedlichen KI-Anwendungen.
+[Drag Text] Ordne jeder die richtige Risikoklasse zu:
+Wörter in Asterisken (*...*) müssen in die richtige Lücke gezogen werden.
+Szenario 1: Eine KI, die in einer Schule für die Beurteilung von Lernenden eingesetzt wird. *Hohes Risiko* Szenario 2: Ein Spam-Filter, der bei der Organisation von E-Mails hilft. *Geringes Risiko* Szenario 3: Ein soziales Punktesystem, das Personen aufgrund ihres Verhaltens bewertet. *Inakzeptables Risiko* Szenario 4: Ein Chatbot, der den Kundenservice unterstützt. *Begrenztes Risiko*
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 313,
+  "module_id": 25281,
+  "fullname": "1.2.1. Die Risikoklassen",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=25281"
+}

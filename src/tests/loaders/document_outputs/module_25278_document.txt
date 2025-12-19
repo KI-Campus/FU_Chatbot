@@ -1,0 +1,25 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: 1.1.3. Transparenz
+
+--- Spalten-Inhalte ---
+[Text] Eine der größten Herausforderungen im Bereich der KI ist die Transparenz - oft auch als „Blackbox-Problem“ bezeichnet. Transparenz in der KI bedeutet, dass alle mit der KI interagierenden Parteien in der Lage sein sollten zu verstehen, wie und warum ein KI-System zu einem bestimmten Ergebnis kommt.
+[Text] Stell dir ein Krankenhaus vor, das ein KI-System einsetzt, um auf der Grundlage der Testergebnisse, der Krankengeschichte und der Symptome der Patient*innen eine Diagnose zu stellen. Wird bei einer Patientin etwa eine bestimmte Krankheit diagnostiziert - z. B. eine seltene Form von Krebs -, sollten sowohl ihre Ärzte bzw. Ärztinnen, als auch sie selbst bestmöglich verstehen, wie das KI-System zu dieser Schlussfolgerung gekommen ist, um informierte und bewusste Entscheidungen treffen zu können. Ist das Ergebnis auf bestimmte Muster in den Laborergebnissen der Patientin zurückzuführen? Oder hat das System in der Krankengeschichte der Patientin Zusammenhänge gefunden, die auf die Diagnose hindeuten? Ohne diese Transparenz könnte es den behandelnden Ärzt*innen schwerfallen, den Vorschlägen der KI zu vertrauen, insbesondere wenn sie ihrem eigenen Fachwissen widersprechen. Vielleicht noch schwerwiegender, könnte die Patientin verwirrt oder misstrauisch werden, was dem gegenseitigen Vertrauen zwischen ihr und ihren Ärzt:innen stark zusetzen könnte. Der EU AI Act geht auf dieses Problem ein, indem es die Notwendigkeit der Erklärbarkeit (engl. “explainability”) hervorhebt und als vorgeschriebene Pflicht an bestimmte KI-Systeme stellt. Das soll dazu beitragen, dass KI-Systeme transparent, interpretierbar, robust und fair gestaltet werden.
+[Text] Welche Fragen tragen zur Transparenz bei? Du bist eine Student*in und versuchst zu verstehen, warum dir ein KI-basiertes Benotungssystem eine schlechtere Note als erwartet gegeben hat. Welche Fragen würdest du stellen, um sicherzustellen, dass das System transparent und fair ist?
+[Quiz] Mehrere Antworten sind richtig:
+Korrekte Antwort(en): Wie wurde meine Note berechnet?, Welche Daten wurden für das Training dieses Einstufungsmodells verwendet?
+Inkorrekte Antwort(en): Wer hat dieses KI-System gebaut?
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 313,
+  "module_id": 25278,
+  "fullname": "1.1.3. Transparenz",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=25278"
+}

@@ -1,0 +1,28 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: 1.1.1. Eine Technologie wie keine Andere
+
+--- Spalten-Inhalte ---
+[Text] Stell dir ein KI-System vor, das ein autonomes Fahrzeug steuert. Um die KI fit für den Verkehr zu machen, trainieren Ingenieur*innen sie mit umfangreichen Fahrdaten. So lernt das System mit der Zeit, Passanten, Verkehrsschilder und komplexe Situationen wie Kreuzungen zu erkennen und reagiert durch die gelernten Muster. Im Gegensatz zur klassischen Software, die exakt das ausführt, was Entwickler*innen ihr vorgeben, ist ein KI-System dynamisch und lernt aus Erfahrung. Traditionelle Software folgt festen Regeln und muss manuell aktualisiert werden, während die KI im Feld lernt. Nun stell dir vor, das Fahrzeug fährt in eine Baustelle, wo eine unkonventionelle Umleitung eingerichtet ist. Zusätzlich blendet die tiefstehende Herbstsonne die Kamera, sodass Bodenmarkierungen schwer zu erkennen sind. Für ein KI-System, das nie zuvor mit dieser Situation konfrontiert wurde, ist es eine Herausforderung, aus den Trainingsdaten eine passende Reaktion abzuleiten. Klassische Software würde in diesem Fall vorgegebene Anweisungen befolgen, doch die KI muss hier improvisieren. Fehlen in ihren Daten ähnliche Szenarien, könnte das Fahrzeug zögern oder einen Fehler machen.
+[Drag & Drop] Ordne die Elemente den Kategorien zu:
+Kategorien: KI-System, Traditionelle Software
+Elemente: Verhalten kann sich im Laufe der Zeit ändern, Führt Aufgaben basierend auf festem Code aus, Kann durch erneutes Training weiterentwickelt werden, Updates erfordern manuelle Eingriffe, Verhalten ist vorhersehbar, Lernt aus Daten und passt sich an
+
+Korrekte Zuordnung:
+  KI-System: Verhalten kann sich im Laufe der Zeit ändern, Kann durch erneutes Training weiterentwickelt werden, Lernt aus Daten und passt sich an
+  Traditionelle Software: Führt Aufgaben basierend auf festem Code aus, Updates erfordern manuelle Eingriffe, Verhalten ist vorhersehbar
+
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 313,
+  "module_id": 25276,
+  "fullname": "1.1.1. Eine Technologie wie keine Andere",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=25276"
+}

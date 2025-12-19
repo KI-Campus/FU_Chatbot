@@ -1,0 +1,337 @@
+{
+  "scoreShow": "Überprüfen",
+  "tryAgain": "Wiederholen",
+  "scoreExplanation": "Richtige Antworten geben +1 Punkte. Bei falschen Antworten gibt es -1 Punkt. Die kleinstmögliche Punktzahl ist 0.",
+  "question": {
+    "settings": {
+      "size": {
+        "width": 1200,
+        "height": 600
+      }
+    },
+    "task": {
+      "elements": [
+        {
+          "x": 13.357843137254902,
+          "y": 88.23529411764706,
+          "width": 11.16470588235294,
+          "height": 2.8926470588235293,
+          "dropZones": [
+            "1",
+            "0"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:1.125em\">Automatische Mustererkennung</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "cbd41c7b-4f67-4e23-aae5-6eb1953539db"
+          },
+          "backgroundOpacity": 50,
+          "multiple": false
+        },
+        {
+          "x": 30.392156862745097,
+          "y": 80.88235294117646,
+          "width": 11.16470588235294,
+          "height": 5.6499999999999995,
+          "dropZones": [
+            "0",
+            "1"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:1.125em\">Schnelle Verarbeitung und Vergleich großer Datenmengen</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "2d2d5049-6423-4585-99a8-c5b3a2ba004a"
+          },
+          "backgroundOpacity": 50,
+          "multiple": false
+        },
+        {
+          "x": 1.2254901960784315,
+          "y": 85.7843137254902,
+          "width": 7.488235294117647,
+          "height": 3.8117647058823527,
+          "dropZones": [
+            "0",
+            "1"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:1.125em\">Bewusstsein als Prämisse</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "61879f8a-694d-4c3e-911c-7ddf5908a2c4"
+          },
+          "backgroundOpacity": 50,
+          "multiple": false
+        },
+        {
+          "x": 47.42647058823529,
+          "y": 88.23529411764706,
+          "width": 8.407352941176471,
+          "height": 2.8926470588235293,
+          "dropZones": [
+            "0",
+            "1"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:1.125em\">Emotionalität</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "48188223-39e2-4e02-89a4-5129e6a030c5"
+          },
+          "backgroundOpacity": 50,
+          "multiple": false
+        },
+        {
+          "x": 60.78431372549019,
+          "y": 88.23529411764706,
+          "width": 6.569117647058824,
+          "height": 2.8926470588235293,
+          "dropZones": [
+            "0",
+            "1"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:1.125em\">Soziabilität</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "deca9888-fe32-4ab4-b1b2-ad14da39d7dc"
+          },
+          "backgroundOpacity": 50,
+          "multiple": false
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "width": 25.735294117647058,
+          "height": 30.288461538461537,
+          "dropZones": [],
+          "type": {
+            "library": "H5P.Image 1.1",
+            "params": {
+              "contentName": "Bild",
+              "alt": "Kopf",
+              "file": {
+                "path": "images/Kopf_Mensch-BEFMkLX-.PNG",
+                "mime": "image/png",
+                "copyright": {
+                  "license": "U"
+                },
+                "width": 535,
+                "height": 629
+              },
+              "decorative": false,
+              "expandImage": "Bild vergrößern",
+              "minimizeImage": "Bild verkleinern"
+            },
+            "subContentId": "4f806597-53fe-4e35-92f5-681c826ec36c",
+            "metadata": {
+              "contentType": "Image",
+              "license": "U",
+              "title": "Kopf Mensch"
+            }
+          },
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "x": 44.65777051561365,
+          "y": 7.352941176470588,
+          "width": 40.12799564270152,
+          "height": 25.735294117647058,
+          "dropZones": [],
+          "type": {
+            "library": "H5P.Image 1.1",
+            "params": {
+              "contentName": "Bild",
+              "alt": "Computer",
+              "file": {
+                "path": "images/Computer-aWuuje3m.png",
+                "mime": "image/png",
+                "copyright": {
+                  "license": "U"
+                },
+                "width": 734,
+                "height": 469
+              },
+              "decorative": false,
+              "expandImage": "Bild vergrößern",
+              "minimizeImage": "Bild verkleinern"
+            },
+            "subContentId": "8ea6849b-1b3b-4495-86eb-92d1c9df2cde",
+            "metadata": {
+              "contentType": "Image",
+              "license": "U",
+              "title": "Unbenannt: Image"
+            }
+          },
+          "backgroundOpacity": 100,
+          "multiple": false
+        },
+        {
+          "x": 88.23529411764706,
+          "y": 88.23529411764706,
+          "width": 7.488235294117647,
+          "height": 2.8926470588235293,
+          "dropZones": [
+            "0",
+            "1"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:1.125em;\">Fehlerfreie Berechnung</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "f21a0ef4-e218-4027-a717-33af09efb021"
+          },
+          "backgroundOpacity": 50,
+          "multiple": false
+        },
+        {
+          "x": 71.91780821917808,
+          "y": 83.33333333333333,
+          "width": 10.797058823529412,
+          "height": 4.730882352941176,
+          "dropZones": [
+            "0",
+            "1"
+          ],
+          "type": {
+            "library": "H5P.AdvancedText 1.1",
+            "params": {
+              "text": "<p><span style=\"font-size:1.125em;\">Flexibilität und Fähigkeit zur Schlussfolgerung</span></p>\n"
+            },
+            "metadata": {
+              "contentType": "Text",
+              "license": "U",
+              "title": "Unbenannt: Text"
+            },
+            "subContentId": "4a168dc4-4375-4563-ba81-6ba536ff220d"
+          },
+          "backgroundOpacity": 50,
+          "multiple": false
+        }
+      ],
+      "dropZones": [
+        {
+          "x": 2.450980392156863,
+          "y": 0,
+          "width": 22.977941176470587,
+          "height": 26.65441176470588,
+          "correctElements": [
+            "2",
+            "4",
+            "8",
+            "3"
+          ],
+          "showLabel": false,
+          "backgroundOpacity": 0,
+          "tipsAndFeedback": {
+            "tip": ""
+          },
+          "single": false,
+          "autoAlign": false,
+          "label": "<div>Menschliche Intelligenz</div>\n"
+        },
+        {
+          "x": 44.11764705882353,
+          "y": 7.352941176470588,
+          "width": 40.44117647058823,
+          "height": 25.735294117647058,
+          "correctElements": [
+            "0",
+            "1",
+            "7"
+          ],
+          "showLabel": false,
+          "backgroundOpacity": 0,
+          "tipsAndFeedback": {
+            "tip": ""
+          },
+          "single": false,
+          "autoAlign": false,
+          "label": "<div>Künstliche Intelligenz</div>\n"
+        }
+      ]
+    }
+  },
+  "overallFeedback": [
+    {
+      "from": 0,
+      "to": 80,
+      "feedback": "Fast! Versuch&#039;s nochmal."
+    },
+    {
+      "from": 81,
+      "to": 100,
+      "feedback": "Super, alles richtig!"
+    }
+  ],
+  "behaviour": {
+    "enableRetry": true,
+    "enableCheckButton": true,
+    "singlePoint": false,
+    "applyPenalties": false,
+    "enableScoreExplanation": false,
+    "dropZoneHighlighting": "dragging",
+    "autoAlignSpacing": 2,
+    "enableFullScreen": false,
+    "showScorePoints": true,
+    "showTitle": false,
+    "backgroundOpacity": "50"
+  },
+  "grabbablePrefix": "Ziehbares Element {num} von {total}.",
+  "grabbableSuffix": "Abgelegt in Ablagezone {num}.",
+  "dropzonePrefix": "Ablagezone {num} von {total}.",
+  "noDropzone": "Keine Ablagezone.",
+  "tipLabel": "Hinweis zeigen",
+  "tipAvailable": "Hinweis verfügbar",
+  "correctAnswer": "Richtige Antwort",
+  "wrongAnswer": "Falsche Antwort",
+  "feedbackHeader": "Rückmeldung",
+  "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+  "scoreExplanationButtonLabel": "Zeige Erklärung der Punktevergabe",
+  "a11yCheck": "Die Antworten überprüfen. Die Eingaben werden als richtig, falsch oder unbeantwortet markiert.",
+  "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet.",
+  "localize": {
+    "fullscreen": "Vollbild",
+    "exitFullscreen": "Vollbild beenden"
+  },
+  "submit": "Submit"
+}

@@ -1,0 +1,42 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: 2.3.1. Inakzeptables Risiko ausschließen
+
+--- Spalten-Inhalte ---
+[Text] Lea ruft ihre Check-Liste auf, die sie vom Compliance Officer, Martina, erhalten hatte, um “HappyWorkers” auf inakzeptable Risiken zu testen.
+[Text] Leas vereinfachte Compliance Checkliste Art. 5
+[Text] (1)(a) Nutzt das System unterschwellige Techniken, um Individuen zu manipulieren?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(b) Nutzt das System Schwachstellen spezifischer Gruppen wie Kinder oder Menschen mit Behinderung aus, die zu Verhaltensweisen führen können, die physischen oder psychischen Schaden verursachen?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(c) Beinhaltet das System soziale Bewertungen (“Social Scoring”) durch öffentliche Stellen, die zu Benachteiligungen führen können?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(d) Nutzt das System Risikobewertungen, um vorherzusagen, ob eine Person eine Straftat begehen wird, basierend auf Profiling oder der Bewertung von Persönlichkeitsmerkmalen?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(f) Nutzt das System emotionale Erkennung in Arbeitsplätzen, Bildungseinrichtungen oder anderen sensiblen Kontexten?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] (1)(h) Nutzt das System biometrische Echtzeit-Fernidentifizierung zu Strafverfolgungszwecken?
+[Accordion Panel 1] ?
+[Text] Nein
+[Text] Ergebnis Die Anwendung scheint in diesem Rahmen vorerst nicht in diese Kategorie zu fallen. Lea vereinbart daraufhin ein Meeting mit Martina, um zusammen zu prüfen, ob das KI-System in die Kategorie “Hohes Risiko” fallen könnte.
+[Accordion Panel 1] Begründung
+[Text] Das KI-System "HappyWorkers" fällt nicht unter die Kategorie "Inakzeptables Risiko", da es keine der in Artikel 5 gelisteten Verbotsmerkmale aufweist.
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 313,
+  "module_id": 25385,
+  "fullname": "2.3.1. Inakzeptables Risiko ausschließen",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=25385"
+}

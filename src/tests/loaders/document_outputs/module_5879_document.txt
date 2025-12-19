@@ -1,0 +1,35 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: Wo werden DL Algorithmen in der Medizin eingesetzt?
+
+Transcript:
+ Also haben wir mit Deep Learning schon fast eine Geschichte von knapp 70 Jahren. Du hast jetzt einige Sachen genannt, die tatsächlich in der in der Vergangenheit lagen. Werfen wir vielleicht mal einen Blick auf Beispiele aus dem Hier und Jetzt. Es gibt ja ganz viele verschiedene Felder, in denen Deep Learning heutzutage zur Anwendung kommt. Vielleicht können wir mal einige herausgreifen und wichtige nennen. Einige haben wir auch bereits genannt. Kerstin, was würdest du sagen, vielleicht noch mal beginnend mit einem Beispiel aus der Medizin, möglicherweise? Also in der Medizin werden viel diese sogenannten Convolutional Neural Networks eingesetzt, also zum Beispiel in der Erkennung von Hautkrebs oder auch bei der Segmentierung von Bildgebungsdaten, zum Beispiel der Prostata oder auch von Läsionen im Gehirn zum Beispiel. Natürlich, es gibt Chatbots in der Medizin, da gibt es ja auch Firmen, die das machen, wie Ada Health, zum Beispiel, es gibt auch einen Online-Psychotherapeuten. Also da passiert viel. Viel auch zum Beispiel in der Spracherkennung. Also kann man anhand der Sprache erkennen, ob jemand eine bestimmte Erkrankung hat oder ob jemand zum Beispiel depressiv ist. Das wäre so ein Beispiel oder auch, ob es vielleicht in Richtung Demenz schon geht. Oder ein anderes Beispiel ist auch Schizophrenie. Ob die Sprache so ein bisschen zerfasert und teilweise vielleicht undeutlich wird bzw. ob sie schon wahnhafte Züge erkennen lassen. Da passiert momentan sehr, sehr viel. Man muss da halt immer natürlich aufpassen und gucken, auf was für Daten wurde das trainiert? Zum Beispiel Sprache, wenn es nur auf Sprachdaten von Männern trainiert wurde, dann ist es ist natürlich schwierig, das auf Frauen zu generalisieren, wenn es nur auf einen bestimmten Dialekt trainiert wurde, dann ist schwierig für andere Dialekte und Sprachen. Aber da passiert unglaublich viel. Und um noch ein ganz interessantes Thema anzusprechen, es gibt sogenannte Generative Adversarial Networks. Das sind Netzwerke, in denen zwei unterschiedliche Netzwerke konkurrieren, nämlich eines, das neue Daten generiert, nämlich sogenannte Fake Daten und ein anderes Netzwerk, das versucht, zwischen den Fake Daten und tatsächlichen Daten zu unterscheiden. Und in dem die beiden konkurrieren, werden diese generierten Daten eben immer besser und werden den tatsächlichen Daten immer ähnlicher. Und das setzt man z.B. in der Medizin ein, um Daten zu generieren, also neu zu erschaffen. Und da kann man zum Beispiel aus MRT Daten, CT Bilder erzeugen. Das ist natürlich sehr interessant, wenn dann für eine bestimmte Person bestimmte Daten nicht vorhanden sind. Wenn man die dann aus anderen vorhandenen Modalitäten vorhersagen kann. Ist es auch so, dass die KI, das Deep Learning, oder mittels Deep Learning mittlerweile auch möglicherweise Behandlungsmethoden vorgeschlagen werden können, oder ist das nach wie vor dem Mediziner überlassen? Also die Idee ist natürlich schon, dass man das dann auch benutzt, um zu sagen, welche Person jetzt eigentlich von einer bestimmten Behandlung profitieren wird. Und jetzt zum Beispiel in der Onkologie und bei Tumor (unklar), da gibt es sehr viele Ideen und auch Ansätze, wie man das machen kann. Das Grundproblem nur, das wir haben, ist, dass wir oft nicht gute Daten dafür haben. Wenn wir jetzt vorhersagen wollen, welche Therapie bei wem am besten ist, brauchen wir natürlich Daten von vielen Leuten, die unterschiedliche Therapien bekommen haben und dann auch die Verläufe dazu. Und im Bereich der Multiple Sklerose haben wir ein Projekt dazu, wo es nicht direkt darum geht, die Therapie vorherzusagen, aber vorherzusagen, wie sich die Krankheit entwickeln wird. Und dass es eben auch schon eine sehr, sehr schwierige Aufgabe, weil das eben sehr unterschiedlich ist. Deswegen die Erkrankung auch die Erkrankung mit den tausend Gesichtern genannt. Und dann natürlich auch immer wieder davon abhängt, welche Medikamente man gibt. Und im Bereich MS gibt es eben verschiedene Medikamente, die zugelassen sind und die teilweise starke Nebenwirkungen haben. Und dann ist das so ein bisschen so ein Ausprobieren. Man guckt, was verträgt die Person gut? Kommt es zu einem neuen Schub? Wenn ja, wechselt man das Medikament und geht so weiter. Das ist so ein bisschen so ein iterativer Prozess und man kann sich hier natürlich ganz gut vorstellen, dass das recht schwer ist, hier einen guten, schönen Datensatz zu generieren, den man dann wirklich auch dazu verwendet, Vorhersagen zu machen. Aber natürlich ist das genau die Grundidee auch von personalisierter Medizin, dass man die Informationen über eine Person ausnutzt und dann auch vorhersagt, welche Therapie denn am besten funktioniert.
+
+--- Interaktive Inhalte im Video ---
+[Lückentext] Fill in the missing words
+Was sind die drei genannten Erkrankungen auf die DL-Spracherkennung hinweisen kann? 1. D*emen*z 2. D*epressio*n 3. S*chizophreni*e
+[Drag Text] Ziehe die Wörter in die richtigen Felder!
+Wörter in Asterisken (*...*) müssen in die richtige Lücke gezogen werden.
+*Convolutional Neural* Networks können in der Medizin genutzt werden, um Bild- oder Audiodaten *zu erkennen und zu klassifizieren*. Mit Hilfe von *Generative Adverserial* Networks ist es möglich wirklichkeitsnahe Daten *neu zu generieren*. In der Medizin kann dies von Nutzen sein, um *unbekannte* Daten eines Patienten aus *bekannte*n Modalitäten vorherzusagen.
+[Abschluss] Wähle die korrekte Aussage.
+Aussagengruppe 1:
+ Korrekt: Ziel der personalisierten Medizin ist es, individuelle Krankheitsverläufe vorherzusagen und möglichst passende Therapievorschläge zu erarbeiten.
+ Falsch: Personalisierte Medizin richtet sich nicht nach den Maßstäben der klassischen Schulmedizin, weshalb Daten aus standardisierten Behandlungsmethoden hierfür nicht genutzt werden können.
+
+Aussagengruppe 2:
+ Korrekt: Auch hier benötigen die Algorithmen viele Trainingsdaten, wobei es in diesem Fall schwer ist, diese in ausreichendem Maße standardisiert zu erheben.
+ Falsch: Da es um Einschätzungen und Prognosen für spezifische Patienten geht, wird für das anfängliche Training der Algorithmen kein großer und repräsentativer Trainingsdatensatz benötigt.
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 56,
+  "module_id": 5879,
+  "fullname": "Wo werden DL Algorithmen in der Medizin eingesetzt?",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=5879"
+}

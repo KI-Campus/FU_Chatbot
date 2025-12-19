@@ -1,0 +1,179 @@
+{
+  "content": [
+    {
+      "content": {
+        "params": {
+          "text": "<p>Mit der inzwischen weit verbreiteten Nutzung von KI-Systemen geht auch die Notwendigkeit einher, sicherzustellen, dass diese Systeme <span style=\"color:#3a2a78;\"><strong>robust</strong> </span>und gegen <span style=\"color:#3a2a78;\"><strong>Manipulationen oder Angriffe von außen</strong> </span>resistent sind.</p>\n\n<p><span style=\"color:#3a2a78;\"><strong>Robustheit</strong> </span>bezieht sich auf die Fähigkeit eines KI-Systems, auch bei unerwarteten Eingaben, Veränderungen in der Umgebung oder Versuchen, die Funktionsweise zu stören, eine gleichbleibende Leistung zu erbringen. Eine robuste KI sollte <span style=\"color:#3a2a78;\"><strong>nicht versagen oder fehlerhafte Ergebnisse produzieren</strong></span>, wenn sich etwas geringfügig ändert, z. B. ein neues Datenformat oder unvorhergesehene Szenarien.</p>\n\n<p>Bei der <span style=\"color:#3a2a78;\"><strong>externen Manipulation</strong> </span>hingegen wird versucht, ein KI-System auszutricksen oder auszunutzen. Diese Manipulationen können von böswilligen Akteuren ausgehen, die versuchen, das System zu ihrem Vorteil auszunutzen, oder von unbeabsichtigten Fehlern, die das System angreifbar machen.</p>\n\n<p>&nbsp;</p>\n"
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Unbenannter Text"
+        },
+        "subContentId": "c44d0bef-3aa7-4b0a-b681-5eaaca504a14"
+      },
+      "useSeparator": "disabled"
+    },
+    {
+      "content": {
+        "params": {
+          "panels": [
+            {
+              "content": {
+                "params": {
+                  "text": "<p>Nehmen wir ein KI-System, das von Banken eingesetzt wird, um betrügerische Transaktionen zu erkennen. Dieses System ist auf Muster legitimer und betrügerischer Aktivitäten trainiert und analysiert Millionen von Transaktionen, um verdächtiges Verhalten zu erkennen, wie z. B. ungewöhnliche Ausgabemuster oder Transaktionen von unerwarteten Orten.</p>\n\n<p>Das KI-System der Bank muss robust genug sein, um mit authentischen Änderungen im Nutzerverhalten umgehen zu können, ohne unnötige Warnungen auszulösen. Wenn ein Kunde beispielsweise in den Urlaub fährt und seine Kreditkarte in einem anderen Land einsetzt, muss die KI dies nach einer gewissen Überprüfung als normales Verhalten erkennen, anstatt es ständig als verdächtig zu kennzeichnen. Ein KI-System, das nicht robust ist, könnte das Konto eines Kunden jedes Mal einfrieren, wenn sich sein Verhalten ändert, was zu Frustration und mangelndem Vertrauen führt.</p>\n\n<p>Robustheit ist auch bei weitreichenden Veränderungen wichtig, etwa bei neuen Ausgabemustern, die durch ein globales Ereignis verursacht werden (z. B. vermehrte Online-Transaktionen während einer Pandemie). Eine robuste KI würde sich an solche Veränderungen anpassen, ohne dass neue Muster fälschlicherweise als Betrug eingestuft werden.</p>\n"
+                },
+                "library": "H5P.AdvancedText 1.1",
+                "subContentId": "1b5f2c13-93af-4d48-acbc-3777bdf5cf71",
+                "metadata": {
+                  "contentType": "Text",
+                  "license": "U",
+                  "title": "Unbenannter Text"
+                }
+              },
+              "title": "Warum Robustheit so wichtig ist:"
+            },
+            {
+              "content": {
+                "params": {
+                  "text": "<p>Stell dir nun vor, dass eine Gruppe von Hackern eine Möglichkeit entdeckt, dieses KI-System zu manipulieren. Sie fangen an, Transaktionen zu erstellen, die die Muster legitimer Transaktionen nachahmen, aber mit versteckten betrügerischen Elementen. Wenn die KI nicht so konzipiert ist, dass sie gegen diese Versuche resistent ist, könnten die Hacker unentdeckt durchschlüpfen und erhebliche finanzielle Verluste verursachen.</p>\n\n<p>Bei solchen Datenvergiftungen könnten die Angreifenden zum Beispiel Eingaben machen, die die KI täuschen sollen. Im Zusammenhang mit der KI zur Betrugserkennung könnten Angreifende beispielsweise absichtlich kleine, subtile Änderungen an ihren Transaktionsmustern vornehmen, die Schwächen im KI-Modell ausnutzen und es dazu bringen, eine betrügerische Transaktion als authentisch einzustufen.</p>\n\n<p>&nbsp;</p>\n"
+                },
+                "library": "H5P.AdvancedText 1.1",
+                "subContentId": "b331a544-fbc6-41e3-bf97-d52c4a99c621",
+                "metadata": {
+                  "contentType": "Text",
+                  "license": "U",
+                  "title": "Unbenannter Text"
+                }
+              },
+              "title": "Warum Cybersecurity so wichtig ist:"
+            }
+          ],
+          "hTag": "h2"
+        },
+        "library": "H5P.Accordion 1.0",
+        "metadata": {
+          "contentType": "Accordion",
+          "license": "U",
+          "title": "Unbenannter Accordion"
+        },
+        "subContentId": "1e7bd841-e280-4bd7-a3c3-3174df9cc2ae"
+      },
+      "useSeparator": "disabled"
+    },
+    {
+      "content": {
+        "params": {
+          "text": "<p>&nbsp;</p>\n\n<h3><span style=\"color:#1aa469;\"><strong>Nehmen wir einmal an...</strong></span></h3>\n\n<p>Du arbeitest bei einer gemeinnützigen Organisation, die Mittel für Katastrophenhilfe verwaltet, und du verwendest ein KI-basiertes System, um betrügerische Anträge zu verhindern. Während einer großflächigen Überschwemmung taucht ein neues Muster von Anträgen auf, welches das KI-System als verdächtig einstuft, obwohl die Anträge rechtmäßig sind. Was könntest du tun, um sicherzustellen, dass das KI-System in dieser Zeit robust und fair bleibt?</p>\n"
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Unbenannter Text"
+        },
+        "subContentId": "fb8ea5e2-c7e9-42ae-b433-95eb776e673d"
+      },
+      "useSeparator": "disabled"
+    },
+    {
+      "content": {
+        "params": {
+          "media": {
+            "disableImageZooming": false
+          },
+          "answers": [
+            {
+              "correct": true,
+              "tipsAndFeedback": {
+                "tip": "",
+                "chosenFeedback": "",
+                "notChosenFeedback": ""
+              },
+              "text": "<div>Die KI mit neuen Daten aktualisieren, die die sich ändernden Muster widerspiegeln.</div>\n"
+            },
+            {
+              "correct": false,
+              "tipsAndFeedback": {
+                "tip": "",
+                "chosenFeedback": "",
+                "notChosenFeedback": ""
+              },
+              "text": "<div>Die Betrugserkennung der KI abschalten, bis die Flut vorüber ist.</div>\n"
+            },
+            {
+              "correct": true,
+              "tipsAndFeedback": {
+                "tip": "",
+                "chosenFeedback": "",
+                "notChosenFeedback": ""
+              },
+              "text": "<div>Alle Anträge, die von der KI während dieses Zeitraums erkannt wurden, manuell überprüfen und die Empfindlichkeit der KI anpassen.</div>\n"
+            }
+          ],
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "behaviour": {
+            "enableRetry": true,
+            "enableSolutionsButton": true,
+            "enableCheckButton": true,
+            "type": "auto",
+            "singlePoint": false,
+            "randomAnswers": true,
+            "showSolutionsRequiresInput": true,
+            "confirmCheckDialog": false,
+            "confirmRetryDialog": false,
+            "autoCheck": false,
+            "passPercentage": 100,
+            "showScorePoints": true
+          },
+          "UI": {
+            "checkAnswerButton": "Überprüfen",
+            "submitAnswerButton": "Absenden",
+            "showSolutionButton": "Lösung anzeigen",
+            "tryAgainButton": "Wiederholen",
+            "tipsLabel": "Hinweis anzeigen",
+            "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+            "tipAvailable": "Hinweis verfügbar",
+            "feedbackAvailable": "Rückmeldung verfügbar",
+            "readFeedback": "Rückmeldung vorlesen",
+            "wrongAnswer": "Falsche Antwort",
+            "correctAnswer": "Richtige Antwort",
+            "shouldCheck": "Hätte gewählt werden müssen",
+            "shouldNotCheck": "Hätte nicht gewählt werden sollen",
+            "noInput": "Bitte antworte, bevor du die Lösung ansiehst",
+            "a11yCheck": "Die Antworten überprüfen. Die Auswahlen werden als richtig, falsch oder fehlend markiert.",
+            "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+            "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet."
+          },
+          "confirmCheck": {
+            "header": "Beenden?",
+            "body": "Ganz sicher beenden?",
+            "cancelLabel": "Abbrechen",
+            "confirmLabel": "Beenden"
+          },
+          "confirmRetry": {
+            "header": "Wiederholen?",
+            "body": "Ganz sicher wiederholen?",
+            "cancelLabel": "Abbrechen",
+            "confirmLabel": "Bestätigen"
+          },
+          "question": "<p>Mehrere Antworten sind richtig:</p>\n"
+        },
+        "library": "H5P.MultiChoice 1.16",
+        "metadata": {
+          "contentType": "Multiple Choice",
+          "license": "U",
+          "title": "Unbenannter Multiple Choice"
+        },
+        "subContentId": "9538a515-56c9-4611-a708-0955e9572804"
+      },
+      "useSeparator": "disabled"
+    }
+  ]
+}

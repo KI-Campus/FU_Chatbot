@@ -11,7 +11,7 @@ Transcript:
 [Quiz] Which of the following statements best describes the relationship between Artificial Intelligence (AI) and Machine Learning (ML)?
 Korrekte Antwort(en): In many AI applications, ML is used for training machines to perform tasks that were previously solved by humans.
 Inkorrekte Antwort(en): AI refers the study of neural networks, while ML focuses on constructing predictive models., AI is limited to natural language processing, while ML encompasses a broader range of techniques., AI and ML are separate fields that do not have any overlapping concepts or applications.
-[Zusammenfassung] Now you are at the end of this video, recall what you have just learned and choose the false statement about Machine Learning from the options below:
+[Abschluss] Now you are at the end of this video, recall what you have just learned and choose the false statement about Machine Learning from the options below:
 Aussagengruppe 1:
  Korrekt: Machine Learning algorithms are always accurate and reliable.
  Falsch: Machine Learning algorithms can be used to solve complex problems., Machine Learning algorithms can learn from data without being explicitly programmed., Machine Learning is a type of Artificial Intelligence.

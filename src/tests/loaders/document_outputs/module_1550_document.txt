@@ -1,0 +1,36 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: Entwicklung künstlicher Intelligenz: Vom Perzeptron bis Pepper
+
+--- Timeline ---
+1958: Das Perzeptron
+Das Perzeptron ist ein vereinfachtes kÃ¼nstliches neuronales Netz, das zuerst von Frank Rosenblatt 1958 vorgestellt wurde. Es besteht in der Grundversion aus einem einzelnen kÃ¼nstlichen Neuron mit anpassbaren Gewichtungen und einem Schwellenwert.
+
+1966: Der erste Chatbot
+Der deutsch-amerikanische Informatiker Joseph Weizenbaum vom Massachusetts Institute of Technology erfindet ein Computerprogramm, das mit Menschen kommuniziert. Ãœber Skripte simuliert â€žELIZAâ€œ verschiedene GesprÃ¤chspartner, beispielsweise einen Psychotherapeuten. Weizenbaum ist Ã¼berrascht, mit welch einfachen Mitteln â€žELIZAâ€œ die Illusion eines menschlichen GesprÃ¤chspartners erzeugen kann.
+
+1972: KI gelangt in die Medizin
+Mit â€žMYCINâ€œ findet KÃ¼nstliche Intelligenz den Weg in die Praxis: Das von Ted Shortliffe an der Stanford University entwickelte Expertensystem wird zur Behandlung von Krankheiten eingesetzt. Expertensysteme sind Computerprogramme, die das Wissen eines bestimmten Fachgebietes durch Formeln, Regeln und eine Wissensdatenbank bÃ¼ndeln. In der Medizin dienen sie zur UnterstÃ¼tzung bei Diagnose und Therapie.
+
+1997: Computer schlÃ¤gt Schachweltmeister
+Die KI-Schachmaschine â€žDeep Blueâ€œ der Firma IBM bezwingt den amtierenden Schachweltmeister Garry Kasparov in einem Turnier. Dies gilt als historischer Erfolg der Maschinen in einem Bereich, der bislang vom Menschen dominiert wurde. Kritiker werfen jedoch ein, dass â€žDeep Blueâ€œ nicht durch kognitive Intelligenz, sondern nur durch das Berechnen aller denkbaren ZÃ¼ge gewonnen habe.
+
+2014: Hallo Pepper!
+Pepper ist ein humanoider Roboter, der darauf programmiert ist, Menschen und deren Mimik und Gestik zu analysieren und auf diese EmotionszustÃ¤nde entsprechend zu reagieren. Er ist als â€žRoboter-GefÃ¤hrteâ€œ und â€žpersÃ¶nlicher Roboterâ€œ konzipiert und wird vorerst in VerkaufsrÃ¤umen, hinter Empfangstischen und in den Bereichen Erziehung und Gesundheitswesen eingesetzt.
+
+2021: Gegenwart und Zukunft
+Mittlerweile hat KI den Einzug in viele Alltagsbereiche erhalten und trotz jahrzehntelanger Forschung steht die Entwicklung der KÃ¼nstlichen Intelligenz noch relativ am Anfang. Damit sie in sensiblen Bereichen wie dem automatisierten Fahren oder der Medizin eingesetzt werden kann, muss sie zuverlÃ¤ssiger und sicherer gegen Manipulationen werden. KI-Systeme sollen zudem lernen, ihre Entscheidungen zu erklÃ¤ren, damit Menschen sie nachvollziehen und die Denkweise der KI besser erforschen kÃ¶nnen. Zahlreiche Wissenschaftler, wie der Bosch-Stiftungsprofessor Matthias Hein an der UniversitÃ¤t TÃ¼bingen, arbeiten an diesen Themen.
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 56,
+  "module_id": 1550,
+  "fullname": "Entwicklung künstlicher Intelligenz: Vom Perzeptron bis Pepper",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=1550"
+}

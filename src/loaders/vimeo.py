@@ -65,6 +65,7 @@ class Vimeo:
         if texttrack_json:  # If Video has an transcript
             texttrack = TextTrack(**texttrack_json)
             transcript_caller = APICaller(url=texttrack.link, headers=self.headers)
+            transcript_text = None
             try:
                 transcript_text = transcript_caller.getText()
             except requests.exceptions.HTTPError as err:
@@ -77,8 +78,14 @@ class Vimeo:
                     elif fallback_transcript is not None:
                         self.logger.warn("Falling back to reading file from H5P-Package")
                         transcript_text = self.get_transcript_from_file(fallback_transcript)
-                    else:
-                        return None, "Transcript liegt nicht (in Deutsch oder Englisch) vor"
+                else:
+                    # Other HTTP errors (e.g., 403, 500) - no fallback possible
+                    self.logger.warn(f"Failed to retrieve {texttrack.link}")
+                    return None, "Transcript konnte nicht abgerufen werden"
+            
+            if transcript_text is None:
+                return None, "Transcript liegt nicht (in Deutsch oder Englisch) vor"
+            
             try:
                 texttrack.transcript = convert_vtt_to_text(StringIO(transcript_text))
                 return texttrack, None

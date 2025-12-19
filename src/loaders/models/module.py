@@ -19,7 +19,10 @@ class ModuleTypes(StrEnum):
 # Die Handler-Klassen müssen eine statische Methode `from_h5p_package(module, content, h5p_zip_path, **services)` haben
 H5P_HANDLERS = {
     "H5P.InteractiveVideo": "src.loaders.models.h5pactivities.h5p_interactive_video.InteractiveVideo",
-    "H5P.Column": "src.loaders.models.h5pactivities.h5p_column.Column",
+    "H5P.Column": "src.loaders.models.h5pactivities.h5p_wrappers.Column",
+    "H5P.Accordion": "src.loaders.models.h5pactivities.h5p_wrappers.Accordion",
+    "H5P.CoursePresentation": "src.loaders.models.h5pactivities.h5p_wrappers.CoursePresentation",
+    "H5P.Video": "src.loaders.models.h5pactivities.h5p_basics.H5PVideo",
     "H5P.QuestionSet": "src.loaders.models.h5pactivities.h5p_question_set.QuestionSet",
     "H5P.MultiChoice": "src.loaders.models.h5pactivities.h5p_quiz_questions.QuizQuestion",
     "H5P.SingleChoiceSet": "src.loaders.models.h5pactivities.h5p_quiz_questions.QuizQuestion",
@@ -28,8 +31,15 @@ H5P_HANDLERS = {
     "H5P.DragText": "src.loaders.models.h5pactivities.h5p_drag_drop.DragDropText",
     "H5P.Blanks": "src.loaders.models.h5pactivities.h5p_blanks.FillInBlanksQuestion",
     "H5P.Text": "src.loaders.models.h5pactivities.h5p_basics.Text",
+    "H5P.AdvancedText": "src.loaders.models.h5pactivities.h5p_basics.Text",
+    "H5P.Dialogcards": "src.loaders.models.h5pactivities.h5p_dialogcards.H5PDialogcards",
+    "H5P.ImageHotspot": "src.loaders.models.h5pactivities.h5p_drag_drop.ImageHotspotQuestion",
+    "H5P.Flashcards": "src.loaders.models.h5pactivities.h5p_flashcards.H5PFlashcards",
+    "H5P.Timeline": "src.loaders.models.h5pactivities.h5p_timeline.H5PTimeline",
     # Weitere H5P-Typen können hier einfach hinzugefügt werden:
     # "H5P.Flashcards": "src.loaders.models.h5pactivities.h5p_flashcards.Flashcards",
+    "H5P.Gamemap": "src.loaders.models.h5pactivities.h5p_wrappers.Gamemap",
+    "H5P.GameMap": "src.loaders.models.h5pactivities.h5p_wrappers.Gamemap",
     # "H5P.CoursePresentation": "src.loaders.models.h5pactivities.h5p_course_presentation.CoursePresentation",
 }
 
@@ -83,10 +93,14 @@ class Module(BaseModel):
             if self.h5p_content_type:
                 if "InteractiveVideo" in self.h5p_content_type:
                     header = "\n--- Interaktive Inhalte im Video ---"
+                elif "Accordion" in self.h5p_content_type:
+                    header = "\n--- Accordion-Inhalte ---"
                 elif "Column" in self.h5p_content_type:
                     header = "\n--- Spalten-Inhalte ---"
                 elif "QuestionSet" in self.h5p_content_type:
                     header = "\n--- Fragen im QuestionSet ---"
+                elif "CoursePresentation" in self.h5p_content_type:
+                    header = "\n--- Course Presentation ---"
                 elif "MultiChoice" in self.h5p_content_type or "SingleChoiceSet" in self.h5p_content_type:
                     header = "\n--- Quiz-Frage ---"
                 elif "TrueFalse" in self.h5p_content_type:
@@ -99,6 +113,18 @@ class Module(BaseModel):
                     header = "\n--- Drag-&-Drop-Aufgabe ---"
                 elif "Text" in self.h5p_content_type:
                     header = "\n--- H5P Text-Inhalt ---"
+                elif "Video" in self.h5p_content_type:
+                    header = "\n--- Video-Inhalt ---"
+                elif "Dialogcards" in self.h5p_content_type:
+                    header = "\n--- Dialog-Karten ---"
+                elif "Flashcards" in self.h5p_content_type:
+                    header = "\n--- Karteikarten ---"
+                elif "ImageHotspot" in self.h5p_content_type:
+                    header = "\n--- Bild-Hotspot-Aufgabe ---"
+                elif "Timeline" in self.h5p_content_type:
+                    header = "\n--- Timeline ---"
+                elif "Gamemap" in self.h5p_content_type or "GameMap" in self.h5p_content_type:
+                    header = "\n--- Interaktive Karte (Gamemap) ---"
                 else:
                     header = f"\n--- H5P Inhalt ({self.h5p_content_type}) ---"
             else:

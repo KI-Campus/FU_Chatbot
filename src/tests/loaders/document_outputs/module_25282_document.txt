@@ -1,0 +1,50 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: 1.2.2. Der Zeitplan
+
+--- Interaktive Karte (Gamemap) ---
+[Stage] August 2024: Die Verordnung tritt in Kraft
+[Text] An diesem Tag tritt der EU AI Act offiziell in Kraft. Das ist wie der Moment, in dem das Spiel beginnt, aber der erste Zug noch aussteht. Von diesem Zeitpunkt an müssen sich die Beteiligten (zum Beispiel die Betreiber, Anbieter, oder die EU-Mitgliedstaaten) auf das vorbereiten, was kommen wird, interne Prozesse einrichten und sich auf die neuen Anforderungen und Aufgaben einstellen. Dies ist der Beginn des Countdowns für weitere wichtige Verpflichtungen, die in den nächsten Jahren auf uns und das gesamte europäische KI-Ökosystem zukommen.
+
+[Stage] Februar 2025: Grundlegende Schutzmaßnahmen
+[Text] Die ersten Beschränkungen kommen ins Spiel. KI-Systeme nach Art. 5, die als zu riskant oder schädlich erachtet werden, werden verboten. Dazu gehören etwa Systeme, die das Risiko einer Straftat durch einen Menschen evaluieren - denke etwa an KI, die basierend auf deinen persönlichen Daten, wie zum Beispiel dein Alter, dein Geburtsort oder deine Hautfarbe, dich auf eine potentielle Täterliste setzt. Warum die Dringlichkeit? Weil die EU sich mit Systemen befassen wollte, die eine unmittelbare Gefahr für die Gesellschaft darstellen. Auch tritt Art. 4 nun offiziell in Kraft; das heißt, dass "AI literacy", also das nötige KI-Verständnis für jegliche Beteiligten verpflichtend ist.
+
+[Stage] Lust auf mehr Details?
+[Text] Du hat die wichtigsten Schritte bezüglich der Einführung des EU AI Acts nun erkundet! Falls du den detaillierteren Zeitplan in all seinen gründlichen Facetten betrachten möchtest, schaue hier nach: Implementation Timeline | EU Artificial Intelligence Act
+
+[Stage] August 2025: KI-Modell mit Allgemeinem Verwendungszweck (GPAI)
+[Text] Bis August 2025 müssen Unternehmen, die KI Modelle mit allgemeinem Verwendungszweck ("General purpose Artificial Intelligence" oder auch "GPAI"), wie große Sprachmodelle (LLMs), einsetzen, bestimmte Transparenz- und Sicherheitsstandards einhalten (ab Art.51-56). Darüber hinaus müssen die EU-Mitgliedstaaten nationale zuständige Behörden benennen, um die Durchsetzung des KI-Gesetzes zu überwachen. Darüber hinaus greifen nun auch die Strafen bzw. Bußgelder nach Art.99 und Art.100. In dieser Phase wird der Schwerpunkt auf den Aufbau eines starken Rechtsrahmens in ganz Europa gelegt, der die Grundlage für umfassendere Vorschriften in den folgenden Jahren bildet.
+
+[Stage] Interaktiver Moment
+[QuestionSet] 2 Fragen
+
+--- Frage 1 ---
+[Quiz] Welche der folgenden Anwendungen würde gemäß dem EU AI Act wohl zu den GPAI zählen?
+Korrekte Antwort(en): Ein Chatbot, der für den Kundenservice im Einzelhandel eingesetzt wird.
+Inkorrekte Antwort(en): Ein KI-System, das beim Sortieren von Recycling hilft., Eine KI, die Testergebnisse von Studenten an einer Universität bewertet.
+
+--- Frage 2 ---
+[Quiz] Was müssen Anbieter von KI-Modellen mit allgemeinem Verwendungszweck ab August 2025 demnach machen, um die Konformität der KI-Modelle zu beweisen?
+Korrekte Antwort(en): Das Unternehmen muss der Transparenz wegen eine Zusammenfassung der Inhalte veröffentlichen, die für das Training des Modells verwendet wurden.
+Inkorrekte Antwort(en): Das Unternehmen müsste der Transparenz wegen eine schriftliche Erklärung darüber abgeben, in welchem Rahmen die KI-Anwendung verwendet wird., Die Anwendung müsste bis zum angegebenen Datum der Sicherheit wegen einem Audit unterzogen werden.
+
+
+[Stage] August 2026: Die Verpflichtungen für KI Systeme mit hohem Risiko treten in Kraft
+[Text] Bis August 2026 gelten dann jegliche Teile des EU AI Acts, bis auf Art.6(1) - KI-Systeme mit hohem Risiko, die in An.I beschrieben sind.
+
+[Stage] August 2027: Vollständige Einführung
+[Text] August 2027 werden auch die regulatorischen Gesetze für die in Art.6(1) beschriebenen KI-Systeme mit hohem Risiko in Kraft treten. Damit sind die meisten Gesetze nun bezüglich der Risikogruppen eingeführt. In dieser Phase gedeihen KI-Systeme, die an die Vorschriften angepasst wurden - und diejenigen, die dies nicht getan haben, könnten vom Markt genommen zu werden.
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 313,
+  "module_id": 25282,
+  "fullname": "1.2.2. Der Zeitplan",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=25282"
+}

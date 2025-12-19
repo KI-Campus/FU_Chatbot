@@ -1,0 +1,78 @@
+{
+  "cards": [
+    {
+      "text": "Forschungs-/Entwicklungsfeld, welches sich mit der Übertragbarkeit menschlicher Fähigkeiten auf computerbasierte Systeme beschäftigt.",
+      "answer": "Künstliche Intelligenz",
+      "tip": "",
+      "image": {
+        "path": "images/KI_KREIS-0XP7MYJ7.png",
+        "mime": "image/png",
+        "copyright": {
+          "license": "U"
+        },
+        "width": 2500,
+        "height": 2500
+      }
+    },
+    {
+      "text": "Selbstständiges Lernen von Repräsentation anhand von Rohdaten mithilfe Neuronaler Netze.",
+      "answer": "Deep Learning",
+      "tip": "",
+      "image": {
+        "path": "images/Deep_Learning_KREIS-IHf5C74q.png",
+        "mime": "image/png",
+        "copyright": {
+          "license": "U"
+        },
+        "width": 2500,
+        "height": 2500
+      }
+    },
+    {
+      "text": "Lernt aus Beispielen und kann diese nach Beendigung der Lernphase verallgemeinern. Nach dem Trainieren des Algorithmus auf Trainingsdaten, erkennt dieser zugrundeliegende Muster und Gesetzmäßigkeiten.",
+      "answer": "Maschinelles Lernen",
+      "tip": "",
+      "image": {
+        "path": "images/Maschinelles_Lernen_KREIS-Hzjy4oI8.png",
+        "mime": "image/png",
+        "copyright": {
+          "license": "U"
+        },
+        "width": 2500,
+        "height": 2500
+      }
+    },
+    {
+      "text": "Wissenschaft der Systemischen Darstellung, Speicherung, Verarbeitung und Übertragung von Informationen, mit besonderem Fokus auf die automatische Verarbeitung durch Computer.",
+      "answer": "Informatik",
+      "tip": "",
+      "image": {
+        "path": "images/INFORMATIK_KREIS-7mPRz55Q.png",
+        "mime": "image/png",
+        "copyright": {
+          "license": "U"
+        },
+        "width": 2500,
+        "height": 2500
+      }
+    }
+  ],
+  "progressText": "Karte @card von @total",
+  "next": "Weiter",
+  "previous": "Zurück",
+  "checkAnswerText": "Überprüfen",
+  "showSolutionsRequiresInput": true,
+  "defaultAnswerText": "Deine Antwort",
+  "correctAnswerText": "Richtig",
+  "incorrectAnswerText": "Falsch",
+  "showSolutionText": "Richtige Antwort",
+  "results": "Ergebnisse",
+  "ofCorrect": "@score von @total richtig",
+  "showResults": "Ergebnisse anzeigen",
+  "answerShortText": "A:",
+  "retry": "Wiederholen",
+  "caseSensitive": false,
+  "cardAnnouncement": "Falsche Antwort. Die richtige Antwort ist @answer",
+  "pageAnnouncement": "Karte @current von @total",
+  "description": "-"
+}

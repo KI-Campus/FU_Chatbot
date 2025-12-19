@@ -1,0 +1,277 @@
+{
+  "content": [
+    {
+      "content": {
+        "params": {
+          "text": "<p>Stell dir ein KI-System vor, das ein autonomes Fahrzeug steuert.</p>\n\n<p>Um die KI fit für den Verkehr zu machen, trainieren Ingenieur*innen sie mit umfangreichen Fahrdaten. So lernt das System mit der Zeit, Passanten, Verkehrsschilder und komplexe Situationen wie Kreuzungen zu erkennen und reagiert durch die gelernten Muster.</p>\n\n<p>Im Gegensatz zur klassischen Software, die exakt das ausführt, was Entwickler*innen ihr vorgeben, ist ein KI-System dynamisch und lernt aus Erfahrung. Traditionelle Software folgt festen Regeln und muss manuell aktualisiert werden, während die KI im Feld lernt.</p>\n\n<p>Nun stell dir vor, das Fahrzeug fährt in eine Baustelle, wo eine unkonventionelle Umleitung eingerichtet ist. Zusätzlich blendet die tiefstehende Herbstsonne die Kamera, sodass Bodenmarkierungen schwer zu erkennen sind. Für ein KI-System, das nie zuvor mit dieser Situation konfrontiert wurde, ist es eine Herausforderung, aus den Trainingsdaten eine passende Reaktion abzuleiten. Klassische Software würde in diesem Fall vorgegebene Anweisungen befolgen, doch die KI muss hier improvisieren. Fehlen in ihren Daten ähnliche Szenarien, könnte das Fahrzeug zögern oder einen Fehler machen.</p>\n\n<p></p>\n"
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Unbenannter Text"
+        },
+        "subContentId": "da0ec8a4-ce67-4b18-8409-c246a2399a75"
+      },
+      "useSeparator": "auto"
+    },
+    {
+      "content": {
+        "params": {
+          "scoreShow": "Überprüfen",
+          "submit": "Übermitteln",
+          "tryAgain": "Wiederholen",
+          "scoreExplanation": "Richtige Antworten geben +1 Punkte. Bei falschen Antworten gibt es -1 Punkt. Die kleinstmögliche Punktzahl ist 0.",
+          "question": {
+            "settings": {
+              "size": {
+                "width": 665,
+                "height": 565
+              },
+              "background": {
+                "path": "images/background-67978714d4def.png",
+                "mime": "image/png",
+                "copyright": {
+                  "license": "U"
+                },
+                "width": 848,
+                "height": 752
+              }
+            },
+            "task": {
+              "elements": [
+                {
+                  "x": 2.7777777777777777,
+                  "y": 67.74193548387096,
+                  "width": 12.3574375,
+                  "height": 4.23333375,
+                  "dropZones": [
+                    "0",
+                    "1"
+                  ],
+                  "type": {
+                    "library": "H5P.AdvancedText 1.1",
+                    "params": {
+                      "text": "<p>Verhalten kann sich im Laufe der Zeit ändern</p>\n"
+                    },
+                    "subContentId": "4a70c4a6-c311-4438-9f85-669a90e4f6ae",
+                    "metadata": {
+                      "contentType": "Text",
+                      "license": "U",
+                      "title": "Unbenannter Text"
+                    }
+                  },
+                  "backgroundOpacity": 90,
+                  "multiple": false
+                },
+                {
+                  "x": 5.555555555555555,
+                  "y": 83.87096774193549,
+                  "width": 12.359375,
+                  "height": 4.23333375,
+                  "dropZones": [
+                    "1",
+                    "0"
+                  ],
+                  "type": {
+                    "library": "H5P.AdvancedText 1.1",
+                    "params": {
+                      "text": "<p>Führt Aufgaben basierend auf festem Code aus</p>\n"
+                    },
+                    "subContentId": "7bc59c3f-8a82-4ee9-89ac-b0f13ad25f07",
+                    "metadata": {
+                      "contentType": "Text",
+                      "license": "U",
+                      "title": "Unbenannter Text"
+                    }
+                  },
+                  "backgroundOpacity": 90,
+                  "multiple": false
+                },
+                {
+                  "x": 32.857142857142854,
+                  "y": 68.33333333333333,
+                  "width": 12.3574375,
+                  "height": 4.23333375,
+                  "dropZones": [
+                    "0",
+                    "1"
+                  ],
+                  "type": {
+                    "library": "H5P.AdvancedText 1.1",
+                    "params": {
+                      "text": "<p>Kann durch erneutes Training weiterentwickelt werden</p>\n"
+                    },
+                    "subContentId": "3da59110-19fe-493d-9716-e1f496b70bcb",
+                    "metadata": {
+                      "contentType": "Text",
+                      "license": "U",
+                      "title": "Unbenannter Text"
+                    }
+                  },
+                  "backgroundOpacity": 90,
+                  "multiple": false
+                },
+                {
+                  "x": 32.857142857142854,
+                  "y": 81.66666666666667,
+                  "width": 12.35940040588379,
+                  "height": 4.233075,
+                  "dropZones": [
+                    "1",
+                    "0"
+                  ],
+                  "type": {
+                    "library": "H5P.AdvancedText 1.1",
+                    "params": {
+                      "text": "<p>Updates erfordern manuelle Eingriffe</p>\n"
+                    },
+                    "subContentId": "23331f59-6dd2-4f77-816a-cabaad2449c1",
+                    "metadata": {
+                      "contentType": "Text",
+                      "license": "U",
+                      "title": "Unbenannter Text"
+                    }
+                  },
+                  "backgroundOpacity": 90,
+                  "multiple": false
+                },
+                {
+                  "x": 62.90322580645161,
+                  "y": 69.23076923076923,
+                  "width": 12.359375,
+                  "height": 4.234375,
+                  "dropZones": [
+                    "1",
+                    "0"
+                  ],
+                  "type": {
+                    "library": "H5P.AdvancedText 1.1",
+                    "params": {
+                      "text": "<p>Verhalten ist vorhersehbar</p>\n"
+                    },
+                    "subContentId": "a34728c5-7145-434c-8458-825ac45c1370",
+                    "metadata": {
+                      "contentType": "Text",
+                      "license": "U",
+                      "title": "Unbenannter Text"
+                    }
+                  },
+                  "backgroundOpacity": 90,
+                  "multiple": false
+                },
+                {
+                  "x": 62.5,
+                  "y": 83.87096774193549,
+                  "width": 12.3574375,
+                  "height": 4.234375,
+                  "dropZones": [
+                    "0",
+                    "1"
+                  ],
+                  "type": {
+                    "library": "H5P.AdvancedText 1.1",
+                    "params": {
+                      "text": "<p>Lernt aus Daten und passt sich an</p>\n"
+                    },
+                    "subContentId": "7757f1c9-6f49-4f44-87c7-32055d7e3fe3",
+                    "metadata": {
+                      "contentType": "Text",
+                      "license": "U",
+                      "title": "Unbenannter Text"
+                    }
+                  },
+                  "backgroundOpacity": 90,
+                  "multiple": false
+                }
+              ],
+              "dropZones": [
+                {
+                  "x": 4.284147819548872,
+                  "y": 15.665567614767705,
+                  "width": 16.875,
+                  "height": 17.5,
+                  "correctElements": [
+                    "0",
+                    "2",
+                    "5"
+                  ],
+                  "showLabel": false,
+                  "backgroundOpacity": 0,
+                  "tipsAndFeedback": {
+                    "tip": ""
+                  },
+                  "single": false,
+                  "autoAlign": false,
+                  "label": "<div>KI-System</div>\n"
+                },
+                {
+                  "x": 50.9978084971217,
+                  "y": 15.495943893805316,
+                  "width": 16.875,
+                  "height": 17.5,
+                  "correctElements": [
+                    "1",
+                    "3",
+                    "4"
+                  ],
+                  "showLabel": false,
+                  "backgroundOpacity": 0,
+                  "tipsAndFeedback": {
+                    "tip": ""
+                  },
+                  "single": false,
+                  "autoAlign": false,
+                  "label": "<div>Traditionelle Software</div>\n"
+                }
+              ]
+            }
+          },
+          "overallFeedback": [
+            {
+              "from": 0,
+              "to": 100
+            }
+          ],
+          "behaviour": {
+            "enableRetry": true,
+            "enableCheckButton": true,
+            "singlePoint": false,
+            "applyPenalties": false,
+            "enableScoreExplanation": false,
+            "dropZoneHighlighting": "dragging",
+            "autoAlignSpacing": 2,
+            "enableFullScreen": false,
+            "showScorePoints": true,
+            "showTitle": true
+          },
+          "grabbablePrefix": "Ziehbares Element {num} von {total}.",
+          "grabbableSuffix": "Abgelegt in Ablagezone {num}.",
+          "dropzonePrefix": "Ablagezone {num} von {total}.",
+          "noDropzone": "Keine Ablagezone.",
+          "tipLabel": "Hinweis zeigen",
+          "tipAvailable": "Hinweis verfügbar",
+          "correctAnswer": "Richtige Antwort",
+          "wrongAnswer": "Falsche Antwort",
+          "feedbackHeader": "Rückmeldung",
+          "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+          "scoreExplanationButtonLabel": "Zeige Erklärung der Punktevergabe",
+          "a11yCheck": "Die Antworten überprüfen. Die Eingaben werden als richtig, falsch oder unbeantwortet markiert.",
+          "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet.",
+          "localize": {
+            "fullscreen": "Vollbild",
+            "exitFullscreen": "Vollbild beenden"
+          }
+        },
+        "library": "H5P.DragQuestion 1.14",
+        "metadata": {
+          "contentType": "Drag and Drop",
+          "license": "U",
+          "title": "KI vs Traditionelle Software"
+        },
+        "subContentId": "944f1e12-ac6d-42ee-a0b7-1bc5205c3ed8"
+      },
+      "useSeparator": "auto"
+    }
+  ]
+}

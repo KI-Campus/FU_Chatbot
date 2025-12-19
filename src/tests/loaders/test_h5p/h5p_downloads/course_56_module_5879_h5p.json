@@ -1,0 +1,87 @@
+{
+  "title": "DrmedKI_M7_L3_Wo werden DL Algorithmen in der Medizin eingesetzt?",
+  "language": "und",
+  "mainLibrary": "H5P.InteractiveVideo",
+  "embedTypes": [
+    "iframe"
+  ],
+  "license": "U",
+  "defaultLanguage": "de",
+  "preloadedDependencies": [
+    {
+      "machineName": "H5P.Blanks",
+      "majorVersion": "1",
+      "minorVersion": "14"
+    },
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": "4",
+      "minorVersion": "5"
+    },
+    {
+      "machineName": "H5P.JoubelUI",
+      "majorVersion": "1",
+      "minorVersion": "3"
+    },
+    {
+      "machineName": "H5P.FontIcons",
+      "majorVersion": "1",
+      "minorVersion": "0"
+    },
+    {
+      "machineName": "H5P.Transition",
+      "majorVersion": "1",
+      "minorVersion": "0"
+    },
+    {
+      "machineName": "H5P.Question",
+      "majorVersion": "1",
+      "minorVersion": "5"
+    },
+    {
+      "machineName": "H5P.TextUtilities",
+      "majorVersion": "1",
+      "minorVersion": "3"
+    },
+    {
+      "machineName": "H5P.DragText",
+      "majorVersion": "1",
+      "minorVersion": "10"
+    },
+    {
+      "machineName": "jQuery.ui",
+      "majorVersion": "1",
+      "minorVersion": "10"
+    },
+    {
+      "machineName": "H5P.Summary",
+      "majorVersion": "1",
+      "minorVersion": "10"
+    },
+    {
+      "machineName": "H5P.InteractiveVideo",
+      "majorVersion": "1",
+      "minorVersion": "26"
+    },
+    {
+      "machineName": "H5P.DragNBar",
+      "majorVersion": "1",
+      "minorVersion": "5"
+    },
+    {
+      "machineName": "H5P.DragNDrop",
+      "majorVersion": "1",
+      "minorVersion": "1"
+    },
+    {
+      "machineName": "H5P.DragNResize",
+      "majorVersion": "1",
+      "minorVersion": "2"
+    },
+    {
+      "machineName": "H5P.Video",
+      "majorVersion": "1",
+      "minorVersion": "6"
+    }
+  ]
+}
