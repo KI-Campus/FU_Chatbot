@@ -24,8 +24,8 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(name)s: %(messag
 logger = logging.getLogger(__name__)
 
 # ⚙️ KONFIGURATION
-COURSE_ID = 337  # Kurs, der Modul 2195 enthält (Introduction to Machine Learning Part 1)
-TARGET_MODULE_ID = 29943  # Das Modul mit Quiz-Fragen zum Testen
+COURSE_ID = 106  # Kurs, der Modul 2195 enthält (Introduction to Machine Learning Part 1)
+TARGET_MODULE_ID = 19479  # Das Modul mit Quiz-Fragen zum Testen
 OUTPUT_DIR = Path(__file__).parent / "document_outputs"
 PROCESS_ONLY_TARGET_MODULE = True  # Wenn True: Nur TARGET_MODULE_ID verarbeiten, sonst alle Module
 

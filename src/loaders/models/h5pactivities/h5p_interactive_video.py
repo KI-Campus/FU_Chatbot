@@ -13,7 +13,9 @@ from src.loaders.models.h5pactivities.h5p_blanks import FillInBlanksQuestion
 from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion, DragDropText
 from src.loaders.models.h5pactivities.h5p_basics import Text
 from src.loaders.models.h5pactivities.h5p_summary import Summary
-from src.loaders.models.h5pactivities.h5p_column import Column
+from src.loaders.models.h5pactivities.h5p_timeline import H5PTimeline
+from src.loaders.models.h5pactivities.h5p_wrappers import Column, Accordion
+from src.loaders.models.h5pactivities.h5p_question_set import QuestionSet
 
 
 # Union-Type für alle Interaktionstypen
@@ -25,6 +27,8 @@ VideoInteraction = Union[
     DragDropText,
     Text,
     Column,
+    Accordion,
+    QuestionSet,
     Summary
 ]
 
@@ -137,8 +141,24 @@ class InteractiveVideo:
             elif "H5P.Column" in library:
                 extracted = Column.from_h5p_params(library, params)
             
+            # Accordion
+            elif "H5P.Accordion" in library:
+                extracted = Accordion.from_h5p_params(library, params)
+            
+            # QuestionSet
+            elif "H5P.QuestionSet" in library:
+                extracted = QuestionSet.from_h5p_params(library, params)
+            
+            # Summary
+            elif "H5P.Summary" in library:
+                extracted = Summary.from_h5p_params(library, params)
+            
+            # Timeline
+            elif "H5P.Timeline" in library:
+                extracted = H5PTimeline.from_h5p_params(library, params)
+            
             # Text
-            elif "H5P.Text" in library:
+            elif "H5P.AdvancedText" in library or "H5P.Text" in library:
                 extracted = Text.from_h5p_params(library, params)
             
             if extracted:
@@ -169,8 +189,12 @@ class InteractiveVideo:
     
     def to_dict(self) -> dict:
         """Konvertiert InteractiveVideo zu dict für Speicherung in Module."""
+        # Filtere Accordion-Elemente raus
+        from src.loaders.models.h5pactivities.h5p_wrappers import Accordion
+        filtered_interactions = [i for i in self.interactions if not isinstance(i, Accordion)]
+        
         return {
             "video_url": self.video_url,
             "vimeo_id": self.vimeo_id,
-            "interactions": [interaction.to_text() for interaction in self.interactions]
+            "interactions": [interaction.to_text() for interaction in filtered_interactions]
         }

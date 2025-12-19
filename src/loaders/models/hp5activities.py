@@ -1,7 +1,28 @@
 from pathlib import Path
 import re
+import json
+import zipfile
+from typing import Optional
 
 from pydantic import BaseModel, HttpUrl, root_validator
+
+
+def extract_library_from_h5p(h5p_zip_path: str) -> Optional[str]:
+	"""Extrahiert mainLibrary aus h5p.json eines H5P-Packages.
+	
+	Args:
+		h5p_zip_path: Pfad zum H5P ZIP-File
+		
+	Returns:
+		Library-Name (z.B. "H5P.Flashcards") oder None bei Fehler
+	"""
+	try:
+		with zipfile.ZipFile(h5p_zip_path, "r") as zip_ref:
+			with zip_ref.open("h5p.json") as f:
+				h5p_data = json.load(f)
+				return h5p_data.get("mainLibrary", "")
+	except Exception:
+		return None
 
 
 def strip_html(text: str) -> str:

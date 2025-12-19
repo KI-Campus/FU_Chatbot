@@ -1,6 +1,7 @@
 import logging
 from dataclasses import dataclass, field
 from typing import Union, Optional
+from src.loaders.models.hp5activities import extract_library_from_h5p
 from src.loaders.models.h5pactivities.h5p_quiz_questions import QuizQuestion, TrueFalseQuestion
 from src.loaders.models.h5pactivities.h5p_blanks import FillInBlanksQuestion
 from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion, DragDropText
@@ -42,7 +43,7 @@ class QuestionSet:
         """
         # Bei standalone QuestionSet ist content direkt die Struktur mit questions
         # NICHT unter params wie bei anderen H5P-Typen
-        library = "H5P.QuestionSet"  # Für standalone ist library nicht in content
+        library = extract_library_from_h5p(h5p_zip_path) or "H5P.QuestionSet"
         
         question_set = cls.from_h5p_params(library, content)
         
