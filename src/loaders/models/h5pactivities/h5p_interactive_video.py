@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass, field
 from typing import Union, Optional
 import tempfile
@@ -5,11 +6,14 @@ import zipfile
 import re
 from pydantic import ValidationError
 
+logger = logging.getLogger(__name__)
+
 from src.loaders.models.h5pactivities.h5p_quiz_questions import QuizQuestion, TrueFalseQuestion
 from src.loaders.models.h5pactivities.h5p_blanks import FillInBlanksQuestion
-from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion
+from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion, DragDropText
 from src.loaders.models.h5pactivities.h5p_basics import Text
 from src.loaders.models.h5pactivities.h5p_summary import Summary
+from src.loaders.models.h5pactivities.h5p_column import Column
 
 
 # Union-Type für alle Interaktionstypen
@@ -17,8 +21,10 @@ VideoInteraction = Union[
     QuizQuestion, 
     TrueFalseQuestion, 
     FillInBlanksQuestion, 
-    DragDropQuestion, 
+    DragDropQuestion,
+    DragDropText,
     Text,
+    Column,
     Summary
 ]
 
@@ -123,12 +129,22 @@ class InteractiveVideo:
             elif "H5P.DragQuestion" in library:
                 extracted = DragDropQuestion.from_h5p_params(library, params)
             
+            # DragText
+            elif "H5P.DragText" in library:
+                extracted = DragDropText.from_h5p_params(library, params)
+            
+            # Column
+            elif "H5P.Column" in library:
+                extracted = Column.from_h5p_params(library, params)
+            
             # Text
             elif "H5P.Text" in library:
                 extracted = Text.from_h5p_params(library, params)
             
             if extracted:
                 interactions.append(extracted)
+            else:
+                logger.debug(f"⚠️  H5P-Typ nicht unterstützt im InteractiveVideo: {library}")
         
         # === SUMMARY EXTRAHIEREN ===
         if "summary" in iv:
@@ -143,9 +159,18 @@ class InteractiveVideo:
             interactions=interactions
         )
         
-        module.interactive_video = interactive_video
+        # Speichere als dict in module (Dependency Inversion - module kennt h5pactivities nicht)
+        module.interactive_video = interactive_video.to_dict()
         
         if texttrack:
             module.transcripts.append(texttrack)
         
         return err_message
+    
+    def to_dict(self) -> dict:
+        """Konvertiert InteractiveVideo zu dict für Speicherung in Module."""
+        return {
+            "video_url": self.video_url,
+            "vimeo_id": self.vimeo_id,
+            "interactions": [interaction.to_text() for interaction in self.interactions]
+        }
