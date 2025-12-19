@@ -1,0 +1,145 @@
+{
+  "content": [
+    {
+      "content": {
+        "params": {
+          "text": "<p><strong>Versuche für die folgenden Schemata zu erraten, um welche Art des überwachten Lernens es sich handelt. </strong>Falls du dir unsicher bist, lies dir doch nochmal den Text zu dieser Aufgabe durch oder geh zurück zum Video dieser Lerneinheit.</p>\n"
+        },
+        "library": "H5P.AdvancedText 1.1",
+        "metadata": {
+          "contentType": "Text",
+          "license": "U",
+          "title": "Unbenannter Text"
+        },
+        "subContentId": "90028518-198d-484d-8880-0603c2873d8c"
+      },
+      "useSeparator": "disabled"
+    },
+    {
+      "content": {
+        "params": {
+          "media": {
+            "params": {
+              "decorative": false,
+              "contentName": "Bild",
+              "file": {
+                "path": "images/file-64c3be3ef22a3.png",
+                "mime": "image/png",
+                "copyright": {
+                  "license": "U"
+                },
+                "width": 802,
+                "height": 245
+              },
+              "alt": "Binäre Klassifikation",
+              "expandImage": "Bild vergrößern",
+              "minimizeImage": "Bild verkleinern"
+            },
+            "library": "H5P.Image 1.1",
+            "metadata": {
+              "contentType": "Image",
+              "license": "U",
+              "title": "Unbenannter Image"
+            },
+            "subContentId": "b1df36eb-3383-4501-b640-7b53fab9a28d"
+          },
+          "solutionLabel": "Klicken, um die Antwort zu sehen.",
+          "solutionText": "Binäre Klassifikation",
+          "taskDescription": ""
+        },
+        "library": "H5P.GuessTheAnswer 1.5",
+        "metadata": {
+          "contentType": "Guess the Answer",
+          "license": "U",
+          "title": "Binäre Klassifikation"
+        },
+        "subContentId": "f5825e55-972d-4179-b596-5d8dd0e2f2df"
+      },
+      "useSeparator": "auto"
+    },
+    {
+      "content": {
+        "params": {
+          "media": {
+            "params": {
+              "decorative": false,
+              "contentName": "Bild",
+              "alt": "Multi-Klassifikation",
+              "file": {
+                "path": "images/file-64c3be8972488.png",
+                "mime": "image/png",
+                "copyright": {
+                  "license": "U"
+                },
+                "width": 802,
+                "height": 238
+              },
+              "expandImage": "Bild vergrößern",
+              "minimizeImage": "Bild verkleinern"
+            },
+            "library": "H5P.Image 1.1",
+            "metadata": {
+              "contentType": "Image",
+              "license": "U",
+              "title": "Unbenannter Image"
+            },
+            "subContentId": "30407223-a78a-42ad-baae-57677d122278"
+          },
+          "solutionLabel": "Klicken, um die Antwort zu sehen.",
+          "solutionText": "Multi-Klassifikation",
+          "taskDescription": ""
+        },
+        "library": "H5P.GuessTheAnswer 1.5",
+        "metadata": {
+          "contentType": "Guess the Answer",
+          "license": "U",
+          "title": "Multi-Klassifikation"
+        },
+        "subContentId": "2f60983f-521d-44d9-b6ba-00a852e9d612"
+      },
+      "useSeparator": "auto"
+    },
+    {
+      "content": {
+        "params": {
+          "media": {
+            "params": {
+              "decorative": false,
+              "contentName": "Bild",
+              "alt": "Regression",
+              "file": {
+                "path": "images/file-64c3bec45df60.png",
+                "mime": "image/png",
+                "copyright": {
+                  "license": "U"
+                },
+                "width": 802,
+                "height": 238
+              },
+              "expandImage": "Bild vergrößern",
+              "minimizeImage": "Bild verkleinern"
+            },
+            "library": "H5P.Image 1.1",
+            "metadata": {
+              "contentType": "Image",
+              "license": "U",
+              "title": "Unbenannter Image"
+            },
+            "subContentId": "62afc82e-53d9-4814-b9dc-69313d04a042"
+          },
+          "solutionLabel": "Klicken, um die Antwort zu sehen.",
+          "solutionText": "Regression",
+          "taskDescription": ""
+        },
+        "library": "H5P.GuessTheAnswer 1.5",
+        "metadata": {
+          "contentType": "Guess the Answer",
+          "license": "U",
+          "title": "Regression"
+        },
+        "subContentId": "962c8bd6-900d-4896-b3ad-2cc5452065d0"
+      },
+      "useSeparator": "auto"
+    }
+  ]
+}

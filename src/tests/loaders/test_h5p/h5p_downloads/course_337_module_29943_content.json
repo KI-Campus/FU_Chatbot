@@ -1,0 +1,616 @@
+{
+  "introPage": {
+    "showIntroPage": false,
+    "startButtonText": "Quiz starten",
+    "introduction": ""
+  },
+  "progressType": "dots",
+  "passPercentage": 50,
+  "questions": [
+    {
+      "params": {
+        "media": {
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil die meisten Modelle für englische Eingaben optimiert sind</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil es keine Tastaturen für andere Sprachen gibt</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil Übersetzungen automatisch eingebaut werden</div>\n"
+          },
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil andere Sprachen oft zu weniger passgenauen Ergebnissen führen</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil englische Prompts kürzer sind und weniger Kosten verursachen</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Überprüfen",
+          "submitAnswerButton": "Absenden",
+          "showSolutionButton": "Lösung anzeigen",
+          "tryAgainButton": "Wiederholen",
+          "tipsLabel": "Hinweis anzeigen",
+          "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+          "tipAvailable": "Hinweis verfügbar",
+          "feedbackAvailable": "Rückmeldung verfügbar",
+          "readFeedback": "Rückmeldung vorlesen",
+          "wrongAnswer": "Falsche Antwort",
+          "correctAnswer": "Richtige Antwort",
+          "shouldCheck": "Hätte gewählt werden müssen",
+          "shouldNotCheck": "Hätte nicht gewählt werden sollen",
+          "noInput": "Bitte antworte, bevor du die Lösung ansiehst",
+          "a11yCheck": "Die Antworten überprüfen. Die Auswahlen werden als richtig, falsch oder fehlend markiert.",
+          "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+          "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet."
+        },
+        "confirmCheck": {
+          "header": "Beenden?",
+          "body": "Ganz sicher beenden?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Beenden"
+        },
+        "confirmRetry": {
+          "header": "Wiederholen?",
+          "body": "Ganz sicher wiederholen?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Bestätigen"
+        },
+        "question": "<p>Warum wird in der Einheit empfohlen, Prompts überwiegend in englischer Sprache zu verfassen?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Frage 2"
+      },
+      "subContentId": "5dbc3938-ac67-4919-ae52-8e2140e6e68f"
+    },
+    {
+      "params": {
+        "media": {
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Unterschiedliche Perspektiven</div>\n"
+          },
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Unterschiedliche Bildmotive</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Die Ausgabe mehrerer Bilder</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Diversität von Personen in einem Bild</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Vielfältige Farbgebung in einem Bild</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Überprüfen",
+          "submitAnswerButton": "Absenden",
+          "showSolutionButton": "Lösung anzeigen",
+          "tryAgainButton": "Wiederholen",
+          "tipsLabel": "Hinweis anzeigen",
+          "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+          "tipAvailable": "Hinweis verfügbar",
+          "feedbackAvailable": "Rückmeldung verfügbar",
+          "readFeedback": "Rückmeldung vorlesen",
+          "wrongAnswer": "Falsche Antwort",
+          "correctAnswer": "Richtige Antwort",
+          "shouldCheck": "Hätte gewählt werden müssen",
+          "shouldNotCheck": "Hätte nicht gewählt werden sollen",
+          "noInput": "Bitte antworte, bevor du die Lösung ansiehst",
+          "a11yCheck": "Die Antworten überprüfen. Die Auswahlen werden als richtig, falsch oder fehlend markiert.",
+          "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+          "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet."
+        },
+        "confirmCheck": {
+          "header": "Beenden?",
+          "body": "Ganz sicher beenden?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Beenden"
+        },
+        "confirmRetry": {
+          "header": "Wiederholen?",
+          "body": "Ganz sicher wiederholen?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Bestätigen"
+        },
+        "question": "<p>Was versteht die Einheit unter einer hohen “Variabilität” von Bildgeneraten beim gleichen Prompt?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Frage 3"
+      },
+      "subContentId": "21ab2677-4aa6-46c8-bfa4-4d629dc549cb"
+    },
+    {
+      "params": {
+        "media": {
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil ästhetische Anmutung stark subjektiv ist</div>\n"
+          },
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil andere Dimensionen wie Passung zum Prompt berücksichtigt werden müssen</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil technische Parameter irrelevant sind</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil Variabilität keine Rolle spielt</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil Nutzer:innen Geschmacksvorgaben ignorieren</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Überprüfen",
+          "submitAnswerButton": "Absenden",
+          "showSolutionButton": "Lösung anzeigen",
+          "tryAgainButton": "Wiederholen",
+          "tipsLabel": "Hinweis anzeigen",
+          "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+          "tipAvailable": "Hinweis verfügbar",
+          "feedbackAvailable": "Rückmeldung verfügbar",
+          "readFeedback": "Rückmeldung vorlesen",
+          "wrongAnswer": "Falsche Antwort",
+          "correctAnswer": "Richtige Antwort",
+          "shouldCheck": "Hätte gewählt werden müssen",
+          "shouldNotCheck": "Hätte nicht gewählt werden sollen",
+          "noInput": "Bitte antworte, bevor du die Lösung ansiehst",
+          "a11yCheck": "Die Antworten überprüfen. Die Auswahlen werden als richtig, falsch oder fehlend markiert.",
+          "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+          "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet."
+        },
+        "confirmCheck": {
+          "header": "Beenden?",
+          "body": "Ganz sicher beenden?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Beenden"
+        },
+        "confirmRetry": {
+          "header": "Wiederholen?",
+          "body": "Ganz sicher wiederholen?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Bestätigen"
+        },
+        "question": "<p>Warum ist es sinnvoll, die Bildqualität nicht ausschließlich über die ästhetische Anmutung zu bewerten?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Frage 5"
+      },
+      "subContentId": "b1e102cf-862f-4107-aff1-911735068600"
+    },
+    {
+      "params": {
+        "media": {
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Das Bild weicht vom gewünschten Szenario ab</div>\n"
+          },
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Textelemente im Bild können fehlerhaft sein</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Die Auflösung wird zu niedrig</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Die Dateigröße wird zu hoch</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Das Bild wird zu dunkel</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Überprüfen",
+          "submitAnswerButton": "Absenden",
+          "showSolutionButton": "Lösung anzeigen",
+          "tryAgainButton": "Wiederholen",
+          "tipsLabel": "Hinweis anzeigen",
+          "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+          "tipAvailable": "Hinweis verfügbar",
+          "feedbackAvailable": "Rückmeldung verfügbar",
+          "readFeedback": "Rückmeldung vorlesen",
+          "wrongAnswer": "Falsche Antwort",
+          "correctAnswer": "Richtige Antwort",
+          "shouldCheck": "Hätte gewählt werden müssen",
+          "shouldNotCheck": "Hätte nicht gewählt werden sollen",
+          "noInput": "Bitte antworte, bevor du die Lösung ansiehst",
+          "a11yCheck": "Die Antworten überprüfen. Die Auswahlen werden als richtig, falsch oder fehlend markiert.",
+          "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+          "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet."
+        },
+        "confirmCheck": {
+          "header": "Beenden?",
+          "body": "Ganz sicher beenden?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Beenden"
+        },
+        "confirmRetry": {
+          "header": "Wiederholen?",
+          "body": "Ganz sicher wiederholen?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Bestätigen"
+        },
+        "question": "<p>Welche Probleme können auftreten, wenn Bildgenerierung nicht ausreichend promptgetreu erfolgt?<br>\n&nbsp;</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Frage 6"
+      },
+      "subContentId": "3ae85a27-c508-4ce8-8c45-ddf711e44ec8"
+    },
+    {
+      "params": {
+        "media": {
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil unterschiedliche Szenarien unterschiedliche Stärken erfordern</div>\n"
+          },
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil sich keine einzelne Lösung für alle Anforderungen eignet</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil dadurch immer die niedrigsten Kosten entstehen</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil alle Systeme auf denselben KI-Modellen aufbauen</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Weil dadurch keine Qualitätseinbußen auftreten können</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Überprüfen",
+          "submitAnswerButton": "Absenden",
+          "showSolutionButton": "Lösung anzeigen",
+          "tryAgainButton": "Wiederholen",
+          "tipsLabel": "Hinweis anzeigen",
+          "scoreBarLabel": "Du hast :num von :total Punkten erreicht.",
+          "tipAvailable": "Hinweis verfügbar",
+          "feedbackAvailable": "Rückmeldung verfügbar",
+          "readFeedback": "Rückmeldung vorlesen",
+          "wrongAnswer": "Falsche Antwort",
+          "correctAnswer": "Richtige Antwort",
+          "shouldCheck": "Hätte gewählt werden müssen",
+          "shouldNotCheck": "Hätte nicht gewählt werden sollen",
+          "noInput": "Bitte antworte, bevor du die Lösung ansiehst",
+          "a11yCheck": "Die Antworten überprüfen. Die Auswahlen werden als richtig, falsch oder fehlend markiert.",
+          "a11yShowSolution": "Die Lösung anzeigen. Die richtigen Lösungen werden in der Aufgabe angezeigt.",
+          "a11yRetry": "Die Aufgabe wiederholen. Alle Versuche werden zurückgesetzt und die Aufgabe wird erneut gestartet."
+        },
+        "confirmCheck": {
+          "header": "Beenden?",
+          "body": "Ganz sicher beenden?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Beenden"
+        },
+        "confirmRetry": {
+          "header": "Wiederholen?",
+          "body": "Ganz sicher wiederholen?",
+          "cancelLabel": "Abbrechen",
+          "confirmLabel": "Bestätigen"
+        },
+        "question": "<p>Warum wird in der Einheit empfohlen, verschiedene Systeme parallel zu nutzen?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Frage 7"
+      },
+      "subContentId": "b0f8e66a-e11a-4cdb-ab4c-8ea0906e05f0"
+    }
+  ],
+  "disableBackwardsNavigation": false,
+  "randomQuestions": false,
+  "endGame": {
+    "showResultPage": true,
+    "showSolutionButton": true,
+    "showRetryButton": true,
+    "noResultMessage": "Quiz beendet",
+    "message": "Dein Ergebnis:",
+    "scoreBarLabel": "Du hast @score von @total Punkten erreicht.",
+    "overallFeedback": [
+      {
+        "from": 0,
+        "to": 100
+      }
+    ],
+    "solutionButtonText": "Lösung anzeigen",
+    "retryButtonText": "Wiederholen",
+    "finishButtonText": "Beenden",
+    "submitButtonText": "Absenden",
+    "showAnimations": false,
+    "skippable": false,
+    "skipButtonText": "Video überspringen"
+  },
+  "override": {
+    "checkButton": true
+  },
+  "texts": {
+    "prevButton": "Zurück",
+    "nextButton": "Weiter",
+    "finishButton": "Beenden",
+    "submitButton": "Absenden",
+    "textualProgress": "Aktuelle Frage: @current von @total Fragen",
+    "jumpToQuestion": "Frage %d von %total",
+    "questionLabel": "Frage",
+    "readSpeakerProgress": "Frage @current von @total",
+    "unansweredText": "Unbeantwortet",
+    "answeredText": "Beantwortet",
+    "currentQuestionText": "Aktuelle Frage",
+    "navigationLabel": "Fragen"
+  }
+}

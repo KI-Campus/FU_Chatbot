@@ -1,9 +1,6 @@
 from dataclasses import dataclass, field
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 from src.loaders.models.hp5activities import strip_html
-
-if TYPE_CHECKING:
-    from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
 
 
 @dataclass
@@ -35,13 +32,12 @@ class QuizQuestion:
         quiz = cls.from_h5p_params(library, params)
         
         if quiz:
-            # Importiere zur Laufzeit um circular import zu vermeiden
-            from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
-            # Erstelle InteractiveVideo mit nur dieser Quiz-Frage
-            module.interactive_video = InteractiveVideo(
-                video_url="",  # Kein Video bei standalone
-                interactions=[quiz]
-            )
+            # Speichere als dict (Dependency Inversion)
+            module.interactive_video = {
+                "video_url": "",
+                "vimeo_id": None,
+                "interactions": [quiz.to_text()]
+            }
             return None
         
         return "Konnte Quiz-Frage nicht extrahieren"
@@ -124,11 +120,12 @@ class TrueFalseQuestion:
         question = cls.from_h5p_params(library, params)
         
         if question:
-            from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
-            module.interactive_video = InteractiveVideo(
-                video_url="",
-                interactions=[question]
-            )
+            # Speichere als dict (Dependency Inversion)
+            module.interactive_video = {
+                "video_url": "",
+                "vimeo_id": None,
+                "interactions": [question.to_text()]
+            }
             return None
         
         return "Konnte True/False-Frage nicht extrahieren"

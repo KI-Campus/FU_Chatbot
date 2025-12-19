@@ -1,9 +1,6 @@
 from dataclasses import dataclass
-from typing import Optional, TYPE_CHECKING
+from typing import Optional
 from src.loaders.models.hp5activities import strip_html
-
-if TYPE_CHECKING:
-    from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
 
 
 @dataclass
@@ -26,11 +23,12 @@ class FillInBlanksQuestion:
         blanks = cls.from_h5p_params(library, params)
         
         if blanks:
-            from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
-            module.interactive_video = InteractiveVideo(
-                video_url="",
-                interactions=[blanks]
-            )
+            # Speichere als dict (Dependency Inversion)
+            module.interactive_video = {
+                "video_url": "",
+                "vimeo_id": None,
+                "interactions": [blanks.to_text()]
+            }
             return None
         
         return "Konnte Lückentext nicht extrahieren"

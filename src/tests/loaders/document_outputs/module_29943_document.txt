@@ -1,0 +1,34 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: Teste dein Wissen! Das richtige Tool
+
+--- Fragen im QuestionSet ---
+[Quiz] Warum wird in der Einheit empfohlen, Prompts überwiegend in englischer Sprache zu verfassen?
+Korrekte Antwort(en): Weil die meisten Modelle für englische Eingaben optimiert sind, Weil andere Sprachen oft zu weniger passgenauen Ergebnissen führen
+Inkorrekte Antwort(en): Weil es keine Tastaturen für andere Sprachen gibt, Weil Übersetzungen automatisch eingebaut werden, Weil englische Prompts kürzer sind und weniger Kosten verursachen
+[Quiz] Was versteht die Einheit unter einer hohen “Variabilität” von Bildgeneraten beim gleichen Prompt?
+Korrekte Antwort(en): Unterschiedliche Perspektiven, Unterschiedliche Bildmotive
+Inkorrekte Antwort(en): Die Ausgabe mehrerer Bilder, Diversität von Personen in einem Bild, Vielfältige Farbgebung in einem Bild
+[Quiz] Warum ist es sinnvoll, die Bildqualität nicht ausschließlich über die ästhetische Anmutung zu bewerten?
+Korrekte Antwort(en): Weil ästhetische Anmutung stark subjektiv ist, Weil andere Dimensionen wie Passung zum Prompt berücksichtigt werden müssen
+Inkorrekte Antwort(en): Weil technische Parameter irrelevant sind, Weil Variabilität keine Rolle spielt, Weil Nutzer:innen Geschmacksvorgaben ignorieren
+[Quiz] Welche Probleme können auftreten, wenn Bildgenerierung nicht ausreichend promptgetreu erfolgt?
+Korrekte Antwort(en): Das Bild weicht vom gewünschten Szenario ab, Textelemente im Bild können fehlerhaft sein
+Inkorrekte Antwort(en): Die Auflösung wird zu niedrig, Die Dateigröße wird zu hoch, Das Bild wird zu dunkel
+[Quiz] Warum wird in der Einheit empfohlen, verschiedene Systeme parallel zu nutzen?
+Korrekte Antwort(en): Weil unterschiedliche Szenarien unterschiedliche Stärken erfordern, Weil sich keine einzelne Lösung für alle Anforderungen eignet
+Inkorrekte Antwort(en): Weil dadurch immer die niedrigsten Kosten entstehen, Weil alle Systeme auf denselben KI-Modellen aufbauen, Weil dadurch keine Qualitätseinbußen auftreten können
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 337,
+  "module_id": 29943,
+  "fullname": "Teste dein Wissen! Das richtige Tool",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=29943"
+}
