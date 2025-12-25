@@ -24,8 +24,8 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(name)s: %(messag
 logger = logging.getLogger(__name__)
 
 # ⚙️ KONFIGURATION
-COURSE_ID = 106  # Kurs, der Modul 2195 enthält (Introduction to Machine Learning Part 1)
-TARGET_MODULE_ID = 19479  # Das Modul mit Quiz-Fragen zum Testen
+COURSE_ID = 313  # Kurs, der Modul 2195 enthält (Introduction to Machine Learning Part 1)
+TARGET_MODULE_ID = 26353  # Das Modul mit Quiz-Fragen zum Testen
 OUTPUT_DIR = Path(__file__).parent / "document_outputs"
 PROCESS_ONLY_TARGET_MODULE = True  # Wenn True: Nur TARGET_MODULE_ID verarbeiten, sonst alle Module
 
@@ -80,52 +80,58 @@ def find_course_in_excel(course_name_hint: str, excel_path: Path) -> int | None:
     return course_id
 
 
-def load_course_with_documents(moodle: Moodle, course_id: int):
-    """
-    Lädt einen Kurs komplett mit allen Topics und Modulen.
-    Gibt MoodleCourse-Objekt zurück, aus dem Documents generiert werden können.
+def load_course_with_documents(
+    moodle: Moodle,
+    course_id: int,
+    target_module_id: int | None = TARGET_MODULE_ID,
+    process_only_target_module: bool = PROCESS_ONLY_TARGET_MODULE,
+):
+    """Lädt einen Kurs komplett mit allen Topics und Modulen.
+
+    Gibt ein MoodleCourse-Objekt zurück, aus dem anschließend
+    LlamaIndex-Documents generiert werden können.
     """
     logger.info(f"\n📚 Lade Kurs {course_id} mit allen Inhalten...")
-    
+
     # Hole Course-Basis-Daten
     courses = moodle.get_courses()
     course = next((c for c in courses if c.id == course_id), None)
-    
+
     if not course:
         logger.error(f"  ✗ Kurs {course_id} nicht gefunden!")
         return None
-    
+
     logger.info(f"  ✓ Kurs geladen: {course.fullname}")
-    
+
     # Lade Topics/Modules
     course.topics = moodle.get_course_contents(course_id)
     logger.info(f"  ✓ {len(course.topics)} Topics geladen")
-    
+
     # Extrahiere Texte aus Modulen (HTML-Pages, H5P, etc.)
     total_modules = sum(len(topic.modules) for topic in course.topics)
     logger.info(f"  📦 Verarbeite {total_modules} Module...")
-    
+
     # Hole H5P Activities für den Kurs
     h5p_activities = moodle.get_h5p_module_ids(course_id)
     logger.info(f"  ✓ {len(h5p_activities)} H5P-Activities gefunden")
-    
+
     # Extrahiere Inhalte aus allen Topics (wie in der echten Pipeline)
     for topic in course.topics:
-        # Optional: Nur TARGET_MODULE_ID verarbeiten
-        if PROCESS_ONLY_TARGET_MODULE:
+        # Optional: Nur ein spezifisches Modul verarbeiten
+        if process_only_target_module and target_module_id is not None:
             # Filtere Module im Topic
             original_modules = topic.modules
-            topic.modules = [m for m in original_modules if m.id == TARGET_MODULE_ID]
-            
+            topic.modules = [m for m in original_modules if m.id == target_module_id]
+
             if len(topic.modules) > 0:
-                logger.info(f"  📌 Verarbeite nur Modul {TARGET_MODULE_ID} aus Topic '{topic.name}'")
+                logger.info(f"  📌 Verarbeite nur Modul {target_module_id} aus Topic '{topic.name}'")
                 moodle.get_module_contents(topic, h5p_activities)
-            
+
             # Stelle Original-Liste wieder her (für spätere Nutzung)
             topic.modules = original_modules
         else:
             moodle.get_module_contents(topic, h5p_activities)
-    
+
     logger.info(f"  ✓ Alle Module verarbeitet\n")
     return course
 
@@ -151,53 +157,73 @@ def save_document_to_file(doc, filename: str, output_dir: Path):
     logger.info(f"  💾 Gespeichert: {output_file}")
 
 
-def main():
+def run_ingestion(
+    course_id: int = COURSE_ID,
+    target_module_id: int | None = TARGET_MODULE_ID,
+    process_only_target_module: bool = PROCESS_ONLY_TARGET_MODULE,
+    output_dir: Path = OUTPUT_DIR,
+):
+    """Führt den kompletten Ingestion-Prozess für einen Kurs aus.
+
+    - Verwendet die produktive Moodle-Konfiguration (wie im echten Loader)
+    - Lädt Kurs + Module
+    - Erzeugt LlamaIndex-Documents
+    - Schreibt die wichtigsten Documents als TXT-Dateien nach ``output_dir``
+
+    Rückgabe: Liste der erzeugten Documents.
+    """
     logger.info("=" * 80)
     logger.info("DOCUMENT EXTRACTION TEST - MODUL 2195")
     logger.info("=" * 80)
-    
+
     # Setup
     moodle = setup_production_moodle()
-    
+
     # Lade Kurs komplett
-    logger.info(f"\n📚 Lade Kurs {COURSE_ID}...")
-    course = load_course_with_documents(moodle, COURSE_ID)
+    logger.info(f"\n📚 Lade Kurs {course_id}...")
+    course = load_course_with_documents(
+        moodle,
+        course_id,
+        target_module_id=target_module_id,
+        process_only_target_module=process_only_target_module,
+    )
     if not course:
         logger.error("❌ Kurs konnte nicht geladen werden!")
-        return
-    
+        return []
+
     # Generiere Documents
     logger.info("📄 Generiere LlamaIndex Documents...\n")
     documents = course.to_document()
-    
+
     logger.info(f"  ✓ {len(documents)} Documents erstellt:")
-    logger.info(f"    - 1x Kurs-Übersicht")
-    logger.info(f"    - {len(documents)-1}x Modul-Documents\n")
-    
+    logger.info("    - 1x Kurs-Übersicht")
+    logger.info(f"    - {len(documents) - 1}x Modul-Documents\n")
+
     # Speichere Kurs-Übersichtsdokument (erstes Document)
     logger.info("💾 Speichere Dokumente...")
-    course_doc = documents[0]
-    save_document_to_file(
-        course_doc,
-        f"course_{COURSE_ID}_overview.txt",
-        OUTPUT_DIR
-    )
-    
-    # Finde und speichere Modul-Dokument
-    if TARGET_MODULE_ID:
+    if documents:
+        course_doc = documents[0]
+        save_document_to_file(
+            course_doc,
+            f"course_{course_id}_overview.txt",
+            output_dir,
+        )
+
+    # Finde und speichere Modul-Dokument (falls target_module_id gesetzt ist)
+    if target_module_id is not None:
         module_doc = next(
-            (doc for doc in documents[1:] if doc.metadata.get("module_id") == TARGET_MODULE_ID),
-            None
+            (doc for doc in documents[1:] if doc.metadata.get("module_id") == target_module_id),
+            None,
         )
         if module_doc:
             save_document_to_file(
                 module_doc,
-                f"module_{TARGET_MODULE_ID}_document.txt",
-                OUTPUT_DIR
+                f"module_{target_module_id}_document.txt",
+                output_dir,
             )
         else:
-            logger.warning(f"  ⚠️  Modul {TARGET_MODULE_ID} nicht in Documents gefunden!")
-    
+            logger.warning(f"  ⚠️  Modul {target_module_id} nicht in Documents gefunden!")
+
     # Speichere auch die ersten 3 anderen Module als Beispiele
     logger.info("\n📋 Speichere zusätzlich erste 3 Module als Beispiele...")
     for i, doc in enumerate(documents[1:4], start=1):
@@ -205,13 +231,20 @@ def main():
         save_document_to_file(
             doc,
             f"module_{module_id}_example.txt",
-            OUTPUT_DIR
+            output_dir,
         )
-    
+
     logger.info("\n" + "=" * 80)
     logger.info("✅ FERTIG!")
-    logger.info(f"Ausgabe in: {OUTPUT_DIR.absolute()}")
+    logger.info(f"Ausgabe in: {output_dir.absolute()}")
     logger.info("=" * 80)
+
+    return documents
+
+
+def main():
+    # CLI-Entry: verhält sich wie bisher, nutzt Default-Konfiguration
+    run_ingestion()
 
 
 if __name__ == "__main__":
