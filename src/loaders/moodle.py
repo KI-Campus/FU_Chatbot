@@ -18,6 +18,7 @@ from src.loaders.failed_transcripts import (
     save_failed_transcripts_to_excel,
 )
 from src.loaders.models.coursetopic import CourseTopic
+from src.loaders.models.glossary import Glossary, GlossaryEntry
 from src.loaders.models.hp5activities import H5PActivities
 from src.loaders.models.module import ModuleTypes, H5P_HANDLERS
 from src.loaders.models.moodlecourse import MoodleCourse
@@ -142,6 +143,8 @@ class Moodle:
                     for activity in h5p_activities:
                         if activity.coursemodule == module.id:
                             err_message = self.extract_h5p(module, activity)
+                case ModuleTypes.GLOSSARY:
+                    err_message = self.extract_glossary(module)
             if err_message:
                 failed_modules.append(FailedModule(modul=module, err_message=err_message))
 
@@ -289,6 +292,71 @@ class Moodle:
             return err
         
         return None
+
+    def extract_glossary(self, module):
+        """
+        Extrahiert Glossar-Einträge aus einem Moodle Glossary Modul.
+        
+        Verwendet module.instance (glossary_id) aus core_course_get_contents.
+        
+        Args:
+            module: Module-Objekt mit modname="glossary" und instance=glossary_id
+            
+        Returns:
+            Optional[str]: Fehlermeldung oder None
+        """
+        try:
+            # module.instance enthält bereits die glossary_id von core_course_get_contents
+            glossary_id = module.instance
+            
+            # API-Call für alle Glossar-Einträge
+            caller = APICaller(
+                url=self.api_endpoint,
+                params=self.function_params,
+                wsfunction="mod_glossary_get_entries_by_letter",
+                id=glossary_id,
+                letter="ALL",  # Alle Einträge
+                **{"from": 0, "limit": 1000}  # Max 1000 Einträge
+            )
+            
+            response = caller.getJSON()
+            
+            # Parse Response
+            entries_data = response.get("entries", [])
+            total_count = response.get("count", 0)
+            
+            if not entries_data:
+                self.logger.info(f"Glossary {glossary_id} (Module {module.id}) hat keine Einträge")
+                return None
+            
+            # Erstelle GlossaryEntry Objekte (nur concept + definition relevant)
+            entries = []
+            for entry_data in entries_data:
+                try:
+                    entry = GlossaryEntry(
+                        id=entry_data["id"],
+                        concept=entry_data["concept"],
+                        definition=entry_data["definition"]
+                    )
+                    entries.append(entry)
+                except Exception as e:
+                    self.logger.warning(f"Fehler beim Parsen von Glossary Entry {entry_data.get('id')}: {e}")
+                    continue
+            
+            # Erstelle Glossary-Objekt und befülle Module
+            module.glossary = Glossary(
+                glossary_id=glossary_id,
+                module_id=module.id,
+                entries=entries
+            )
+            
+            self.logger.info(f"Glossary {glossary_id} erfolgreich geladen: {len(entries)}/{total_count} Einträge")
+            return None
+            
+        except Exception as e:
+            error_msg = f"Fehler beim Laden von Glossary {module.id}: {str(e)}"
+            self.logger.error(error_msg)
+            return error_msg
 
 
 if __name__ == "__main__":
