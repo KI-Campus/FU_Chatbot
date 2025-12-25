@@ -1,0 +1,52 @@
+{
+  "title": "Training eines künstlichen neuronalen Netzes",
+  "language": "und",
+  "mainLibrary": "H5P.Crossword",
+  "embedTypes": [
+    "iframe"
+  ],
+  "license": "U",
+  "defaultLanguage": "de",
+  "preloadedDependencies": [
+    {
+      "machineName": "H5P.Crossword",
+      "majorVersion": "0",
+      "minorVersion": "5"
+    },
+    {
+      "machineName": "H5P.JoubelUI",
+      "majorVersion": "1",
+      "minorVersion": "3"
+    },
+    {
+      "machineName": "FontAwesome",
+      "majorVersion": "4",
+      "minorVersion": "5"
+    },
+    {
+      "machineName": "H5P.FontIcons",
+      "majorVersion": "1",
+      "minorVersion": "0"
+    },
+    {
+      "machineName": "H5P.Transition",
+      "majorVersion": "1",
+      "minorVersion": "0"
+    },
+    {
+      "machineName": "H5P.Image",
+      "majorVersion": "1",
+      "minorVersion": "1"
+    },
+    {
+      "machineName": "H5P.Question",
+      "majorVersion": "1",
+      "minorVersion": "5"
+    },
+    {
+      "machineName": "H5P.MaterialDesignIcons",
+      "majorVersion": "1",
+      "minorVersion": "0"
+    }
+  ]
+}

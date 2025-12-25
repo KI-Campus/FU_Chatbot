@@ -21,8 +21,8 @@ from src.loaders.APICaller import APICaller
 from src.loaders.moodle import Moodle
 
 # ⚙️ KONFIGURATION
-COURSE_ID = 56
-MODULE_ID = 5879
+COURSE_ID = 74
+MODULE_ID = 23368
 
 
 def setup_production_moodle():

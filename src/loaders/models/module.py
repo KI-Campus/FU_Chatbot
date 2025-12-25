@@ -5,6 +5,7 @@ from llama_index.core import Document
 from pydantic import BaseModel, HttpUrl, computed_field
 
 from src.loaders.models.downloadablecontent import DownloadableContent
+from src.loaders.models.glossary import Glossary
 from src.loaders.models.texttrack import TextTrack
 from src.loaders.models.videotime import Video
 
@@ -13,6 +14,7 @@ class ModuleTypes(StrEnum):
     VIDEOTIME = "videotime"
     PAGE = "page"
     H5P = "h5pactivity"
+    GLOSSARY = "glossary"
 
 
 # H5P Handler Mapping: Library-Name → Handler-Klasse
@@ -52,12 +54,14 @@ class Module(BaseModel):
     name: str
     url: HttpUrl | None = None
     modname: str  # content type
+    instance: int | None = None  # ID of the specific resource (glossary_id, videotime_id, etc.)
     h5p_content_type: str | None = None  # H5P library name from content.json
     text: str | None = None
     contents: list[DownloadableContent] | None = None
     videotime: Video | None = None
     transcripts: list[TextTrack] = []
     interactive_video: dict | None = None  # H5P Interactive Video data (als dict, nicht typisiert)
+    glossary: Glossary | None = None  # Glossary entries
 
     @computed_field  # type: ignore[misc]
     @property
@@ -69,6 +73,8 @@ class Module(BaseModel):
                 return ModuleTypes.PAGE
             case "h5pactivity":
                 return ModuleTypes.H5P
+            case "glossary":
+                return ModuleTypes.GLOSSARY
             case _:
                 return None
 
@@ -134,6 +140,11 @@ class Module(BaseModel):
             interactions = self.interactive_video.get("interactions", [])
             for interaction_text in interactions:
                 text_parts.append(interaction_text)
+        
+        # Glossary Einträge
+        if self.glossary and self.glossary.total_entries > 0:
+            text_parts.append(f"\n--- Glossar ({self.glossary.total_entries} Einträge) ---")
+            text_parts.append(str(self.glossary))
         
         text = "\n".join(text_parts)
 
