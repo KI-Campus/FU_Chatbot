@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Union, Optional
 from src.loaders.models.hp5activities import extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PContainer
 from src.loaders.models.h5pactivities.h5p_quiz_questions import QuizQuestion, TrueFalseQuestion
 from src.loaders.models.h5pactivities.h5p_blanks import FillInBlanksQuestion
 from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion, DragDropText
@@ -20,7 +21,7 @@ QuestionType = Union[
 
 
 @dataclass
-class QuestionSet:
+class QuestionSet(H5PContainer):
     """H5P.QuestionSet - Container für mehrere Quiz-Fragen verschiedener Typen."""
     type: str = "H5P.QuestionSet"
     questions: list[QuestionType] = field(default_factory=list)
@@ -82,32 +83,10 @@ class QuestionSet:
                 continue
             
             # Verwende bestehende Handler für jeden Fragetyp
-            extracted = None
-            
-            # MultiChoice / SingleChoiceSet
-            if "H5P.MultiChoice" in q_library or "H5P.SingleChoiceSet" in q_library:
-                extracted = QuizQuestion.from_h5p_params(q_library, q_params)
-            
-            # TrueFalse
-            elif "H5P.TrueFalse" in q_library:
-                extracted = TrueFalseQuestion.from_h5p_params(q_library, q_params)
-            
-            # Blanks (Lückentext)
-            elif "H5P.Blanks" in q_library:
-                extracted = FillInBlanksQuestion.from_h5p_params(q_library, q_params)
-            
-            # DragQuestion
-            elif "H5P.DragQuestion" in q_library:
-                extracted = DragDropQuestion.from_h5p_params(q_library, q_params)
-            
-            # DragText
-            elif "H5P.DragText" in q_library:
-                extracted = DragDropText.from_h5p_params(q_library, q_params)
+            extracted = QuestionSet.extract_child_content(q_library, q_params)
             
             if extracted:
                 extracted_questions.append(extracted)
-            else:
-                logger.debug(f"⚠️  H5P-Typ nicht unterstützt in QuestionSet: {q_library}")
         
         if extracted_questions:
             return cls(

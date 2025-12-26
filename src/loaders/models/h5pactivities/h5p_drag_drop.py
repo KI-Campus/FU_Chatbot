@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Optional
 from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PLeaf
 
 
 @dataclass
-class DragDropText:
+class DragDropText(H5PLeaf):
     """Drag Text - Wörter in Lücken ziehen (H5P.DragText)"""
     type: str  # "H5P.DragText"
     task_description: str
@@ -59,7 +60,7 @@ class DragDropText:
 
 
 @dataclass
-class DragDropQuestion:
+class DragDropQuestion(H5PLeaf):
     """Drag & Drop-Frage"""
     type: str  # "H5P.DragQuestion"
     question: str
@@ -165,7 +166,7 @@ class DragDropQuestion:
         return result
     
 @dataclass
-class ImageHotspotQuestion:
+class ImageHotspotQuestion(H5PLeaf):
     """
     H5P.ImageHotspot oder H5P.DragDrop mit visuellen Elementen auf einem Bild.
     Elemente (Texte) werden zu DropZones (Labels) zugeordnet.
