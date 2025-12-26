@@ -1,10 +1,11 @@
 from dataclasses import dataclass
 from typing import Optional
 from src.loaders.models.hp5activities import strip_html
+from src.loaders.models.h5pactivities.h5p_base import H5PLeaf
 
 
 @dataclass
-class Summary:
+class Summary(H5PLeaf):
     """Summary am Ende eines Interactive Videos."""
     type: str  # "H5P.Summary"
     intro: str

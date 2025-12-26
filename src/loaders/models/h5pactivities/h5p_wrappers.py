@@ -2,6 +2,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Union, Optional, Any
 from src.loaders.models.hp5activities import extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PContainer
 from src.loaders.models.h5pactivities.h5p_quiz_questions import QuizQuestion, TrueFalseQuestion
 from src.loaders.models.h5pactivities.h5p_blanks import FillInBlanksQuestion
 from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion, DragDropText, ImageHotspotQuestion
@@ -36,7 +37,7 @@ ColumnContent = Union[
 
 
 @dataclass
-class Column:
+class Column(H5PContainer):
     """
     H5P.Column - Extrem oberflächlicher Wrapper für mehrere H5P-Inhalte.
     
@@ -122,48 +123,8 @@ class Column:
             # Verwende bestehende Handler für jeden unterstützten Fragetyp
             extracted = None
             
-            # MultiChoice / SingleChoiceSet
-            if "H5P.MultiChoice" in content_library or "H5P.SingleChoiceSet" in content_library:
-                extracted = QuizQuestion.from_h5p_params(content_library, content_params)
-            
-            # TrueFalse
-            elif "H5P.TrueFalse" in content_library:
-                extracted = TrueFalseQuestion.from_h5p_params(content_library, content_params)
-            
-            # Blanks
-            elif "H5P.Blanks" in content_library:
-                extracted = FillInBlanksQuestion.from_h5p_params(content_library, content_params)
-            
-            # DragQuestion
-            elif "H5P.DragQuestion" in content_library:
-                extracted = DragDropQuestion.from_h5p_params(content_library, content_params)
-            
-            # DragText
-            elif "H5P.DragText" in content_library:
-                extracted = DragDropText.from_h5p_params(content_library, content_params)
-            
-            # ImageHotspot
-            elif "H5P.ImageHotspot" in content_library:
-                extracted = ImageHotspotQuestion.from_h5p_params(content_library, content_params)
-            
-            # Video
-            elif "H5P.Video" in content_library:
-                extracted = H5PVideo.from_h5p_params(content_library, content_params)
-            
-            # Dialogcards
-            elif "H5P.Dialogcards" in content_library:
-                extracted = H5PDialogcards.from_h5p_params(content_library, content_params)
-
-            # Flashcards
-            elif "H5P.Flashcards" in content_library:
-                extracted = H5PFlashcards.from_h5p_params(content_library, content_params)
-            
-            # Timeline
-            elif "H5P.Timeline" in content_library:
-                extracted = H5PTimeline.from_h5p_params(content_library, content_params)
-            
-            # AdvancedText / Text
-            elif "H5P.AdvancedText" in content_library or "H5P.Text" in content_library:
+            # AdvancedText / Text - Special case für inline SimpleTextContent
+            if "H5P.AdvancedText" in content_library or "H5P.Text" in content_library:
                 # Einfachen Text extrahieren
                 text_content = content_params.get("text", "").strip()
                 if text_content:
@@ -171,17 +132,9 @@ class Column:
                         type=content_library,
                         text=text_content
                     )
-            
-            # Accordion (kann auch innerhalb Column vorkommen)
-            elif "H5P.Accordion" in content_library:
-                extracted = Accordion.from_h5p_params(content_library, content_params)
-            
-            # Fallback: Unsupported Typen
             else:
-                # Logger-Warnung für nicht unterstützte Typen
-                logger.debug(f"⚠️  H5P-Typ nicht unterstützt in Column: {content_library}")
-                # Ignorieren, nicht in extracted_contents hinzufügen
-                pass
+                # Alle anderen Typen via Registry
+                extracted = Column.extract_child_content(content_library, content_params)
             
             if extracted:
                 extracted_contents.append(extracted)
@@ -230,7 +183,7 @@ class AccordionPanel:
 
 
 @dataclass
-class Accordion:
+class Accordion(H5PContainer):
     """
     H5P.Accordion - Accordion-ähnlicher Wrapper für mehrere H5P-Inhalte mit Titeln.
     
@@ -297,39 +250,17 @@ class Accordion:
             # Verwende bestehende Handler für jeden unterstützten Typ
             extracted = None
             
-            # MultiChoice / SingleChoiceSet
-            if "H5P.MultiChoice" in content_library or "H5P.SingleChoiceSet" in content_library:
-                extracted = QuizQuestion.from_h5p_params(content_library, content_params)
-            
-            # TrueFalse
-            elif "H5P.TrueFalse" in content_library:
-                extracted = TrueFalseQuestion.from_h5p_params(content_library, content_params)
-            
-            # Blanks
-            elif "H5P.Blanks" in content_library:
-                extracted = FillInBlanksQuestion.from_h5p_params(content_library, content_params)
-            
-            # DragQuestion
-            elif "H5P.DragQuestion" in content_library:
-                extracted = DragDropQuestion.from_h5p_params(content_library, content_params)
-            
-            # DragText
-            elif "H5P.DragText" in content_library:
-                extracted = DragDropText.from_h5p_params(content_library, content_params)
-            
-            # AdvancedText / Text
-            elif "H5P.AdvancedText" in content_library or "H5P.Text" in content_library:
+            # AdvancedText / Text - Special case für inline SimpleTextContent
+            if "H5P.AdvancedText" in content_library or "H5P.Text" in content_library:
                 text_content = content_params.get("text", "").strip()
                 if text_content:
                     extracted = SimpleTextContent(
                         type=content_library,
                         text=text_content
                     )
-            
-            # Fallback: Unsupported Typen
             else:
-                logger.debug(f"⚠️  H5P-Typ nicht unterstützt in Accordion: {content_library}")
-                pass
+                # Alle anderen Typen via Registry
+                extracted = Accordion.extract_child_content(content_library, content_params)
             
             if extracted:
                 extracted_panels.append(AccordionPanel(title=panel_title, content=extracted))
@@ -384,7 +315,7 @@ class GamemapStage:
 
 
 @dataclass
-class Gamemap:
+class Gamemap(H5PContainer):
     """
     H5P.Gamemap - Interaktive Karte mit mehreren Stages/Elementen.
 
@@ -452,71 +383,17 @@ class Gamemap:
                 # Versuche den passenden Handler zu finden
                 extracted = None
             
-                # MultiChoice / SingleChoiceSet
-                if "H5P.MultiChoice" in content_library or "H5P.SingleChoiceSet" in content_library:
-                    extracted = QuizQuestion.from_h5p_params(content_library, content_params)
-            
-                # TrueFalse
-                elif "H5P.TrueFalse" in content_library:
-                    extracted = TrueFalseQuestion.from_h5p_params(content_library, content_params)
-            
-                # Blanks
-                elif "H5P.Blanks" in content_library:
-                    extracted = FillInBlanksQuestion.from_h5p_params(content_library, content_params)
-            
-                # DragQuestion
-                elif "H5P.DragQuestion" in content_library:
-                    extracted = DragDropQuestion.from_h5p_params(content_library, content_params)
-            
-                # DragText
-                elif "H5P.DragText" in content_library:
-                    extracted = DragDropText.from_h5p_params(content_library, content_params)
-            
-                # ImageHotspot
-                elif "H5P.ImageHotspot" in content_library:
-                    extracted = ImageHotspotQuestion.from_h5p_params(content_library, content_params)
-            
-                # Video
-                elif "H5P.Video" in content_library:
-                    extracted = H5PVideo.from_h5p_params(content_library, content_params)
-            
-                # Dialogcards
-                elif "H5P.Dialogcards" in content_library:
-                    extracted = H5PDialogcards.from_h5p_params(content_library, content_params)
-                
-                # Flashcards
-                elif "H5P.Flashcards" in content_library:
-                    extracted = H5PFlashcards.from_h5p_params(content_library, content_params)
-
-                # Timeline
-                elif "H5P.Timeline" in content_library:
-                    extracted = H5PTimeline.from_h5p_params(content_library, content_params)
-            
-                # AdvancedText / Text
-                elif "H5P.AdvancedText" in content_library or "H5P.Text" in content_library:
+                # AdvancedText / Text - Special case für inline SimpleTextContent
+                if "H5P.AdvancedText" in content_library or "H5P.Text" in content_library:
                     text_content = content_params.get("text", "").strip()
                     if text_content:
                         extracted = SimpleTextContent(
                             type=content_library,
                             text=text_content
                         )
-            
-                # QuestionSet
-                elif "H5P.QuestionSet" in content_library:
-                    extracted = QuestionSet.from_h5p_params(content_library, content_params)
-            
-                # Column (auch in Gamemap möglich)
-                elif "H5P.Column" in content_library:
-                    extracted = Column.from_h5p_params(content_library, content_params)
-            
-                # Accordion (auch in Gamemap möglich)
-                elif "H5P.Accordion" in content_library:
-                    extracted = Accordion.from_h5p_params(content_library, content_params)
-            
-                # Fallback: Unsupported Typen
                 else:
-                    logger.debug(f"⚠️  H5P-Typ nicht unterstützt in Gamemap: {content_library}")
-                    extracted = None
+                    # Alle anderen Typen via Registry
+                    extracted = Gamemap.extract_child_content(content_library, content_params)
             
                 # Füge Stage hinzu (mit oder ohne extrahierten Content)
                 stages.append(GamemapStage(label=label, content=extracted))
@@ -558,7 +435,7 @@ class CourseSlide:
 
 
 @dataclass
-class CoursePresentation:
+class CoursePresentation(H5PContainer):
     """
     H5P.CoursePresentation – Wrapper für Slides mit diversen H5P-Elementen.
 
@@ -609,48 +486,14 @@ class CoursePresentation:
 
                 extracted = None
 
-                # Quiztypen
-                if "H5P.MultiChoice" in content_library or "H5P.SingleChoiceSet" in content_library:
-                    extracted = QuizQuestion.from_h5p_params(content_library, content_params)
-                elif "H5P.TrueFalse" in content_library:
-                    extracted = TrueFalseQuestion.from_h5p_params(content_library, content_params)
-                elif "H5P.Blanks" in content_library:
-                    extracted = FillInBlanksQuestion.from_h5p_params(content_library, content_params)
-                elif "H5P.DragQuestion" in content_library:
-                    extracted = DragDropQuestion.from_h5p_params(content_library, content_params)
-                elif "H5P.DragText" in content_library:
-                    extracted = DragDropText.from_h5p_params(content_library, content_params)
-                elif "H5P.ImageHotspot" in content_library:
-                    extracted = ImageHotspotQuestion.from_h5p_params(content_library, content_params)
-
-                # Inhaltstypen
-                elif "H5P.Video" in content_library:
-                    extracted = H5PVideo.from_h5p_params(content_library, content_params)
-                elif "H5P.Dialogcards" in content_library:
-                    extracted = H5PDialogcards.from_h5p_params(content_library, content_params)
-                elif "H5P.Flashcards" in content_library:
-                    extracted = H5PFlashcards.from_h5p_params(content_library, content_params)
-                elif "H5P.Timeline" in content_library:
-                    extracted = H5PTimeline.from_h5p_params(content_library, content_params)
-                elif "H5P.Summary" in content_library:
-                    extracted = H5PSummary.from_h5p_params(content_library, content_params)
-                elif "H5P.AdvancedText" in content_library or "H5P.Text" in content_library:
+                # AdvancedText / Text - Special case für inline SimpleTextContent
+                if "H5P.AdvancedText" in content_library or "H5P.Text" in content_library:
                     text_content = content_params.get("text", "").strip()
                     if text_content:
                         extracted = SimpleTextContent(type=content_library, text=text_content)
-
-                # Wrapper innerhalb Slides
-                elif "H5P.Column" in content_library:
-                    extracted = Column.from_h5p_params(content_library, content_params)
-                elif "H5P.Accordion" in content_library:
-                    extracted = Accordion.from_h5p_params(content_library, content_params)
-                elif "H5P.QuestionSet" in content_library:
-                    extracted = QuestionSet.from_h5p_params(content_library, content_params)
-                elif "H5P.Gamemap" in content_library or "H5P.GameMap" in content_library:
-                    extracted = Gamemap.from_h5p_params("H5P.Gamemap", content_params)
                 else:
-                    logger.debug(f"⚠️  H5P-Typ nicht unterstützt in CoursePresentation: {content_library}")
-                    extracted = None
+                    # Alle anderen Typen via Registry
+                    extracted = CoursePresentation.extract_child_content(content_library, content_params)
 
                 if extracted:
                     contents.append(extracted)

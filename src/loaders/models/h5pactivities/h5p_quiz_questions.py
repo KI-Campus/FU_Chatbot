@@ -1,10 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Optional
 from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PLeaf
 
 
 @dataclass
-class QuizQuestion:
+class QuizQuestion(H5PLeaf):
     """Quiz-Frage (Multiple/Single Choice) im Interactive Video."""
     type: str  # "H5P.MultiChoice" oder "H5P.SingleChoiceSet"
     question: str
@@ -102,7 +103,7 @@ class QuizQuestion:
 
 
 @dataclass
-class TrueFalseQuestion:
+class TrueFalseQuestion(H5PLeaf):
     """Wahr/Falsch-Frage im Interactive Video."""
     type: str  # "H5P.TrueFalse"
     question: str
