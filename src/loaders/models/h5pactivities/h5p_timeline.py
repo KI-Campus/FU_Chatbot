@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PLeaf
 
 
 @dataclass
@@ -17,7 +18,7 @@ class TimelineEntry:
 
 
 @dataclass
-class H5PTimeline:
+class H5PTimeline(H5PLeaf):
 	"""Handler für H5P.Timeline."""
 	type: str
 	entries: list[TimelineEntry] = field(default_factory=list)

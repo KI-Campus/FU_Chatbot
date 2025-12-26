@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PLeaf
 
 
 @dataclass
@@ -18,7 +19,7 @@ class DialogCard:
 
 
 @dataclass
-class H5PDialogcards:
+class H5PDialogcards(H5PLeaf):
     """H5P.Dialogcards - Kartenset zum Lernen."""
     type: str  # "H5P.Dialogcards"
     cards: list[DialogCard] = field(default_factory=list)

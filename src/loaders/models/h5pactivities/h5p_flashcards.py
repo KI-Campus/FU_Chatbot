@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PLeaf
 
 
 @dataclass
@@ -16,7 +17,7 @@ class Flashcard:
 
 
 @dataclass
-class H5PFlashcards:
+class H5PFlashcards(H5PLeaf):
 	"""Handler für H5P.Flashcards.
 
 	Erwartet params mit Feld 'cards': [{text, answer, ...}]

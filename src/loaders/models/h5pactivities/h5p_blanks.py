@@ -1,10 +1,11 @@
 from dataclasses import dataclass
 from typing import Optional
 from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PLeaf
 
 
 @dataclass
-class FillInBlanksQuestion:
+class FillInBlanksQuestion(H5PLeaf):
     """Lückentext-Frage im Interactive Video."""
     type: str  # "H5P.Blanks"
     question: str

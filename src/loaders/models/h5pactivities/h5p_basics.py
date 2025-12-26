@@ -2,10 +2,11 @@ from dataclasses import dataclass
 from typing import Optional
 import zipfile
 from src.loaders.models.hp5activities import strip_html, extract_library_from_h5p
+from src.loaders.models.h5pactivities.h5p_base import H5PLeaf
 
 
 @dataclass
-class Text:
+class Text(H5PLeaf):
     """Text-Einblendung im Interactive Video."""
     type: str  # z.B. "H5P.Text" oder "H5P.AdvancedText"
     text: str
@@ -49,7 +50,7 @@ class Text:
 
 
 @dataclass
-class H5PVideo:
+class H5PVideo(H5PLeaf):
     """Einfaches H5P.Video (ohne Interaktionen)."""
     type: str  # "H5P.Video"
     video_url: str

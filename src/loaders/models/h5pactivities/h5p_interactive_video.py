@@ -8,6 +8,7 @@ from pydantic import ValidationError
 
 logger = logging.getLogger(__name__)
 
+from src.loaders.models.h5pactivities.h5p_base import H5PContainer
 from src.loaders.models.h5pactivities.h5p_quiz_questions import QuizQuestion, TrueFalseQuestion
 from src.loaders.models.h5pactivities.h5p_blanks import FillInBlanksQuestion
 from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion, DragDropText
@@ -34,7 +35,7 @@ VideoInteraction = Union[
 
 
 @dataclass
-class InteractiveVideo:
+class InteractiveVideo(H5PContainer):
     """Parsed H5P Interactive Video Content."""
     video_url: str
     vimeo_id: Optional[str] = None
@@ -115,56 +116,10 @@ class InteractiveVideo:
             params = action.get("params", {})
             
             # Versuche jede Klasse
-            extracted = None
-            
-            # QuizQuestion (MultiChoice + SingleChoiceSet)
-            if "H5P.MultiChoice" in library or "H5P.SingleChoiceSet" in library:
-                extracted = QuizQuestion.from_h5p_params(library, params)
-            
-            # TrueFalse
-            elif "H5P.TrueFalse" in library:
-                extracted = TrueFalseQuestion.from_h5p_params(library, params)
-            
-            # Blanks
-            elif "H5P.Blanks" in library:
-                extracted = FillInBlanksQuestion.from_h5p_params(library, params)
-            
-            # DragQuestion
-            elif "H5P.DragQuestion" in library:
-                extracted = DragDropQuestion.from_h5p_params(library, params)
-            
-            # DragText
-            elif "H5P.DragText" in library:
-                extracted = DragDropText.from_h5p_params(library, params)
-            
-            # Column
-            elif "H5P.Column" in library:
-                extracted = Column.from_h5p_params(library, params)
-            
-            # Accordion
-            elif "H5P.Accordion" in library:
-                extracted = Accordion.from_h5p_params(library, params)
-            
-            # QuestionSet
-            elif "H5P.QuestionSet" in library:
-                extracted = QuestionSet.from_h5p_params(library, params)
-            
-            # Summary
-            elif "H5P.Summary" in library:
-                extracted = Summary.from_h5p_params(library, params)
-            
-            # Timeline
-            elif "H5P.Timeline" in library:
-                extracted = H5PTimeline.from_h5p_params(library, params)
-            
-            # Text
-            elif "H5P.AdvancedText" in library or "H5P.Text" in library:
-                extracted = Text.from_h5p_params(library, params)
+            extracted = InteractiveVideo.extract_child_content(library, params)
             
             if extracted:
                 interactions.append(extracted)
-            else:
-                logger.debug(f"⚠️  H5P-Typ nicht unterstützt im InteractiveVideo: {library}")
         
         # === SUMMARY EXTRAHIEREN ===
         if "summary" in iv:
