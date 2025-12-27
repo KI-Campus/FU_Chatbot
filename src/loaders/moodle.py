@@ -4,6 +4,7 @@ import re
 import tempfile
 import unicodedata
 import zipfile
+from pathlib import Path
 
 from bs4 import BeautifulSoup, ParserRejectedMarkup
 from llama_index.core import Document
@@ -17,12 +18,17 @@ from src.loaders.failed_transcripts import (
     FailedTranscripts,
     save_failed_transcripts_to_excel,
 )
+from src.loaders.models.book import Book, BookChapter
 from src.loaders.models.coursetopic import CourseTopic
+from src.loaders.models.folder import Folder
 from src.loaders.models.glossary import Glossary, GlossaryEntry
 from src.loaders.models.hp5activities import H5PActivities
 from src.loaders.models.module import ModuleTypes, H5P_HANDLERS
 from src.loaders.models.moodlecourse import MoodleCourse
+from src.loaders.models.resource import Resource
 from src.loaders.models.videotime import Video, VideoPlatforms
+from src.loaders.audio import Audio
+from src.loaders.pdf import PDF
 from src.loaders.vimeo import Vimeo
 from src.loaders.youtube import Youtube
 
@@ -45,6 +51,9 @@ class Moodle:
             "token": self.token,
             "forcedownload": 1,
         }
+        # Cache für Module-Intros: {coursemodule_id: intro_html}
+        # Verschiedene Modultypen können intro haben, wird pro Kurs geladen
+        self.module_intros_cache = {}
 
     def get_courses(self) -> list[MoodleCourse]:
         """get all courses that are set to visible on moodle"""
@@ -100,6 +109,10 @@ class Moodle:
         courses = self.get_courses()
         for i, course in enumerate(courses):
             self.logger.debug(f"Processing course id: {course.id}, course {i+1}/{len(courses)}")
+            
+            # Lade alle Module-Intros für diesen Kurs (1x pro Kurs)
+            self._load_module_intros_for_course(course.id)
+            
             course.topics = self.get_course_contents(course.id)
             h5p_activity_ids = self.get_h5p_module_ids(course.id)
             for topic in course.topics:
@@ -145,6 +158,12 @@ class Moodle:
                             err_message = self.extract_h5p(module, activity)
                 case ModuleTypes.GLOSSARY:
                     err_message = self.extract_glossary(module)
+                case ModuleTypes.RESOURCE:
+                    err_message = self.extract_resource(module)
+                case ModuleTypes.FOLDER:
+                    err_message = self.extract_folder(module)
+                case ModuleTypes.BOOK:
+                    err_message = self.extract_book(module)
             if err_message:
                 failed_modules.append(FailedModule(modul=module, err_message=err_message))
 
@@ -358,6 +377,548 @@ class Moodle:
             self.logger.error(error_msg)
             return error_msg
 
+    def extract_resource(self, module):
+        """
+        Extrahiert Inhalte aus einem Resource-Modul.
+        
+        Kann mehrere Dateien enthalten - alle werden verarbeitet und kombiniert.
+        
+        Args:
+            module: Module-Objekt mit modname="resource" und contents mit Dateien
+            
+        Returns:
+            Optional[str]: Fehlermeldung oder None
+        """
+        try:
+            if not module.contents or len(module.contents) == 0:
+                self.logger.warning(f"Resource-Modul {module.id} hat keine Dateiinhalte")
+                return None
+            
+            # Hole Intro-Text aus Cache (wurde pro Kurs geladen)
+            intro_html = self.module_intros_cache.get(module.id, "")
+            self.logger.info(
+                f"Intro für Modul {module.id}: "
+                f"{'GEFUNDEN (' + str(len(intro_html)) + ' Zeichen)' if intro_html else 'NICHT IM CACHE'}"
+            )
+            intro_text = self._extract_intro_text(intro_html, module.id)
+            
+            # Sammle extrahierte Texte aller Dateien
+            all_extracted_texts = []
+            if intro_text:
+                all_extracted_texts.append(f"Intro:\n{intro_text}")
+            
+            # Verarbeite jede Datei im Resource-Modul
+            for idx, file_content in enumerate(module.contents):
+                self.logger.info(
+                    f"Verarbeite Datei {idx+1}/{len(module.contents)} in Resource-Modul {module.id}: "
+                    f"{file_content.filename}"
+                )
+                
+                # Bereinige mimetype (entferne Query-Parameter wie "?forcedownload=1")
+                mimetype = file_content.type.split('?')[0] if file_content.type else None
+                if not mimetype:
+                    self.logger.warning(f"Datei {file_content.filename} hat keinen Dateityp")
+                    continue
+                
+                # Erstelle Resource-Objekt
+                resource = Resource(
+                    filename=file_content.filename,
+                    fileurl=file_content.fileurl,
+                    mimetype=mimetype,
+                    filesize=file_content.filesize if hasattr(file_content, 'filesize') else None
+                )
+                
+                # Prüfe Unterstützung
+                if not resource.is_supported:
+                    self.logger.info(
+                        f"Datei {resource.filename} hat nicht-unterstützten Dateityp: {resource.mimetype}"
+                    )
+                    continue
+                
+                # Download Datei
+                caller = APICaller(url=file_content.fileurl, params=self.download_params)
+                caller.get()
+                file_bytes = caller.response.content
+                
+                if not file_bytes:
+                    self.logger.error(f"Konnte {resource.filename} nicht herunterladen")
+                    continue
+                
+                # Extrahiere Text (Logik in Resource-Klasse)
+                extracted_text = resource.extract_from_bytes(file_bytes, self.logger)
+                
+                if extracted_text:
+                    # Bei mehreren Dateien: Header hinzufügen
+                    if len(module.contents) > 1:
+                        all_extracted_texts.append(f"\n--- Datei: {resource.filename} ---\n{extracted_text}")
+                    else:
+                        all_extracted_texts.append(extracted_text)
+            
+            # Kombiniere alle Texte und speichere in module.resource
+            if all_extracted_texts:
+                combined_resource = Resource(
+                    filename=f"{len(module.contents)} Dateien" if len(module.contents) > 1 else module.contents[0].filename,
+                    fileurl=module.contents[0].fileurl,
+                    mimetype="multi" if len(module.contents) > 1 else module.contents[0].type.split('?')[0],
+                    extracted_text='\n'.join(all_extracted_texts)
+                )
+                module.resource = combined_resource
+                self.logger.info(
+                    f"Resource-Modul {module.id} erfolgreich verarbeitet: "
+                    f"{len(module.contents)} Datei(en), {len(combined_resource.extracted_text)} Zeichen gesamt"
+                )
+            
+            return None
+            
+        except Exception as e:
+            error_msg = f"Fehler beim Laden von Resource {module.id}: {str(e)}"
+            self.logger.error(error_msg)
+            return error_msg
+    
+    def extract_folder(self, module):
+        """
+        Extrahiert Inhalte aus einem Folder-Modul.
+        
+        Folder-Module enthalten mehrere Dateien - alle werden verarbeitet und kombiniert.
+        Funktioniert analog zu extract_resource(), da beide ein contents-Array haben.
+        
+        Args:
+            module: Module-Objekt mit modname="folder" und contents mit Dateien
+            
+        Returns:
+            Optional[str]: Fehlermeldung oder None
+        """
+        try:
+            if not module.contents or len(module.contents) == 0:
+                self.logger.warning(f"Folder-Modul {module.id} hat keine Dateiinhalte")
+                return None
+            
+            # Hole Intro-Text aus Cache (wurde pro Kurs geladen)
+            intro_html = self.module_intros_cache.get(module.id, "")
+            self.logger.info(
+                f"Intro für Folder-Modul {module.id}: "
+                f"{'GEFUNDEN (' + str(len(intro_html)) + ' Zeichen)' if intro_html else 'NICHT IM CACHE'}"
+            )
+            intro_text = self._extract_intro_text(intro_html, module.id)
+            
+            # Sammle extrahierte Dateien
+            extracted_files: list[Resource] = []
+            all_extracted_texts = []
+            
+            if intro_text:
+                all_extracted_texts.append(intro_text)
+            
+            # Verarbeite jede Datei im Folder
+            for idx, file_content in enumerate(module.contents):
+                self.logger.info(
+                    f"Verarbeite Datei {idx+1}/{len(module.contents)} in Folder-Modul {module.id}: "
+                    f"{file_content.filename}"
+                )
+                
+                # Bereinige mimetype (entferne Query-Parameter wie "?forcedownload=1")
+                mimetype = file_content.type.split('?')[0] if file_content.type else None
+                if not mimetype:
+                    self.logger.warning(f"Datei {file_content.filename} hat keinen Dateityp")
+                    continue
+                
+                # Erstelle Resource-Objekt
+                resource = Resource(
+                    filename=file_content.filename,
+                    fileurl=file_content.fileurl,
+                    mimetype=mimetype,
+                    filesize=file_content.filesize if hasattr(file_content, 'filesize') else None
+                )
+                
+                # Prüfe Unterstützung (PDF, Audio, ZIP, TXT, HTML)
+                if not resource.is_supported:
+                    self.logger.info(
+                        f"Datei {resource.filename} hat nicht-unterstützten Dateityp: {resource.mimetype}"
+                    )
+                    continue
+                
+                # Download Datei
+                caller = APICaller(url=file_content.fileurl, params=self.download_params)
+                caller.get()
+                file_bytes = caller.response.content
+                
+                if not file_bytes:
+                    self.logger.error(f"Konnte {resource.filename} nicht herunterladen")
+                    continue
+                
+                # Extrahiere Text (Logik in Resource-Klasse)
+                extracted_text = resource.extract_from_bytes(file_bytes, self.logger)
+                
+                if extracted_text:
+                    # Speichere Resource mit extrahiertem Text
+                    resource.extracted_text = extracted_text
+                    extracted_files.append(resource)
+                    
+                    # Bei mehreren Dateien: Header hinzufügen
+                    if len(module.contents) > 1:
+                        all_extracted_texts.append(f"\n--- Datei: {resource.filename} ---\n{extracted_text}")
+                    else:
+                        all_extracted_texts.append(extracted_text)
+            
+            # Erstelle Folder-Objekt und speichere in module.folder
+            if extracted_files:
+                combined_folder = Folder(
+                    folder_id=module.instance,
+                    module_id=module.id,
+                    files=extracted_files,
+                    combined_text='\n'.join(all_extracted_texts)
+                )
+                module.folder = combined_folder
+                self.logger.info(
+                    f"Folder-Modul {module.id} erfolgreich verarbeitet: "
+                    f"{len(extracted_files)} Datei(en), {combined_folder.total_extracted_chars} Zeichen gesamt"
+                )
+            
+            return None
+            
+        except Exception as e:
+            error_msg = f"Fehler beim Laden von Folder {module.id}: {str(e)}"
+            self.logger.error(error_msg)
+            return error_msg
+    
+    def extract_book(self, module):
+        """
+        Extrahiert Inhalte aus einem Book-Modul.
+        
+        Books enthalten Kapitel mit HTML-Inhalten, Videos und Anhängen.
+        Verwendet die gleiche Logik wie extract_page() für HTML-Parsing und Video-Extraktion.
+        
+        Args:
+            module: Module-Objekt mit modname="book" und contents mit Kapiteln
+            
+        Returns:
+            Optional[str]: Fehlermeldung oder None
+        """
+        try:
+            if not module.contents or len(module.contents) == 0:
+                self.logger.warning(f"Book-Modul {module.id} hat keine Inhalte")
+                return None
+            
+            # Hole Intro-Text aus Cache (wurde pro Kurs geladen)
+            intro_html = self.module_intros_cache.get(module.id, "")
+            self.logger.info(
+                f"Intro für Book-Modul {module.id}: "
+                f"{'GEFUNDEN (' + str(len(intro_html)) + ' Zeichen)' if intro_html else 'NICHT IM CACHE'}"
+            )
+            intro_text = self._extract_intro_text(intro_html, module.id)
+            
+            # Gruppiere contents nach Kapiteln (filepath)
+            # Format: /287/ -> Kapitel 287
+            chapters_data = {}
+            structure_json = None
+            
+            for content in module.contents:
+                # Structure-Content (JSON mit Kapitel-Hierarchie)
+                if content.type == "content" and content.filename == "structure":
+                    try:
+                        structure_json = json.loads(content.content) if hasattr(content, 'content') else None
+                    except json.JSONDecodeError:
+                        self.logger.warning(f"Konnte structure.json für Book {module.id} nicht parsen")
+                    continue
+                
+                # Ignoriere Dateien ohne fileurl
+                if not content.fileurl:
+                    continue
+                
+                # Extrahiere chapter_id aus fileurl
+                # Format: https://moodle.ki-campus.org/webservice/pluginfile.php/40628/mod_book/chapter/287/index.html
+                # -> chapter_id = "287"
+                import re
+                chapter_match = re.search(r'/chapter/(\d+)/', content.fileurl)
+                if not chapter_match:
+                    self.logger.debug(f"Konnte chapter_id nicht aus URL extrahieren: {content.fileurl}")
+                    continue
+                
+                chapter_id = chapter_match.group(1)
+                
+                # Initialisiere Kapitel-Dict
+                if chapter_id not in chapters_data:
+                    chapters_data[chapter_id] = {
+                        'title': None,
+                        'html_url': None,
+                        'html_content': None,
+                        'attachments': []
+                    }
+                
+                # index.html = Kapitel-Inhalt
+                if content.filename == "index.html":
+                    chapters_data[chapter_id]['html_url'] = content.fileurl
+                    # content-Feld enthält oft den Titel
+                    if hasattr(content, 'content') and content.content:
+                        chapters_data[chapter_id]['title'] = content.content
+                # Andere Dateien = Anhänge (PDFs, ZIPs, etc.)
+                elif content.filename != "index.html":
+                    chapters_data[chapter_id]['attachments'].append(content)
+            
+            self.logger.info(f"Book {module.id}: {len(chapters_data)} Kapitel gefunden")
+            
+            # Verarbeite jedes Kapitel
+            book_chapters = []
+            for chapter_id, data in sorted(chapters_data.items()):
+                chapter_title = data['title'] or f"Kapitel {chapter_id}"
+                self.logger.info(f"Verarbeite Kapitel '{chapter_title}' (ID: {chapter_id})")
+                
+                # Erstelle Chapter-Objekt
+                chapter = BookChapter(
+                    chapter_id=chapter_id,
+                    title=chapter_title
+                )
+                
+                # Extrahiere HTML-Text und Videos (wie bei PAGE)
+                if data['html_url']:
+                    html_text, transcripts, err = self._extract_html_content(data['html_url'], module.id)
+                    chapter.html_text = html_text
+                    chapter.transcripts = transcripts
+                    
+                    if err:
+                        self.logger.warning(f"Fehler beim HTML-Parsing in Kapitel {chapter_id}: {err}")
+                
+                # Verarbeite Anhänge (PDFs, ZIPs, etc.)
+                for attachment_content in data['attachments']:
+                    # Bereinige mimetype
+                    mimetype = attachment_content.type.split('?')[0] if attachment_content.type else None
+                    if not mimetype:
+                        continue
+                    
+                    # Erstelle Resource-Objekt
+                    resource = Resource(
+                        filename=attachment_content.filename,
+                        fileurl=attachment_content.fileurl,
+                        mimetype=mimetype,
+                        filesize=attachment_content.filesize if hasattr(attachment_content, 'filesize') else None
+                    )
+                    
+                    # Nur unterstützte Formate verarbeiten
+                    if not resource.is_supported:
+                        self.logger.debug(f"Anhang {resource.filename} hat nicht-unterstützten Typ: {resource.mimetype}")
+                        continue
+                    
+                    # Download und Extraktion
+                    try:
+                        caller = APICaller(url=attachment_content.fileurl, params=self.download_params)
+                        caller.get()
+                        file_bytes = caller.response.content
+                        
+                        if file_bytes:
+                            extracted_text = resource.extract_from_bytes(file_bytes, self.logger)
+                            if extracted_text:
+                                resource.extracted_text = extracted_text
+                                chapter.attachments.append(resource)
+                    except Exception as e:
+                        self.logger.warning(f"Fehler beim Download von {resource.filename}: {e}")
+                
+                book_chapters.append(chapter)
+            
+            # Erstelle Book-Objekt
+            if book_chapters:
+                book = Book(
+                    book_id=module.instance,
+                    module_id=module.id,
+                    intro=intro_text if intro_text else None,
+                    chapters=book_chapters,
+                    structure=structure_json
+                )
+                module.book = book
+                
+                self.logger.info(
+                    f"Book-Modul {module.id} erfolgreich verarbeitet: "
+                    f"{book.total_chapters} Kapitel, {book.total_videos} Videos, {book.total_attachments} Anhänge"
+                )
+            
+            return None
+            
+        except Exception as e:
+            error_msg = f"Fehler beim Laden von Book {module.id}: {str(e)}"
+            self.logger.error(error_msg)
+            return error_msg
+    
+    def _extract_html_content(self, html_url: str, module_id: int) -> tuple[str | None, list, str | None]:
+        """
+        Extrahiert HTML-Text und Videos aus einer HTML-URL.
+        
+        Verwendet die gleiche Logik wie extract_page() für HTML-Parsing und Video-Extraktion.
+        
+        Args:
+            html_url: URL der HTML-Datei
+            module_id: Module-ID für Logging
+            
+        Returns:
+            tuple: (html_text, transcripts, error_message)
+        """
+        err_message = None
+        transcripts = []
+        html_text = None
+        
+        try:
+            page_content_caller = APICaller(url=html_url, params=self.download_params)
+            soup = BeautifulSoup(page_content_caller.getText(), "html.parser")
+            
+            # Extrahiere Text
+            if soup.text is not None:
+                html_text = soup.get_text("\n")
+                # Normalize parsed text (remove \xa0 from str)
+                html_text = unicodedata.normalize("NFKD", html_text)
+            
+            # Extrahiere Videos aus Links (wie bei PAGE)
+            links = soup.find_all("a")
+            for p_link in links:
+                pattern = r"https://player\.vimeo\.com/video/\d+"
+                match = re.search(pattern, str(p_link))
+                src = match.group(0) if match else p_link.get("href")
+                
+                if src:
+                    if src.find("vimeo") != -1:
+                        videotime = Video(id=0, vimeo_url=src)
+                        if videotime.video_id is None:
+                            self.logger.warning(f"Cannot parse video url: {src}")
+                            continue
+                        vimeo = Vimeo()
+                        texttrack, err_message = vimeo.get_transcript(videotime.video_id)
+                        transcripts.append(texttrack)
+                    elif src.find("youtu") != -1:
+                        try:
+                            videotime = Video(id=0, vimeo_url=src)
+                        except ValidationError:
+                            self.logger.warning(f"Cannot parse video url: {src}")
+                            continue
+                        if videotime.video_id is None:
+                            # Link refers not to a specific video, but to a channel overview page
+                            continue
+                        else:
+                            youtube = Youtube()
+                            texttrack, err_message = youtube.get_transcript(videotime.video_id)
+                            transcripts.append(texttrack)
+        
+        except ParserRejectedMarkup:
+            self.logger.warning(f"HTML-Parser rejected markup für Modul {module_id}")
+        except Exception as e:
+            err_message = f"Fehler beim HTML-Parsing: {str(e)}"
+            self.logger.error(err_message)
+        
+        return html_text, transcripts, err_message
+    
+    def _load_module_intros_for_course(self, course_id: int):
+        """
+        Lädt alle Module-Intros für einen Kurs in den Cache.
+        
+        core_course_get_contents gibt das intro-Feld nicht zurück, daher müssen wir
+        die modulspezifischen APIs nutzen (z.B. mod_resource_get_resources_by_courses).
+        
+        Aktuell werden nur Resource-Intros geladen. Kann erweitert werden für:
+        - mod_glossary_get_glossaries_by_courses
+        - mod_page_get_pages_by_courses
+        - etc.
+        
+        Args:
+            course_id: ID des Kurses
+        """
+        try:
+            # Lade alle Resource-Module des Kurses mit ihren Intros
+            self.logger.info(f"Lade Resource-Intros für Kurs {course_id}...")
+            caller = APICaller(
+                url=self.api_endpoint,
+                params={**self.function_params, "courseids[0]": course_id},
+                wsfunction="mod_resource_get_resources_by_courses"
+            )
+            response = caller.getJSON()
+            resources = response.get("resources", [])
+            
+            self.logger.info(f"API-Antwort: {len(resources)} Resources gefunden")
+            
+            # Speichere intro pro coursemodule_id im Cache
+            for resource in resources:
+                coursemodule_id = resource.get("coursemodule")
+                intro_html = resource.get("intro", "")
+                if coursemodule_id:
+                    self.module_intros_cache[coursemodule_id] = intro_html
+                    self.logger.debug(
+                        f"  - Modul {coursemodule_id}: Intro mit {len(intro_html)} Zeichen"
+                    )
+            
+            self.logger.info(f"Kurs {course_id}: {len(resources)} Resource-Intros in Cache gespeichert")
+            self.logger.debug(f"Cache enthält jetzt {len(self.module_intros_cache)} Einträge gesamt")
+            
+            # Lade Folder-Intros
+            self.logger.info(f"Lade Folder-Intros für Kurs {course_id}...")
+            folder_caller = APICaller(
+                url=self.api_endpoint,
+                params={**self.function_params, "courseids[0]": course_id},
+                wsfunction="mod_folder_get_folders_by_courses"
+            )
+            folder_response = folder_caller.getJSON()
+            folders = folder_response.get("folders", [])
+            
+            for folder in folders:
+                coursemodule_id = folder.get("coursemodule")
+                intro_html = folder.get("intro", "")
+                if coursemodule_id:
+                    self.module_intros_cache[coursemodule_id] = intro_html
+                    self.logger.debug(
+                        f"  - Modul {coursemodule_id}: Intro mit {len(intro_html)} Zeichen"
+                    )
+            
+            self.logger.info(f"Kurs {course_id}: {len(folders)} Folder-Intros in Cache gespeichert")
+            self.logger.debug(f"Cache enthält jetzt {len(self.module_intros_cache)} Einträge gesamt")
+            
+            # Lade Book-Intros
+            self.logger.info(f"Lade Book-Intros für Kurs {course_id}...")
+            book_caller = APICaller(
+                url=self.api_endpoint,
+                params={**self.function_params, "courseids[0]": course_id},
+                wsfunction="mod_book_get_books_by_courses"
+            )
+            book_response = book_caller.getJSON()
+            books = book_response.get("books", [])
+            
+            for book in books:
+                coursemodule_id = book.get("coursemodule")
+                intro_html = book.get("intro", "")
+                if coursemodule_id:
+                    self.module_intros_cache[coursemodule_id] = intro_html
+                    self.logger.debug(
+                        f"  - Modul {coursemodule_id}: Intro mit {len(intro_html)} Zeichen"
+                    )
+            
+            self.logger.info(f"Kurs {course_id}: {len(books)} Book-Intros in Cache gespeichert")
+            self.logger.debug(f"Cache enthält jetzt {len(self.module_intros_cache)} Einträge gesamt")
+            
+            # Hier können weitere Modultypen hinzugefügt werden:
+            # - mod_glossary_get_glossaries_by_courses
+            # - mod_page_get_pages_by_courses
+            # etc.
+            
+        except Exception as e:
+            self.logger.warning(f"Fehler beim Laden der Module-Intros für Kurs {course_id}: {e}")
+    
+    def _extract_intro_text(self, intro_html: str | None, module_id: int) -> str:
+        """
+        Extrahiert und bereinigt Intro-Text aus HTML.
+        
+        Args:
+            intro_html: HTML-String mit Intro-Text
+            module_id: Module-ID für Logging
+            
+        Returns:
+            str: Bereinigter Text oder leerer String
+        """
+        if not intro_html:
+            return ""
+        
+        from bs4 import BeautifulSoup
+        try:
+            soup = BeautifulSoup(intro_html, "html.parser")
+            text = soup.get_text("\n")
+            text = unicodedata.normalize("NFKD", text)
+            lines = [line.strip() for line in text.split('\n') if line.strip()]
+            text = '\n'.join(lines)
+            return text + "\n\n" if text else ""
+        except Exception as e:
+            self.logger.warning(f"Fehler beim Parsen des Intro-Texts für Modul {module_id}: {e}")
+            return ""
 
 if __name__ == "__main__":
     moodle = Moodle()
