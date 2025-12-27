@@ -24,8 +24,8 @@ logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(name)s: %(messag
 logger = logging.getLogger(__name__)
 
 # ⚙️ KONFIGURATION
-COURSE_ID = 313  # Kurs, der Modul 2195 enthält (Introduction to Machine Learning Part 1)
-TARGET_MODULE_ID = 26353  # Das Modul mit Quiz-Fragen zum Testen
+COURSE_ID = 41  # Kurs, der Modul 2195 enthält (Introduction to Machine Learning Part 1)
+TARGET_MODULE_ID = 19488  # Das Modul mit Quiz-Fragen zum Testen
 OUTPUT_DIR = Path(__file__).parent / "document_outputs"
 PROCESS_ONLY_TARGET_MODULE = True  # Wenn True: Nur TARGET_MODULE_ID verarbeiten, sonst alle Module
 
@@ -102,6 +102,11 @@ def load_course_with_documents(
         return None
 
     logger.info(f"  ✓ Kurs geladen: {course.fullname}")
+
+    # Lade Module-Intros (Resource, Glossary, Page, etc.) für den Kurs
+    # WICHTIG: Muss VOR get_course_contents() aufgerufen werden (wie in Produktion)
+    moodle._load_module_intros_for_course(course_id)
+    logger.info(f"  ✓ Module-Intros geladen ({len(moodle.module_intros_cache)} im Cache)")
 
     # Lade Topics/Modules
     course.topics = moodle.get_course_contents(course_id)
