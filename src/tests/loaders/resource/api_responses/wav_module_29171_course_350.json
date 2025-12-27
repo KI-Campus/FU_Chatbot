@@ -1,0 +1,152 @@
+{
+  "resources": [
+    {
+      "id": 351,
+      "coursemodule": 28825,
+      "course": 350,
+      "name": "Die Top Projektmanagement - Bereiche in denen derzeit KI genutzt wird",
+      "intro": "<div><p></p>\r\n<div class=\"attostylesbox attostylesbox-callout attostylesbox-callout-violett link-in-box\"><span style=\"color: rgb(0, 0, 0);\">Wie Sie gerade im Video erfahren haben, hat KI im Projektalltag eine hohe Relevanz. Im Folgenden soll die Grafik veranschaulichen in welchen Bereichen KI zum Einsatz kommt im Projektmanagement.&nbsp;</span></div><div class=\"attostylesbox attostylesbox-outline attostylesbox-outline-violett link-in-box\">Die Nutzung von künstlicher Intelligenz (KI) im Projektmanagement hat in den letzten Jahren erheblich zugenommen. Verschiedene Bereiche des Projektmanagements profitieren von den Vorteilen, die KI bietet, wie z. B. die Automatisierung von Aufgaben und die Optimierung von Zeitplänen. Die folgende Grafik zeigt die wichtigsten Projektmanagement-Bereiche, in denen KI derzeit weltweit und in Deutschland eingesetzt wird. Diese Informationen sind wertvoll, um zu verstehen, wie KI die Effizienz und Effektivität im Projektmanagement steigern kann.</div><div><br></div><p><span class=\"\" style=\"color: rgb(58, 42, 120);\"><span class=\"\" style=\"color: rgb(0, 0, 0);\">Bildlink:&nbsp;</span>https://images.ctfassets.net/63bmaubptoky/74lQ6bsedsNCVTyWxKm4ro/75ed340475b51acd73c35d993b0f5b17/k_nstliche-intelligenz-im-projektmanagement-Capterra-DE-Grafik2.jpg?w=1500</span></p>\r\n<p></p></div>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 2,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "hallo.jpg",
+          "filepath": "/",
+          "filesize": 143240,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/79524/mod_resource/content/0/hallo.jpg",
+          "timemodified": 1750754697,
+          "mimetype": "image/jpeg",
+          "isexternalfile": false,
+          "icon": "f/image"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 24,
+      "timemodified": 1752673248
+    },
+    {
+      "id": 352,
+      "coursemodule": 28830,
+      "course": 350,
+      "name": "Die Top 3 Herausforderungen mit KI im Projektmanagement",
+      "intro": "<p dir=\"ltr\" style=\"text-align: left;\"></p><div><p></p>\r\n<div class=\"attostylesbox attostylesbox-callout attostylesbox-callout-violett link-in-box\"><span>Trotz der weitverbreiteten Nutzung und den positiven Aspekten der KI, stehen dem Ganzen auch einige Herausforderungen gegenüber.</span></div><div class=\"attostylesbox attostylesbox-outline attostylesbox-outline-violett link-in-box\"><span>In der heutigen Zeit spielt künstliche Intelligenz (KI) eine immer größere Rolle im Projektmanagement. Während viele Unternehmen die Vorteile von KI erkennen und nutzen, gibt es auch zahlreiche Herausforderungen, die bewältigt werden müssen. Die folgende Grafik zeigt die drei größten Herausforderungen, denen Projektmanager weltweit und in Deutschland gegenüberstehen. Diese Einblicke sind entscheidend, um die Implementierung von KI erfolgreich zu gestalten und die Effizienz im Projektmanagement zu steigern.</span></div><p>Bildlink:&nbsp;https://images.ctfassets.net/63bmaubptoky/5ngSs5UVcjYdnKW1n8xcER/372dc86ecbe9bbfa4ff9c0acb4afe482/k_nstliche-intelligenz-im-projektmanagement-Capterra-DE-Grafik3.jpg?w=1500</p>\r\n<p></p></div><br><p></p>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 2,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "Top 3.jpg",
+          "filepath": "/",
+          "filesize": 104829,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/79532/mod_resource/content/0/Top%203.jpg",
+          "timemodified": 1750756104,
+          "mimetype": "image/jpeg",
+          "isexternalfile": false,
+          "icon": "f/image"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 6,
+      "timemodified": 1752316492
+    },
+    {
+      "id": 354,
+      "coursemodule": 29171,
+      "course": 350,
+      "name": "Podcast: Wann kann die KI Entscheidungen treffen?",
+      "intro": "<p dir=\"ltr\" style=\"text-align: left;\">Willkommen zu unserem Podcast! Wir tauchen in die spannende Welt der Künstlichen Intelligenz und deren Rolle in Entscheidungsprozessen ein. Basierend auf der Studie \"Leadership in the Age of Technologically Assisted Decision-Making\" von Kienbaum und Ada, werden wir untersuchen, wann Menschen und wann KI Entscheidungen treffen sollten.</p><p dir=\"ltr\" style=\"text-align: left;\">Quellenangabe: Kienbaum Consultants International GmbH, &amp; ada Learning GmbH. (2022).&nbsp;<em>Leadership in the Age of Technologically Assisted Decision-Making</em>. Kienbaum<br></p>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 3,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "Mensch und KI_ Entscheidungsprozesse und Rollenverteilung.wav",
+          "filepath": "/",
+          "filesize": 16881210,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/80399/mod_resource/content/0/Mensch%20und%20KI_%20Entscheidungsprozesse%20und%20Rollenverteilung.wav",
+          "timemodified": 1751195408,
+          "mimetype": "audio/wav",
+          "isexternalfile": false,
+          "icon": "f/audio"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 5,
+      "timemodified": 1751196558
+    },
+    {
+      "id": 357,
+      "coursemodule": 29185,
+      "course": 350,
+      "name": "Künstliche Intelligenz und Datenschutz",
+      "intro": "<p dir=\"ltr\" style=\"text-align: left;\">Das folgende Video ist <strong>interaktiv</strong> und Sie werden im Verlauf vier Fragen beantworten, mit denen Sie Ihr Verständnis direkt überprüfen und festigen können.&nbsp;Sie erfahren welche Chancen und Risiken der Einsatz von Künstlicher Intelligenz im Datenschutzkontext mit sich bringt. Es wird aufgezeigt, welche gesetzlichen Anforderungen gelten, wo besondere Herausforderungen bei Transparenz und Informationspflicht bestehen und wie Unternehmen mit Haftung und Verantwortung umgehen sollten.</p><p dir=\"ltr\" style=\"text-align: left;\">Viel Spaß beim Video!<br data-start=\"497\" data-end=\"500\"><br></p>",
+      "introformat": 1,
+      "introfiles": [
+        {
+          "filename": "Künstliche Intelligenz und Datenschutz.html",
+          "filepath": "/",
+          "filesize": 1707593,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/80425/mod_resource/intro/K%C3%BCnstliche%20Intelligenz%20und%20Datenschutz.html",
+          "timemodified": 1751205723,
+          "mimetype": "text/html",
+          "isexternalfile": false,
+          "icon": "f/markup"
+        }
+      ],
+      "section": 4,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "Künstliche Intelligenz und Datenschutz.html",
+          "filepath": "/",
+          "filesize": 1707593,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/80425/mod_resource/content/0/K%C3%BCnstliche%20Intelligenz%20und%20Datenschutz.html",
+          "timemodified": 1751205722,
+          "mimetype": "text/html",
+          "isexternalfile": false,
+          "icon": "f/markup"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 1,
+      "displayoptions": "a:2:{s:10:\"printintro\";i:1;s:8:\"showsize\";i:1;}",
+      "filterfiles": 0,
+      "revision": 8,
+      "timemodified": 1751546954
+    }
+  ],
+  "warnings": []
+}

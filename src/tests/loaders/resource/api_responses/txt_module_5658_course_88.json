@@ -1,0 +1,74 @@
+{
+  "resources": [
+    {
+      "id": 69,
+      "coursemodule": 5658,
+      "course": 88,
+      "name": "Datei Test 42",
+      "intro": "",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 0,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "test-42.txt",
+          "filepath": "/",
+          "filesize": 2,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/14787/mod_resource/content/0/test-42.txt",
+          "timemodified": 1700660542,
+          "mimetype": "text/plain",
+          "isexternalfile": true,
+          "repositorytype": "user",
+          "icon": "f/text"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 1,
+      "timemodified": 1700660542
+    },
+    {
+      "id": 361,
+      "coursemodule": 29427,
+      "course": 88,
+      "name": "Test Datei PDF",
+      "intro": "",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 0,
+      "visible": false,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "HowToBuild.pdf",
+          "filepath": "/",
+          "filesize": 3216613,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/81856/mod_resource/content/0/HowToBuild.pdf",
+          "timemodified": 1752137473,
+          "mimetype": "application/pdf",
+          "isexternalfile": false,
+          "icon": "f/pdf"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 3,
+      "timemodified": 1752137646
+    }
+  ],
+  "warnings": []
+}

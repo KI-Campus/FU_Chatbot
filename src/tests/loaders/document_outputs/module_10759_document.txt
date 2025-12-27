@@ -1,0 +1,17 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: Infopoint Podcast: Fakt oder Deepfake? – Desinformation in Zeiten generativer KI
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 127,
+  "module_id": 10759,
+  "fullname": "Infopoint Podcast: Fakt oder Deepfake? – Desinformation in Zeiten generativer KI",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/resource/view.php?id=10759"
+}

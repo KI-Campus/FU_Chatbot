@@ -1,0 +1,40 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Course Title: Ganzheitliche angewandte KI im Ingenieurbereich - Deep Learning für Zeitreihen / sequentielle Prozessdaten
+ Course Summary: Dieser anwendungsorientierter Kurs zum Deep Learning für sequentielle Prozessdaten richtet sich besonders an Interessierte aus dem Ingenieurbereich.  Sequentielle Prozessdaten sind Zeitreihendaten aus dem Bereich der Industrie zu verstehen. Für diese Art von Daten wird im Wechsel aus theoretischen Grundlagen und anwendungsorientierten Beispielen das notwendige Grundlagenwissen und praktischen Kenntnisse für die eigene Anwendung vermittelt
+Course Topics:
+Topic Summary: None
+
+ Topic Summary: Hier eine kleine Einführung in den Kurs. Diese sollte enthalten: eine Willkommensnachricht oder ein Willkommensvideodie Kursbefragung zu Beginn des Kurseseinen Syllabus oder Outline für den Kurs: Was erwartet mich?
+
+ Topic Summary: Hier eine Reihe von Standardaktivitäten in Moodle, die man in seinen Kapiteln/Modulen/Abschnitten verwenden kann: TexteVideosinteraktive Übungen mit H5PQuizze / Tests mit der Moodle Test-Aktivität
+
+ Topic Summary: Hier ein paar spezielle Aktivitäten im KI-Campus:Programmieraufgaben mit Jupyter NotebooksDatenbasierte, interaktive Dashboards mit Streamlit (o.Ä.)Shiny Apps mit R
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 191,
+  "shortname": "GanzheitlicheDL",
+  "fullname": "Ganzheitliche angewandte KI im Ingenieurbereich - Deep Learning für Zeitreihen / sequentielle Prozessdaten",
+  "type": "Kurs",
+  "source": "Moodle",
+  "url": "https://moodle.ki-campus.org/course/view.php?id=191"
+}

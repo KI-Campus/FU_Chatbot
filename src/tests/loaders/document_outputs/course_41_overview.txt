@@ -1,0 +1,38 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Course Title: Artificial Intelligence
+ Course Summary: In this course we will look at the foundation of what is AI. Starting with the Introduction to AI, we will look briefly at the history of AI and discuss the question “what is AI?” before we move to Problem solving by Searching. We will introduce algorithms, which consider only one or multiple agents. Additionally, we will cover Constraint Satisfaction Problems, a different type of search problems. Finally, will discuss Markov Decision Processes, where we learn about choosing the best actions in a non-deterministic world and Reinforcement Learning, where we have to learn from experience.
+Course Topics:
+Topic Summary: Welcome to the couse Artificial Intelligence. In this course we will look at the foundation of what is AI. After the introductory module, which covers the history of AI or the very important question what is AI, we will start exploring seach and different search algorithms, constraint satisfaction problems and how to solve them, what happens if other agents need to be taken into account, what to do if our actions can fail and what that has to do with Reinforcement Learning. Explanations regarding the different activities in the modules and technical information can be found in the learning guide. Before starting with the course please have a look at that.  Copyright Notes Course materials were adapted from the course CS188 Intro to AI at UC Bereley (http://ai.berkeley.edu). The slides were created by Dan Klein and Pieter Abbeel. The slide illustrations were created by Ketrina Yim. The Pacman AI projects were developed at UC Berkeley. The core projects and autograders were primarily created by John DeNero (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu). Student side autograding was added by Brad Miller, Nick Hay, and Pieter Abbeel (pabbeel@cs.berkeley.edu).  The materials can be used freely for educational purposes. Attribution to the original copyright holders must be retained as academically appropriate and a short notice should be given to 188materials@lists.berkeley.edu. For more details, check http://ai.berkeley.edu. Sharing of solutions for the Pacman AI Projects is not allowed.  Pac-Man is a registered trademark of Namco-Bandai Games, used here for educational purposes.
+
+ Topic Summary: Welcome to Module 1: Introduction! Embark with us on an exciting journey exploring the fascinating world of Artificial Intelligence (AI). In this module we will look at the representation of AI in pop culture, ask us what AI actually is, take a quick detour into the history of AI and come back to what AI can do today.
+
+ Topic Summary: Welcome to Module 2 - Search. We will take the first step into the world of planning and problem-solving. For our rational agents to be able to solve real-world challenges, we first learn how to translate a given problem into formalized search problems. We differentiate between two different general methods to tackle these search problems – Tree Search and Graph Search. To explore the search problem and find a solution we combine these methods with different Search Algorithms, both uninformed and informed. By examining the properties and applications of the different search algorithms, you will be equipped with powerful tools for navigating complex search spaces and ready for building more advanced problem-solving techniques in the realm of artificial intelligence.
+
+ Topic Summary: Did you ever sit frustrated in front of a Sudoku which you  couldn't solve?  Welcome to Module 3 - Constraint Satisfaction Problems. Here  we will cover constraint satisfaction problems, a set of search problems, where  only the goal state is important, not the path to the goal. One example of this  set of problems is Sudoku. We will learn where we might encounter CSPs (apart  from Sudoku), we will solve them with methods covered in the previous module  and discover what we need to do to improve these methods to efficiently solve CSPs.
+
+ Topic Summary: What happens when we have to account for other agents, which might be  working against us?  Welcome to Module 4 - Multiagent Search! That question will be covered in this module, where  we will learn about methods called minimax and expectimax, which can deal with opponents which act optimally or randomly. Modelling other  agents is not just relevant for games, but also for acting in the real  world, where the agent needs to interact with humans, traffic, other  agents and so on.
+
+ Topic Summary: What does it mean to be rational? Welcome to Module 5 – Utilities! In this (short) module we  will learn what are utilities, how do they relate to rationality and how can we determine  utilities of us humans.
+
+ Topic Summary: Maximize your expected utility! Welcome to Module 6: Markov Decision Processes. Here we will learn how to maximize our utilities by determining the value of states and extracting the best action for each state. We will start with expectimax and learn how to adapt it to our specific setting of MDPs. We will cover to main methods: value iteration and policy iteration. In between we will look at the example of a racecar, which needs to be careful not to overheat when driving fast. What do we need that for? Reinforcement Learning, which we will cover in the last module, is based on MDPs.
+
+ Topic Summary: How can we solve MDPs, if we don’t know Transition and  Reward Functions? Welcome to Module 7: Reinforcement Learning! We start from  MDPs and ask the question, how can an agent determine values, q-values or an  optimal policy if it doesn't know anything about transition functions and  reward functions? Answer: It needs to act in the environment and collect  experiences! We will start with estimating the underlying MDP model from the  collected experiences but quickly notice that we do not need that, we can  estimate values or q-values directly. We will also learn how to scale our  solutions to apply them to more complex environments than the Gridworld  example.
+
+ Topic Summary: Congratulations! You made it! You learned how to build a learning agent starting from a search agent! Please participate in the End of Course Questionnaire!
+
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 41,
+  "shortname": "artificialintelligence-lai",
+  "fullname": "Artificial Intelligence",
+  "type": "Kurs",
+  "source": "Moodle",
+  "url": "https://moodle.ki-campus.org/course/view.php?id=41"
+}

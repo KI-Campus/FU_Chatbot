@@ -4,8 +4,11 @@ from typing import Optional
 from llama_index.core import Document
 from pydantic import BaseModel, HttpUrl, computed_field
 
+from src.loaders.models.book import Book
 from src.loaders.models.downloadablecontent import DownloadableContent
+from src.loaders.models.folder import Folder
 from src.loaders.models.glossary import Glossary
+from src.loaders.models.resource import Resource
 from src.loaders.models.texttrack import TextTrack
 from src.loaders.models.videotime import Video
 
@@ -15,6 +18,9 @@ class ModuleTypes(StrEnum):
     PAGE = "page"
     H5P = "h5pactivity"
     GLOSSARY = "glossary"
+    RESOURCE = "resource"
+    FOLDER = "folder"
+    BOOK = "book"
 
 
 # H5P Handler Mapping: Library-Name → Handler-Klasse
@@ -57,11 +63,15 @@ class Module(BaseModel):
     instance: int | None = None  # ID of the specific resource (glossary_id, videotime_id, etc.)
     h5p_content_type: str | None = None  # H5P library name from content.json
     text: str | None = None
+    intro: str | None = None  # HTML intro text from API (available for resources, activities, etc.)
     contents: list[DownloadableContent] | None = None
     videotime: Video | None = None
     transcripts: list[TextTrack] = []
     interactive_video: dict | None = None  # H5P Interactive Video data (als dict, nicht typisiert)
     glossary: Glossary | None = None  # Glossary entries
+    resource: Resource | None = None  # Resource file (PDF, DOCX, etc.)
+    folder: Folder | None = None  # Folder with multiple files (PDF, Audio, etc.)
+    book: Book | None = None  # Book with multiple chapters (HTML, videos, attachments)
 
     @computed_field  # type: ignore[misc]
     @property
@@ -75,6 +85,12 @@ class Module(BaseModel):
                 return ModuleTypes.H5P
             case "glossary":
                 return ModuleTypes.GLOSSARY
+            case "resource":
+                return ModuleTypes.RESOURCE
+            case "folder":
+                return ModuleTypes.FOLDER
+            case "book":
+                return ModuleTypes.BOOK
             case _:
                 return None
 
@@ -145,6 +161,21 @@ class Module(BaseModel):
         if self.glossary and self.glossary.total_entries > 0:
             text_parts.append(f"\n--- Glossar ({self.glossary.total_entries} Einträge) ---")
             text_parts.append(str(self.glossary))
+        
+        # Resource Inhalte (PDF, DOCX, etc.)
+        if self.resource and self.resource.extracted_text:
+            text_parts.append(f"\n--- Dokument ({self.resource.filename}) ---")
+            text_parts.append(self.resource.extracted_text)
+        
+        # Folder Inhalte (mehrere Dateien)
+        if self.folder and self.folder.total_files > 0:
+            text_parts.append(f"\n--- Ordner ({self.folder.total_files} Datei(en)) ---")
+            text_parts.append(str(self.folder))
+        
+        # Book Inhalte (Kapitel mit HTML, Videos, Anhänge)
+        if self.book and self.book.total_chapters > 0:
+            text_parts.append(f"\n--- Book ({self.book.total_chapters} Kapitel) ---")
+            text_parts.append(str(self.book))
         
         text = "\n".join(text_parts)
 

@@ -1,0 +1,243 @@
+{
+  "resources": [
+    {
+      "id": 292,
+      "coursemodule": 22060,
+      "course": 191,
+      "name": "Folien",
+      "intro": "<h5><br></h5>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 2,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "Einführung Deep Learning.zip",
+          "filepath": "/",
+          "filesize": 1143853,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47957/mod_resource/content/0/Einf%C3%BChrung%20Deep%20Learning.zip",
+          "timemodified": 1730223581,
+          "mimetype": "application/zip",
+          "isexternalfile": false,
+          "icon": "f/archive"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 6,
+      "timemodified": 1730223581
+    },
+    {
+      "id": 293,
+      "coursemodule": 22061,
+      "course": 191,
+      "name": "Folien",
+      "intro": "<h5><br></h5>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 3,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "Dense Networks.zip",
+          "filepath": "/",
+          "filesize": 1829810,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47958/mod_resource/content/0/Dense%20Networks.zip",
+          "timemodified": 1730223616,
+          "mimetype": "application/zip",
+          "isexternalfile": false,
+          "icon": "f/archive"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 6,
+      "timemodified": 1730223616
+    },
+    {
+      "id": 294,
+      "coursemodule": 22062,
+      "course": 191,
+      "name": "Folien",
+      "intro": "<h5><br></h5>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 4,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "SimpleRNN (Simple Recurrent Neural Network).zip",
+          "filepath": "/",
+          "filesize": 1006261,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47959/mod_resource/content/0/SimpleRNN%20%28Simple%20Recurrent%20Neural%20Network%29.zip",
+          "timemodified": 1730223672,
+          "mimetype": "application/zip",
+          "isexternalfile": false,
+          "icon": "f/archive"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 6,
+      "timemodified": 1730223672
+    },
+    {
+      "id": 295,
+      "coursemodule": 22063,
+      "course": 191,
+      "name": "Folien",
+      "intro": "<h5><br></h5>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 5,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "Long Short-Term Memory (LSTM)  Gated Recurrent Unit (GRU).zip",
+          "filepath": "/",
+          "filesize": 1334641,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47960/mod_resource/content/0/Long%20Short-Term%20Memory%20%28LSTM%29%20%20Gated%20Recurrent%20Unit%20%28GRU%29.zip",
+          "timemodified": 1730223710,
+          "mimetype": "application/zip",
+          "isexternalfile": false,
+          "icon": "f/archive"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 6,
+      "timemodified": 1730223710
+    },
+    {
+      "id": 296,
+      "coursemodule": 22064,
+      "course": 191,
+      "name": "Folien",
+      "intro": "<h5><br></h5>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 6,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "Convolutional Neural Networks (CNN).zip",
+          "filepath": "/",
+          "filesize": 954610,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47961/mod_resource/content/0/Convolutional%20Neural%20Networks%20%28CNN%29.zip",
+          "timemodified": 1730223742,
+          "mimetype": "application/zip",
+          "isexternalfile": false,
+          "icon": "f/archive"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 6,
+      "timemodified": 1730223742
+    },
+    {
+      "id": 297,
+      "coursemodule": 22065,
+      "course": 191,
+      "name": "Folien",
+      "intro": "<h5><br></h5>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 7,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "LSTM Autoencoder.zip",
+          "filepath": "/",
+          "filesize": 1274370,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47962/mod_resource/content/0/LSTM%20Autoencoder.zip",
+          "timemodified": 1730223779,
+          "mimetype": "application/zip",
+          "isexternalfile": false,
+          "icon": "f/archive"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 6,
+      "timemodified": 1730223779
+    },
+    {
+      "id": 298,
+      "coursemodule": 22066,
+      "course": 191,
+      "name": "Folien",
+      "intro": "<h5><br></h5>",
+      "introformat": 1,
+      "introfiles": [],
+      "section": 8,
+      "visible": true,
+      "groupmode": 0,
+      "groupingid": 0,
+      "lang": "",
+      "contentfiles": [
+        {
+          "filename": "RNN Improvements.zip",
+          "filepath": "/",
+          "filesize": 1929066,
+          "fileurl": "https://moodle.ki-campus.org/webservice/pluginfile.php/47963/mod_resource/content/0/RNN%20Improvements.zip",
+          "timemodified": 1730223810,
+          "mimetype": "application/zip",
+          "isexternalfile": false,
+          "icon": "f/archive"
+        }
+      ],
+      "tobemigrated": 0,
+      "legacyfiles": 0,
+      "legacyfileslast": null,
+      "display": 0,
+      "displayoptions": "a:1:{s:10:\"printintro\";i:1;}",
+      "filterfiles": 0,
+      "revision": 6,
+      "timemodified": 1730223810
+    }
+  ],
+  "warnings": []
+}

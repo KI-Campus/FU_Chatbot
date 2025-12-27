@@ -1,0 +1,17 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: Herzlich willkommen bei AI4Democracy - Grundlagen zu KI in der Demokratie
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 127,
+  "module_id": 8530,
+  "fullname": "Herzlich willkommen bei AI4Democracy - Grundlagen zu KI in der Demokratie",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/videotime/view.php?id=8530"
+}
