@@ -54,6 +54,7 @@ class H5PContainer(H5PContentBase):
 
 # Global registry: Maps H5P library name patterns to handler classes
 H5P_TYPE_REGISTRY: Dict[str, Type[H5PContentBase]] = {}
+_registry_initialized = False
 
 
 def register_h5p_type(library_pattern: str, handler_class: Type[H5PContentBase]) -> None:
@@ -61,11 +62,20 @@ def register_h5p_type(library_pattern: str, handler_class: Type[H5PContentBase])
     H5P_TYPE_REGISTRY[library_pattern] = handler_class
 
 
+def _ensure_registry_initialized():
+    """Lazily initialize the registry on first access."""
+    global _registry_initialized
+    if not _registry_initialized:
+        _registry_initialized = True
+        initialize_registry()
+
+
 def get_handler_for_library(library: str) -> Optional[Type[H5PContentBase]]:
     """
     Find handler for library string using substring matching.
     Returns first matching handler or None.
     """
+    _ensure_registry_initialized()
     for pattern, handler_class in H5P_TYPE_REGISTRY.items():
         if pattern in library:
             return handler_class
@@ -84,6 +94,7 @@ def initialize_registry():
     from src.loaders.models.h5pactivities.h5p_summary import Summary
     from src.loaders.models.h5pactivities.h5p_question_set import QuestionSet
     from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
+    from src.loaders.models.h5pactivities.h5p_interactive_book import InteractiveBook
     from src.loaders.models.h5pactivities.h5p_wrappers import Column, Accordion, Gamemap, CoursePresentation
     from src.loaders.models.h5pactivities.h5p_crossword import Crossword
     
@@ -112,7 +123,4 @@ def initialize_registry():
     register_h5p_type("H5P.Gamemap", Gamemap)
     register_h5p_type("H5P.GameMap", Gamemap)  # Alternative spelling
     register_h5p_type("H5P.CoursePresentation", CoursePresentation)
-
-
-# Initialize registry on module import
-initialize_registry()
+    register_h5p_type("H5P.InteractiveBook", InteractiveBook)
