@@ -24,7 +24,7 @@ from src.loaders.models.folder import Folder
 from src.loaders.models.glossary import Glossary, GlossaryEntry
 from src.loaders.models.hp5activities import H5PActivities
 from src.loaders.models.module import ModuleTypes
-from src.loaders.models.h5pactivities.h5p_base import get_handler_for_library, initialize_registry
+from src.loaders.models.h5pactivities.h5p_base import get_handler_for_library
 from src.loaders.models.moodlecourse import MoodleCourse
 from src.loaders.models.resource import Resource
 from src.loaders.models.url import UrlModule
@@ -279,10 +279,7 @@ class Moodle:
             
             module.h5p_content_type = library
             self.logger.info(f"Verarbeite H5P-Typ: {library} für Modul {module.id}")
-            
-            # Initialisiere Registry beim ersten Aufruf
-            initialize_registry()
-            
+                        
             # Finde passenden Handler via Registry
             handler_class = get_handler_for_library(library)
             
