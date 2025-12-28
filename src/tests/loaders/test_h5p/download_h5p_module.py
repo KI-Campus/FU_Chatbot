@@ -22,7 +22,7 @@ from src.loaders.moodle import Moodle
 
 # ⚙️ KONFIGURATION
 COURSE_ID = 74
-MODULE_ID = 23368
+MODULE_ID = 20629
 
 
 def setup_production_moodle():

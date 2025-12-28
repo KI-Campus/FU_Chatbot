@@ -26,6 +26,7 @@ from src.loaders.models.hp5activities import H5PActivities
 from src.loaders.models.module import ModuleTypes, H5P_HANDLERS
 from src.loaders.models.moodlecourse import MoodleCourse
 from src.loaders.models.resource import Resource
+from src.loaders.models.url import UrlModule
 from src.loaders.models.videotime import Video, VideoPlatforms
 from src.loaders.audio import Audio
 from src.loaders.pdf import PDF
@@ -164,6 +165,8 @@ class Moodle:
                     err_message = self.extract_folder(module)
                 case ModuleTypes.BOOK:
                     err_message = self.extract_book(module)
+                case ModuleTypes.URL:
+                    err_message = self.extract_url(module)
             if err_message:
                 failed_modules.append(FailedModule(modul=module, err_message=err_message))
 
@@ -886,6 +889,28 @@ class Moodle:
             self.logger.info(f"Kurs {course_id}: {len(books)} Book-Intros in Cache gespeichert")
             self.logger.debug(f"Cache enthält jetzt {len(self.module_intros_cache)} Einträge gesamt")
             
+            # Lade URL-Intros
+            self.logger.info(f"Lade URL-Intros für Kurs {course_id}...")
+            url_caller = APICaller(
+                url=self.api_endpoint,
+                params={**self.function_params, "courseids[0]": course_id},
+                wsfunction="mod_url_get_urls_by_courses"
+            )
+            url_response = url_caller.getJSON()
+            urls = url_response.get("urls", [])
+            
+            for url in urls:
+                coursemodule_id = url.get("coursemodule")
+                intro_html = url.get("intro", "")
+                if coursemodule_id:
+                    self.module_intros_cache[coursemodule_id] = intro_html
+                    self.logger.debug(
+                        f"  - Modul {coursemodule_id}: Intro mit {len(intro_html)} Zeichen"
+                    )
+            
+            self.logger.info(f"Kurs {course_id}: {len(urls)} URL-Intros in Cache gespeichert")
+            self.logger.debug(f"Cache enthält jetzt {len(self.module_intros_cache)} Einträge gesamt")
+            
             # Hier können weitere Modultypen hinzugefügt werden:
             # - mod_glossary_get_glossaries_by_courses
             # - mod_page_get_pages_by_courses
@@ -919,6 +944,158 @@ class Moodle:
         except Exception as e:
             self.logger.warning(f"Fehler beim Parsen des Intro-Texts für Modul {module_id}: {e}")
             return ""
+    
+    def extract_url(self, module):
+        """
+        Extrahiert Inhalte aus einem URL-Modul.
+        
+        URL-Module können auf externe Websites oder verarbeitbare Dateien verweisen.
+        - Wenn die URL auf eine verarbeitbare Datei (PDF, HTML, Audio, TXT) verweist,
+          wird diese heruntergeladen und als Resource extrahiert.
+        - Andernfalls wird nur der Link mit Intro-Text gespeichert.
+        
+        Args:
+            module: Module-Objekt mit modname="url" und instance=url_id
+            
+        Returns:
+            Optional[str]: Fehlermeldung oder None
+        """
+        try:
+            # Hole externe URL aus contents (von core_course_get_contents)
+            if not module.contents or len(module.contents) == 0:
+                self.logger.warning(f"URL-Modul {module.id} hat keine URL in contents")
+                return None
+            
+            external_url = module.contents[0].fileurl  # Die tatsächliche externe URL
+            
+            # Hole Intro-Text aus Cache (wurde pro Kurs geladen)
+            intro_html = self.module_intros_cache.get(module.id, "")
+            self.logger.info(
+                f"Intro für URL-Modul {module.id}: "
+                f"{'GEFUNDEN (' + str(len(intro_html)) + ' Zeichen)' if intro_html else 'NICHT IM CACHE'}"
+            )
+            intro_text = self._extract_intro_text(intro_html, module.id)
+            
+            # Prüfe, ob die URL auf eine verarbeitbare Datei verweist
+            file_extension = self._get_url_file_extension(external_url)
+            
+            if file_extension in ['pdf', 'html', 'htm', 'wav', 'mp3', 'm4a', 'txt']:
+                self.logger.info(f"URL-Modul {module.id} verweist auf verarbeitbare Datei: {file_extension}")
+                
+                # Erstelle Resource-Objekt für die externe Datei
+                resource = Resource(
+                    filename=module.contents[0].filename or f"external_file.{file_extension}",
+                    fileurl=external_url,
+                    mimetype=file_extension,
+                    filesize=module.contents[0].filesize if hasattr(module.contents[0], 'filesize') else None
+                )
+                
+                # Download und extrahiere Text
+                try:
+                    caller = APICaller(url=external_url, params={})  # Keine Auth-Parameter für externe URLs
+                    caller.get()
+                    file_bytes = caller.response.content
+                    
+                    if file_bytes:
+                        extracted_text = resource.extract_from_bytes(file_bytes, self.logger)
+                        
+                        if extracted_text:
+                            # Kombiniere Intro + extrahierten Text
+                            combined_text_parts = []
+                            if intro_text:
+                                combined_text_parts.append(intro_text)
+                            combined_text_parts.append(extracted_text)
+                            
+                            resource.extracted_text = '\n'.join(combined_text_parts)
+                            module.resource = resource
+                            
+                            self.logger.info(
+                                f"URL-Modul {module.id} erfolgreich verarbeitet: "
+                                f"{len(resource.extracted_text)} Zeichen extrahiert"
+                            )
+                        else:
+                            self.logger.warning(
+                                f"Keine Textextraktion möglich für {resource.filename} "
+                                f"(Typ: {resource.mimetype})"
+                            )
+                            # Speichere trotzdem als URL-Modul mit Link
+                            module.url_module = UrlModule(
+                                url_id=module.instance,
+                                module_id=module.id,
+                                external_url=external_url,
+                                intro=intro_text
+                            )
+                    else:
+                        self.logger.error(f"Konnte Datei von {external_url} nicht herunterladen")
+                        # Speichere als Link
+                        module.url_module = UrlModule(
+                            url_id=module.instance,
+                            module_id=module.id,
+                            external_url=external_url,
+                            intro=intro_text
+                        )
+                        
+                except Exception as e:
+                    self.logger.warning(
+                        f"Fehler beim Download/Verarbeiten von {external_url}: {e}. "
+                        f"Speichere als einfachen Link."
+                    )
+                    # Fallback: Speichere als Link
+                    module.url_module = UrlModule(
+                        url_id=module.instance,
+                        module_id=module.id,
+                        external_url=external_url,
+                        intro=intro_text
+                    )
+            else:
+                # Externe Website oder nicht-unterstützter Dateityp → nur Link
+                self.logger.info(
+                    f"URL-Modul {module.id} verweist auf externe Website oder "
+                    f"nicht-unterstützten Dateityp: {external_url}"
+                )
+                module.url_module = UrlModule(
+                    url_id=module.instance,
+                    module_id=module.id,
+                    external_url=external_url,
+                    intro=intro_text
+                )
+                self.logger.info(f"URL-Modul {module.id} als Link gespeichert")
+            
+            return None
+            
+        except Exception as e:
+            error_msg = f"Fehler beim Laden von URL-Modul {module.id}: {str(e)}"
+            self.logger.error(error_msg)
+            return error_msg
+    
+    def _get_url_file_extension(self, url: str) -> str | None:
+        """
+        Extrahiert die Dateiendung aus einer URL.
+        
+        Args:
+            url: URL-String
+            
+        Returns:
+            str | None: Dateiendung (lowercase) oder None
+        """
+        from urllib.parse import urlparse, unquote
+        
+        try:
+            parsed = urlparse(url)
+            path = unquote(parsed.path)  # Decode URL-encoding
+            
+            # Extrahiere Dateiendung
+            if '.' in path:
+                extension = path.rsplit('.', 1)[-1].lower()
+                # Bereinige Query-Parameter (falls vorhanden)
+                extension = extension.split('?')[0].split('#')[0]
+                return extension
+            
+            return None
+            
+        except Exception as e:
+            self.logger.warning(f"Fehler beim Parsen der URL {url}: {e}")
+            return None
 
 if __name__ == "__main__":
     moodle = Moodle()

@@ -4,6 +4,319 @@ DOCUMENT TEXT
 
 Module Name: Programming Exercise 0
 
+--- Book (4 Kapitel) ---
+=== Kapitel: Kapitel 287 ===
+
+1. Introduction
+
+
+
+
+This programming exercise is to set you up and give you an idea how the programming exercises will look like. During the course, you will then implement various concepts from the different modules.
+
+
+Please download the
+ 
+programming code
+ before starting. You can also download the 
+programming exercise description
+, if you prefer that to clicking through this book. The contents will be the same.
+
+
+Disclaimer
+
+
+We are reusing a project from 
+UC Berkeley
+ and its updated version. The whole documentation can be found 
+here
+. The required code is available 
+here
+.
+If you encounter any bugs, please report them to franziska.neuhof@l3s.de.
+
+
+Python Installation
+
+
+To participate in the programming exercises, you need a 
+python3
+ environment of the version python 3.6 or higher. Additionally you will need 
+pip
+ or
+ 
+conda
+. You can check via 
+python -V
+ or 
+python3 -V
+ your python version and with 
+conda -V
+ or 
+pip -V
+ / 
+pip3 -V
+ your conda or pip version.
+
+
+If you need to install python, I personally suggest to use conda, which automatically comes with python. Installation instructions for Windows, Mac and Linux can be found 
+here
+.
+
+
+If there is a 
+tkinter
+ import error, it’s likely because Python is atypical, and from Homebrew. Uninstall that and install python from Homebrew with tkinter support, or use the another installer.
+
+
+When running the autograder you might encounter an exception on modern python versions. The cause of this is that the method 
+cgi.escape
+ has been deprecated sine 2011 and removed with Python 3.8. To fix this you can either use an earlier version (3.6 works fine) or make the following two changes to the autograder: Replace 
+import cgi
+ with 
+from html import escape
+. Replace 
+message = cgi.escape(message)
+ with 
+message = escape(message)
+.
+
+
+Programming Exercise Structure & Autograding
+
+
+You can check you progress by running the following command: 
+python autograder.py 
+
+
+Files you will edit:
+
+
+
+
+
+
+addition.py
+
+
+
+
+
+
+buyLotsOfFruit.py
+
+
+
+
+
+
+shopSmart.py
+
+
+
+
+
+
+Files you might want to look at:
+
+
+
+
+
+
+shop.py
+
+
+
+
+
+
+Do not change any other files and do not change any of the provided function names as this will create problems for the autograder and you will not be able to check your progress.
+
+
+
+
+--- Dateianhänge ---
+
+
+Datei: Programming Exercise - Introduction.zip
+
+ZIP-Archiv: Programming Exercise - Introduction.zip
+
+
+Datei: Programming Exercise - Introduction.pdf
+
+--- Page 1 ---
+
+Artificial Intelligence - Leibniz AI Academy
+Prof. Dr. techn. Wolfgang Nejdl
+Franziska Neuhof
+Artificial Intelligence
+Programming Exercise 0
+Organization
+• This exercise is introductory and doesn’t need to be submitted.
+• You may participate in this and upcoming exercises as a group of 2 persons.
+• If you encounter any bugs, please report them to schoger@l3s.de
+Disclaimer
+We are reusing a project from UC Berkeley1 and its updated version. The whole documen-
+tation can be found at https://inst.eecs.berkeley.edu/~cs188/fa23/projects/
+proj0.
+The required code is also available at https://inst.eecs.berkeley.edu/
+~cs188/fa23/assets/projects/tutorial.zip.
+If you encounter any bugs, please report them to franziska.neuhof@l3s.de
+Python Installation
+To participate in the programming exercises, you need a python3 environment of the
+version python 3.6 or higher. Additionally you will need pip or conda . You can check
+via python -V or python3 -V your python version and with conda -V or pip -V /
+pip3 -V your conda or pip version.
+If you need to install python, I personally suggest to use conda, which automatically
+comes with python. Installation instructions for Windows, Mac and Linux can be found
+here.
+If there is a tkinter import error, it’s likely because Python is atypical, and from
+Homebrew. Uninstall that and install python from Homebrew with tkinter support,
+or use the another installer.
+When running the autograder you might encounter an exception on modern python
+versions.
+The cause of this is that the method cgi.escape has been deprecated
+sine 2011 and removed with Python 3.8. To fix this you can either use an earlier
+version (3.6 works fine) or make the following two changes to the autograder: Replace
+import cgi with from html import escape . Replace message = cgi.escape(message)
+with message = escape(message) .
+1http://ai.berkeley.edu
+
+--- Page 2 ---
+
+Artificial Intelligence - Leibniz AI Academy
+Project Structure & Autograding
+If you download the exercise files, you will see that it contains many files. Most of them
+are not relevant to you and you can just ignore them. Files you will edit:
+addition.py
+buyLotsOfFruit.py
+shopSmart.py
+Additional interesting files:
+shop.py
+Do not change any other files and do not change any of the provided function names
+as this will create problems for the autograder and you will not be able to check your
+progress.
+To check your progress in solving the exercise run
+python autograder.py
+If you need a basic introduction to python, please check here.
+Question 1: Addition
+Open the file addition.py and look at the definition of add :
+def add(a, b):
+"Return the sum of a and b"
+"*** YOUR CODE HERE ***"
+return 0
+When you run the autograder it calls this function with different values for a and b, but
+the code always returns 0. Modify the code so that it returns the sum of a and b instead
+of 0.
+Run the autograder using
+python autograder.py -q q1
+All the tests should pass now. If you have problmes you can add print() statements in
+the function to help you debugging.
+Question 2: buyLotsofFruits
+Implement the buyLotsOfFruit(orderList) function in buyLotsOfFruit.py which takes
+a list of (fruit,numPounds) tuples and returns the cost of your list. If there is some fruit
+in the list which doesn’t appear in fruitPrices it should print an error message and
+return None. Please do not change the fruitPrices variable.
+
+--- Page 3 ---
+
+Artificial Intelligence - Leibniz AI Academy
+Run python autograder.py -q q2 until question 2 passes all tests and you get full marks.
+Each test will confirm that buyLotsOfFruit(orderList) returns the correct answer given
+various possible inputs. For example, test_cases/q2/food_price1.test tests whether
+the cost of [(’apples’, 2.0), (’pears’, 3.0), (’limes’, 4.0)] is 12.25.
+Question 3: shopSmart
+Fill in the function shopSmart(orderList,fruitShops) in shopSmart.py , which takes
+an orderList (like the kind passed in to FruitShop.getPriceOfOrder ) and a list of
+FruitShop and returns the FruitShop where your order costs the least amount in total.
+Don’t change the file name or variable names, as otherwisethe autograder will have
+problems.
+Run python autograder.py -q q3 until question 3 passes all tests and you get full marks.
+Each test will confirm that shopSmart(orderList,fruitShops) returns the correct answer
+given various possible inputs.
+
+=== Kapitel: Kapitel 288 ===
+
+2. Task: Addition
+Open the file 
+addition.py 
+and look at the definition of 
+add
+:
+def add(a, b):
+    "Return the sum of a and b"
+    "*** YOUR CODE HERE ***"
+    return 0
+
+
+When you run the autograder it calls this function with different values for a and b, but the code always returns 0. Modify the code so that it returns the sum of a and b instead of 0.
+Run the autograder using
+python autograder.py -q q1
+
+
+All the tests should pass now. If you have problems you can add 
+print()
+ statements in the function to help you debugging.
+
+=== Kapitel: Kapitel 289 ===
+
+3. Task: By Lots of Fruit
+Implement the 
+buyLotsOfFruit(orderList)
+ function in 
+buyLotsOfFruit.py
+ which takes a list of 
+(fruit,numPounds)
+ tuples and returns the cost of your list. If there is some fruit in the list which doesn’t appear in fruitPrices it should print an error message and return None. Please do not change the 
+fruitPrices
+ variable.
+
+
+
+
+Run
+python autograder.py -q q2
+until question 2 passes all tests and you get full marks. Each test will confirm that 
+buyLotsOfFruit(orderList)
+ returns the correct answer given various possible inputs. For example,
+ test\_cases/q2/food\_price1.test
+ tests whether the cost of 
+[('apples', 2.0), ('pears', 3.0), ('limes', 4.0)]
+ is 12.25.
+
+
+
+
+ 
+
+=== Kapitel: Kapitel 290 ===
+
+4. Task: Shop Smart
+Fill in the function 
+shopSmart(orderList,fruitShops)
+ in 
+shopSmart.py
+, which takes an 
+orderList
+ (like the kind passed in to 
+FruitShop.getPriceOfOrder
+) and a list of 
+FruitShop
+ and returns the 
+FruitShop
+ where your order costs the least amount in total. Don’t change the file name or variable names, as otherwisethe autograder will have problems.
+
+
+
+
+Run
+python autograder.py -q q3
+until question 3 passes all tests and you get full marks. Each test will confirm that 
+shopSmart(orderList,fruitShops)
+ returns the correct answer given various possible inputs.
+
 ================================================================================
 METADATA
 ================================================================================

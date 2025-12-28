@@ -1,0 +1,31 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Course Title: DHBW: Einführung in die KI
+ Course Summary: Dieser Kurs bietet ein umfassendes Grundlagenwissen über Künstliche Intelligenz. Anhand der einzelnen Module lernen die Studierenden, was sich hinter wichtigen Grundbegriffen der KI, wie dem sogenannten Deep Learning oder Large Language Models (LLMs) verbirgt. Darüber hinaus erhalten sie ein Verständnis von der grundlegenden Funktionsweise von KI, um einen reflektierten Überblick über deren Potenziale und Risiken zu erlangen.Der Kurs ist in drei Module aufgeteilt:Einführung in die KIGenerative KIs, LLMs und Deep LearningVertiefungsmöglichkeitenDie Module enthalten kurze Lerneinheiten, die gezielt für selbstständiges Lernen konzipiert sind und im Anschluss in der Präsenzphase gemeinsam durch Übungen oder Reflexions- und Diskussionsfragen vertiefend behandelt werden können. Das Vertiefungsmodul am Ende des Kurses bietet weiterführende Lernressourcen, die ergänzend verwendet werden können.Im Modul "Für Lehrende" empfehlen wir Lerninhalte, die dabei unterstützen können, die im Online-Kurs vorgestellten Themen in den Lehrveranstaltungen zu integrieren. Dazu stehen unterschiedliche Vertiefungsaufgaben und -Formate zur Verfügung.  Wir wünschen viel Erfolg und Freude mit dem Kurs.  Bei weiteren Fragen stehen wir Ihnen zur Verfügung und freuen uns auf Ihre Rückmeldung. Ihr KI-Team an der DHBW Heilbronn Mail: ki-team@heilbronn.dhbw.de
+Course Topics:
+Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: Dieser Kurs bietet Lernenden die Möglichkeit, ein umfassendes Grundverständnis der Begrifflichkeiten und Funktionsweise von Künstlicher Intelligenz zu erlangen. Ein Blick auf die Historie der KI, sowie auf den aktuellen Stand der Künstlichen Intelligenz erleichtern den Lernenden das Grundverständnis zu festigen. Ziel ist es einen verantwortungsvollen und effektiven Einsatz von Künstlicher Intelligenz zu fördern. Die Module 1-3 enthalten kurze Lerneinheiten, die gezielt für selbständiges Lernen ausgewählt und logisch aufgebaut sind. Nach Freigabe der Module können Ihre Studierenden die Themen zuerst selbst bearbeiten, bevor Sie sie in Ihrer Lehrveranstaltung behandeln.  Die Modul enthalten Materialien zur Erarbeitung von Fachwissen. Dabei können Sie individuell entscheiden, welche Lerneinheiten Sie für Ihre Studierenden freigeben oder als Pflichtaufgabe markieren. Alle im Kurs angebotenen Übungen sind freiwillig, eine Fortsetzung des Kurses ist auch ohne die Absolvierung der Übungen möglich. Im Modul "Für Lehrende" empfehlen wir Ihnen methodische und inhaltliche Anreize, die Sie dabei unterstützen können, die im Online-Kurs vorgestellten Themen in ihre Lehrveranstaltung zu integrieren. Sie finden hier unter anderem:Vertiefungs- und Reflexionsfragen für gemeinsame Diskussionen im Kurspraktische Übungen undIdeen für Kleingruppenarbeit.Bei weiteren Fragen stehen wir Ihnen zur Verfügung und freuen uns auf Ihre Rückmeldung.  Wir wünschen Ihnen viel Freude und Erfolg mit dem Kurs!  Ihr KI-Team an der DHBW Heilbronn  Mail: ki-team@heilbronn.dhbw.de
+
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 152,
+  "shortname": "DHBW: Einführung KI",
+  "fullname": "DHBW: Einführung in die KI",
+  "type": "Kurs",
+  "source": "Moodle",
+  "url": "https://moodle.ki-campus.org/course/view.php?id=152",
+  "language": "de"
+}

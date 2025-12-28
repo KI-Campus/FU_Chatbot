@@ -10,6 +10,7 @@ from src.loaders.models.folder import Folder
 from src.loaders.models.glossary import Glossary
 from src.loaders.models.resource import Resource
 from src.loaders.models.texttrack import TextTrack
+from src.loaders.models.url import UrlModule
 from src.loaders.models.videotime import Video
 
 
@@ -21,6 +22,7 @@ class ModuleTypes(StrEnum):
     RESOURCE = "resource"
     FOLDER = "folder"
     BOOK = "book"
+    URL = "url"
 
 
 # H5P Handler Mapping: Library-Name → Handler-Klasse
@@ -72,6 +74,7 @@ class Module(BaseModel):
     resource: Resource | None = None  # Resource file (PDF, DOCX, etc.)
     folder: Folder | None = None  # Folder with multiple files (PDF, Audio, etc.)
     book: Book | None = None  # Book with multiple chapters (HTML, videos, attachments)
+    url_module: UrlModule | None = None  # URL module (external link or downloadable file)
 
     @computed_field  # type: ignore[misc]
     @property
@@ -91,6 +94,8 @@ class Module(BaseModel):
                 return ModuleTypes.FOLDER
             case "book":
                 return ModuleTypes.BOOK
+            case "url":
+                return ModuleTypes.URL
             case _:
                 return None
 
@@ -176,6 +181,11 @@ class Module(BaseModel):
         if self.book and self.book.total_chapters > 0:
             text_parts.append(f"\n--- Book ({self.book.total_chapters} Kapitel) ---")
             text_parts.append(str(self.book))
+        
+        # URL Module (externe Links oder verarbeitbare Dateien)
+        if self.url_module:
+            text_parts.append("\n--- Externe Ressource ---")
+            text_parts.append(str(self.url_module))
         
         text = "\n".join(text_parts)
 

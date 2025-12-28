@@ -1,0 +1,45 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Course Title: Identifikation geeigneter KI-Anwendungsfälle
+ Course Summary: Die Identifizierung der richtigen KI-Use Cases ist entscheidend für eine erfolgreiche KI-Innovation. Nicht zuletzt angesichts einer ausgeprägten Präsenz im öffentlichen Diskurs ergibt sich jedoch die diffuse Erwartung, dass KI universell wertschaffend eingesetzt werden kann. Dies steht im Kontrast zur Realität, in der KI insbesondere in spezifischen Anwendungsfeldern wertschaffend genutzt werden kann.  Der Kurs Identifikation geeigneter KI-Anwendungsfälle gibt mittelständischen Unternehmen dafür eine Methodik, mit welcher diese befähigt werden sollen in ihrer eigenen Organisation die richtigen KI-Use-Cases zu identifizieren und umzusetzen.
+Course Topics:
+Topic Summary: Willkommen zum Online-Kurs "Identifikation geeigneter KI-Anwendungsfälle"!  Wir freuen uns sehr, dass Sie gemeinsam mit uns auf die Reise gehen, um die Möglichkeiten der künstlichen Intelligenz in Ihrem Unternehmen zu erkunden!  Hinweis: Weitere Module befinden sich noch in Bearbeitung und werden schrittweise veröffentlicht.  Kursstruktur und Lernmaterial: Der Kurs ist in zehn Module unterteilt, die einen umfassenden Überblick über die Identifikation geeigneter KI-Anwendungsfälle bieten. In den ersten Modulen werden KI-Grundlagen behandelt. Zudem erfolgt eine Hinführung in die Methode zur Identifikation geeigneter KI-Anwendungsfälle. Dabei werden wesentliche Konzepte erklärt, um sicherzustellen, dass Sie die erforderlichen Kenntnisse für die kommenden Module und Methoden-Phasen besitzen.  Das Hauptaugenmerk liegt auf der detaillierten Vorstellung unserer Methode zur Identifikation geeigneter KI-Anwendungsfälle. Jede Methoden-Phase wird durch Lernvideos erklärt. Perspektivisch werden die Videos in transkribierter Version sowie mit Untertiteln zur Verfügung gestellt.  Zusätzlich bieten wir weiterführende Links und Materialien an, falls Sie bestimmte Aspekte vertiefen möchten.  Unser Ziel ist es, dass Sie nach Abschluss des Online-Kurses in der Lage sind, die Methode in Ihrem individuellen Unternehmenskontext anzuwenden. Der Online-Kurs schließt mit gesellschaftlichen Aspekten von KI-Anwendungsfällen ab.  Im entsprechenden Modul erfahren Sie, welche ethischen und sozialen Überlegungen bei der praktischen Umsetzung der Methode zu berücksichtigen sind.  Selbsttests und Lernzielchecks: Selbsttests (unbenotete Aufgaben) geben Ihnen ein erstes Feedback, ob Sie die wichtigsten Lerninhalte verstanden haben,  Neben Selbsttests können Sie über Lernziel-Checks benotete Aufgaben absolvieren. Diese Aufgaben ermöglichen es Ihnen, Ihr Wissen zu überprüfen und Lerninhalte gezielt zu festigen. Unser Ziel ist es, dass Sie am Ende des Kurses nicht nur theoretisch vertraut mit der Methode sind, sondern auch in der Praxis sicher damit arbeiten können.  Wir hoffen, dass Sie den Kurs als lehrreich und inspirierend empfinden. Bei Fragen stehen wir Ihnen gerne zur Verfügung.  Los geht's
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 27,
+  "shortname": "KI-Anwendungsfaelle-tum",
+  "fullname": "Identifikation geeigneter KI-Anwendungsfälle",
+  "type": "Kurs",
+  "source": "Moodle",
+  "url": "https://moodle.ki-campus.org/course/view.php?id=27",
+  "language": "de"
+}
