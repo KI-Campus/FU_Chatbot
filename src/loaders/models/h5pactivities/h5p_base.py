@@ -85,6 +85,7 @@ def initialize_registry():
     from src.loaders.models.h5pactivities.h5p_question_set import QuestionSet
     from src.loaders.models.h5pactivities.h5p_interactive_video import InteractiveVideo
     from src.loaders.models.h5pactivities.h5p_wrappers import Column, Accordion, Gamemap, CoursePresentation
+    from src.loaders.models.h5pactivities.h5p_crossword import Crossword
     
     # Register leaf types
     register_h5p_type("H5P.Text", Text)
@@ -101,6 +102,7 @@ def initialize_registry():
     register_h5p_type("H5P.Flashcards", H5PFlashcards)
     register_h5p_type("H5P.Timeline", H5PTimeline)
     register_h5p_type("H5P.Summary", Summary)
+    register_h5p_type("H5P.Crossword", Crossword)
     
     # Register container types
     register_h5p_type("H5P.QuestionSet", QuestionSet)

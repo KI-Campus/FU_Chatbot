@@ -1,39 +1,11 @@
 import logging
 from dataclasses import dataclass, field
-from typing import Union, Optional, Any
-from src.loaders.models.hp5activities import extract_library_from_h5p
-from src.loaders.models.h5pactivities.h5p_base import H5PContainer
-from src.loaders.models.h5pactivities.h5p_quiz_questions import QuizQuestion, TrueFalseQuestion
-from src.loaders.models.h5pactivities.h5p_blanks import FillInBlanksQuestion
-from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion, DragDropText, ImageHotspotQuestion
+from typing import Optional
+from src.loaders.models.hp5activities import extract_library_from_h5p, strip_html
+from src.loaders.models.h5pactivities.h5p_base import H5PContainer, H5PContentBase
 from src.loaders.models.h5pactivities.h5p_basics import H5PVideo
-from src.loaders.models.h5pactivities.h5p_dialogcards import H5PDialogcards
-from src.loaders.models.h5pactivities.h5p_flashcards import H5PFlashcards
-from src.loaders.models.h5pactivities.h5p_timeline import H5PTimeline
-from src.loaders.models.h5pactivities.h5p_summary import Summary as H5PSummary
-from src.loaders.models.h5pactivities.h5p_question_set import QuestionSet
-from src.loaders.models.hp5activities import strip_html
 
 logger = logging.getLogger(__name__)
-
-
-# Union-Type für alle unterstützten Inhaltstypen
-# Wird durch Forward Reference aktualisiert, da Accordion noch nicht definiert ist
-ColumnContent = Union[
-    QuizQuestion,
-    TrueFalseQuestion,
-    FillInBlanksQuestion,
-    DragDropQuestion,
-    DragDropText,
-    ImageHotspotQuestion,
-    H5PVideo,
-    H5PDialogcards,
-    H5PFlashcards,
-    H5PTimeline,
-    H5PSummary,
-    'Accordion',  # Forward Reference, da Accordion weiter unten definiert wird
-    Any  # Fallback für nicht unterstützte Typen (werden als Text rendert)
-]
 
 
 @dataclass
@@ -45,7 +17,7 @@ class Column(H5PContainer):
     Es können beliebige H5P-Typen in beliebiger Reihenfolge vorkommen.
     """
     type: str = "H5P.Column"
-    contents: list[ColumnContent] = field(default_factory=list)
+    contents: list[H5PContentBase] = field(default_factory=list)
     
     @classmethod
     def from_h5p_package(cls, module, content: dict, h5p_zip_path: str, **kwargs) -> Optional[str]:
@@ -179,7 +151,7 @@ class SimpleTextContent:
 class AccordionPanel:
     """Ein Panel innerhalb eines H5P.Accordion."""
     title: str
-    content: Any  # Beliebiger H5P-Inhaltstyp
+    content: H5PContentBase  # Beliebiger H5P-Inhaltstyp
 
 
 @dataclass
@@ -301,7 +273,7 @@ class Accordion(H5PContainer):
 class GamemapStage:
     """Ein Stage/Element in einer Gamemap."""
     label: str
-    content: Optional[Any] = None  # Das H5P-Content Objekt (QuizQuestion, Text, etc.)
+    content: Optional[H5PContentBase] = None  # Das H5P-Content Objekt (QuizQuestion, Text, etc.)
 
     def to_text(self) -> str:
         """Formatiert den Stage mit Label und Inhalt."""
@@ -419,7 +391,7 @@ class Gamemap(H5PContainer):
 class CourseSlide:
     """Eine einzelne Slide innerhalb von H5P.CoursePresentation."""
     index: int
-    contents: list[Any] = field(default_factory=list)
+    contents: list[H5PContentBase] = field(default_factory=list)
 
     def to_text(self) -> str:
         lines = []
