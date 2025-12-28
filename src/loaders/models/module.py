@@ -25,35 +25,6 @@ class ModuleTypes(StrEnum):
     URL = "url"
 
 
-# H5P Handler Mapping: Library-Name → Handler-Klasse
-# Die Handler-Klassen müssen eine statische Methode `from_h5p_package(module, content, h5p_zip_path, **services)` haben
-H5P_HANDLERS = {
-    "H5P.InteractiveVideo": "src.loaders.models.h5pactivities.h5p_interactive_video.InteractiveVideo",
-    "H5P.Column": "src.loaders.models.h5pactivities.h5p_wrappers.Column",
-    "H5P.Accordion": "src.loaders.models.h5pactivities.h5p_wrappers.Accordion",
-    "H5P.CoursePresentation": "src.loaders.models.h5pactivities.h5p_wrappers.CoursePresentation",
-    "H5P.Video": "src.loaders.models.h5pactivities.h5p_basics.H5PVideo",
-    "H5P.QuestionSet": "src.loaders.models.h5pactivities.h5p_question_set.QuestionSet",
-    "H5P.MultiChoice": "src.loaders.models.h5pactivities.h5p_quiz_questions.QuizQuestion",
-    "H5P.SingleChoiceSet": "src.loaders.models.h5pactivities.h5p_quiz_questions.QuizQuestion",
-    "H5P.TrueFalse": "src.loaders.models.h5pactivities.h5p_quiz_questions.TrueFalseQuestion",
-    "H5P.DragQuestion": "src.loaders.models.h5pactivities.h5p_drag_drop.DragDropQuestion",
-    "H5P.DragText": "src.loaders.models.h5pactivities.h5p_drag_drop.DragDropText",
-    "H5P.Blanks": "src.loaders.models.h5pactivities.h5p_blanks.FillInBlanksQuestion",
-    "H5P.Text": "src.loaders.models.h5pactivities.h5p_basics.Text",
-    "H5P.AdvancedText": "src.loaders.models.h5pactivities.h5p_basics.Text",
-    "H5P.Dialogcards": "src.loaders.models.h5pactivities.h5p_dialogcards.H5PDialogcards",
-    "H5P.ImageHotspot": "src.loaders.models.h5pactivities.h5p_drag_drop.ImageHotspotQuestion",
-    "H5P.Flashcards": "src.loaders.models.h5pactivities.h5p_flashcards.H5PFlashcards",
-    "H5P.Timeline": "src.loaders.models.h5pactivities.h5p_timeline.H5PTimeline",
-    # Weitere H5P-Typen können hier einfach hinzugefügt werden:
-    # "H5P.Flashcards": "src.loaders.models.h5pactivities.h5p_flashcards.Flashcards",
-    "H5P.Gamemap": "src.loaders.models.h5pactivities.h5p_wrappers.Gamemap",
-    "H5P.GameMap": "src.loaders.models.h5pactivities.h5p_wrappers.Gamemap",
-    # "H5P.CoursePresentation": "src.loaders.models.h5pactivities.h5p_course_presentation.CoursePresentation",
-}
-
-
 class Module(BaseModel):
     """Lowest level content block of a course. Can be a file, video, hp5, etc."""
 
@@ -152,6 +123,8 @@ class Module(BaseModel):
                     header = "\n--- Timeline ---"
                 elif "Gamemap" in self.h5p_content_type or "GameMap" in self.h5p_content_type:
                     header = "\n--- Interaktive Karte (Gamemap) ---"
+                elif "Crossword" in self.h5p_content_type:
+                    header = "\n--- Kreuzworträtsel ---"
                 else:
                     header = f"\n--- H5P Inhalt ({self.h5p_content_type}) ---"
             else:

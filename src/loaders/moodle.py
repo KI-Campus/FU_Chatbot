@@ -23,7 +23,8 @@ from src.loaders.models.coursetopic import CourseTopic
 from src.loaders.models.folder import Folder
 from src.loaders.models.glossary import Glossary, GlossaryEntry
 from src.loaders.models.hp5activities import H5PActivities
-from src.loaders.models.module import ModuleTypes, H5P_HANDLERS
+from src.loaders.models.module import ModuleTypes
+from src.loaders.models.h5pactivities.h5p_base import get_handler_for_library, initialize_registry
 from src.loaders.models.moodlecourse import MoodleCourse
 from src.loaders.models.resource import Resource
 from src.loaders.models.url import UrlModule
@@ -279,23 +280,17 @@ class Moodle:
             module.h5p_content_type = library
             self.logger.info(f"Verarbeite H5P-Typ: {library} für Modul {module.id}")
             
-            # Finde passenden Handler im Mapping
-            handler_class_path = None
-            for h5p_type, class_path in H5P_HANDLERS.items():
-                if h5p_type in library:
-                    handler_class_path = class_path
-                    break
+            # Initialisiere Registry beim ersten Aufruf
+            initialize_registry()
             
-            if not handler_class_path:
+            # Finde passenden Handler via Registry
+            handler_class = get_handler_for_library(library)
+            
+            if not handler_class:
                 self.logger.warning(f"H5P-Typ '{library}' wird noch nicht unterstützt (Modul {module.id})")
                 return f"H5P-Typ '{library}' wird noch nicht unterstützt"
             
-            # Dynamisch Handler-Klasse importieren
-            module_path, class_name = handler_class_path.rsplit(".", 1)
-            handler_module = __import__(module_path, fromlist=[class_name])
-            handler_class = getattr(handler_module, class_name)
-            
-            self.logger.info(f"Rufe Handler {class_name} auf für Modul {module.id}")
+            self.logger.info(f"Rufe Handler {handler_class.__name__} auf für Modul {module.id}")
             
             # Rufe from_h5p_package direkt auf (befüllt module und gibt error zurück)
             err = handler_class.from_h5p_package(

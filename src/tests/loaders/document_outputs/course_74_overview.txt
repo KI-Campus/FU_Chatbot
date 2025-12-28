@@ -1,0 +1,37 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Course Title: KI-Explorables für die Schule
+ Course Summary: Mit KI auf Schatzsuche: Steige im Online-Kurs spielerisch ins maschinelle Lernen ein. Dazu erhältst du Materialien für den Unterricht. Jetzt eintauchen! 🤿
+Course Topics:
+Topic Summary: Herzlich Willkommen im Online-Kurs "KI-Explorables für die Schule"!  Los geht's
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+ Topic Summary: None
+
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 74,
+  "shortname": "KI-Explorables",
+  "fullname": "KI-Explorables für die Schule",
+  "type": "Kurs",
+  "source": "Moodle",
+  "url": "https://moodle.ki-campus.org/course/view.php?id=74",
+  "language": "de"
+}

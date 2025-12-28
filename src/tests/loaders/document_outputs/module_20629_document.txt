@@ -1,0 +1,30 @@
+================================================================================
+DOCUMENT TEXT
+================================================================================
+
+Module Name: Übung: Das Training
+
+--- Kreuzworträtsel ---
+[Kreuzworträtsel]
+Löse das Kreuzworträtsel. (ä=ae, ü=ue, ö=oe) Achtung, wenn du ein Wort korrigierst (zum Beispiel durch das Löschen von Buchstaben), passen sich kreuzende Wörter mit an.
+Datenbank, die für das Training des Zahlenerkenners verwendet wurde (Abkürzung). Antwort: MNIST
+Art des Lernens, bei der auf Basis von beschrifteten Daten die Ausgabe vom System selbst überprüft werden kann (dt.). Antwort: UEBERWACHT
+engl.: Beschriftung. Antwort: LABEL
+Phase des Trainings, bei dem alle Gewichte und Bias zufällig gewählt sind. Antwort: BEGINN
+Mögliche Folge eines Trainings mit zu vielen Trainingsdaten (dt.). Antwort: UEBERANPASSUNG
+Herkunftsland der beim Zahlenerkenner genutzten Datenbank (Abkürzung). Antwort: USA
+Art des Lernens, bei dem die Trainingsdaten nicht beschriftet sind (dt.). Antwort: UNUEBERWACHT
+Besteht aus mehreren Neuronen (zwei Worte). Antwort: NEURONALESNETZ
+Der ... wird mit der Beschriftung des Bildes verglichen.. Antwort: OUTPUT
+
+================================================================================
+METADATA
+================================================================================
+
+{
+  "course_id": 74,
+  "module_id": 20629,
+  "fullname": "Übung: Das Training",
+  "type": "module",
+  "url": "https://moodle.ki-campus.org/mod/h5pactivity/view.php?id=20629"
+}

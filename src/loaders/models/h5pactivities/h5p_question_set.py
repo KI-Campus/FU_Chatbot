@@ -1,30 +1,17 @@
 import logging
 from dataclasses import dataclass, field
-from typing import Union, Optional
+from typing import Optional
 from src.loaders.models.hp5activities import extract_library_from_h5p
-from src.loaders.models.h5pactivities.h5p_base import H5PContainer
-from src.loaders.models.h5pactivities.h5p_quiz_questions import QuizQuestion, TrueFalseQuestion
-from src.loaders.models.h5pactivities.h5p_blanks import FillInBlanksQuestion
-from src.loaders.models.h5pactivities.h5p_drag_drop import DragDropQuestion, DragDropText
+from src.loaders.models.h5pactivities.h5p_base import H5PContainer, H5PContentBase
 
 logger = logging.getLogger(__name__)
-
-
-# Union-Type für alle unterstützten Fragetypen
-QuestionType = Union[
-    QuizQuestion,
-    TrueFalseQuestion,
-    FillInBlanksQuestion,
-    DragDropQuestion,
-    DragDropText
-]
 
 
 @dataclass
 class QuestionSet(H5PContainer):
     """H5P.QuestionSet - Container für mehrere Quiz-Fragen verschiedener Typen."""
     type: str = "H5P.QuestionSet"
-    questions: list[QuestionType] = field(default_factory=list)
+    questions: list[H5PContentBase] = field(default_factory=list)
     intro_text: str = ""
     
     @classmethod
