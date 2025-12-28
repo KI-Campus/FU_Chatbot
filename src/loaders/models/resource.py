@@ -224,7 +224,9 @@ class Resource(BaseModel):
                         if file_ext == 'pdf':
                             try:
                                 pdf = PDF()
-                                text = pdf.extract_text(file_path)
+                                with open(file_path, 'rb') as f:
+                                    pdf_bytes = f.read()
+                                text = pdf.extract_text_from_bytes(pdf_bytes, filename=str(relative_path))
                                 if text:
                                     zip_texts.append(f"\n--- PDF: {relative_path} ---\n{text}")
                             except Exception as e:
@@ -249,7 +251,9 @@ class Resource(BaseModel):
                         elif file_ext in ['wav', 'mp3', 'm4a']:
                             try:
                                 audio = Audio()
-                                text = audio.extract_text(file_path)
+                                with open(file_path, 'rb') as f:
+                                    audio_bytes = f.read()
+                                text = audio.extract_text_from_bytes(audio_bytes, filename=str(relative_path), mimetype=f"audio/{file_ext}")
                                 if text:
                                     zip_texts.append(f"\n--- Audio: {relative_path} ---\n{text}")
                             except Exception as e:
@@ -276,5 +280,3 @@ class Resource(BaseModel):
         except Exception as e:
             logger.error(f"ZIP-Verarbeitungsfehler {self.filename}: {e}")
             return f"[ZIP-Verarbeitungsfehler: {str(e)}]"
-            return f"Datei: {self.filename}\n\n{self.extracted_text}"
-        return f"Datei: {self.filename}"
