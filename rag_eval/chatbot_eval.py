@@ -3,7 +3,7 @@ import os
 import asyncio
 import json
 from datetime import datetime
-from functools import lru_cache  # <-- Added for caching
+from functools import lru_cache
 
 # Allow imports from project root
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -19,23 +19,19 @@ from src.llm.LLMs import Models
 from src.llm.assistant import KICampusAssistant
 
 
-# ---------------- GET ANSWER + CONTEXT ----------------
-def _get_answer_and_context(question: str):
-    """Internal function — DO NOT call directly (cache wrapper below)."""
+# ---------------- CONTEXT RETRIEVAL (CACHED) ----------------
+def _retrieve_context(question: str):
     assistant = KICampusAssistant()
     chat_history = []
 
-    # contextualize
     rag_query = assistant.contextualizer.contextualize(
         query=question,
         chat_history=chat_history,
         model=Models.GPT4,
     )
 
-    # retrieve
     retrieved_nodes = assistant.retriever.retrieve(rag_query)
 
-    # extract contexts
     contexts = []
     for node in retrieved_nodes:
         try:
@@ -43,33 +39,36 @@ def _get_answer_and_context(question: str):
                 contexts.append(node.get_content())
             else:
                 contexts.append(node.text)
-        except:
+        except Exception:
             pass
 
-    # generate answer
-    llm_response = assistant.chat(
+    return tuple(contexts)
+
+
+@lru_cache(maxsize=None)
+def get_context(question: str):
+    """Caches retrieval + contextualization only."""
+    return _retrieve_context(question)
+
+
+# ---------------- ANSWER GENERATION (NOT CACHED) ----------------
+def generate_answer(question: str):
+    assistant = KICampusAssistant()
+    chat_history = []
+
+    response = assistant.chat(
         query=question,
         chat_history=chat_history,
         model=Models.GPT4,
     )
 
-    return llm_response.content, contexts
-
-
-# ---- SAFE SPEED OPTIMIZATION: CACHE RETRIEVAL + CONTEXTUALIZATION ----
-@lru_cache(maxsize=None)
-def get_answer_and_context(question: str):
-    """Caches retrieval + contextualization (safe). DOES NOT cache the answer."""
-    answer, contexts = _get_answer_and_context(question)
-    return answer, tuple(contexts)  # must be hashable for cache
-# ----------------------------------------------------------------------
+    return response.content
 
 
 # ---------------- MAIN ----------------
 async def main():
     print("\nStarting evaluation...\n")
 
-    # Evaluation LLM
     evaluator_llm = LangchainLLMWrapper(
         ChatOpenAI(model="gpt-4o", temperature=0)
     )
@@ -83,7 +82,7 @@ async def main():
     ]
 
     # --------------------------------------------------
-    # 50 Evaluation Questions by Category
+    # Evaluation Questions
     # --------------------------------------------------
     questions = [
 
@@ -94,44 +93,44 @@ async def main():
         "Welche Artikel des EU AI Act sind relevant für die Risikoklasse inakzeptables Risiko?",
         "Wie funktionieren Neuronale Netze?",
         "Welches der folgenden Ziele werden im EU AI Act verfolgt?",
-        "Gibt es KI Luegendetektoren?",
+        "Gibt es KI-Lügendetektoren?",
         "Wie wird das Berufsbild des Mediziners durch Data Science verändert?",
         "What is AI thinking vs acting?",
         "Was sind BIAS?",
-        "Was ist parametrization?",
-        "Ich verstehe noch nicht ganz wie die KI-Winter entstehen?",
-        "Wieviel Gigabyte Daten verwenden moderne LLMs?",
+        "Was ist Parametrisierung?",
+        "Ich verstehe noch nicht ganz, wie die KI-Winter entstehen?",
+        "Welche Faktoren beeinflussen die Qualität von Antworten eines Large Language Models?",
         "Wie erstelle ich eine Mermaid Mindmap mit KI?",
-        "Was bedeutet: Ein System basierend aus GPU und Deep Learning?",
+        "Was bedeutet: Ein System basierend auf GPU und Deep Learning?",
         "Was sind Gütekriterien bei der Datenerhebung?",
-        "What is meant by 'canonical form' of a word?",
-        "Welche LLM-Version nutzt Copilot aktuell?",
+        "Was versteht man unter Datenvorverarbeitung im Kontext von Machine Learning?",
+        "Welche Rolle spielen Trainingsdaten bei der Leistungsfähigkeit von KI-Modellen?",
         "Gebe bitte einfache Beispiele für diskriminative KI.",
         "Wozu ist der KI-Lernassistent gedacht?",
-        "Was bedeutet hier die Abkürzung HPI?",
+        "Was bedeutet die Abkürzung HPI?",
         "Could you explain embeddings?",
-        "Can you explain difference between LSTM and GRU?",
+        "Can you explain the difference between LSTM and GRU?",
         "Can you explain how to create an LSTM with Python?",
-        "Was ist tmin in python?",
+        "Was ist tmin in Python?",
         "Wenn man KI-Campus auf HessenHub OER-Spaeti mit Hilfe einer JSON-Datei ablegen möchte, welches Format sollte man wählen?",
-        "Was sind Wireframes?",
-        "McCulloch-Pitts 'Unit' Model of a Neuron?",
-        "Wie erstelle ich mit KI eine Mindmap?",
-        "In welchem Betriebssystem wird Python am besten genutzt?",
+        "What are PROs and CONs of XAI Methods?",
+        "Welche Grundkonzepte des Maschinellen Lernens werden in den KI-Campus-Kursen vermittelt?",
+        "Was ist der Unterschied zwischen überwachten, unüberwachten und bestärkenden Lernverfahren?",
+        "Welche Programmiersprachen werden im Bereich Data Science häufig eingesetzt?",
 
         # 2. TECHNISCHER SUPPORT (10)
-        "Ich erhalte die Fehlermeldung 'The Vimeo video could not be loaded'. Was soll ich bitte tun?",
+        "Ich erhalte die Fehlermeldung 'The Vimeo video could not be loaded'. Was soll ich tun?",
         "Wo finde ich den Prompt-Katalog?",
         "Wie kann ich mich registrieren?",
         "Kannst du auch Videos erstellen?",
-        "Auf dieser Seite fehlt das Video: https://moodle.ki-campus.org/mod/videotime/view.php?id=22070&forceview=1",
-        "Gibt es die Möglichkeit bei KI-Campus einen Lernpfad aus unterschiedlichen Formaten zusammenzustellen?",
-        "Wie lade ich ein Foto hier hoch?",
+        "Auf dieser Seite wird kein Video angezeigt: https://moodle.ki-campus.org/mod/videotime/view.php?id=22070&forceview=1. Woran kann das liegen?",
+        "Gibt es die Möglichkeit, bei KI-Campus einen Lernpfad aus unterschiedlichen Formaten zusammenzustellen?",
+        "Wie lade ich ein Foto hoch?",
         "Ich habe mein Passwort vergessen, aber es kommt keine Mail an. Woran kann das liegen?",
-        "Hat der KI-Campus derzeit Server-Probleme?",
-        "Ich kann 'Meine Kurse' nicht aufrufen. Ist die Seite down?",
+        "Wie informiert der KI-Campus Nutzer:innen über technische Störungen oder Wartungsarbeiten?",
+        "Ich kann 'Meine Kurse' nicht aufrufen. Ist die Plattform derzeit nicht erreichbar?",
 
-        # 3. KURSMODALITÄTEN (7)
+        # 3. KURSMODALITÄTEN (10)
         "Lernziel-Check war negativ. Habe ich noch 2 Versuche?",
         "Wann erhält man einen Leistungsnachweis?",
         "Kann ich nur die Quiz machen, um das Zertifikat zu erhalten?",
@@ -139,12 +138,23 @@ async def main():
         "Erscheint die Punktzahl auf dem Zertifikat?",
         "Reicht es, wenn ich nur alle Übungsaufgaben der Wochen beantworte?",
         "Was steht in der Teilnahmebestätigung und im Leistungsnachweis?",
+        "Für welche Kurse ist ein Micro-Degree erhältlich?",
+        "Are you accessible for free?",
+        "Wie viele Module umfasst der Kurs?",
 
-        # 4. ANFRAGEN ZUR CHATBOTFUNKTION (3)
-        "Ist das der Chatbot vom KI-Campus?",
-        "Womit kannst du mir helfen?",
+        # 4. ANFRAGEN ZUR CHATBOTFUNKTION (10)
         "Zu welchen Themen kann ich dir Fragen stellen?",
+        "Ich möchte selbst einen Chatbot erstellen. Kannst du mir dabei helfen?",
+        "What extra value do you bring for me as a student?",
+        "Do you have information only about AI topics?",
+        "Gibt es auf dieser Seite Quiz, um den Wissensstand zu testen? Wo genau finde ich diese?",
+        "Kannst du mir bei der Orientierung auf der Plattform helfen?",
+        "Wie gehst du vor, wenn du eine Frage nicht sicher beantworten kannst?",
+        "Can you explain how you use provided documents to answer questions?",
+        "Welche Einschränkungen hast du als Chatbot?",
+        "Willst du mir verraten, wie du als Chatbot konstruiert bist?"
     ]
+
     # --------------------------------------------------
 
     N_REPEATS = 5
@@ -157,24 +167,20 @@ async def main():
         print(f"\n============================\nQuestion: {q}")
         per_question_metric_sums = {m.name: 0.0 for m in metrics}
 
-        repeats = []
-
-        # --- Cached retrieval (retrieval runs ONCE only) ---
-        first_answer, contexts = get_answer_and_context(q)
+        contexts = get_context(q)
 
         print("\nRetrieved Contexts (first 2):")
         for c in list(contexts)[:2]:
             print("-", c[:250], "...")
 
-        # Now only regenerate the ANSWER in repeats
+        runs = []
+
         for run_idx in range(N_REPEATS):
             print(f"\n--- Run {run_idx + 1}/{N_REPEATS} ---")
 
-            # --- Regenerate answer (not cached) ---
-            answer, _ = _get_answer_and_context(q)
+            answer = generate_answer(q)
 
-            # Show answer before scoring
-            print("\nAnswer for this run:\n")
+            print("\nAnswer:\n")
             print(answer)
 
             sample = SingleTurnSample(
@@ -183,36 +189,36 @@ async def main():
                 retrieved_contexts=list(contexts),
             )
 
-            run_result = {
-                "run": run_idx + 1,
-                "answer": answer,
-                "contexts": list(contexts),
-                "metrics": {}
-            }
+            run_metrics = {}
 
             for m in metrics:
                 score = float(await m.single_turn_ascore(sample))
-                run_result["metrics"][m.name] = score
+                run_metrics[m.name] = score
                 per_question_metric_sums[m.name] += score
                 global_metric_sums[m.name] += score
                 print(f"  - {m.name}: {score:.3f}")
 
-            repeats.append(run_result)
+            runs.append({
+                "run": run_idx + 1,
+                "answer": answer,
+                "metrics": run_metrics
+            })
+
             global_metric_count += 1
 
-        per_question_avg = {
-            name: per_question_metric_sums[name] / N_REPEATS
-            for name in per_question_metric_sums
+        avg_metrics = {
+            k: v / N_REPEATS for k, v in per_question_metric_sums.items()
         }
 
         all_results.append({
             "question": q,
-            "runs": repeats,
-            "average_metrics": per_question_avg
+            "contexts": list(contexts),
+            "runs": runs,
+            "average_metrics": avg_metrics
         })
 
         print("\nAverage for question:")
-        for name, avg in per_question_avg.items():
+        for name, avg in avg_metrics.items():
             print(f"  - {name}: {avg:.3f}")
 
     global_avg = {
@@ -221,7 +227,7 @@ async def main():
     }
 
     print("\n============================")
-    print("GLOBAL AVERAGE METRICS (across all questions & repeats):")
+    print("GLOBAL AVERAGE METRICS:")
     for name, avg in global_avg.items():
         print(f"  - {name}: {avg:.3f}")
 
