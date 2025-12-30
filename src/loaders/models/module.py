@@ -76,6 +76,13 @@ class Module(BaseModel):
         # Name
         text_parts.append(f"Module Name: {self.name}")
         
+        # Intro
+        if self.intro:
+            from src.loaders.models.hp5activities import strip_html
+            intro_clean = strip_html(self.intro)
+            if intro_clean:
+                text_parts.append(f"\nBeschreibung: {intro_clean}")
+        
         # Text-Content
         if self.text is not None:
             text_parts.append(f"\nText: {self.text}")

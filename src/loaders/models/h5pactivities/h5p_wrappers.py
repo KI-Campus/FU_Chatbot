@@ -440,7 +440,8 @@ class CoursePresentation(H5PContainer):
     @classmethod
     def from_h5p_params(cls, library: str, params: dict) -> Optional['CoursePresentation']:
         """Extrahiert Slides und deren Elemente aus den H5P params."""
-        raw_slides = params.get("slides", [])
+        presentation = params.get("presentation", {})
+        raw_slides = presentation.get("slides", [])
         if not raw_slides:
             return None
 
