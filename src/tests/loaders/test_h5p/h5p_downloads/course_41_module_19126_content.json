@@ -1,0 +1,2002 @@
+{
+  "presentation": {
+    "slides": [
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 15.250544662309368,
+            "y": 23.669504855476156,
+            "width": 68.77810457516341,
+            "height": 68.8567413977488,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "4bb2ebdc-fd17-4e29-a8d4-597ce04b1de3",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "8b8453fd-b00b-4361-93b9-d0f854ffb4a9",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 52.287581699346404,
+            "y": 25.821278024155806,
+            "width": 45.1343137254902,
+            "height": 45.18723654227266,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "66bf9930-7c6e-4963-ac15-6d41f12c89a6",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "47221916-72b2-4fb1-aee2-d5919aa9993c",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 3.2679738562091503,
+            "y": 12.910639012077903,
+            "width": 47.930283224400874,
+            "height": 83.91915357850637,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p>Consider the shown MDP. The state space consists of all squares in a grid-world water park. There is a single waterslide that is composed of two ladder squares and two slide squares (marked with vertical bars and squiggly lines respectively). An agent in this water park can move from any square to any neighbouring square, unless the current square is a slide in which case it must move forward one square along the slide. The actions are denoted by arrows between squares on the map and all deterministically move the agent in the given direction. The agent cannot stand still: it must move on each time step.</p>\n\n<p>Rewards are also shown: the agent feels great pleasure as it slides down the water slide (+2), a certain amount of discomfort as it climbs the rungs of the ladder (-1), and receives rewards of 0 otherwise. The time horizon is infinite; this MDP goes on forever.</p>\n"
+              },
+              "subContentId": "6863fd5e-52e4-4542-8fee-a263bf93e5e8",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 23.669504855476156,
+            "width": 55.87875816993464,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "f034d0c9-5a02-4ac4-88f1-26fa527aa945",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "40f02dcc-112b-4b0c-82a1-b72ecd0c8276",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 59.99999867025804,
+            "y": 34.4283706988744,
+            "width": 40,
+            "height": 40,
+            "action": {
+              "library": "H5P.Blanks 1.14",
+              "params": {
+                "media": {
+                  "disableImageZooming": false
+                },
+                "text": "<p>How many (deterministic) policies \\(\\pi\\) are possible for this MDP?</p>\n",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 100
+                  }
+                ],
+                "showSolutions": "Show solution",
+                "tryAgain": "Retry",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "notFilledOut": "Please fill in all blanks to view solution",
+                "answerIsCorrect": "&#039;:ans&#039; is correct",
+                "answerIsWrong": "&#039;:ans&#039; is wrong",
+                "answeredCorrectly": "Answered correctly",
+                "answeredIncorrectly": "Answered incorrectly",
+                "solutionLabel": "Correct answer:",
+                "inputLabel": "Blank input @num of @total",
+                "inputHasTipLabel": "Tip available",
+                "tipLabel": "Tip",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": true,
+                  "autoCheck": false,
+                  "caseSensitive": true,
+                  "showSolutionsRequiresInput": true,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "acceptSpellingErrors": false
+                },
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+                "a11yCheckingModeHeader": "Checking mode",
+                "confirmCheck": {
+                  "header": "Finish ?",
+                  "body": "Are you sure you wish to finish ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Finish"
+                },
+                "confirmRetry": {
+                  "header": "Retry ?",
+                  "body": "Are you sure you wish to retry ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Confirm"
+                },
+                "questions": [
+                  "<p>*2048*</p>\n"
+                ]
+              },
+              "subContentId": "8902e538-76b3-41f6-a2bc-d02a5ea3d949",
+              "metadata": {
+                "contentType": "Fill in the Blanks",
+                "license": "U",
+                "title": "Policies",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 23.669504855476156,
+            "width": 55.87875816993464,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "8d205a8a-0327-4214-841d-10baf7bec5ad",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "8c9954f4-93e7-4fec-98ae-a28a0d594fa4",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 59.912854030501094,
+            "y": 25.821278024155806,
+            "width": 38.910675381263616,
+            "height": 51.64255604831161,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p>The waterslide MDP has 14 grid-states in total. In 3 out of the 14 states the agent has only one allowed action, so any policy has one fixed value for these states.</p>\n\n<p>In the other 11 states, the agent has two choices. Each possible combinations of actions over these 11 states is a valid policy. So we have 2 options for square A, times 2 for square B times 2 ... times 2 .... in total \\(2^{11}\\) possible policies.</p>\n"
+              },
+              "subContentId": "5ff454ea-6a66-42ab-b082-f5dd69849767",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 23.669504855476156,
+            "width": 55.87875816993464,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "fa3be995-a1dd-4481-bf38-6bcbab6108ab",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "af4907e6-d676-4ca4-b98c-6e64da25c9df",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 58.82352941176471,
+            "y": 23.669504855476156,
+            "width": 40,
+            "height": 60.24964872303021,
+            "action": {
+              "library": "H5P.Blanks 1.14",
+              "params": {
+                "media": {
+                  "disableImageZooming": false
+                },
+                "text": "<p>What is the optimal value of state A and E if the game ends in 1 step without discounting? So what is \\(V^{\\star}_1(A)\\) and \\(V^{\\star}_1(E)\\) with \\(\\gamma = 1\\)?</p>\n",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 100
+                  }
+                ],
+                "showSolutions": "Show solution",
+                "tryAgain": "Retry",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "notFilledOut": "Please fill in all blanks to view solution",
+                "answerIsCorrect": "&#039;:ans&#039; is correct",
+                "answerIsWrong": "&#039;:ans&#039; is wrong",
+                "answeredCorrectly": "Answered correctly",
+                "answeredIncorrectly": "Answered incorrectly",
+                "solutionLabel": "Correct answer:",
+                "inputLabel": "Blank input @num of @total",
+                "inputHasTipLabel": "Tip available",
+                "tipLabel": "Tip",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": true,
+                  "autoCheck": false,
+                  "caseSensitive": true,
+                  "showSolutionsRequiresInput": true,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "acceptSpellingErrors": false
+                },
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+                "a11yCheckingModeHeader": "Checking mode",
+                "confirmCheck": {
+                  "header": "Finish ?",
+                  "body": "Are you sure you wish to finish ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Finish"
+                },
+                "confirmRetry": {
+                  "header": "Retry ?",
+                  "body": "Are you sure you wish to retry ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Confirm"
+                },
+                "questions": [
+                  "<p>\\(V^{\\star}_1(A)\\) = *0*</p>\n\n<p>\\(V^{\\star}_1(E)\\) = *2*</p>\n"
+                ]
+              },
+              "subContentId": "4cb7e154-ccd3-4cfa-8d83-1936a47536d7",
+              "metadata": {
+                "contentType": "Fill in the Blanks",
+                "license": "U",
+                "title": "V1",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 4.3035463373593,
+            "width": 96.94989106753813,
+            "height": 83.91915357850637,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p>\\(V^*_1(s) = \\max_a \\sum_{s'} T(s, a, s') [R(s, a, s') + \\gamma V^*_0(s')]\\) The actions are deterministic, so we have for each action only one outcome and don't have to sum over the different transitions. \\(\\gamma=1\\) and \\(V^{\\star}_0 = 0\\) for all states (we don't have any timesteps left, so we cannot do anything, so we cannot get any future rewards).</p>\n\n<p>From A, we can choose to either go up or go right.<br>\n\\(V^*_1(A) = \\max_{up, right} ([R(A, up, B) + \\gamma V^*_0(B)], [R(A, right, N) + \\gamma V^*_0(N)]\\)<br>\n(\\(T(A, up, B) = T(A, right, N) = 1\\) all others are 0)<br>\nIf we go up, we receive a reward of 0. If we go right, we also receive a reward of 0.<br>\n\\(V^*_1(A) = \\max_{up, right} (0, 0) = 0\\)</p>\n\n<p id=\"yui_3_17_2_1_1724230901910_150\">From E, we can choose to either go left or go right.<br>\n\\(V^*_1(E) = \\max_{left, right} ([R(E, left, D) + \\gamma V^*_0(D)], [R(E, right, F) + \\gamma V^*_0(F)]\\)<br>\n(\\(T(E, left, D) = T(E, right, F) = 1\\) all others are 0)<br>\nIf we go left, we receive a reward of 0. If we go right, we receive a reward of 2.<br>\n\\(V^*_1(E) = \\max_{left, right} (0, 2) = 2\\)</p>\n"
+              },
+              "subContentId": "330bfe4e-af7d-452d-a280-33bf0c6cf997",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 67.53812636165577,
+            "y": 67.51898467544973,
+            "width": 32.44193899782135,
+            "height": 32.48101598121932,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              },
+              "subContentId": "961359fe-6f92-4c86-8569-6d9e61c25729"
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 23.669504855476156,
+            "width": 55.87875816993464,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "2710146c-3150-4859-b550-a644d2e4dfcb",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "662ab185-4b5b-4589-ae77-5e66f5e03e50",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 58.82352941176471,
+            "y": 25.821278024155806,
+            "width": 40,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Blanks 1.14",
+              "params": {
+                "media": {
+                  "disableImageZooming": false
+                },
+                "text": "<p>What is the optimal value of state A and E if the game ends in 3 steps without discounting? So what is \\(V^{\\star}_3(A)\\) and \\(V^{\\star}_3(E)\\) with \\(\\gamma = 1\\)?</p>\n",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 100
+                  }
+                ],
+                "showSolutions": "Show solution",
+                "tryAgain": "Retry",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "notFilledOut": "Please fill in all blanks to view solution",
+                "answerIsCorrect": "&#039;:ans&#039; is correct",
+                "answerIsWrong": "&#039;:ans&#039; is wrong",
+                "answeredCorrectly": "Answered correctly",
+                "answeredIncorrectly": "Answered incorrectly",
+                "solutionLabel": "Correct answer:",
+                "inputLabel": "Blank input @num of @total",
+                "inputHasTipLabel": "Tip available",
+                "tipLabel": "Tip",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": true,
+                  "autoCheck": false,
+                  "caseSensitive": true,
+                  "showSolutionsRequiresInput": true,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "acceptSpellingErrors": false
+                },
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+                "a11yCheckingModeHeader": "Checking mode",
+                "confirmCheck": {
+                  "header": "Finish ?",
+                  "body": "Are you sure you wish to finish ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Finish"
+                },
+                "confirmRetry": {
+                  "header": "Retry ?",
+                  "body": "Are you sure you wish to retry ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Confirm"
+                },
+                "questions": [
+                  "<p>\\(V^{\\star}_3(A)\\) = *0*</p>\n\n<p>\\(V^{\\star}_3(E)\\) = *4*</p>\n"
+                ]
+              },
+              "subContentId": "ee5f080b-5ac3-4913-b3d2-c35811f3e40d",
+              "metadata": {
+                "contentType": "Fill in the Blanks",
+                "license": "U",
+                "title": "V3 no discount",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 1.0893246187363834,
+            "y": 0,
+            "width": 98.03921568627452,
+            "height": 54.80932062065745,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p>Within three timesteps we cannot reach any rewards from A, so the value of A stays 0. From E, the best we can do is slide down the waterslide, which gives a reward of 2 from E to F and a reward of 2 from F to G. In the third time step, we cannot gain any rewards, so in total we have 4.</p>\n\n<p>More formally we could do that with 3 steps of value iteration. In step 0 we start with a value of 0 for all states. In step 1, we do what we did in the previous question: \\(V_1^*(s) = \\max_a (R(s,a,s') + V_0^*(s'))\\). The transition functions can be ignored as our actions are deterministic. In step 2 we do: \\(V_2^*(s) = \\max_a (R(s,a,s') + V_1^*(s'))\\). This is very similar to the step before, only we use here now \\(V_1^*(s')\\) and not \\(V_0^*(s')\\). Step 3 is again very similar: \\(V_3^*(s) = \\max_a (R(s,a,s') + V_2^*(s'))\\). We now only use \\(V_2^*(s')\\).</p>\n\n<p>The table below shows \\(R(s,a,s') + V_{step-1}^*(s')\\) and the maximum of both for different steps and states.</p>\n"
+              },
+              "subContentId": "187943ee-5580-4c2f-b982-56ebb3e40920",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 67.53812636165577,
+            "y": 67.51898467544973,
+            "width": 32.44193899782135,
+            "height": 32.48101598121932,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              },
+              "subContentId": "20adfe81-6d60-4cdc-aae0-c88d005a6ced"
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 1.0893246187363834,
+            "y": 56.76011817538242,
+            "width": 64.27015250544663,
+            "height": 43.178986643943944,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5b3b4e75f7.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 4921,
+                  "height": 1674
+                },
+                "alt": "Values for many states"
+              },
+              "subContentId": "dbd26b94-7857-4167-86ca-af915d856e73",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 23.669504855476156,
+            "width": 55.87875816993464,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "7ceabaa9-6a2e-49bc-924d-70ede8a428a7",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "485dbebd-bf0c-4e84-8fac-df18af60159f",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 58.82352941176471,
+            "y": 25.821278024155806,
+            "width": 40,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Blanks 1.14",
+              "params": {
+                "media": {
+                  "disableImageZooming": false
+                },
+                "text": "<p>What is the optimal value of state A and E if the game ends in 3 steps <strong>with</strong> discounting \\(\\gamma = 0.1\\)?</p>\n",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 100
+                  }
+                ],
+                "showSolutions": "Show solution",
+                "tryAgain": "Retry",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "notFilledOut": "Please fill in all blanks to view solution",
+                "answerIsCorrect": "&#039;:ans&#039; is correct",
+                "answerIsWrong": "&#039;:ans&#039; is wrong",
+                "answeredCorrectly": "Answered correctly",
+                "answeredIncorrectly": "Answered incorrectly",
+                "solutionLabel": "Correct answer:",
+                "inputLabel": "Blank input @num of @total",
+                "inputHasTipLabel": "Tip available",
+                "tipLabel": "Tip",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": true,
+                  "autoCheck": false,
+                  "caseSensitive": true,
+                  "showSolutionsRequiresInput": true,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "acceptSpellingErrors": false
+                },
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+                "a11yCheckingModeHeader": "Checking mode",
+                "confirmCheck": {
+                  "header": "Finish ?",
+                  "body": "Are you sure you wish to finish ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Finish"
+                },
+                "confirmRetry": {
+                  "header": "Retry ?",
+                  "body": "Are you sure you wish to retry ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Confirm"
+                },
+                "questions": [
+                  "<p>\\(V^{\\star}_3(A)\\) = *0*</p>\n\n<p>\\(V^{\\star}_3(E)\\) = *2.2*</p>\n"
+                ]
+              },
+              "subContentId": "8df71e4d-aa3b-4756-b683-4a94df2de1ae",
+              "metadata": {
+                "contentType": "Fill in the Blanks",
+                "license": "U",
+                "title": "V3 with discount",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 1.0893246187363834,
+            "y": 2.15177316867965,
+            "width": 98.03921568627452,
+            "height": 56.9610937893371,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p>As previously,&nbsp; we cannot reach any rewards from A within three timesteps, so the value of A stays 0. From E, the best we can do is slide down the waterslide, which gives a reward of 2 from E to F and a reward of 2 from F to G. In the third time step, we cannot gain any rewards. Now we need to take the discount into consideration:&nbsp; from E to F we get 2 (reward of the very next action, so no discount) but then from F to G we would get a reward from 2, but we need to discount it with a factor of 0.1. The 0 rewards from G to H we would need to discount with a factor of 0.01. So in total we have \\(2 + 0.1\\cdot2 + 0.01\\cdot0 = 2.2\\).</p>\n\n<p>We can solve this again formally with value iteration. The steps are the same as without discount, we only need to take the discount into account: \\(V_{k+1}^*(s) = \\max_a (R(s,a,s') +\\gamma V_{k}^*(s'))\\).</p>\n\n<p>The table below shows \\(R(s,a,s') + \\gamma V_{step-1}^*(s')\\) and the maximum of both for different steps and states.</p>\n"
+              },
+              "subContentId": "7998dc06-fd85-412f-9c9c-188fd306d66f",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 67.53812636165577,
+            "y": 67.51898467544973,
+            "width": 32.44193899782135,
+            "height": 32.48101598121932,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              },
+              "subContentId": "51df02c6-8e43-44f0-a833-7678ab5ebc24"
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 1.0893246187363834,
+            "y": 56.501905395140874,
+            "width": 66.44880174291939,
+            "height": 43.43354140979874,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5b80d54c5c.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 5059,
+                  "height": 1674
+                },
+                "alt": "Values for many states"
+              },
+              "subContentId": "fd04f413-60bf-40f2-b966-9f2e7ef7cc8c",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 1.0893246187363834,
+            "y": 2.15177316867965,
+            "width": 98.03921568627452,
+            "height": 52.657547451977806,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p>If you compare the solution tables for \\(V^*_3\\) with and without discount, you will only see a few changes. The most important change is that a few values are now 0, which were positive before. As we first have to climb the ladder, before we can slide down (except if we start in E or F), the negative rewards get discounted less than the positive rewards from sliding down the slide. For example consider starting in D:&nbsp; D to E gives a reward of -1, E to F a reward of 2 wich needs to be discounted by \\(\\gamma = 0.1\\), F to G gives again a reward of +2 but now discounted by \\(\\gamma^2=0.01\\) so in total \\(-1 + \\gamma 2 + \\gamma^2 2 = -0.78\\). This becomes even worse if we start in C: C-D gives -1, D-E gives -1, E-F gives 2 and F-G gives 2, however we multiply each reward by a factor of gamma more: \\(-1  + \\gamma( -1) + \\gamma^2 2 + \\gamma^3 2 = -1.078\\). If you start even earlier, these numbers will be multiplied by a few factors of \\(\\gamma\\), but will stay negative. So the better option is to not go to the slide, but run around where we get 0 rewards.</p>\n"
+              },
+              "subContentId": "d06105a9-575a-4ec2-b349-66430d33df93",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 67.53812636165577,
+            "y": 67.51898467544973,
+            "width": 32.44193899782135,
+            "height": 32.48101598121932,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              },
+              "subContentId": "20208c87-dac3-4516-b6d1-db566b7a2dca"
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 1.0893246187363834,
+            "y": 56.501905395140874,
+            "width": 66.44880174291939,
+            "height": 43.43354140979874,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5b80d54c5c.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 5059,
+                  "height": 1674
+                },
+                "alt": "Values for many states"
+              },
+              "subContentId": "1388083d-c7ac-44b4-9ca1-188c3e0d74dc",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 23.669504855476156,
+            "width": 55.87875816993464,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "8ac3b6bb-c48c-4b4d-8c89-a0a4fc14f94f",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "d27fac57-1601-41ea-ac22-e829b303c9f3",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 58.82352941176471,
+            "y": 12.910639012077903,
+            "width": 40,
+            "height": 81.76738040982671,
+            "action": {
+              "library": "H5P.Blanks 1.14",
+              "params": {
+                "media": {
+                  "disableImageZooming": false
+                },
+                "text": "<p>Let's jump ahead. What is the optimal value of state A and E if the game ends in 10 steps <strong>with</strong> and <strong>without</strong> discounting?</p>\n",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 100
+                  }
+                ],
+                "showSolutions": "Show solution",
+                "tryAgain": "Retry",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "notFilledOut": "Please fill in all blanks to view solution",
+                "answerIsCorrect": "&#039;:ans&#039; is correct",
+                "answerIsWrong": "&#039;:ans&#039; is wrong",
+                "answeredCorrectly": "Answered correctly",
+                "answeredIncorrectly": "Answered incorrectly",
+                "solutionLabel": "Correct answer:",
+                "inputLabel": "Blank input @num of @total",
+                "inputHasTipLabel": "Tip available",
+                "tipLabel": "Tip",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": true,
+                  "autoCheck": false,
+                  "caseSensitive": true,
+                  "showSolutionsRequiresInput": true,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "acceptSpellingErrors": false
+                },
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+                "a11yCheckingModeHeader": "Checking mode",
+                "confirmCheck": {
+                  "header": "Finish ?",
+                  "body": "Are you sure you wish to finish ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Finish"
+                },
+                "confirmRetry": {
+                  "header": "Retry ?",
+                  "body": "Are you sure you wish to retry ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Confirm"
+                },
+                "questions": [
+                  "<p>\\(\\gamma = 1\\):</p>\n\n<p>\\(V^{\\star}_{10}(A)\\) = *2*<br>\n\\(V^{\\star}_{10}(E)\\) = *4*</p>\n",
+                  "<p>\\(\\gamma = 0.1\\):</p>\n\n<p>\\(V^{\\star}_{10}(A)\\) = *0*<br>\n\\(V^{\\star}_{10}(E)\\) = *2.2*</p>\n"
+                ]
+              },
+              "subContentId": "426737e8-ba48-4e42-b2e7-e1aecad8bf8f",
+              "metadata": {
+                "contentType": "Fill in the Blanks",
+                "license": "U",
+                "title": "V10 with and without discount",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 1.0893246187363834,
+            "y": 2.15177316867965,
+            "width": 98.03921568627452,
+            "height": 52.657547451977806,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p>From A, we can now reach the waterslide. We get -1 from C to D and -1 from D to E for climbing up the ladder. Then we get +2 from E to F and +2 from F to G for sliding down. Afterwards, we can only receive 0 rewards, so we have in total 2. Without discount, we have in total 2. However with discount, sliding down the waterslide doesn't make up for climbing up the ladder (see before), so we settle for getting 0 rewards, so we have in total 0.</p>\n\n<p>For E, we will slide done the waterslide and gain rewards of +2 from E to F and +2 from F to G. Afterwards we have 8 steps left, but cannot reach any more rewards. So without discount we have 4 in total. With discount the reward we get from F to G is discounted by \\(\\gamma=0.1\\), so we have in total \\(2 +0.1\\cdot 2 = 2.2\\).</p>\n\n<p>We can do that again with value iteration. Look at the previous slides for an example. All you would need to to is fill the table with 7 further rows, but they work exactly the same as the rows of step 1 to 3.</p>\n"
+              },
+              "subContentId": "c0f5cb0d-1114-4cc0-a759-b3387e3a9f0b",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 52.287581699346404,
+            "y": 51.64255604831161,
+            "width": 45.51383442265796,
+            "height": 45.56745486117835,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              },
+              "subContentId": "c6cf3d10-3bc2-469e-b017-6c0e1e3a6f74"
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 23.669504855476156,
+            "width": 55.87875816993464,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "93f8c629-2014-45fb-90f5-fb0ed77a6a55",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "0a181094-009d-410a-b300-f770faa47501",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 58.82352941176471,
+            "y": 25.821278024155802,
+            "width": 40,
+            "height": 53.79432921699126,
+            "action": {
+              "library": "H5P.Blanks 1.14",
+              "params": {
+                "media": {
+                  "disableImageZooming": false
+                },
+                "text": "<p>Let's do a short detour and look at Q-Values. What are the following Q-Values? Assume that \\(\\gamma=1\\).</p>\n",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 100
+                  }
+                ],
+                "showSolutions": "Show solution",
+                "tryAgain": "Retry",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "notFilledOut": "Please fill in all blanks to view solution",
+                "answerIsCorrect": "&#039;:ans&#039; is correct",
+                "answerIsWrong": "&#039;:ans&#039; is wrong",
+                "answeredCorrectly": "Answered correctly",
+                "answeredIncorrectly": "Answered incorrectly",
+                "solutionLabel": "Correct answer:",
+                "inputLabel": "Blank input @num of @total",
+                "inputHasTipLabel": "Tip available",
+                "tipLabel": "Tip",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": true,
+                  "autoCheck": false,
+                  "caseSensitive": true,
+                  "showSolutionsRequiresInput": true,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "acceptSpellingErrors": false
+                },
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+                "a11yCheckingModeHeader": "Checking mode",
+                "confirmCheck": {
+                  "header": "Finish ?",
+                  "body": "Are you sure you wish to finish ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Finish"
+                },
+                "confirmRetry": {
+                  "header": "Retry ?",
+                  "body": "Are you sure you wish to retry ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Confirm"
+                },
+                "questions": [
+                  "<p>\\(Q^{\\star}_{1}(E, left)\\) = *0*<br>\n\\(Q^{\\star}_{10}(E, left)\\) = *3*</p>\n"
+                ]
+              },
+              "subContentId": "5152e03f-5123-41d9-a8c5-4f83bc20b9c0",
+              "metadata": {
+                "contentType": "Fill in the Blanks",
+                "license": "U",
+                "title": "Q-Values",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 1.0893246187363834,
+            "y": 2.15177316867965,
+            "width": 98.03921568627452,
+            "height": 86.07092674718602,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "\n<p id=\"yui_3_17_2_1_1724235602645_155\">For Q-Values the calculation is only slightly different to the calculation of V-values:</p>\n\n<p>\\(Q^*(s, a) = \\sum_{s'} T(s, a, s') [R(s, a, s') + \\gamma V^*(s')]\\) In this step we are bound to action a, but afterwards we act optimally.</p>\n\n<p>So for \\(Q_1^*(E, left)\\) we have to go left. That gives no reward and \\(V_0^*(D) = 0\\) (there are no more steps to go, so no rewards to get).</p>\n\n<p>For \\(Q_{10}^*(E, left)\\) we also have to go left. We land in D and have collected 0 rewards. Now we are free to choose. As we don't have a discount, the best option is to go back right, receive a reward of -1 and then slide down the water slide, collecting 2 times a reward of 2. Afterwards we can only receive 0 rewards within 6 time steps, so we get in total 3.</p>\n\n<p>We can also calculate this values with (Q-)Value iteration. Look into the solution tables given for the 3 steps. \\(V^*(s) = \\max_a Q^*(s, a)\\). The values labeled with up, down, right or left are the Q-Values for that state and the given action. To get the value we take the maximum of the Q-Values.</p>\n\n"
+              },
+              "subContentId": "12bfd23e-54fe-4f42-b138-cb403fd019a8",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 68.62745098039215,
+            "y": 70.78967923517374,
+            "width": 29.173965141612204,
+            "height": 29.2066627504395,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              },
+              "subContentId": "cf982050-7a51-42d4-ad28-0013e86fd799"
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 2.178649237472767,
+            "y": 23.669504855476156,
+            "width": 55.87875816993464,
+            "height": 55.94610238567091,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "subContentId": "651d3952-907c-495d-be25-46514a5feeaf",
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 4.357298474945534,
+            "y": 6.4553195060389505,
+            "width": 22.875816993464053,
+            "height": 8.6070926747186,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p><span style=\"font-size:1.125em;\"><span style=\"color:#3498db;\"><strong>Waterpark as MDP</strong></span></span></p>\n"
+              },
+              "subContentId": "14087908-b773-4139-9176-e8a4d5322133",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 58.82352941176471,
+            "y": 23.669504855476156,
+            "width": 40,
+            "height": 60.24964872303021,
+            "action": {
+              "library": "H5P.Blanks 1.14",
+              "params": {
+                "media": {
+                  "disableImageZooming": false
+                },
+                "text": "<p>Now assume the MDP never ends. What is the optimal value of state A and E <strong>with</strong> discounting?</p>\n",
+                "overallFeedback": [
+                  {
+                    "from": 0,
+                    "to": 100
+                  }
+                ],
+                "showSolutions": "Show solution",
+                "tryAgain": "Retry",
+                "checkAnswer": "Check",
+                "submitAnswer": "Submit",
+                "notFilledOut": "Please fill in all blanks to view solution",
+                "answerIsCorrect": "&#039;:ans&#039; is correct",
+                "answerIsWrong": "&#039;:ans&#039; is wrong",
+                "answeredCorrectly": "Answered correctly",
+                "answeredIncorrectly": "Answered incorrectly",
+                "solutionLabel": "Correct answer:",
+                "inputLabel": "Blank input @num of @total",
+                "inputHasTipLabel": "Tip available",
+                "tipLabel": "Tip",
+                "behaviour": {
+                  "enableRetry": true,
+                  "enableSolutionsButton": true,
+                  "enableCheckButton": true,
+                  "autoCheck": false,
+                  "caseSensitive": true,
+                  "showSolutionsRequiresInput": true,
+                  "separateLines": false,
+                  "confirmCheckDialog": false,
+                  "confirmRetryDialog": false,
+                  "acceptSpellingErrors": false
+                },
+                "scoreBarLabel": "You got :num out of :total points",
+                "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+                "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+                "a11yRetry": "Retry the task. Reset all responses and start the task over again.",
+                "a11yCheckingModeHeader": "Checking mode",
+                "confirmCheck": {
+                  "header": "Finish ?",
+                  "body": "Are you sure you wish to finish ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Finish"
+                },
+                "confirmRetry": {
+                  "header": "Retry ?",
+                  "body": "Are you sure you wish to retry ?",
+                  "cancelLabel": "Cancel",
+                  "confirmLabel": "Confirm"
+                },
+                "questions": [
+                  "<p>\\(\\gamma = 0.1\\):</p>\n\n<p>\\(V^{\\star}(A)\\) = *0*<br>\n\\(V^{\\star}(E)\\) = *2.2*</p>\n"
+                ]
+              },
+              "subContentId": "022bf167-11e9-4421-8267-16ef9f09e787",
+              "metadata": {
+                "contentType": "Fill in the Blanks",
+                "license": "U",
+                "title": "Values in infinite MDP",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      },
+      {
+        "slideBackgroundSelector": {},
+        "elements": [
+          {
+            "x": 1.0893246187363834,
+            "y": 2.15177316867965,
+            "width": 98.03921568627452,
+            "height": 50.50577428329815,
+            "action": {
+              "library": "H5P.AdvancedText 1.1",
+              "params": {
+                "text": "<p>We follow here the same argumentation as for 10 steps. If we climb up the ladder and slide down the waterslide, the discount makes the negative rewards count more than the positives, so in total we would get negative rewards from that.</p>\n\n<p>So for starting in A, it is better to wander around and not receive any rewards, than head for the waterslide. From E, we can slide down the waterslide, as we don't have to climb the ladder. For that we get rewards of 2 + 0.1*2 = 2.2. But we will not go for the slide again as we are now in a similar position as we were for A. So from now on, we only collect rewards of 0.</p>\n\n<p>This would look very different if we didn't have a discount. Then we could go for the waterslide again and again, collecting positive rewards. So for both A and B \\(V^*\\) would be infinity.</p>\n"
+              },
+              "subContentId": "6c26d432-432b-4908-9763-b96a24198529",
+              "metadata": {
+                "contentType": "Text",
+                "license": "U",
+                "title": "Unbenannter Text",
+                "defaultLanguage": "en"
+              }
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          },
+          {
+            "x": 51.19825708061002,
+            "y": 53.36397458325533,
+            "width": 46.603159041394335,
+            "height": 46.657543148431465,
+            "action": {
+              "library": "H5P.Image 1.1",
+              "params": {
+                "decorative": false,
+                "contentName": "Image",
+                "expandImage": "Expand Image",
+                "minimizeImage": "Minimize Image",
+                "file": {
+                  "path": "images/file-66c5a98625ee8.png",
+                  "mime": "image/png",
+                  "copyright": {
+                    "license": "U"
+                  },
+                  "width": 2482,
+                  "height": 1258
+                },
+                "alt": "Waterpark with squares A to N go one way round. From C to D and D to E there&#039;s a reward of -1 for climbing up stairs. From E to F and F to G there is a reward of 2 for sliding down. You can move in two directions from each square except E-&gt;F, F-&gt;G, G-&gt;H."
+              },
+              "metadata": {
+                "contentType": "Image",
+                "license": "U",
+                "title": "Unbenannter Image",
+                "defaultLanguage": "en"
+              },
+              "subContentId": "8e5a127f-3230-4f58-bd8d-d8d389811f4f"
+            },
+            "alwaysDisplayComments": false,
+            "backgroundOpacity": 0,
+            "displayAsButton": false,
+            "buttonSize": "big",
+            "goToSlideType": "specified",
+            "invisible": false,
+            "solution": ""
+          }
+        ]
+      }
+    ],
+    "keywordListEnabled": true,
+    "globalBackgroundSelector": {},
+    "keywordListAlwaysShow": false,
+    "keywordListAutoHide": false,
+    "keywordListOpacity": 90
+  },
+  "override": {
+    "activeSurface": false,
+    "hideSummarySlide": false,
+    "summarySlideSolutionButton": true,
+    "summarySlideRetryButton": true,
+    "enablePrintButton": false,
+    "social": {
+      "showFacebookShare": false,
+      "facebookShare": {
+        "url": "@currentpageurl",
+        "quote": "Ich habe @score von @maxScore Punkten bei der Aufgabe @currentpageurl erreicht."
+      },
+      "showTwitterShare": false,
+      "twitterShare": {
+        "statement": "Ich habe @score von @maxScore Punkten bei der Aufgabe @currentpageurl erreicht.",
+        "url": "@currentpageurl",
+        "hashtags": "h5p, Kurs"
+      },
+      "showGoogleShare": false,
+      "googleShareUrl": "@currentpageurl"
+    }
+  },
+  "l10n": {
+    "slide": "Slide",
+    "score": "Score",
+    "yourScore": "Your Score",
+    "maxScore": "Max Score",
+    "total": "Total",
+    "totalScore": "Total Score",
+    "showSolutions": "Show solutions",
+    "retry": "Retry",
+    "exportAnswers": "Export text",
+    "hideKeywords": "Hide sidebar navigation menu",
+    "showKeywords": "Show sidebar navigation menu",
+    "fullscreen": "Fullscreen",
+    "exitFullscreen": "Exit fullscreen",
+    "prevSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "currentSlide": "Current slide",
+    "lastSlide": "Last slide",
+    "solutionModeTitle": "Exit solution mode",
+    "solutionModeText": "Solution Mode",
+    "summaryMultipleTaskText": "Multiple tasks",
+    "scoreMessage": "You achieved:",
+    "shareFacebook": "Share on Facebook",
+    "shareTwitter": "Share on Twitter",
+    "shareGoogle": "Share on Google+",
+    "summary": "Summary",
+    "solutionsButtonTitle": "Show comments",
+    "printTitle": "Print",
+    "printIngress": "How would you like to print this presentation?",
+    "printAllSlides": "Print all slides",
+    "printCurrentSlide": "Print current slide",
+    "noTitle": "No title",
+    "accessibilitySlideNavigationExplanation": "Use left and right arrow to change slide in that direction whenever canvas is selected.",
+    "accessibilityCanvasLabel": "Presentation canvas. Use left and right arrow to move between slides.",
+    "accessibilityProgressBarLabel": "Choose slide to display",
+    "containsNotCompleted": "@slideName contains not completed interaction",
+    "containsCompleted": "@slideName contains completed interaction",
+    "slideCount": "Slide @index of @total",
+    "containsOnlyCorrect": "@slideName only has correct answers",
+    "containsIncorrectAnswers": "@slideName has incorrect answers",
+    "shareResult": "Share Result",
+    "accessibilityTotalScore": "You got @score of @maxScore points in total",
+    "accessibilityEnteredFullscreen": "Entered fullscreen",
+    "accessibilityExitedFullscreen": "Exited fullscreen",
+    "confirmDialogHeader": "Submit your answers",
+    "confirmDialogText": "This will submit your results, do you want to continue?",
+    "confirmDialogConfirmText": "Submit and see results",
+    "slideshowNavigationLabel": "Slideshow navigation"
+  }
+}

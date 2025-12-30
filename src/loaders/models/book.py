@@ -68,7 +68,7 @@ class BookChapter(BaseModel):
                     parts.append(f"\nDatei: {attachment.filename}")
                     parts.append(attachment.extracted_text)
         
-        return "\n\n".join(parts)
+        return "\n".join(parts)
 
 
 class Book(BaseModel):

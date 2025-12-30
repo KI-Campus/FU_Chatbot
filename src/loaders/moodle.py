@@ -5,7 +5,6 @@ import tempfile
 import unicodedata
 import zipfile
 from pathlib import Path
-from urllib.parse import urlparse, parse_qs, unquote
 
 from bs4 import BeautifulSoup, ParserRejectedMarkup
 from llama_index.core import Document
@@ -25,7 +24,7 @@ from src.loaders.models.folder import Folder
 from src.loaders.models.glossary import Glossary, GlossaryEntry
 from src.loaders.models.hp5activities import H5PActivities
 from src.loaders.models.module import ModuleTypes
-from src.loaders.models.h5pactivities.h5p_base import get_handler_for_library
+from src.loaders.models.h5pactivities.h5p_base import get_handler_for_library, initialize_registry
 from src.loaders.models.moodlecourse import MoodleCourse
 from src.loaders.models.resource import Resource
 from src.loaders.models.url import UrlModule
@@ -219,109 +218,16 @@ class Moodle:
                     else:
                         texttrack = None
                     module.transcripts.append(texttrack)
-            
-            # Extract embedded H5P content from iframes
-            h5p_err = self._extract_embedded_h5p(soup, module)
-            if h5p_err and not err_message:
-                err_message = h5p_err
-                
         return err_message if err_message is not None else None
-    
-    def _extract_embedded_h5p(self, soup: BeautifulSoup, module) -> str | None:
-        """
-        Extract H5P content embedded in iframes within a page.
-        
-        H5P content can be embedded in Moodle pages via iframes with class 'h5p-iframe'.
-        The iframe src contains a URL parameter pointing to the H5P file.
-        
-        Args:
-            soup: BeautifulSoup parsed HTML content
-            module: Module object to populate with extracted H5P content
-            
-        Returns:
-            Optional[str]: Error message or None on success
-        """
-        h5p_iframes = soup.find_all("iframe", class_="h5p-iframe")
-        
-        if not h5p_iframes:
-            return None
-        
-        self.logger.info(f"Found {len(h5p_iframes)} embedded H5P iframe(s) in module {module.id}")
-        err_message = None
-        
-        for idx, iframe in enumerate(h5p_iframes):
-            src = iframe.get("src")
-            if not src:
-                continue
-                
-            parsed = urlparse(src)
-            params = parse_qs(parsed.query)
-            
-            if "url" not in params:
-                self.logger.warning(f"No URL parameter in H5P iframe src for module {module.id}")
-                continue
-            
-            h5p_url = unquote(params["url"][0])
-            self.logger.info(f"Processing embedded H5P from: {h5p_url}")
-            
-            try:
-                # Download and extract H5P file
-                h5p_caller = APICaller(url=h5p_url, params=self.download_params)
-                
-                with tempfile.TemporaryDirectory() as tmp_dir:
-                    filename = h5p_url.split("/")[-1]
-                    local_file = h5p_caller.getFile(filename, tmp_dir)
-                    
-                    # Extract h5p.json and content.json
-                    with zipfile.ZipFile(local_file, "r") as zip_ref:
-                        zip_ref.extract("h5p.json", tmp_dir)
-                        zip_ref.extract("content/content.json", tmp_dir)
-                    
-                    with open(f"{tmp_dir}/h5p.json", "r", encoding="utf-8") as f:
-                        h5p_meta = json.load(f)
-                    
-                    with open(f"{tmp_dir}/content/content.json", "r", encoding="utf-8") as f:
-                        content_data = json.load(f)
-                    
-                    library = h5p_meta.get("mainLibrary", "")
-                    self.logger.info(f"Embedded H5P content type: {library}")
-                    
-                    # Find handler for this H5P type
-                    handler_class = get_handler_for_library(library)
-                    
-                    if not handler_class:
-                        self.logger.warning(f"No handler available for embedded H5P type: {library}")
-                        continue
-                    
-                    # Extract content using from_h5p_params
-                    extracted = handler_class.from_h5p_params(library, content_data)
-                    
-                    if not extracted:
-                        self.logger.warning(f"Failed to extract embedded H5P content for module {module.id}")
-                        continue
-                    
-                    # Add extracted text to module
-                    extracted_text = extracted.to_text()
-                    self.logger.info(f"Extracted {len(extracted_text)} characters from embedded H5P")
-                    
-                    # Store H5P content type and content in module
-                    if not module.h5p_content_type:
-                        module.h5p_content_type = library
-                    
-                    # Add to interactive_video dict (used for H5P content display)
-                    if not module.interactive_video:
-                        module.interactive_video = {"interactions": []}
-                    module.interactive_video["interactions"].append(extracted_text)
-                    
-            except Exception as e:
-                self.logger.error(f"Error extracting embedded H5P for module {module.id}: {str(e)}")
-                if not err_message:
-                    err_message = f"Error extracting embedded H5P: {str(e)}"
-        
-        return err_message
 
     def extract_videotime(self, module):  # TODO: rename method
-        videotime = Video(**self.get_videotime_content(module.id))
+        videotime_data = self.get_videotime_content(module.id)
+        
+        # Übertrage intro, falls vorhanden und nicht leer
+        if videotime_data.get('intro') and videotime_data['intro'].strip():
+            module.intro = videotime_data['intro']
+        
+        videotime = Video(**videotime_data)
 
         err_message = None
 
@@ -350,6 +256,8 @@ class Moodle:
     # module.transcripts list.
     def extract_h5p(self, module, activity):
         """Extrahiert H5P-Inhalte und routet zu entsprechender Klasse."""
+        if activity.intro:
+            module.intro = activity.intro
         h5pfile_call = APICaller(url=activity.fileurl, params=self.download_params)
         
         with tempfile.TemporaryDirectory() as tmp_dir:
@@ -379,7 +287,10 @@ class Moodle:
             
             module.h5p_content_type = library
             self.logger.info(f"Verarbeite H5P-Typ: {library} für Modul {module.id}")
-                        
+            
+            # Initialisiere Registry beim ersten Aufruf
+            initialize_registry()
+            
             # Finde passenden Handler via Registry
             handler_class = get_handler_for_library(library)
             
@@ -528,6 +439,7 @@ class Moodle:
                     self.logger.info(
                         f"Datei {resource.filename} hat nicht-unterstützten Dateityp: {resource.mimetype}"
                     )
+                    all_extracted_texts.append(f"Datei {resource.filename} nicht unterstützt und daher nicht verarbeitet.")
                     continue
                 
                 # Download Datei

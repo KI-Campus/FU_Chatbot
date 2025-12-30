@@ -1,0 +1,842 @@
+{
+  "introPage": {
+    "showIntroPage": true,
+    "startButtonText": "Start Quiz",
+    "introduction": "<p>You will be shown a couple of videos and you must decide which search algorithm was used. You will be shown a water maze. Shallow water, which is cheaper to traverse is shown in light blue, deeper water is shown in dark blue. Expanded states are marked with a white dot. The found path is highlighted in green.</p>\n",
+    "title": "Guess the algorithm"
+  },
+  "progressType": "textual",
+  "passPercentage": 0,
+  "questions": [
+    {
+      "params": {
+        "media": {
+          "type": {
+            "params": {
+              "visuals": {
+                "fit": true,
+                "controls": true
+              },
+              "playback": {
+                "autoplay": false,
+                "loop": false
+              },
+              "l10n": {
+                "name": "Video",
+                "loading": "Video player loading...",
+                "noPlayers": "Found no video players that supports the given video format.",
+                "noSources": "Video is missing sources.",
+                "aborted": "Media playback has been aborted.",
+                "networkFailure": "Network failure.",
+                "cannotDecode": "Unable to decode media.",
+                "formatNotSupported": "Video format not supported.",
+                "mediaEncrypted": "Media encrypted.",
+                "unknownError": "Unknown error.",
+                "invalidYtId": "Invalid YouTube ID.",
+                "unknownYtId": "Unable to find video with the given YouTube ID.",
+                "restrictedYt": "The owner of this video does not allow it to be embedded."
+              },
+              "sources": [
+                {
+                  "path": "videos/sources-6635222922daa.mp4",
+                  "mime": "video/mp4",
+                  "copyright": {
+                    "license": "U"
+                  }
+                }
+              ]
+            },
+            "library": "H5P.Video 1.6",
+            "metadata": {
+              "contentType": "Video",
+              "license": "U",
+              "title": "Video 1",
+              "defaultLanguage": "en"
+            },
+            "subContentId": "b7c2ff81-47de-49b6-ba31-86dd1d2800de"
+          },
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>BFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>UCS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>A*</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Greedy</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>DFS</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Check",
+          "submitAnswerButton": "Submit",
+          "showSolutionButton": "Show solution",
+          "tryAgainButton": "Retry",
+          "tipsLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "tipAvailable": "Tip available",
+          "feedbackAvailable": "Feedback available",
+          "readFeedback": "Read feedback",
+          "wrongAnswer": "Wrong answer",
+          "correctAnswer": "Correct answer",
+          "shouldCheck": "Should have been checked",
+          "shouldNotCheck": "Should not have been checked",
+          "noInput": "Please answer before viewing the solution",
+          "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+          "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+          "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+        },
+        "confirmCheck": {
+          "header": "Finish ?",
+          "body": "Are you sure you wish to finish ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Finish"
+        },
+        "confirmRetry": {
+          "header": "Retry ?",
+          "body": "Are you sure you wish to retry ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Confirm"
+        },
+        "question": "<p>Which algorithm was used?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Question 1",
+        "defaultLanguage": "en"
+      },
+      "subContentId": "f381f04b-f7c0-4476-a1f2-d4f93ac2717f"
+    },
+    {
+      "params": {
+        "media": {
+          "type": {
+            "params": {
+              "visuals": {
+                "fit": true,
+                "controls": true
+              },
+              "playback": {
+                "autoplay": false,
+                "loop": false
+              },
+              "l10n": {
+                "name": "Video",
+                "loading": "Video player loading...",
+                "noPlayers": "Found no video players that supports the given video format.",
+                "noSources": "Video is missing sources.",
+                "aborted": "Media playback has been aborted.",
+                "networkFailure": "Network failure.",
+                "cannotDecode": "Unable to decode media.",
+                "formatNotSupported": "Video format not supported.",
+                "mediaEncrypted": "Media encrypted.",
+                "unknownError": "Unknown error.",
+                "invalidYtId": "Invalid YouTube ID.",
+                "unknownYtId": "Unable to find video with the given YouTube ID.",
+                "restrictedYt": "The owner of this video does not allow it to be embedded."
+              },
+              "sources": [
+                {
+                  "path": "videos/sources-66352361059e1.mp4",
+                  "mime": "video/mp4",
+                  "copyright": {
+                    "license": "U"
+                  }
+                }
+              ]
+            },
+            "library": "H5P.Video 1.6",
+            "metadata": {
+              "contentType": "Video",
+              "license": "U",
+              "title": "Video 2",
+              "defaultLanguage": "en"
+            },
+            "subContentId": "9f5ccc63-538a-470c-b2ec-cb863e7eca78"
+          },
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>A*</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>DFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>BFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Greedy</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>UCS</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Check",
+          "submitAnswerButton": "Submit",
+          "showSolutionButton": "Show solution",
+          "tryAgainButton": "Retry",
+          "tipsLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "tipAvailable": "Tip available",
+          "feedbackAvailable": "Feedback available",
+          "readFeedback": "Read feedback",
+          "wrongAnswer": "Wrong answer",
+          "correctAnswer": "Correct answer",
+          "shouldCheck": "Should have been checked",
+          "shouldNotCheck": "Should not have been checked",
+          "noInput": "Please answer before viewing the solution",
+          "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+          "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+          "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+        },
+        "confirmCheck": {
+          "header": "Finish ?",
+          "body": "Are you sure you wish to finish ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Finish"
+        },
+        "confirmRetry": {
+          "header": "Retry ?",
+          "body": "Are you sure you wish to retry ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Confirm"
+        },
+        "question": "<p>Which algorithm is used?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Question 2",
+        "defaultLanguage": "en"
+      },
+      "subContentId": "7e78566a-0a99-43e4-85ba-b29d18964381"
+    },
+    {
+      "params": {
+        "media": {
+          "type": {
+            "params": {
+              "visuals": {
+                "fit": true,
+                "controls": true
+              },
+              "playback": {
+                "autoplay": false,
+                "loop": false
+              },
+              "l10n": {
+                "name": "Video",
+                "loading": "Video player loading...",
+                "noPlayers": "Found no video players that supports the given video format.",
+                "noSources": "Video is missing sources.",
+                "aborted": "Media playback has been aborted.",
+                "networkFailure": "Network failure.",
+                "cannotDecode": "Unable to decode media.",
+                "formatNotSupported": "Video format not supported.",
+                "mediaEncrypted": "Media encrypted.",
+                "unknownError": "Unknown error.",
+                "invalidYtId": "Invalid YouTube ID.",
+                "unknownYtId": "Unable to find video with the given YouTube ID.",
+                "restrictedYt": "The owner of this video does not allow it to be embedded."
+              },
+              "sources": [
+                {
+                  "path": "videos/sources-663523abe6ee9.mp4",
+                  "mime": "video/mp4",
+                  "copyright": {
+                    "license": "U"
+                  }
+                }
+              ]
+            },
+            "library": "H5P.Video 1.6",
+            "metadata": {
+              "contentType": "Video",
+              "license": "U",
+              "title": "Video 3",
+              "defaultLanguage": "en"
+            },
+            "subContentId": "d4f9b6f3-f032-4055-866e-275a30030d19"
+          },
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>UCS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>DFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>BFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>A*</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Greedy</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Check",
+          "submitAnswerButton": "Submit",
+          "showSolutionButton": "Show solution",
+          "tryAgainButton": "Retry",
+          "tipsLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "tipAvailable": "Tip available",
+          "feedbackAvailable": "Feedback available",
+          "readFeedback": "Read feedback",
+          "wrongAnswer": "Wrong answer",
+          "correctAnswer": "Correct answer",
+          "shouldCheck": "Should have been checked",
+          "shouldNotCheck": "Should not have been checked",
+          "noInput": "Please answer before viewing the solution",
+          "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+          "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+          "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+        },
+        "confirmCheck": {
+          "header": "Finish ?",
+          "body": "Are you sure you wish to finish ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Finish"
+        },
+        "confirmRetry": {
+          "header": "Retry ?",
+          "body": "Are you sure you wish to retry ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Confirm"
+        },
+        "question": "<p>Which algorithm is used?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Question 3",
+        "defaultLanguage": "en"
+      },
+      "subContentId": "1c0926e7-3060-4b38-9419-ad00cf5e867e"
+    },
+    {
+      "params": {
+        "media": {
+          "type": {
+            "params": {
+              "visuals": {
+                "fit": true,
+                "controls": true
+              },
+              "playback": {
+                "autoplay": false,
+                "loop": false
+              },
+              "l10n": {
+                "name": "Video",
+                "loading": "Video player loading...",
+                "noPlayers": "Found no video players that supports the given video format.",
+                "noSources": "Video is missing sources.",
+                "aborted": "Media playback has been aborted.",
+                "networkFailure": "Network failure.",
+                "cannotDecode": "Unable to decode media.",
+                "formatNotSupported": "Video format not supported.",
+                "mediaEncrypted": "Media encrypted.",
+                "unknownError": "Unknown error.",
+                "invalidYtId": "Invalid YouTube ID.",
+                "unknownYtId": "Unable to find video with the given YouTube ID.",
+                "restrictedYt": "The owner of this video does not allow it to be embedded."
+              },
+              "sources": [
+                {
+                  "path": "videos/sources-663523f0068d8.mp4",
+                  "mime": "video/mp4",
+                  "copyright": {
+                    "license": "U"
+                  }
+                }
+              ]
+            },
+            "library": "H5P.Video 1.6",
+            "metadata": {
+              "contentType": "Video",
+              "license": "U",
+              "title": "Video 4",
+              "defaultLanguage": "en"
+            },
+            "subContentId": "9cf5bc69-4ccd-40ee-acf4-5c8409c2240b"
+          },
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>DFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>BFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>A*</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Greedy</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>UCS</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Check",
+          "submitAnswerButton": "Submit",
+          "showSolutionButton": "Show solution",
+          "tryAgainButton": "Retry",
+          "tipsLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "tipAvailable": "Tip available",
+          "feedbackAvailable": "Feedback available",
+          "readFeedback": "Read feedback",
+          "wrongAnswer": "Wrong answer",
+          "correctAnswer": "Correct answer",
+          "shouldCheck": "Should have been checked",
+          "shouldNotCheck": "Should not have been checked",
+          "noInput": "Please answer before viewing the solution",
+          "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+          "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+          "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+        },
+        "confirmCheck": {
+          "header": "Finish ?",
+          "body": "Are you sure you wish to finish ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Finish"
+        },
+        "confirmRetry": {
+          "header": "Retry ?",
+          "body": "Are you sure you wish to retry ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Confirm"
+        },
+        "question": "<p>Which algorithm was used?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Question 4",
+        "defaultLanguage": "en"
+      },
+      "subContentId": "fae23de6-2aa6-4684-8638-2e2ea7b1d694"
+    },
+    {
+      "params": {
+        "media": {
+          "type": {
+            "params": {
+              "visuals": {
+                "fit": true,
+                "controls": true
+              },
+              "playback": {
+                "autoplay": false,
+                "loop": false
+              },
+              "l10n": {
+                "name": "Video",
+                "loading": "Video player loading...",
+                "noPlayers": "Found no video players that supports the given video format.",
+                "noSources": "Video is missing sources.",
+                "aborted": "Media playback has been aborted.",
+                "networkFailure": "Network failure.",
+                "cannotDecode": "Unable to decode media.",
+                "formatNotSupported": "Video format not supported.",
+                "mediaEncrypted": "Media encrypted.",
+                "unknownError": "Unknown error.",
+                "invalidYtId": "Invalid YouTube ID.",
+                "unknownYtId": "Unable to find video with the given YouTube ID.",
+                "restrictedYt": "The owner of this video does not allow it to be embedded."
+              },
+              "sources": [
+                {
+                  "path": "videos/sources-6635243919773.mp4",
+                  "mime": "video/mp4",
+                  "copyright": {
+                    "license": "U"
+                  }
+                }
+              ]
+            },
+            "library": "H5P.Video 1.6",
+            "metadata": {
+              "contentType": "Video",
+              "license": "U",
+              "title": "Video 5",
+              "defaultLanguage": "en"
+            },
+            "subContentId": "96306d14-a5ca-4809-b54b-d30b6088c49e"
+          },
+          "disableImageZooming": false
+        },
+        "answers": [
+          {
+            "correct": true,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>Greedy</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>UCS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>DFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>BFS</div>\n"
+          },
+          {
+            "correct": false,
+            "tipsAndFeedback": {
+              "tip": "",
+              "chosenFeedback": "",
+              "notChosenFeedback": ""
+            },
+            "text": "<div>A*</div>\n"
+          }
+        ],
+        "overallFeedback": [
+          {
+            "from": 0,
+            "to": 100
+          }
+        ],
+        "behaviour": {
+          "enableRetry": true,
+          "enableSolutionsButton": true,
+          "enableCheckButton": true,
+          "type": "auto",
+          "singlePoint": false,
+          "randomAnswers": true,
+          "showSolutionsRequiresInput": true,
+          "confirmCheckDialog": false,
+          "confirmRetryDialog": false,
+          "autoCheck": false,
+          "passPercentage": 100,
+          "showScorePoints": true
+        },
+        "UI": {
+          "checkAnswerButton": "Check",
+          "submitAnswerButton": "Submit",
+          "showSolutionButton": "Show solution",
+          "tryAgainButton": "Retry",
+          "tipsLabel": "Show tip",
+          "scoreBarLabel": "You got :num out of :total points",
+          "tipAvailable": "Tip available",
+          "feedbackAvailable": "Feedback available",
+          "readFeedback": "Read feedback",
+          "wrongAnswer": "Wrong answer",
+          "correctAnswer": "Correct answer",
+          "shouldCheck": "Should have been checked",
+          "shouldNotCheck": "Should not have been checked",
+          "noInput": "Please answer before viewing the solution",
+          "a11yCheck": "Check the answers. The responses will be marked as correct, incorrect, or unanswered.",
+          "a11yShowSolution": "Show the solution. The task will be marked with its correct solution.",
+          "a11yRetry": "Retry the task. Reset all responses and start the task over again."
+        },
+        "confirmCheck": {
+          "header": "Finish ?",
+          "body": "Are you sure you wish to finish ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Finish"
+        },
+        "confirmRetry": {
+          "header": "Retry ?",
+          "body": "Are you sure you wish to retry ?",
+          "cancelLabel": "Cancel",
+          "confirmLabel": "Confirm"
+        },
+        "question": "<p>Which algorithm was used?</p>\n"
+      },
+      "library": "H5P.MultiChoice 1.16",
+      "metadata": {
+        "contentType": "Multiple Choice",
+        "license": "U",
+        "title": "Question 5",
+        "defaultLanguage": "en"
+      },
+      "subContentId": "22af56ef-f060-4e88-b194-3c1d670941c8"
+    }
+  ],
+  "disableBackwardsNavigation": false,
+  "randomQuestions": true,
+  "endGame": {
+    "showResultPage": true,
+    "showSolutionButton": true,
+    "showRetryButton": true,
+    "noResultMessage": "Quiz beendet",
+    "message": "Dein Ergebnis:",
+    "scoreBarLabel": "Du hast @score von @total Punkten erreicht.",
+    "overallFeedback": [
+      {
+        "from": 0,
+        "to": 100
+      }
+    ],
+    "solutionButtonText": "Lösung anzeigen",
+    "retryButtonText": "Wiederholen",
+    "finishButtonText": "Beenden",
+    "submitButtonText": "Absenden",
+    "showAnimations": false,
+    "skippable": false,
+    "skipButtonText": "Video überspringen"
+  },
+  "override": {
+    "checkButton": true
+  },
+  "texts": {
+    "prevButton": "Previous question",
+    "nextButton": "Next question",
+    "finishButton": "Finish",
+    "submitButton": "Submit",
+    "textualProgress": "Question: @current of @total questions",
+    "jumpToQuestion": "Question %d of %total",
+    "questionLabel": "Question",
+    "readSpeakerProgress": "Question @current of @total",
+    "unansweredText": "Unanswered",
+    "answeredText": "Answered",
+    "currentQuestionText": "Current question",
+    "navigationLabel": "Questions"
+  }
+}

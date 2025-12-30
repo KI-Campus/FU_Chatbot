@@ -272,6 +272,10 @@ class Resource(BaseModel):
                                     zip_texts.append(f"\n--- TXT: {relative_path} ---\n{text}")
                             except Exception as e:
                                 logger.warning(f"TXT-Fehler in ZIP {relative_path}: {e}")
+                        
+                        # Nicht-unterstützte Dateitypen
+                        else:
+                            zip_texts.append(f"\nDatei {relative_path} nicht unterstützt und daher nicht verarbeitet.")
             
             result = '\n'.join(zip_texts)
             logger.info(f"ZIP {self.filename}: {len(zip_texts)-1} Dateien extrahiert")
