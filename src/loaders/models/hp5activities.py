@@ -47,6 +47,7 @@ class H5PActivities(BaseModel):
     coursemodule: int
     fileurl: HttpUrl
     filename: Path
+    intro: str = ""
 
     @root_validator(pre=True)
     def validate_fileurl(cls, values):
