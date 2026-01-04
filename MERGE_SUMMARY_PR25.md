@@ -3,6 +3,12 @@
 ## Übersicht
 Pull Request #25 wurde am 04.01.2026 gemergt und adressiert Issue #6 "Anpassen der System- und Questionprompts". Diese Änderungen stellen einen fundamentalen Refactoring der System-Prompts dar, mit dem Ziel, einen einheitlichen, kompetenzorientierten Ansatz für den KI-Campus Chatbot zu etablieren.
 
+**Merge-Details:**
+- **PR-Nummer:** #25
+- **Merge-Datum:** 04. Januar 2026, 11:59:50 UTC
+- **Merged by:** veitvw
+- **Branch:** fix/issue6-system-prompt → main
+
 ## Hauptänderungen
 
 ### 1. Vereinheitlichung der System-Prompts
@@ -93,7 +99,7 @@ else:
     formatted_sources = format_sources(sources, max_length=sys.maxsize)
 ```
 
-**Vorteil:** Einheitlicher Prompt für alle Modelle, nur die Quellenlänge variiert.
+**Vorteil:** Einheitlicher Prompt für alle Modelle, nur die Formatierung der Quellenlänge variiert je nach Modell.
 
 ## Detaillierte Verbesserungen
 
