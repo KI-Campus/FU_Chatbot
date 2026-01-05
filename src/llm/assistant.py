@@ -7,16 +7,18 @@ from src.llm.retriever import KiCampusRetriever
 from src.llm.tools.contextualizer import Contextualizer
 from src.llm.tools.language_detector import LanguageDetector
 from src.llm.tools.question_answerer import QuestionAnswerer
+from src.llm.tools.reranker import Reranker
 
 
 class KICampusAssistant:
-    def __init__(self):
+    def __init__(self, rerank_top_n: int = 5):
         self.retriever = KiCampusRetriever()
 
         self.contextualizer = Contextualizer()
         self.question_answerer = QuestionAnswerer()
         self.output_formatter = CitationParser()
         self.language_detector = LanguageDetector()
+        self.reranker = Reranker(top_n=rerank_top_n)
 
     @observe()
     def limit_chat_history(self, chat_history: list[ChatMessage], limit: int) -> list[ChatMessage]:
@@ -25,8 +27,11 @@ class KICampusAssistant:
         return chat_history
 
     @observe()
-    def chat(self, query: str, model: Models, chat_history: list[ChatMessage] = []) -> ChatMessage:
+    def chat(self, query: str, model: Models, chat_history: list[ChatMessage] | None = None) -> ChatMessage:
         """Chat with general bot about drupal and functions of ki-campus. For frontend integrated drupal."""
+
+        if chat_history is None:
+            chat_history = []
 
         # Limiting context window to save resources
         limited_chat_history = self.limit_chat_history(chat_history, 10)
@@ -34,8 +39,11 @@ class KICampusAssistant:
         rag_query = self.contextualizer.contextualize(query=query, chat_history=limited_chat_history, model=model)
 
         retrieved_chunks = self.retriever.retrieve(rag_query)
+        
+        # Rerank retrieved chunks for improved precision
+        retrieved_chunks = self.reranker.rerank(query=rag_query, nodes=retrieved_chunks, model=model)
 
-        user_language = self.language_detector.detect(query)
+        user_language = self.language_detector.detect(query, chat_history=limited_chat_history)
 
         response = self.question_answerer.answer_question(
             query=query,
@@ -56,18 +64,24 @@ class KICampusAssistant:
         query: str,
         model: Models,
         course_id: int | None = None,
-        chat_history: list[ChatMessage] = [],
+        chat_history: list[ChatMessage] | None = None,
         module_id: int | None = None,
     ) -> ChatMessage:
         """Chat with the contents of a specific course and optionally submodule. For frontend hosted on moodle."""
+
+        if chat_history is None:
+            chat_history = []
 
         limited_chat_history = self.limit_chat_history(chat_history, 10)
 
         rag_query = self.contextualizer.contextualize(query=query, chat_history=limited_chat_history, model=model)
 
         retrieved_chunks = self.retriever.retrieve(rag_query, course_id=course_id, module_id=module_id)
+        
+        # Rerank retrieved chunks for improved precision
+        retrieved_chunks = self.reranker.rerank(query=rag_query, nodes=retrieved_chunks, model=model)
 
-        user_language = self.language_detector.detect(query)
+        user_language = self.language_detector.detect(query, chat_history=limited_chat_history)
 
         # TODO course name and module name are unused. Save this metadata in the vectorDB
         response = self.question_answerer.answer_question(
