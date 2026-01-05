@@ -5,7 +5,7 @@ from typing import List
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient, models
 from qdrant_client.http.exceptions import ResponseHandlingException, UnexpectedResponse
-from qdrant_client.http.models import Distance, PointStruct, VectorParams
+from qdrant_client.http.models import Distance, PointStruct, VectorParams, SparseVectorParams
 
 from src.env import env
 
@@ -46,25 +46,73 @@ class VectorDBQdrant:
     def as_llama_vector_store(self, collection_name) -> QdrantVectorStore:
         return QdrantVectorStore(client=self.client, collection_name=collection_name, max_retries=10)
 
-    def create_collection(self, collection_name, vector_size) -> None:
+    def create_collection(self, collection_name, vector_size, enable_sparse: bool = False) -> None:
+        """Create a Qdrant collection with optional sparse vector support.
+        
+        Args:
+            collection_name: Name of the collection
+            vector_size: Size of dense vectors
+            enable_sparse: If True, enables sparse vectors for hybrid search
+        """
         try:
             _ = self.client.get_collection(collection_name=collection_name)
+            print(f"Collection '{collection_name}' already exists.")
         except UnexpectedResponse as e:
-            _ = self.client.create_collection(
-                collection_name=collection_name,
-                vectors_config=VectorParams(size=vector_size, distance=Distance.DOT),
-            )
+            if enable_sparse:
+                # Create collection with both dense and sparse vectors for hybrid retrieval
+                _ = self.client.create_collection(
+                    collection_name=collection_name,
+                    vectors_config={
+                        "dense": VectorParams(size=vector_size, distance=Distance.COSINE),
+                    },
+                    sparse_vectors_config={
+                        "sparse": SparseVectorParams(),
+                    },
+                )
+                print(f"Created hybrid collection '{collection_name}' with dense (size={vector_size}) and sparse vectors.")
+            else:
+                # Legacy: Dense-only collection
+                _ = self.client.create_collection(
+                    collection_name=collection_name,
+                    vectors_config=VectorParams(size=vector_size, distance=Distance.DOT),
+                )
+                print(f"Created dense-only collection '{collection_name}' with size={vector_size}.")
 
     def upsert(self, collection_name, points: list[dict]) -> None:
+        """Upsert points into Qdrant collection.
+        
+        Supports both dense-only and hybrid (dense + sparse) vectors.
+        
+        Args:
+            collection_name: Target collection name
+            points: List of point dicts with 'id', 'vector', and 'payload'
+                   'vector' can be:
+                   - list[float] for dense-only collections
+                   - dict with 'dense' and 'sparse' keys for hybrid collections
+        """
         qdrant_points = [PointStruct(**point) for point in points]
         operation_info = self.client.upsert(
             collection_name=collection_name,
             wait=True,
             points=qdrant_points,
         )
-        print(operation_info)
+        print(f"Upserted {len(points)} points into '{collection_name}': {operation_info}")
 
     def search(self, collection_name, query_vector, query_filter=None, with_payload=True, limit=10) -> list[dict]:
+        """Search in Qdrant collection.
+        
+        Supports both dense-only and hybrid (dense + sparse) search.
+        
+        Args:
+            collection_name: Collection to search in
+            query_vector: Query vector (list[float] for dense-only, dict for hybrid)
+            query_filter: Optional Qdrant filter
+            with_payload: Include payload in results
+            limit: Maximum number of results
+            
+        Returns:
+            List of search results
+        """
         search_result = self.client.search(
             collection_name=collection_name,
             query_vector=query_vector,
