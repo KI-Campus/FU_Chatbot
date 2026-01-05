@@ -2,7 +2,7 @@ import json
 import sys
 
 from langfuse.decorators import observe
-from llama_index.core.llms import ChatMessage
+from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.schema import TextNode
 
 from src.llm.LLMs import LLM, Models
@@ -103,7 +103,7 @@ correct them politely, before being trapped and misled by their assumptions. \
 Write in an informative and instructional style, resembling a friendly tutor. \
 If you are replying in german use the informal you called duzen. Never siezen the student. \
 When you talk about yourself, always speak in the first-person form. \
-Keep the answers clear, concise and avoide unnecessary information. Your response is shown in a small chat window, \
+Keep the answers clear, concise and avoid unnecessary information. Your response is shown in a small chat window, \
 so keep it short and to the point.
 
 <TONE>
@@ -200,18 +200,33 @@ class QuestionAnswerer:
             response_json = json.loads(response.content)
             response.content = response_json["answer"]
 
-        except json.JSONDecodeError as e:
-            # LLM forgets to respond with JSON, responds with pure str, take the response as is
+        except (json.JSONDecodeError, KeyError) as e:
+            # LLM forgets to respond with JSON or missing "answer" key - use response as-is
+            # Log the issue for monitoring
+            print(f"Warning: Failed to parse JSON response: {e}. Using raw response.")
             pass
 
-        has_history = len(chat_history) > 1
+        # Check if this is the second "NO ANSWER FOUND" in a row
+        # Look for ASSISTANT messages (bot responses) in history to check if we already said we can't help
+        previous_bot_response_was_no_answer = False
+        if chat_history:
+            # Find the last assistant message in the history
+            for msg in reversed(chat_history):
+                if msg.role == MessageRole.ASSISTANT:
+                    previous_bot_response_was_no_answer = (msg.content == ANSWER_NOT_FOUND_FIRST_TIME)
+                    break
 
         if response.content == "NO ANSWER FOUND":
-            if not (has_history and chat_history[-1].content == ANSWER_NOT_FOUND_FIRST_TIME):
+            if not previous_bot_response_was_no_answer:
+                # First time we can't answer - ask for clarification
                 response.content = ANSWER_NOT_FOUND_FIRST_TIME
             else:
-                if is_moodle:
+                # Second time in a row - provide support contact
+                if is_moodle and course_id is not None:
                     response.content = ANSWER_NOT_FOUND_SECOND_TIME_MOODLE.format(course_id=course_id)
+                elif is_moodle:
+                    # Fallback if course_id is None
+                    response.content = ANSWER_NOT_FOUND_SECOND_TIME_MOODLE.format(course_id="UNKNOWN")
                 else:
                     response.content = ANSWER_NOT_FOUND_SECOND_TIME_DRUPAL
 

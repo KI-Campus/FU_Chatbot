@@ -21,7 +21,8 @@ Maintain a positive and motivational tone throughout, fostering a sense of empow
 It should feel like a friendly guide offering valuable insights.
 
 # AUDIENCE #
-The documents that are in the knowledge base contain lectures and study materials for advanced students, studying property law.
+The documents that are in the knowledge base contain lectures and study materials for students 
+interested in AI, data science, and related topics on the KI-Campus learning platform.
 To find the most relevant documents, style, tone and formality should be similar to the documents in the knowledge base.
 
 # RESPONSE #
@@ -30,7 +31,7 @@ Query that can be used to retrieve documents from a knowledge base.
 REMEMBER: Be precise and concise. Avoid unnecessary detail or unrelated additions. Do NOT add new sub-questions.
 Ensure the question is understandable and retrieval-ready.
 """
-# studying property law?
+
 
 class Contextualizer:
     """Contextualizes a message based on the chat history, so that it can effectively used as input for RAG retrieval."""

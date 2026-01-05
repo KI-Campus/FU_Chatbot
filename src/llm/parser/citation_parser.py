@@ -19,8 +19,9 @@ class CitationParser:
         answer = answer.replace("  ", " ")
         # Anything where N is a float
         answer = re.sub(r"\[doc\d+(?:\.\d+)+\]", "", answer)
-        # Anything where N is not a digit
-        answer = re.sub(r"\[doc\D\]", "", answer)
+        # Anything where N is not purely digits (e.g., [docabc], [doc1a2])
+        answer = re.sub(r"\[doc\D+\]", "", answer)
+        answer = re.sub(r"\[doc\d+\D+.*?\]", "", answer)
         return answer
 
     def _get_source_docs_from_answer(self, answer: str) -> list[int]:
@@ -30,19 +31,6 @@ class CitationParser:
         # remove duplicates while preserving order
         doc_ids = list(dict.fromkeys(doc_ids))
         return doc_ids
-
-    def _make_doc_references_sequential(self, answer: str, doc_ids: list[int]) -> str:
-        """Make references consecutive, e.g. for two references [doc1][doc3] -> [doc1][doc2] or a single ref [doc4] -> [doc1]"""
-        sorted_doc_ids = sorted(doc_ids)
-        target_doc_ids = [i for i in range(1, len(doc_ids) + 1)]
-
-        if sorted_doc_ids == target_doc_ids:
-            return answer
-
-        for current, target in zip(doc_ids, target_doc_ids):
-            answer = answer.replace(f"<sup>[{current}]</sup>", f"<sup>[{target}]</sup>")
-
-        return answer
 
     def _remove_doc_ids_from_answer(self, answer: str, doc_ids: list[int]) -> str:
         """Remove all [docN] from answer where N is in doc_ids list. Used for hallucinated references."""
@@ -59,27 +47,42 @@ class CitationParser:
         answer = self._clean_up_answer(answer)
         doc_ids = self._get_source_docs_from_answer(answer)
 
-        # we track doc ids which exist in case of hallucination
+        # Validate which doc IDs exist and remove hallucinated ones
         real_doc_ids: list[int] = []
         fake_doc_ids: list[int] = []
-        seen_urls = set()
-
+        
         for i in doc_ids:
             idx = i - 1
             try:
                 doc = source_documents[idx]
-                if doc.metadata.get("url") not in seen_urls:
-                    replacement_text = CITATION_TEXT.format(url=doc.metadata.get("url"), index=i)
-                    seen_urls.add(doc.metadata.get("url"))
-                    answer = re.sub(rf"[, ]*\[doc{i}\]", rf"{replacement_text}", answer)
-                    real_doc_ids.append(i)
-                else:
-                    answer = re.sub(rf"[, ]*\[doc{i}\]", "", answer)
+                real_doc_ids.append(i)
             except IndexError:
                 print(f"Could not find doc{i} in source documents")
                 fake_doc_ids.append(i)
-
+        
+        # Remove hallucinated references
         answer = self._remove_doc_ids_from_answer(answer, fake_doc_ids)
-        answer = self._make_doc_references_sequential(answer, real_doc_ids)
+        
+        # Make references sequential (e.g., [doc3][doc7] -> [doc1][doc2])
+        # This must happen BEFORE converting to HTML
+        sorted_real_ids = sorted(real_doc_ids)
+        for current, target in zip(sorted_real_ids, range(1, len(real_doc_ids) + 1)):
+            if current != target:
+                answer = answer.replace(f"[doc{current}]", f"[doc{target}]")
+        
+        # Now convert to HTML links, tracking seen URLs to avoid duplicates
+        seen_urls = set()
+        for i in range(1, len(real_doc_ids) + 1):
+            # Map back to original document
+            original_idx = sorted_real_ids[i - 1] - 1
+            doc = source_documents[original_idx]
+            
+            if doc.metadata.get("url") not in seen_urls:
+                replacement_text = CITATION_TEXT.format(url=doc.metadata.get("url"), index=i)
+                seen_urls.add(doc.metadata.get("url"))
+                answer = re.sub(rf"[, ]*\[doc{i}\]", rf"{replacement_text}", answer)
+            else:
+                # Remove duplicate URL references
+                answer = re.sub(rf"[, ]*\[doc{i}\]", "", answer)
 
         return answer
