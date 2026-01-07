@@ -3,9 +3,6 @@ import unicodedata
 from datetime import datetime
 from enum import Enum
 from typing import List
-
-
-from importlib_metadata import metadata
 import requests
 from bs4 import BeautifulSoup
 from llama_index.core import Document
