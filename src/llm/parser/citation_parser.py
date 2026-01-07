@@ -1,9 +1,32 @@
 import re
+from urllib.parse import urlparse
 
 from langfuse.decorators import observe
 from llama_index.core.schema import TextNode
 
-CITATION_TEXT = '<a href="{url}"><sup>[{index}]</sup></a>'
+CITATION_TEXT = '[<a href="{url}">{title}</a>]'
+
+
+def _get_display_title(doc: TextNode) -> str:
+    """Get display title from document metadata, with fallback to shortened URL."""
+    title = doc.metadata.get("title")
+    if title:
+        # Kürze sehr lange Titel
+        if len(title) > 50:
+            return title[:47] + "..."
+        return title
+    
+    # Fallback: URL kürzen
+    url = doc.metadata.get("url", "")
+    if url:
+        parsed = urlparse(url)
+        # Zeige Host + gekürzte Pfad
+        path = parsed.path
+        if len(path) > 30:
+            path = path[:27] + "..."
+        return f"{parsed.netloc}{path}"
+    
+    return "Quelle"
 
 
 class CitationParser:
@@ -31,19 +54,6 @@ class CitationParser:
         doc_ids = list(dict.fromkeys(doc_ids))
         return doc_ids
 
-    def _make_doc_references_sequential(self, answer: str, doc_ids: list[int]) -> str:
-        """Make references consecutive, e.g. for two references [doc1][doc3] -> [doc1][doc2] or a single ref [doc4] -> [doc1]"""
-        sorted_doc_ids = sorted(doc_ids)
-        target_doc_ids = [i for i in range(1, len(doc_ids) + 1)]
-
-        if sorted_doc_ids == target_doc_ids:
-            return answer
-
-        for current, target in zip(doc_ids, target_doc_ids):
-            answer = answer.replace(f"<sup>[{current}]</sup>", f"<sup>[{target}]</sup>")
-
-        return answer
-
     def _remove_doc_ids_from_answer(self, answer: str, doc_ids: list[int]) -> str:
         """Remove all [docN] from answer where N is in doc_ids list. Used for hallucinated references."""
         for idx in doc_ids:
@@ -60,7 +70,6 @@ class CitationParser:
         doc_ids = self._get_source_docs_from_answer(answer)
 
         # we track doc ids which exist in case of hallucination
-        real_doc_ids: list[int] = []
         fake_doc_ids: list[int] = []
         seen_urls = set()
 
@@ -69,10 +78,10 @@ class CitationParser:
             try:
                 doc = source_documents[idx]
                 if doc.metadata.get("url") not in seen_urls:
-                    replacement_text = CITATION_TEXT.format(url=doc.metadata.get("url"), index=i)
+                    title = _get_display_title(doc)
+                    replacement_text = CITATION_TEXT.format(url=doc.metadata.get("url"), title=title)
                     seen_urls.add(doc.metadata.get("url"))
                     answer = re.sub(rf"[, ]*\[doc{i}\]", rf"{replacement_text}", answer)
-                    real_doc_ids.append(i)
                 else:
                     answer = re.sub(rf"[, ]*\[doc{i}\]", "", answer)
             except IndexError:
@@ -80,6 +89,5 @@ class CitationParser:
                 fake_doc_ids.append(i)
 
         answer = self._remove_doc_ids_from_answer(answer, fake_doc_ids)
-        answer = self._make_doc_references_sequential(answer, real_doc_ids)
 
         return answer
