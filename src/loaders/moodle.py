@@ -80,8 +80,13 @@ class Moodle:
             params={**self.function_params, "courseids[0]": course_id},
             wsfunction="mod_h5pactivity_get_h5pactivities_by_courses",
         )
-        ids_json = h5p_module_ids_caller.getJSON()
-        h5p_activities = [H5PActivities(**activity) for activity in ids_json["h5pactivities"]]
+        try:
+            ids_json = h5p_module_ids_caller.getJSON()
+            h5p_activities = [H5PActivities(**activity) for activity in ids_json["h5pactivities"]]
+        except Exception as e:
+            self.logger.warning(
+                f"Failed to retrieve H5P activities for course {course_id} from {self.api_endpoint}: {e}"
+            )
         return h5p_activities
 
     def get_videotime_content(self, cmid: int):
