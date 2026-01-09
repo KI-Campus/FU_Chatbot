@@ -98,10 +98,16 @@ class Fetch_Data:
         self.logger.debug("Deleting old collection from Qdrant...")
         self.dev_vector_store.client.delete_collection(collection_name=DEFAULT_COLLECTION)
         
+        # Detect embedding dimension dynamically
+        sample_embedding = self.embedder.get_text_embedding("test")
+        embedding_dim = len(sample_embedding)
+        self.logger.info(f"Detected embedding dimension: {embedding_dim}")
+        
         # Create new collection with hybrid vector support
         self.logger.info(f"Creating hybrid collection '{DEFAULT_COLLECTION}' with dense + sparse vectors...")
         self.dev_vector_store.create_collection(
             collection_name=DEFAULT_COLLECTION,
+            vector_size=embedding_dim,
             enable_sparse=True
         )
 
