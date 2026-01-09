@@ -9,7 +9,7 @@ from streamlit_feedback import streamlit_feedback
 
 from src.api.rest import app
 from src.env import env
-from src.llm.LLMs import Models
+from llm.objects.LLMs import Models
 from vectordb.qdrant import VectorDBQdrant
 
 

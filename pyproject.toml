@@ -22,6 +22,9 @@ llama-index-llms-azure-inference = "0.1.1"
 llama-index-callbacks-langfuse = "0.1.6"
 llama-index-vector-stores-qdrant = "0.2.14"
 llamaapi = "~0.1.36"
+langgraph = "^0.2.0"
+langgraph-checkpoint = "^1.0.0"
+langgraph-cli = {extras = ["inmem"], version = "^0.1.0"}
 openai = "~1.16.2"
 python-dotenv = "~1.0.1"
 # Self hosting llms
