@@ -31,9 +31,15 @@ class VectorDBQdrant:
                 raise e
         # Longer timeout for dev, because container app is scaled down to 0 instances
         elif version == "dev_remote":
-            self.client = QdrantClient(
-                url=env.DEV_QDRANT_URL, port=443, https=True, timeout=120, api_key=env.DEV_QDRANT_API_KEY
-            )
+            # Prefer dedicated DEV_QDRANT_* settings; fall back to generic QDRANT_*
+            try:
+                url = env.DEV_QDRANT_URL
+                api_key = env.DEV_QDRANT_API_KEY
+            except AttributeError:
+                url = env.QDRANT_URL
+                api_key = env.QDRANT_API_KEY
+
+            self.client = QdrantClient(url=url, port=443, https=True, timeout=120, api_key=api_key)
             _ = self.client.get_collections()
         elif version == "prod_remote":
             self.client = QdrantClient(
@@ -91,11 +97,20 @@ class VectorDBQdrant:
                    - dict with 'dense' and 'sparse' keys for hybrid collections
         """
         qdrant_points = [PointStruct(**point) for point in points]
-        operation_info = self.client.upsert(
-            collection_name=collection_name,
-            wait=True,
-            points=qdrant_points,
-        )
+        try:
+            operation_info = self.client.upsert(
+                collection_name=collection_name,
+                wait=True,
+                points=qdrant_points,
+            )
+        except ResponseHandlingException as e:
+            # Z.B. httpx.RemoteProtocolError: "Server disconnected without sending a response".
+            # Nur diesen Batch überspringen und weitermachen, statt den gesamten Lauf abzubrechen.
+            print(
+                f"Qdrant upsert failed for batch of {len(points)} points into '{collection_name}': {e}"
+            )
+            return
+
         print(f"Upserted {len(points)} points into '{collection_name}': {operation_info}")
 
     def search(self, collection_name, query_vector, query_filter=None, with_payload=True, limit=10) -> list[dict]:

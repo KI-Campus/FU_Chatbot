@@ -58,6 +58,12 @@ class Vimeo:
         except requests.exceptions.HTTPError as err:
             if err.response.status_code == 404:
                 return None, "Transcript konnte nicht abgerufen werden"
+        except requests.exceptions.RequestException as err:
+            # Netzwerk-/Verbindungsfehler bei Vimeo-Metadaten: nur dieses Video auslassen.
+            self.logger.warning(
+                "Failed to retrieve Vimeo texttrack metadata for video %s: %s", video_id, err
+            )
+            return None, "Transcript konnte nicht abgerufen werden"
         return (response_json[result_index], None) if result_index is not None else (None, err_message)
 
     def get_transcript(self, video_id: str, fallback_transcript: str | None = None) -> Optional[TextTrack]:
@@ -76,6 +82,16 @@ class Vimeo:
                         transcript_text = self.get_transcript_from_file(fallback_transcript)
                     else:
                         return None, "Transcript liegt nicht (in Deutsch oder Englisch) vor"
+            except requests.exceptions.RequestException as err:
+                # Andere Netzwerk-/Verbindungsfehler beim Abrufen des Transkripts.
+                self.logger.warning(
+                    "Failed to retrieve Vimeo transcript for video %s: %s", video_id, err
+                )
+                if fallback_transcript is not None:
+                    self.logger.warn("Falling back to reading file from H5P-Package")
+                    transcript_text = self.get_transcript_from_file(fallback_transcript)
+                else:
+                    return None, "Transcript liegt nicht (in Deutsch oder Englisch) vor"
             try:
                 texttrack.transcript = convert_vtt_to_text(StringIO(transcript_text))
                 return texttrack, None
