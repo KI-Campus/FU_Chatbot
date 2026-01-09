@@ -368,11 +368,13 @@ def results():
                 : window.location.origin.replace(/\/$/, ''));
         let all = [];
         let filtered = [];
+        let currentSubset = 'all';
 
         async function load() {
             const container = document.getElementById('status');
             const subsetSel = document.getElementById('subset');
             const subset = subsetSel ? subsetSel.value : 'all';
+            currentSubset = subset;
             const url = subset === 'all' ? `${API}/arena/comparisons` : `${API}/arena/comparisons?subset=${subset}`;
             container.textContent = 'Lade von ' + url;
             try {
@@ -435,7 +437,7 @@ def results():
                     <td class="ans">${truncate(c.answer_b, 160)}</td>
                     <td>${pill(c.vote)}</td>
                     <td class="nowrap muted">${c.vote_timestamp ? c.vote_timestamp.replace('T',' ') : ''}</td>
-                    <td class="nowrap muted">${c.subset_id || '-'}</td>
+                    <td class="nowrap muted">${c.subset_id || (currentSubset !== 'all' ? currentSubset : '-')}</td>
                 </tr>
             `).join('');
             const status = document.getElementById('status');
@@ -446,12 +448,17 @@ def results():
         function exportCSV() {
             const header = ['id','timestamp','question','model_a','answer_a','model_b','answer_b','vote','vote_timestamp','subset_id'];
             const rows = filtered.map(c => header.map(h => {
-                let val = (c[h] || '').toString();
-                val = val.split('\\n').join(' ');
+                let val;
+                if (h === 'subset_id') {
+                    val = c.subset_id || (currentSubset !== 'all' ? currentSubset : '');
+                } else {
+                    val = (c[h] || '').toString();
+                }
+                val = val.split('\n').join(' ');
                 val = val.split('"').join('""');
                 return val;
             }));
-            const csv = [header.join(','), ...rows.map(r => '"' + r.join('","') + '"')].join('\\n');
+            const csv = [header.join(','), ...rows.map(r => '"' + r.join('","') + '"')].join('\n');
             const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
