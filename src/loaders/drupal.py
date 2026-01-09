@@ -38,6 +38,10 @@ class Drupal:
         requests.packages.urllib3.util.connection.HAS_IPV6 = False
 
         self.oauth_token = self.get_oauth_token("https://ki-campus.org")
+        if not self.oauth_token:
+            # Ohne gültiges Token werden spätere Drupal-Requests vermutlich 401 liefern,
+            # aber die Ingestion soll nicht komplett abbrechen.
+            self.logger.warning("No Drupal OAuth token retrieved; Drupal content may not be fully loaded.")
         self.header = {
             "Authorization": f"Bearer {self.oauth_token}",
             "Accept": "application/vnd.api+json",
@@ -45,21 +49,34 @@ class Drupal:
         }
 
     def get_oauth_token(self, base_url: str):
-        response = requests.post(
-            f"{base_url}/oauth2/token",
-            data={
-                "client_id": env.DRUPAL_CLIENT_ID,
-                "client_secret": env.DRUPAL_CLIENT_SECRET,
-                "username": env.DRUPAL_USERNAME,
-                "password": env.DRUPAL_PASSWORD,
-                "grant_type": env.DRUPAL_GRANT_TYPE,
-            },
-        )
+        try:
+            response = requests.post(
+                f"{base_url}/oauth2/token",
+                data={
+                    "client_id": env.DRUPAL_CLIENT_ID,
+                    "client_secret": env.DRUPAL_CLIENT_SECRET,
+                    "username": env.DRUPAL_USERNAME,
+                    "password": env.DRUPAL_PASSWORD,
+                    "grant_type": env.DRUPAL_GRANT_TYPE,
+                },
+            )
+            response.raise_for_status()
+        except requests.exceptions.RequestException as err:
+            # Netzwerk-/Auth-Problem beim Abrufen des OAuth-Tokens – nur loggen,
+            # damit die restliche Ingestion weiterlaufen kann.
+            self.logger.warning(
+                f"Failed to retrieve Drupal OAuth token from {base_url}: {err}"
+            )
+            return None
 
-        if response.status_code != 200:
-            return
-
-        return response.json()["access_token"]
+        try:
+            token_json = response.json()
+            return token_json.get("access_token")
+        except ValueError as err:
+            self.logger.warning(
+                f"Failed to parse Drupal OAuth token response from {base_url} as JSON: {err}"
+            )
+            return None
 
     def extract(self):
         all_docs = []
@@ -99,25 +116,48 @@ class Drupal:
         data = []
 
         while url:
-            response = requests.get(url, headers=self.header)
-            result = response.json()
-            data.extend(result["data"])
-            next_link = result["links"].get("next")
+            try:
+                response = requests.get(url, headers=self.header)
+                # harte Fehler (z.B. 5xx) hier abfangen, aber nicht gesamte Ingestion abbrechen
+                response.raise_for_status()
+                result = response.json()
+            except requests.exceptions.RequestException as err:
+                self.logger.warning(f"Failed to retrieve Drupal data from {url}: {err}")
+                break
+            except ValueError as err:
+                # JSON-Parsing fehlgeschlagen (z.B. HTML-Fehlerseite statt JSON)
+                self.logger.warning(f"Failed to parse Drupal response from {url} as JSON: {err}")
+                break
+
+            data.extend(result.get("data", []))
+            next_link = result.get("links", {}).get("next")
             url = next_link["href"] if next_link else None
         return data
 
     def get_page_paragraphs(self, page_id: str, page_type: PageTypes | str):
-        if type(page_type) is PageTypes:
-            response = requests.get(
-                f"{DRUPAL_API_BASE_URL}{page_type.value[0]}/{page_id}/field_paragraphs", headers=self.header
+        try:
+            if type(page_type) is PageTypes:
+                response = requests.get(
+                    f"{DRUPAL_API_BASE_URL}{page_type.value[0]}/{page_id}/field_paragraphs", headers=self.header
+                )
+            elif type(page_type) is str:
+                response = requests.get(
+                    f"{DRUPAL_API_BASE_URL}{page_type}/{page_id}/field_content_paragraphs", headers=self.header
+                )
+            else:
+                raise Exception('Bad type: "page_type"')
+            response.raise_for_status()
+            paragraphs = response.json()
+        except requests.exceptions.RequestException as err:
+            self.logger.warning(
+                f"Failed to retrieve Drupal paragraphs for page {page_id} ({page_type}): {err}"
             )
-        elif type(page_type) is str:
-            response = requests.get(
-                f"{DRUPAL_API_BASE_URL}{page_type}/{page_id}/field_content_paragraphs", headers=self.header
+            return ""
+        except ValueError as err:
+            self.logger.warning(
+                f"Failed to parse Drupal paragraphs response for page {page_id} ({page_type}) as JSON: {err}"
             )
-        else:
-            raise Exception('Bad type: "page_type"')
-        paragraphs = response.json()
+            return ""
 
         _result = ""
         for d in paragraphs["data"]:
@@ -133,8 +173,16 @@ class Drupal:
         return _result
 
     def fetch_data(self, url):
-        response = requests.get(url, headers=self.header)
-        return response.json()
+        try:
+            response = requests.get(url, headers=self.header)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as err:
+            self.logger.warning(f"Failed to retrieve Drupal resource from {url}: {err}")
+            return {}
+        except ValueError as err:
+            self.logger.warning(f"Failed to parse Drupal resource from {url} as JSON: {err}")
+            return {}
 
     def process_lecture_books(self, page) -> str:
         lecture_books = page["relationships"]["field_lecture_books"]["data"]
@@ -149,7 +197,12 @@ class Drupal:
         return books_text
 
     def process_chapters(self, chapter_data) -> str:
-        chapters = chapter_data["data"]["relationships"]["field_lecture_chapters"]["data"]
+        chapters = (
+            chapter_data.get("data", {})
+            .get("relationships", {})
+            .get("field_lecture_chapters", {})
+            .get("data", [])
+        )
         chapters_text = ""
 
         for single_chapter in chapters:
@@ -162,7 +215,12 @@ class Drupal:
         return chapters_text
 
     def process_lectures(self, lecture_data) -> str:
-        lectures = lecture_data["data"]["relationships"]["field_lectures"]["data"]
+        lectures = (
+            lecture_data.get("data", {})
+            .get("relationships", {})
+            .get("field_lectures", {})
+            .get("data", [])
+        )
         lectures_text = ""
 
         for lecture in lectures:

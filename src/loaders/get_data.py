@@ -93,7 +93,7 @@ class Fetch_Data:
             for i in range(0, len(lst), chunk_size):
                 yield lst[i : i + chunk_size]
 
-        chunk_size = 300
+        chunk_size = 100
 
         self.logger.debug("Deleting old collection from Qdrant...")
         self.dev_vector_store.client.delete_collection(collection_name=DEFAULT_COLLECTION)
@@ -102,7 +102,6 @@ class Fetch_Data:
         self.logger.info(f"Creating hybrid collection '{DEFAULT_COLLECTION}' with dense + sparse vectors...")
         self.dev_vector_store.create_collection(
             collection_name=DEFAULT_COLLECTION,
-            vector_size=1536,  # Azure OpenAI embedding size
             enable_sparse=True
         )
 
