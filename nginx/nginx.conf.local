@@ -1,0 +1,187 @@
+# Nginx Configuration for Local Testing with Self-Signed SSL
+# Simplified version without Certbot/Let's Encrypt
+
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events {
+    worker_connections 1024;
+    use epoll;
+}
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    # Logging
+    log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                    '$status $body_bytes_sent "$http_referer" '
+                    '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log /var/log/nginx/access.log main;
+
+    # Performance
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+    types_hash_max_size 2048;
+    client_max_body_size 20M;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_types text/plain text/css text/xml text/javascript 
+               application/json application/javascript application/xml+rss 
+               application/rss+xml application/atom+xml image/svg+xml 
+               text/x-component text/x-cross-domain-policy;
+
+    # Rate limiting zones
+    limit_req_zone $binary_remote_addr zone=api_zone:10m rate=10r/s;
+    limit_req_zone $binary_remote_addr zone=vote_zone:10m rate=5r/s;
+    limit_req_zone $binary_remote_addr zone=general_zone:10m rate=30r/s;
+
+    # Upstream services
+    upstream arena_api {
+        server arena-api:8001;
+        keepalive 32;
+    }
+
+    upstream arena_ui {
+        server arena-ui:8002;
+        keepalive 32;
+    }
+
+    # HTTP to HTTPS redirect
+    server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+
+    # HTTPS server with Self-Signed Certificate
+    server {
+        listen 443 ssl http2;
+        listen [::]:443 ssl http2;
+        server_name localhost;
+
+        # Self-Signed SSL Certificate
+        ssl_certificate /etc/nginx/ssl/fullchain.pem;
+        ssl_certificate_key /etc/nginx/ssl/privkey.pem;
+        
+        # SSL Security
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers HIGH:!aNULL:!MD5;
+        ssl_prefer_server_ciphers on;
+        ssl_session_cache shared:SSL:10m;
+        ssl_session_timeout 10m;
+
+        # Security Headers
+        add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header X-Frame-Options "SAMEORIGIN" always;
+        add_header X-XSS-Protection "1; mode=block" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+
+        # Voting UI (root)
+        location / {
+            limit_req zone=general_zone burst=50 nodelay;
+            
+            proxy_pass http://arena_ui;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Port 443;
+            
+            proxy_http_version 1.1;
+            proxy_set_header Connection "";
+            proxy_buffering off;
+            proxy_read_timeout 60s;
+        }
+
+        # Arena API endpoints
+        location /arena/comparisons {
+            limit_req zone=api_zone burst=20 nodelay;
+            
+            proxy_pass http://arena_api;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+            
+            proxy_http_version 1.1;
+            proxy_set_header Connection "";
+            proxy_buffering off;
+            proxy_read_timeout 30s;
+        }
+
+        # Voting endpoint (stricter rate limit)
+        location /arena/vote {
+            limit_req zone=vote_zone burst=10 nodelay;
+            
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' '*' always;
+                add_header 'Access-Control-Allow-Methods' 'POST, OPTIONS' always;
+                add_header 'Access-Control-Allow-Headers' 'Content-Type' always;
+                add_header 'Content-Length' 0 always;
+                return 204;
+            }
+            
+            proxy_pass http://arena_api;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+            
+            proxy_http_version 1.1;
+            proxy_set_header Connection "";
+            proxy_buffering off;
+            proxy_read_timeout 30s;
+        }
+
+        # Other Arena API endpoints
+        location /arena/ {
+            limit_req zone=api_zone burst=20 nodelay;
+            
+            proxy_pass http://arena_api;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto https;
+            
+            proxy_http_version 1.1;
+            proxy_set_header Connection "";
+            proxy_buffering off;
+            proxy_read_timeout 30s;
+        }
+
+        # Health endpoint
+        location /health {
+            access_log off;
+            proxy_pass http://arena_api;
+            proxy_set_header Host $host;
+            proxy_read_timeout 3s;
+        }
+
+        # Deny access to sensitive files
+        location ~ /\. {
+            deny all;
+            access_log off;
+            log_not_found off;
+        }
+
+        location ~ /\.git {
+            deny all;
+            access_log off;
+        }
+    }
+}

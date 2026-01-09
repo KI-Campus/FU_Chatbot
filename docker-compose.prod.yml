@@ -1,0 +1,218 @@
+version: "3.9"
+
+name: kicwa-arena-prod
+
+services:
+  # ============================================================================
+  # Original Services (KI-Campus Chatbot Infrastructure)
+  # ============================================================================
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: kicwa-postgres-prod
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_prod}
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"  # Localhost only
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - kicwa_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  langfuse:
+    image: langfuse/langfuse:2.69.0
+    container_name: kicwa-langfuse-prod
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_HOST: postgres:5432
+      DATABASE_NAME: langfuse
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-changeme_prod}
+      NEXTAUTH_SECRET: ${LANGFUSE_NEXTAUTH_SECRET:-changeme_in_prod}
+      SALT: ${LANGFUSE_SALT:-changeme_in_prod}
+      NEXTAUTH_URL: https://${DOMAIN_NAME:-localhost}/langfuse
+      TELEMETRY_ENABLED: "false"
+      LANGFUSE_DEFAULT_PROJECT_ID: kicwa
+      LANGFUSE_DEFAULT_PROJECT_ROLE: ADMIN
+    ports:
+      - "127.0.0.1:3000:3000"  # Localhost only, nginx proxies
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - kicwa_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================================
+  # Arena Services (Benchmarking System)
+  # ============================================================================
+
+  arena-api:
+    build:
+      context: .
+      dockerfile: src/openwebui/Dockerfile
+      target: production
+    container_name: kicwa-arena-api-prod
+    env_file:
+      - .env.production
+    environment:
+      PYTHONUNBUFFERED: "1"
+      ENVIRONMENT: PRODUCTION
+      USE_KEY_VAULT: "${USE_KEY_VAULT:-true}"
+      KEY_VAULT_NAME: "${KEY_VAULT_NAME:-kicwa-keyvault-prod}"
+      CORS_ORIGINS: "${CORS_ORIGINS:-*}"
+      ASSISTANT_VARIANT: "${ASSISTANT_VARIANT:-original}"
+      LANGFUSE_ENABLED: "${LANGFUSE_ENABLED:-true}"
+      STORAGE_PATH: /data/arena_votes.jsonl
+    volumes:
+      - arena_data:/data
+    ports:
+      - "127.0.0.1:8001:8001"  # Localhost only, nginx proxies
+    depends_on:
+      postgres:
+        condition: service_healthy
+      langfuse:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8001/health"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    networks:
+      - kicwa_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  arena-ui:
+    build:
+      context: .
+      dockerfile: src/openwebui/Dockerfile
+      target: ui
+    container_name: kicwa-arena-ui-prod
+    environment:
+      PYTHONUNBUFFERED: "1"
+      API_BASE_URL: http://arena-api:8001
+      ARENA_API_BASE: ""  # Empty = auto-detect from origin
+    depends_on:
+      arena-api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8002:8002"  # Localhost only, nginx proxies
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8002/"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    networks:
+      - kicwa_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # ============================================================================
+  # Reverse Proxy & TLS
+  # ============================================================================
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: kicwa-nginx-prod
+    depends_on:
+      arena-api:
+        condition: service_healthy
+      arena-ui:
+        condition: service_healthy
+    volumes:
+      - ./nginx/nginx.conf.prod:/etc/nginx/nginx.conf:ro
+      - ./nginx/dhparam.pem:/etc/nginx/dhparam.pem:ro
+      - certbot_conf:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
+      - nginx_cache:/var/cache/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost/"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+    networks:
+      - kicwa_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: kicwa-certbot-prod
+    volumes:
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    depends_on:
+      - nginx
+    networks:
+      - kicwa_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# ============================================================================
+# Volumes (Persistent Data)
+# ============================================================================
+
+volumes:
+  postgres_data:
+    driver: local
+  arena_data:
+    driver: local
+  nginx_cache:
+    driver: local
+  certbot_conf:
+    driver: local
+  certbot_www:
+    driver: local
+
+# ============================================================================
+# Networks
+# ============================================================================
+
+networks:
+  kicwa_network:
+    driver: bridge

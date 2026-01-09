@@ -1,0 +1,16 @@
+{
+  "comparisons": [
+    {
+      "id": "cmp-001",
+      "question": "Was ist Machine Learning?",
+      "timestamp": "2025-12-26T13:10:00",
+      "model_a": "kicampus-original",
+      "answer_a": "Machine Learning ist das Lernen von Mustern aus Daten.",
+      "model_b": "kicampus-improved",
+      "answer_b": "ML: Modelle lernen Regeln aus Trainingsdaten und generalisieren.",
+      "vote": "A",
+      "vote_timestamp": "2025-12-26T14:08:12",
+      "comment": null
+    }
+  ]
+}
