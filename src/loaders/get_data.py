@@ -10,7 +10,7 @@ from qdrant_client.http import models
 from tqdm import tqdm
 
 from src.env import env
-from src.llm.LLMs import LLM
+from llm.objects.LLMs import LLM
 from src.vectordb.sparse_encoder import BM25SparseEncoder
 from src.loaders.drupal import Drupal
 from src.loaders.moochup import Moochup

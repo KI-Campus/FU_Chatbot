@@ -2,7 +2,7 @@ from langfuse.decorators import observe
 from llama_index.core.schema import NodeWithScore, TextNode
 from llama_index.core.vector_stores import VectorStoreQuery
 
-from src.llm.LLMs import LLM
+from llm.objects.LLMs import LLM
 from src.vectordb.sparse_encoder import BM25SparseEncoder
 from src.vectordb.qdrant import VectorDBQdrant, models
 

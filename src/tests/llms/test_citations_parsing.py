@@ -3,7 +3,7 @@ from typing import Any
 import pytest
 from llama_index.core.schema import TextNode
 
-from src.llm.parser.citation_parser import CITATION_TEXT, CitationParser
+from llm.objects.citation_parser import CITATION_TEXT, CitationParser
 
 examples: list[Any] = [
     (

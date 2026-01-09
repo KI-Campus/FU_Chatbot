@@ -28,7 +28,7 @@ class EnvHelper(BaseModel):
     AZURE_OPENAI_EMBEDDER_DEPLOYMENT: str = "UNSET"
     AZURE_OPENAI_EMBEDDER_MODEL: str = "UNSET"
 
-    AZURE_MISTRAL_URL: str = "UNSET"
+    #AZURE_MISTRAL_URL: str = "UNSET" <-- Nicht in Azure Key Vault
     AZURE_MISTRAL_KEY: str = "UNSET"
 
     GWDG_URL: str = "UNSET"

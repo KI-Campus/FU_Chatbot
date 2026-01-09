@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.env import env
 from src.llm.assistant import KICampusAssistant
-from src.llm.LLMs import Models
+from llm.objects.LLMs import Models
 from src.vectordb.qdrant import VectorDBQdrant
 
 # Singleton instances for performance - avoid recreating on every request
@@ -88,6 +88,11 @@ class ChatRequest(BaseModel):
             ]
         ],
         min_length=1,
+    )
+    conversation_id: str | None = Field(
+        default=None,
+        description="Optional conversation/thread ID for persistent conversations. If None, a new conversation is created.",
+        examples=["550e8400-e29b-41d4-a716-446655440000"],
     )
     course_id: int | None = Field(
         default=None,
@@ -169,13 +174,15 @@ def chat(chat_request: ChatRequest) -> ChatResponse:
             model=chat_request.model,
             course_id=chat_request.course_id,
             module_id=chat_request.module_id,  # Can be None
+            conversation_id=chat_request.conversation_id,
         )
     else:
         # General chat (Drupal content)
         llm_response = _assistant.chat(
             query=chat_request.get_user_query(), 
             chat_history=chat_request.get_chat_history(), 
-            model=chat_request.model
+            model=chat_request.model,
+            conversation_id=chat_request.conversation_id,
         )
 
     trace_id = langfuse_context.get_current_trace_id()

@@ -9,7 +9,7 @@ from langfuse.decorators import observe
 from llama_index.core.postprocessor import LLMRerank
 from llama_index.core.schema import NodeWithScore, TextNode
 
-from src.llm.LLMs import LLM, Models
+from llm.objects.LLMs import LLM, Models
 
 
 class Reranker:

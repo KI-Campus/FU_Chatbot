@@ -1,7 +1,7 @@
 import pytest
 from llama_index.core.llms import ChatMessage, MessageRole
 
-from src.llm.LLMs import LLM, Models
+from llm.objects.LLMs import LLM, Models
 
 
 @pytest.mark.parametrize("model", [Models.GPT4, Models.MISTRAL8, Models.LLAMA3, Models.QWEN2])  # type: ignore
