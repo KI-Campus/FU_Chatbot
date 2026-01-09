@@ -3,9 +3,12 @@ import logging
 import re
 import tempfile
 import unicodedata
+import warnings
 import zipfile
 
-from bs4 import BeautifulSoup, ParserRejectedMarkup
+import requests
+
+from bs4 import BeautifulSoup, ParserRejectedMarkup, XMLParsedAsHTMLWarning
 from llama_index.core import Document
 from pydantic import ValidationError
 
@@ -88,7 +91,16 @@ class Moodle:
             wsfunction="mod_videotime_get_videotime",
             cmid=cmid,
         )
-        videotime_content = caller.getJSON()
+        try:
+            videotime_content = caller.getJSON()
+        except requests.exceptions.RequestException as e:
+            # Netzwerkfehler (z.B. RemoteDisconnected) beim Laden der Videotime-Metadaten:
+            # Modul als fehlgeschlagen markieren, aber gesamten Lauf fortsetzen.
+            self.logger.warning(
+                f"Failed to retrieve Videotime metadata for module {cmid} from {self.api_endpoint}: {e}"
+            )
+            return {}
+
         return videotime_content
 
     def extract(self) -> list[Document]:
@@ -155,7 +167,25 @@ class Moodle:
                 continue
             page_content_caller = APICaller(url=content.fileurl, params=self.download_params)
             try:
-                soup = BeautifulSoup(page_content_caller.getText(), "html.parser")
+                with warnings.catch_warnings(record=True) as w:
+                    warnings.simplefilter("always", XMLParsedAsHTMLWarning)
+                    soup = BeautifulSoup(page_content_caller.getText(), "html.parser")
+
+                    for warn in w:
+                        if issubclass(warn.category, XMLParsedAsHTMLWarning):
+                            self.logger.warning(
+                                "XMLParsedAsHTMLWarning for module %s (%s) from %s",
+                                getattr(module, "id", "unknown"),
+                                getattr(module, "name", "unknown"),
+                                getattr(content, "fileurl", "unknown"),
+                            )
+            except requests.exceptions.RequestException as e:
+                # Netzwerkfehler oder ChunkedEncodingError beim Laden der Seite:
+                # Modul als fehlgeschlagen markieren, aber gesamten Lauf fortsetzen.
+                self.logger.warning(
+                    f"Failed to retrieve Moodle page content for module {module.id} from {content.fileurl}: {e}"
+                )
+                return "Seite konnte nicht geladen werden"
             except ParserRejectedMarkup:
                 continue
             links = soup.find_all("a")
@@ -171,7 +201,11 @@ class Moodle:
                 src = match.group(0) if match else p_link.get("href")
                 if src:
                     if src.find("vimeo") != -1:
-                        videotime = Video(id=0, vimeo_url=src)
+                        try:
+                            videotime = Video(id=0, vimeo_url=src)
+                        except ValidationError as e:
+                            self.logger.warning(f"Cannot parse or validate vimeo url: {src} ({e})")
+                            continue
                         if videotime.video_id is None:
                             self.logger.warning(f"Cannot parse video url: {src}")
                             continue
@@ -195,7 +229,13 @@ class Moodle:
         return err_message if err_message is not None else None
 
     def extract_videotime(self, module):  # TODO: rename method
-        videotime = Video(**self.get_videotime_content(module.id))
+        try:
+            videotime = Video(**self.get_videotime_content(module.id))
+        except ValidationError as e:
+            self.logger.warning(
+                f"Cannot parse or validate video metadata for module {module.id}: {e}"
+            )
+            return "Videometadaten konnten nicht geladen werden"
 
         err_message = None
 
@@ -227,12 +267,27 @@ class Moodle:
 
         h5pfile_call = APICaller(url=activity.fileurl, params=self.download_params)
         with tempfile.TemporaryDirectory() as tmp_dir:
-            local_filename = h5pfile_call.getFile(activity.filename, tmp_dir)
+            try:
+                local_filename = h5pfile_call.getFile(activity.filename, tmp_dir)
+            except requests.exceptions.RequestException as e:
+                # Netzwerk-/Chunked-Encoding-Fehler beim H5P-Download: Modul als fehlgeschlagen markieren,
+                # aber den gesamten Ingestion-Run nicht abbrechen.
+                self.logger.warning(
+                    f"Failed to download H5P file for module {module.id} from {activity.fileurl}: {e}"
+                )
+                return "H5P-Datei konnte nicht heruntergeladen werden"
             with zipfile.ZipFile(local_filename, "r") as zip_ref:
                 zip_ref.extract("content/content.json", tmp_dir)
             content_json = f"{tmp_dir}/content/content.json"
-            with open(content_json, "r") as json_file:
-                content = json.load(json_file)
+            # H5P-JSON kann auf Windows wegen cp1252-Encoding Probleme machen – robust lesen
+            try:
+                with open(content_json, "r", encoding="utf-8", errors="ignore") as json_file:
+                    content = json.load(json_file)
+            except json.JSONDecodeError as e:
+                # Defektes oder nicht-UTF8-konformes content.json: Modul als fehlgeschlagen markieren,
+                # aber Ingestion nicht abbrechen
+                self.logger.warning(f"Failed to parse H5P content.json for module {module.id}: {e}")
+                return "H5P content.json nicht lesbar"
             if "interactiveVideo" in content.keys():
                 videourl = content["interactiveVideo"]["video"]["files"][0]["path"]
                 try:
