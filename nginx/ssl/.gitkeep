@@ -1,0 +1,8 @@
+# SSL certificates are generated at deployment time by certbot or Let's Encrypt
+# NEVER commit private keys (privkey.pem, fullchain.pem with private key, *.key)
+# 
+# For local testing:
+#   - Use self-signed certificates: scripts/init-ssl.sh
+#   - For production: Certbot will auto-generate and renew via Let's Encrypt
+#
+# This directory is for reference only. Actual certificates are generated during deployment.

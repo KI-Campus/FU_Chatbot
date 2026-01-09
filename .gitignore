@@ -19,3 +19,32 @@ db
 
 ## Failed Transcripts
 FailedTranscripts.xlsx
+# ============================================================================
+# SECURITY: Private Keys & Certificates
+# ============================================================================
+# SSH Keys
+**/.ssh/
+id_rsa
+id_rsa.pub
+id_dsa
+id_ecdsa
+id_ed25519
+
+# SSL/TLS Private Keys (certificates are auto-generated, never commit)
+**/*.pem
+**/*.key
+**/privkey.pem
+**/private.key
+
+# PGP/GPG Keys
+secring.*
+
+# AWS/Azure/GCP Credentials
+.aws/credentials
+.azure/
+.gcp/
+
+# Never commit .env files with secrets
+.env.production
+.env.local
+.env.*.local
