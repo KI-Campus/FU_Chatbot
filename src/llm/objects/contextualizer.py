@@ -1,7 +1,7 @@
 from langfuse.decorators import observe
 from llama_index.core.llms import ChatMessage
 
-from src.llm.LLMs import LLM, Models
+from llm.objects.LLMs import LLM, Models
 
 CONDENSE_QUESTION_PROMPT = """
 # CONTEXT #
