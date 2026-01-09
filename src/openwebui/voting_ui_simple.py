@@ -371,10 +371,13 @@ def results():
 
         async function load() {
             const container = document.getElementById('status');
-            container.textContent = 'Lade von ' + API + '/arena/comparisons ...' ;
+            const subsetSel = document.getElementById('subset');
+            const subset = subsetSel ? subsetSel.value : 'all';
+            const url = subset === 'all' ? `${API}/arena/comparisons` : `${API}/arena/comparisons?subset=${subset}`;
+            container.textContent = 'Lade von ' + url;
             try {
-                console.log('Fetching from:', API + '/arena/comparisons');
-                const resp = await fetch(API + '/arena/comparisons', {
+                console.log('Fetching from:', url);
+                const resp = await fetch(url, {
                     method: 'GET',
                     headers: {'Accept': 'application/json'},
                     mode: 'cors'
@@ -392,7 +395,8 @@ def results():
                 console.log('Loaded comparisons:', all.length);
                 
                 applyFilters();
-                container.textContent = all.length + ' Vergleiche geladen';
+                const subsetLabel = subset === 'all' ? 'alle Subsets' : 'Subset ' + subset;
+                container.textContent = all.length + ' Vergleiche geladen (' + subsetLabel + ')';
             } catch (e) {
                 console.error('Load error:', e);
                 container.textContent = '❌ Fehler: ' + e.message + ' | API: ' + API;
@@ -464,6 +468,13 @@ def results():
     <h1>Arena Ergebnisse</h1>
     <div class="controls">
         <span id="status" class="muted">-</span>
+        <select id="subset" onchange="load()">
+            <option value="all">Alle Subsets</option>
+            <option value="1">Subset 1</option>
+            <option value="2">Subset 2</option>
+            <option value="3">Subset 3</option>
+            <option value="4">Subset 4</option>
+        </select>
         <select id="filter" onchange="applyFilters()">
             <option value="all">Alle</option>
             <option value="voted">Nur gevotet</option>
