@@ -10,10 +10,13 @@ from src.llm.LLMs import LLM, Models
 ANSWER_NOT_FOUND_FIRST_TIME = """Entschuldige, ich habe deine Frage nicht ganz verstanden. Könntest du dein Problem bitte noch einmal etwas genauer erklären oder anders formulieren?
 """
 
-ANSWER_NOT_FOUND_SECOND_TIME_DRUPAL = """Entschuldigung, ich habe deine Frage nicht immer noch verstanden, bitte wende dich an unseren Support unter support@ki-campus.org.
+ANSWER_NOT_FOUND_SECOND_TIME_DRUPAL = """Entschuldigung, ich habe deine Frage immer noch nicht verstanden, bitte wende dich an unseren Support unter support@ki-campus.org.
 """
 
 ANSWER_NOT_FOUND_SECOND_TIME_MOODLE = """Es tut mir leid, aber ich konnte die benötigten Informationen im Kurs nicht finden, um deine Frage zu beantworten. Schau bitte im Kurs selbst nach, um weitere Hilfe zu erhalten. Hier ist der Kurslink: https://moodle.ki-campus.org/course/view.php?id={course_id}
+"""
+
+NO_INFORMATION_AVAILABLE = """Es tut mir leid, aber zu diesem Thema liegen mir keine Informationen vor. Dieser Chatbot ist ausschließlich auf Inhalte aus den Kursen des KI-Campus spezialisiert.
 """
 
 SHORT_SYSTEM_PROMPT = """
@@ -150,18 +153,50 @@ Metadata: {metadata}
 def format_sources(sources: list[TextNode], max_length: int = 8000) -> str:
     sources_text = ""
     for i, source in enumerate(sources):
-        source_entry = USER_QUERY_WITH_SOURCES_PROMPT.format(
-            index=i + 1, content=source.get_text(), metadata=source.metadata
-        )
-        # max_length must not exceed 8k for non-GPT models, otherwise the output will be garbled
-        if len(sources_text) + len(source_entry) > max_length:
+        entry = f"""
+[doc{i + 1}]
+Content: {source.get_text()}
+Metadata: {source.metadata}
+"""
+        if len(sources_text) + len(entry) > max_length:
             break
-        sources_text += source_entry + "\n"
+        sources_text += entry + "\n"
+    return "<SOURCES>:\n" + sources_text.strip()
 
-    sources_text = sources_text.strip()
 
-    return "<SOURCES>:\n" + sources_text
+def is_gibberish(query: str) -> bool:
+    q = query.strip().lower()
 
+    # empty or very short noise
+    if len(q) == 0:
+        return True
+
+    # contains at least one letter or number
+    if not any(c.isalnum() for c in q):
+        return True
+
+    words = q.split()
+
+    # single very short token (1 char) is almost always noise
+    if len(words) == 1 and len(words[0]) == 1:
+        return True
+
+    # detect random-looking tokens (no vowels, long)
+    vowels = set("aeiouäöüy")
+
+    def looks_random(word: str) -> bool:
+        if len(word) <= 2:
+            return False  
+        if not any(v in word for v in vowels):
+            return True
+        return False
+
+    # if ALL words look random → gibberish
+    random_words = [w for w in words if looks_random(w)]
+    if random_words and len(random_words) == len(words):
+        return True
+
+    return False
 
 class QuestionAnswerer:
     def __init__(self) -> None:
@@ -179,14 +214,48 @@ class QuestionAnswerer:
         is_moodle: bool,
         course_id: int,
     ) -> ChatMessage:
-        if model != Models.GPT4:
-            system_prompt = SHORT_SYSTEM_PROMPT.format(language=language)
-            formatted_sources = format_sources(sources, max_length=8000)
-        else:
-            system_prompt = SYSTEM_PROMPT.format(language=language)
-            formatted_sources = format_sources(sources, max_length=sys.maxsize)
 
-        prompted_user_query = f"<QUERY>:\n {query}\n---\n\n{formatted_sources}"
+        has_failed_before = (
+            len(chat_history) > 1
+            and chat_history[-1].content == ANSWER_NOT_FOUND_FIRST_TIME
+        )
+
+        # Gibberish handling 
+        if is_gibberish(query):
+            if not has_failed_before:
+                return ChatMessage(
+                    role="assistant",
+                    content=ANSWER_NOT_FOUND_FIRST_TIME,
+                )
+            return ChatMessage(
+                role="assistant",
+                content=(
+                    ANSWER_NOT_FOUND_SECOND_TIME_MOODLE.format(course_id=course_id)
+                    if is_moodle
+                    else ANSWER_NOT_FOUND_SECOND_TIME_DRUPAL
+                ),
+            )
+
+        # No sources returned → distinguish gibberish vs real question
+        if not sources:
+              return ChatMessage(
+                role="assistant",
+                content=NO_INFORMATION_AVAILABLE,
+            )
+
+        # Prompt selection 
+        system_prompt = (
+            SYSTEM_PROMPT.format(language=language)
+            if model == Models.GPT4
+            else SHORT_SYSTEM_PROMPT.format(language=language)
+        )
+
+        formatted_sources = format_sources(
+            sources,
+            max_length=12000,
+        )
+
+        prompted_user_query = f"<QUERY>:\n{query}\n---\n\n{formatted_sources}"
 
         response = self.llm.chat(
             query=prompted_user_query,
@@ -195,26 +264,24 @@ class QuestionAnswerer:
             system_prompt=system_prompt,
         )
 
+        # Parse JSON safely 
         try:
-            response.content = response.content.replace("```json\n", "").replace("\n```", "")
-            response_json = json.loads(response.content)
-            response.content = response_json["answer"]
+            cleaned = (
+                response.content
+                .replace("```json", "")
+                .replace("```", "")
+                .strip()
+            )
+            parsed = json.loads(cleaned)
+            response.content = parsed.get("answer", "NO ANSWER FOUND")
+        except Exception:
+            response.content = "NO ANSWER FOUND"
 
-        except json.JSONDecodeError as e:
-            # LLM forgets to respond with JSON, responds with pure str, take the response as is
-            pass
-
-        has_history = len(chat_history) > 1
-
+        # never show NO ANSWER FOUND
         if response.content == "NO ANSWER FOUND":
-            if not (has_history and chat_history[-1].content == ANSWER_NOT_FOUND_FIRST_TIME):
-                response.content = ANSWER_NOT_FOUND_FIRST_TIME
-            else:
-                if is_moodle:
-                    response.content = ANSWER_NOT_FOUND_SECOND_TIME_MOODLE.format(course_id=course_id)
-                else:
-                    response.content = ANSWER_NOT_FOUND_SECOND_TIME_DRUPAL
+            return ChatMessage(
+                role="assistant",
+                content=NO_INFORMATION_AVAILABLE,
+            )
 
-        if response is None:
-            raise ValueError(f"LLM produced no response. Please check the LLM implementation. Response: {response}")
         return response
