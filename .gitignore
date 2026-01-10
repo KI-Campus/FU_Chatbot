@@ -19,3 +19,19 @@ FailedTranscripts.xlsx
 
 ## Big models
 **/vosk_model/vosk-model-de-0.21
+
+## test outputs
+**/tests/**/*.json
+**/tests/**/*.txt
+**/tests/**/*.html
+**/tests/**/outputs/
+**/tests/**/output/
+**/tests/**/loaded_data/
+**/tests/**/document_outputs/
+**/tests/**/h5p_downloads/
+**/tests/**/interactive_video_analysis/
+**/tests/**/book/
+**/tests/**/folder/
+**/tests/**/pdf_loader/
+**/tests/**/resource/
+**/tests/**/test_h5p/
