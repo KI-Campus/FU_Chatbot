@@ -24,6 +24,11 @@ FailedTranscripts.xlsx
 **/tests/**/*.json
 **/tests/**/*.txt
 **/tests/**/*.html
+**/tests/**/*.pdf
+**/tests/**/*.h5p
+**/tests/**/*.zip
+**/tests/**/*.csv
+**/tests/**/*.png
 **/tests/**/outputs/
 **/tests/**/output/
 **/tests/**/loaded_data/
