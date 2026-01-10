@@ -60,27 +60,37 @@ class Vimeo:
                 return None, "Transcript konnte nicht abgerufen werden"
         return (response_json[result_index], None) if result_index is not None else (None, err_message)
 
-    def get_transcript(self, video_id: str, fallback_transcript: str | None = None) -> Optional[TextTrack]:
+    def get_transcript(self, video_id: str, fallback_transcript: str | None = None, fallback_transcript_content: str | None = None) -> Optional[TextTrack]:
         texttrack_json, err_message = self.get_metadata(video_id)
         if texttrack_json:  # If Video has an transcript
             texttrack = TextTrack(**texttrack_json)
             transcript_caller = APICaller(url=texttrack.link, headers=self.headers)
+            transcript_text = None
             try:
                 transcript_text = transcript_caller.getText()
             except requests.exceptions.HTTPError as err:
                 if err.response.status_code == 404:
                     # Transcript URL was present, but no transcript on Vimeo,
                     # fallback to transcript file stored in h5p package
-                    if fallback_transcript is not None:
+                    if fallback_transcript_content is not None:
+                        self.logger.warn("Falling back to reading content from H5P-Package")
+                        transcript_text = fallback_transcript_content
+                    elif fallback_transcript is not None:
                         self.logger.warn("Falling back to reading file from H5P-Package")
                         transcript_text = self.get_transcript_from_file(fallback_transcript)
-                    else:
-                        return None, "Transcript liegt nicht (in Deutsch oder Englisch) vor"
+                else:
+                    # Other HTTP errors (e.g., 403, 500) - no fallback possible
+                    self.logger.warn(f"Failed to retrieve {texttrack.link}")
+                    return None, "Transcript konnte nicht abgerufen werden"
+            
+            if transcript_text is None:
+                return None, "Transcript liegt nicht (in Deutsch oder Englisch) vor"
+            
             try:
                 texttrack.transcript = convert_vtt_to_text(StringIO(transcript_text))
                 return texttrack, None
             except Exception as err:
-                self.logger.warn(f"Reading Fallback Transcript failed: {fallback_transcript}")
+                self.logger.warn(f"Reading Fallback Transcript failed: {fallback_transcript or 'content'}")
                 self.logger.warn(f"Error while converting VTT to text: {err}")
                 return None, "Transcript (VTT-Datei) nicht lesbar"
         return None, err_message
