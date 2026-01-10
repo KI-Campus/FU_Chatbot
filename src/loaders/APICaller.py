@@ -5,7 +5,7 @@ import requests
 from pydantic import HttpUrl
 
 # Warnung unterdrücken wenn SSL-Verification deaktiviert ist
-requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
+# requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 
 
 class APICaller:
@@ -23,9 +23,9 @@ class APICaller:
         requests.packages.urllib3.util.connection.HAS_IPV6 = False
 
     def get(self, **kwargs):
-        # TEMPORARY: SSL-Verification deaktiviert weil moodle.ki-campus.org Zertifikat abgelaufen ist
-        # TODO: Entfernen sobald Server-Zertifikat erneuert wurde
-        self.response = requests.get(url=self.url, params=self.params, headers=self.headers, verify=False)
+        # Workaround: dont verify if server certificate is invalid
+        # self.response = requests.get(url=self.url, params=self.params, headers=self.headers, verify=False)
+        self.response = requests.get(url=self.url, params=self.params, headers=self.headers, verify=True)
         try:
             self.response.raise_for_status()
         except requests.exceptions.HTTPError as err:
