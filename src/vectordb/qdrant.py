@@ -6,6 +6,7 @@ from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient, models
 from qdrant_client.http.exceptions import ResponseHandlingException, UnexpectedResponse
 from qdrant_client.http.models import Distance, PointStruct, VectorParams, SparseVectorParams
+from qdrant_client.http.api_client import ResponseHandlingException
 
 from src.env import env
 
@@ -147,13 +148,21 @@ class VectorDBQdrant:
             if next_page_offset != "first":
                 offset = next_page_offset
 
-            records = self.client.scroll(
-                collection_name=collection_name,
+            try:
+                records = self.client.scroll(
+                    collection_name=collection_name,
                 with_payload=True,
-                with_vectors=False,
-                limit=10,
-                offset=offset,
-            )
+                    with_vectors=False,
+                    limit=10,
+                    offset=offset,
+                )
+            
+            except ResponseHandlingException as e:
+                print(f"Qdrant ResponseHandlingException: {e}")
+                return [], []
+            except Exception as e:
+                print(f"Qdrant unknown Exception: {e}")
+                return [], []
 
             next_page_offset = records[1]
 

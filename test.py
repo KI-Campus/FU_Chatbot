@@ -3,7 +3,7 @@
 from qdrant_client.http.exceptions import UnexpectedResponse
 from src.vectordb.qdrant import VectorDBQdrant
 
-COLLECTION = "web_assistant"
+COLLECTION = "web_assistant_hybrid_TEST"
 
 
 def check(version: str) -> None:

@@ -4,8 +4,8 @@ Node wrapper for retrieving relevant chunks from vector database.
 
 from langfuse.decorators import observe
 
-from llm.objects.retriever import KiCampusRetriever
-from llm.state.models import GraphState
+from src.llm.objects.retriever import KiCampusRetriever
+from src.llm.state.models import GraphState
 
 
 @observe()
@@ -25,16 +25,14 @@ def retrieve_chunks(state: GraphState) -> GraphState:
     retriever = KiCampusRetriever(use_hybrid=True)
     
     # Extract optional filters from runtime_config (set by frontend)
-    course_id = state.runtime_config.get("course_id")
-    module_id = state.runtime_config.get("module_id")
+    course_id = state["runtime_config"].get("course_id")
+    module_id = state["runtime_config"].get("module_id")
     
     # Retrieve chunks using hybrid search (returns TextNode directly)
     nodes = retriever.retrieve(
-        query=state.contextualized_query,
+        query=state["contextualized_query"],
         course_id=course_id,
         module_id=module_id
     )
     
-    state.retrieved = nodes
-    
-    return state
+    return {**state, "retrieved": nodes}

@@ -1,5 +1,5 @@
-from llm.state.models import Scenario
-from llm.prompts.prompt_loader import load_prompt
+from src.llm.state.models import Scenario
+from src.llm.prompts.prompt_loader import load_prompt
 
 # Load prompt
 ROUTER_PROMPT = load_prompt("router_prompt")
