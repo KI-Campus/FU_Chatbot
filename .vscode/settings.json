@@ -23,5 +23,8 @@
 "python.analysis.extraPaths": [
     "./src/loaders/models",
     "./src/loaders"
-]
+],
+"files.watcherExclude": {
+    "**/target": true
+}
 }
