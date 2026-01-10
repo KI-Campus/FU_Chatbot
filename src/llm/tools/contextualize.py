@@ -12,39 +12,46 @@ from src.llm.state.routing import classify_scenario
 @observe()
 def contextualize_and_route(state: GraphState) -> GraphState:
     """
-    Contextualizes user query with chat history and determines routing scenario.
+    Routes user query to appropriate scenario and contextualizes with chat history.
+    
+    Order: Route first (on original query), then contextualize.
+    Routing should be based on the original user query, not the contextualized one.
     
     Changes:
-    - Sets state["contextualized_query"]
-    - Sets state["mode"] (routing decision)
+    - Sets state["mode"] (routing decision based on original query)
+    - Sets state["contextualized_query"] (contextualized with chat history)
     
     Args:
         state: Current graph state with user_query, chat_history, config
         
     Returns:
-        Updated state with contextualized_query and mode
+        Updated state with mode and contextualized_query
     """
     contextualizer = Contextualizer()
     
     # Extract model from runtime_config
     model = state["runtime_config"].get("model")
     
-    # Contextualize query using existing logic
-    contextualized_query = contextualizer.contextualize(
+    # 1. Determine routing scenario
+    mode = classify_scenario(
         query=state["user_query"],
-        chat_history=state["chat_history"],
         model=model
     )
     
-    # Determine routing scenario
-    mode = classify_scenario(
-        query=contextualized_query,
-        chat_history_length=len(state["chat_history"])
-    )
+    # 2. Contextualize query if needed
+    if mode == "no_vectordb":
+        # No need to contextualize for no_vectordb
+        contextualized_query = state["user_query"]
+    else:
+        contextualized_query = contextualizer.contextualize(
+            query=state["user_query"],
+            chat_history=state["chat_history"],
+            model=model
+        )
     
     # Update state and return
     return {
         **state,
+        "mode": mode,
         "contextualized_query": contextualized_query,
-        "mode": mode
     }

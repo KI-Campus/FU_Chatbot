@@ -24,12 +24,9 @@ class GraphState(TypedDict, total=False):
     retrieved: List[TextNode]
     reranked: List[TextNode]
 
-    # multihop specific artifacts
-    #VOERST DIESE ABER ICH MÖCHTE DIE UMSETZUNG NOCHMAL ÜBERDENKEN
-    """
-    sub_queries: List[str] = []
-    sub_query_answers: List[str] = []
-    """
+    # multi_hop specific artifacts
+    sub_queries: List[str]  # Decomposed sub-questions for multi-hop
+    multi_contexts: List[List[TextNode]]  # Retrieved contexts per sub-query (parallel)
 
     # socratic specific artifacts
     #VOERST DIESE ABER ICH MÖCHTE DIE UMSETZUNG NOCHMAL ÜBERDENKEN

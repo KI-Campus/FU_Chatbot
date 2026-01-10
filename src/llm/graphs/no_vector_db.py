@@ -25,7 +25,7 @@ def direct_answer_node(state: GraphState) -> GraphState:
     response = answerer.answer_question(
         query=state["user_query"],
         chat_history=state["chat_history"],
-        language=state["detected_language"] or "German",
+        language=state["detected_language"],
         sources=[],  # No retrieval
         model=model,
         is_moodle=False,
