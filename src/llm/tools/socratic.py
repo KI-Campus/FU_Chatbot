@@ -7,7 +7,7 @@ Detailed pedagogical logic to be implemented later.
 
 from langfuse.decorators import observe
 
-from llm.state.models import GraphState
+from src.llm.state.models import GraphState
 
 
 @observe()
@@ -50,6 +50,4 @@ def socratic_guide(state: GraphState) -> GraphState:
         "Was weißt du bereits über dieses Thema? Kannst du mir deine bisherigen Überlegungen beschreiben?"
     )
     
-    state.answer = generic_socratic_response
-    
-    return state
+    return {**state, "answer": generic_socratic_response}

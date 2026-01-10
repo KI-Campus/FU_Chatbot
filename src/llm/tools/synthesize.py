@@ -6,7 +6,7 @@ TODO: Implement synthesis logic for combining multiple retrieved contexts.
 
 from langfuse.decorators import observe
 
-from llm.state.models import GraphState
+from src.llm.state.models import GraphState
 
 
 @observe()

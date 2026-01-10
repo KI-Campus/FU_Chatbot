@@ -2,7 +2,7 @@ from langfuse.decorators import observe
 from llama_index.core.schema import NodeWithScore, TextNode
 from llama_index.core.vector_stores import VectorStoreQuery
 
-from llm.objects.LLMs import LLM
+from src.llm.objects.LLMs import LLM
 from src.vectordb.sparse_encoder import BM25SparseEncoder
 from src.vectordb.qdrant import VectorDBQdrant, models
 
@@ -22,7 +22,7 @@ class KiCampusRetriever:
             self.sparse_encoder = BM25SparseEncoder()
             # For hybrid search, we use direct Qdrant client instead of LlamaIndex wrapper
             self.vector_db = VectorDBQdrant("prod_remote")
-            self.collection_name = "web_assistant_hybrid"
+            self.collection_name = "web_assistant_hybrid_TEST"
         else:
             self.vector_store = VectorDBQdrant("prod_remote").as_llama_vector_store(collection_name="web_assistant_hybrid")
 

@@ -3,13 +3,13 @@ from llama_index.core.llms import ChatMessage, MessageRole
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
 
-from llm.objects.LLMs import Models
-from llm.state.models import GraphState
-from llm.tools.contextualize import contextualize_and_route
-from llm.graphs.no_vector_db import build_no_vectordb_graph
-from llm.graphs.simple_hop import build_simple_hop_graph
-from llm.graphs.multi_hop import build_multi_hop_graph
-from llm.graphs.socratic import build_socratic_graph
+from src.llm.objects.LLMs import Models
+from src.llm.state.models import GraphState
+from src.llm.tools.contextualize import contextualize_and_route
+from src.llm.graphs.no_vector_db import build_no_vectordb_graph
+from src.llm.graphs.simple_hop import build_simple_hop_graph
+from src.llm.graphs.multi_hop import build_multi_hop_graph
+from src.llm.graphs.socratic import build_socratic_graph
 
 
 class KICampusAssistant:
@@ -32,7 +32,7 @@ class KICampusAssistant:
         }
         
         # Initialize checkpoint/persistence backend
-        # MemorySaver for development - can be replaced with SqliteSaver or PostgresSaver for production
+        # MemorySaver for development - replace with PostgresSQL for production
         self.checkpointer = MemorySaver()
         
         # Compile main router graph once (singleton pattern for performance)
@@ -75,7 +75,7 @@ class KICampusAssistant:
         # Conditional routing based on mode
         def route_by_mode(state: GraphState) -> str:
             """Route to appropriate subgraph based on classified scenario."""
-            return state.mode  # Returns "no_vectordb", "simple_hop", "multi_hop", or "socratic"
+            return state["mode"]  # Returns "no_vectordb", "simple_hop", "multi_hop", or "socratic"
         
         graph.add_conditional_edges(
             "contextualize_and_route",
@@ -125,16 +125,16 @@ class KICampusAssistant:
         limited_chat_history = self.limit_chat_history(chat_history, 10)
 
         # Create initial state
-        initial_state = GraphState(
-            user_query=query,
-            chat_history=limited_chat_history,
-            runtime_config={
+        initial_state: GraphState = {
+            "user_query": query,
+            "chat_history": limited_chat_history,
+            "runtime_config": {
                 "model": model,
                 "conversation_id": conversation_id,
                 # No course_id/module_id for general chat
             },
-            system_config=self.system_config
-        )
+            "system_config": self.system_config
+        }
 
         # Thread config for LangGraph persistence
         config = {
@@ -149,7 +149,7 @@ class KICampusAssistant:
         # Return as ChatMessage for backward compatibility
         return ChatMessage(
             role=MessageRole.ASSISTANT,
-            content=result.citations_markdown or result.answer or ""
+            content=result.get("citations_markdown") or result.get("answer") or ""
         )
 
     @observe()
@@ -183,17 +183,17 @@ class KICampusAssistant:
         limited_chat_history = self.limit_chat_history(chat_history, 10)
 
         # Create initial state with course filters
-        initial_state = GraphState(
-            user_query=query,
-            chat_history=limited_chat_history,
-            runtime_config={
+        initial_state: GraphState = {
+            "user_query": query,
+            "chat_history": limited_chat_history,
+            "runtime_config": {
                 "model": model,
                 "course_id": course_id,
                 "module_id": module_id,
                 "conversation_id": conversation_id,
             },
-            system_config=self.system_config
-        )
+            "system_config": self.system_config
+        }
 
         # Thread config for LangGraph persistence
         config = {
@@ -208,7 +208,7 @@ class KICampusAssistant:
         # Return as ChatMessage for backward compatibility
         return ChatMessage(
             role=MessageRole.ASSISTANT,
-            content=result.citations_markdown or result.answer or ""
+            content=result.get("citations_markdown") or result.get("answer") or ""
         )
 
 

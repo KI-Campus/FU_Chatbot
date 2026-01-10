@@ -10,11 +10,11 @@ Future versions will include sophisticated pedagogical logic.
 
 from langgraph.graph import StateGraph, START, END
 
-from llm.state.models import GraphState
-from llm.tools.retrieve import retrieve_chunks
-from llm.tools.rerank import rerank_chunks
-from llm.tools.language import detect_language
-from llm.tools.socratic import socratic_guide
+from src.llm.state.models import GraphState
+from src.llm.tools.retrieve import retrieve_chunks
+from src.llm.tools.rerank import rerank_chunks
+from src.llm.tools.language import detect_language
+from src.llm.tools.socratic import socratic_guide
 
 
 def build_socratic_graph() -> StateGraph:
@@ -38,12 +38,12 @@ def build_socratic_graph() -> StateGraph:
     # Simple flow for now (no retrieval)
     # TODO: Add conditional retrieval when socratic logic is more sophisticated
     
-    graph.add_node("detect_language", detect_language)
-    graph.add_node("socratic_guide", socratic_guide)
+    graph.add_node("detect_language_node", detect_language)
+    graph.add_node("socratic_guide_node", socratic_guide)
     
     # Linear flow (placeholder)
-    graph.add_edge(START, "detect_language")
-    graph.add_edge("detect_language", "socratic_guide")
-    graph.add_edge("socratic_guide", END)
+    graph.add_edge(START, "detect_language_node")
+    graph.add_edge("detect_language_node", "socratic_guide_node")
+    graph.add_edge("socratic_guide_node", END)
     
     return graph.compile()

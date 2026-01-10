@@ -208,7 +208,7 @@ if query := st.chat_input("Wie lautet Ihre Frage?"):
         headers={"Api-Key": env.REST_API_KEYS[0]},
         json={
             "messages": st.session_state.messages,
-            "model": st.session_state.llm_select,
+            "model": st.session_state.llm_select.value if isinstance(st.session_state.llm_select, Models) else st.session_state.llm_select,
             "course_id": st.session_state.course_id if hasattr(st.session_state, "course_id") else None,
             "module_id": st.session_state.module_id if hasattr(st.session_state, "module_id") else None,
         },
