@@ -4,8 +4,8 @@ Node wrapper for detecting user's language.
 
 from langfuse.decorators import observe
 
-from llm.objects.language_detector import LanguageDetector
-from llm.state.models import GraphState
+from src.llm.objects.language_detector import LanguageDetector
+from src.llm.state.models import GraphState
 
 
 @observe()
@@ -25,10 +25,8 @@ def detect_language(state: GraphState) -> GraphState:
     detector = LanguageDetector()
     
     language = detector.detect(
-        query=state.user_query,
-        chat_history=state.chat_history
+        query=state["user_query"],
+        chat_history=state["chat_history"]
     )
     
-    state.detected_language = language
-    
-    return state
+    return {**state, "detected_language": language}

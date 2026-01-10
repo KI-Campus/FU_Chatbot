@@ -9,7 +9,7 @@ from langfuse.decorators import observe
 from llama_index.core.postprocessor import LLMRerank
 from llama_index.core.schema import NodeWithScore, TextNode
 
-from llm.objects.LLMs import LLM, Models
+from src.llm.objects.LLMs import LLM, Models
 
 
 class Reranker:
@@ -43,6 +43,10 @@ class Reranker:
         if not nodes:
             return []
         
+        # If only 1 node, no need to rerank
+        if len(nodes) == 1:
+            return nodes
+        
         # Get LLM instance for reranking
         llm = self.llm.get_model(model)
         
@@ -62,11 +66,16 @@ class Reranker:
                 # Wrap TextNode in NodeWithScore
                 nodes_with_score.append(NodeWithScore(node=node, score=node.score if hasattr(node, 'score') else None))
         
-        # Perform reranking
-        reranked_nodes = llm_rerank.postprocess_nodes(
-            nodes=nodes_with_score,
-            query_str=query
-        )
+        # Perform reranking with error handling
+        try:
+            reranked_nodes = llm_rerank.postprocess_nodes(
+                nodes=nodes_with_score,
+                query_str=query
+            )
+        except (IndexError, ValueError, KeyError) as e:
+            # If reranking fails (e.g., parsing errors), return original nodes
+            print(f"Reranking failed, returning original nodes: {e}")
+            return nodes[:self.top_n]
         
         # Extract nodes from NodeWithScore
         result_nodes = []

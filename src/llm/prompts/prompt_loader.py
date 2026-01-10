@@ -1,6 +1,6 @@
 from pathlib import Path
 
-BASE_PROMPT_DIR = Path("src/llm/prompts")
+BASE_PROMPT_DIR = Path(__file__).parent.resolve()
 
 def load_prompt(prompt_name: str) -> str:
     """

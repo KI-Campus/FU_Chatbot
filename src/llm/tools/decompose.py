@@ -6,7 +6,7 @@ TODO: Implement LLM-based query decomposition logic.
 
 from langfuse.decorators import observe
 
-from llm.state.models import GraphState
+from src.llm.state.models import GraphState
 
 
 @observe()

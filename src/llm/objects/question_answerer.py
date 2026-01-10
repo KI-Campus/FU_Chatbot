@@ -5,7 +5,7 @@ from langfuse.decorators import observe
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.schema import TextNode
 
-from llm.objects.LLMs import LLM, Models
+from src.llm.objects.LLMs import LLM, Models
 
 ANSWER_NOT_FOUND_FIRST_TIME = """Entschuldige, ich habe deine Frage nicht ganz verstanden. Könntest du dein Problem bitte noch einmal etwas genauer erklären oder anders formulieren?
 """
