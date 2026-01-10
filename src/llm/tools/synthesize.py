@@ -1,10 +1,9 @@
 """
-Node for synthesizing answers from multiple retrieval rounds (Multi-Hop).
-
-TODO: Implement synthesis logic for combining multiple retrieved contexts.
+Node for synthesizing contexts from multiple retrieval rounds (Multi-Hop).
 """
 
 from langfuse.decorators import observe
+from llama_index.core.schema import TextNode
 
 from src.llm.state.models import GraphState
 
@@ -12,27 +11,37 @@ from src.llm.state.models import GraphState
 @observe()
 def synthesize_answer(state: GraphState) -> GraphState:
     """
-    Synthesizes final answer from multiple retrieval rounds.
+    Synthesizes contexts from multiple sub-query retrievals into unified context.
     
-    PLACEHOLDER: Currently passes through to standard answer generation.
-    Future implementation should combine contexts from multiple sub-queries.
+    Combines all retrieved chunks from multiple retrieval rounds,
+    deduplicates by node ID, and prepares for reranking.
+    
+    The reranker will then select the most relevant nodes for the original query.
     
     Changes:
-    - Future: Aggregates multiple retrieved chunks from sub-queries
-    - Future: Generates synthesized answer combining all contexts
+    - Sets state["retrieved"] with combined, deduplicated nodes (for reranking)
     
     Args:
-        state: Current graph state with multiple retrieval results
+        state: Current graph state with multi_contexts (list of lists of TextNode)
         
     Returns:
-        Updated state (currently unchanged, placeholder)
+        Updated state with combined retrieved nodes for reranking
     """
-    # TODO: Implement synthesis logic
-    # Example logic:
-    # 1. Collect all retrieved chunks from multiple retrieval rounds
-    # 2. Deduplicate and merge contexts
-    # 3. Use LLM to synthesize comprehensive answer addressing all sub-queries
-    # 4. Ensure citations reference all relevant sources
+    # Guard: If no multi_contexts, skip synthesis
+    if "multi_contexts" not in state or not state["multi_contexts"]:
+        return {**state, "retrieved": []}
     
-    # Placeholder: No synthesis yet, use standard answer flow
-    return state
+    # Flatten all contexts and deduplicate by node_id
+    seen_ids = set()
+    combined_nodes = []
+    
+    for context_list in state["multi_contexts"]:
+        for node in context_list:
+            node_id = node.node_id if hasattr(node, 'node_id') else id(node)
+            if node_id not in seen_ids:
+                seen_ids.add(node_id)
+                combined_nodes.append(node)
+    
+    # Pass ALL deduplicated nodes to reranker (it will select top_n)
+    # SINNVOLL ODER SOLLTE DER RERANKER GEZWUNGEN WERDEN DOKUMENTE DIE FÜR JEDE SUBQUERY RETRIEVED WURDEN ZU NUTZEN?
+    return {**state, "retrieved": combined_nodes}

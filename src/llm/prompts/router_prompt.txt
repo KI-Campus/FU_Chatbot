@@ -16,6 +16,8 @@ Classify the user's query into exactly ONE of the following scenarios:
 3. **multi_hop**: Complex questions requiring multiple diverse documents/contexts
    - Examples: "Vergleiche Decision Trees und Random Forests", "Wie hängen Ethik und KI zusammen?"
    - Questions requiring synthesis, comparison, or multi-step reasoning
+   - Includes queries that have multiple questions
+   - Examples: " Was ist Deep Learning? Wie wird Deep Learning angewendet"
 
 4. **socratic**: User signals desire for guided learning or exploration
    - Examples: "Hilf mir das zu verstehen", "Erkläre mir das Schritt für Schritt", "Ich möchte das selbst erarbeiten"
