@@ -6,7 +6,12 @@ Second step in socratic workflow: Diagnostic assessment to establish baseline.
 
 from langfuse.decorators import observe
 
+from src.llm.objects.LLMs import LLM, Models
+from src.llm.prompts.prompt_loader import load_prompt
 from src.llm.state.models import GraphState
+
+# Load prompt once at module level
+DIAGNOSE_PROMPT = load_prompt("socratic_diagnose_prompt")
 
 
 @observe()
@@ -38,9 +43,23 @@ def socratic_diagnose(state: GraphState) -> GraphState:
     user_query = state["user_query"]
     chat_history = state.get("chat_history", [])
     
-    # Extract learning objective from query (simple heuristic for now)
-    # TODO Phase 11: Use LLM to intelligently extract learning goal
-    learning_objective = f"Verstehen: {user_query}"
+    # Extract model from runtime_config
+    model = state["runtime_config"].get("model", Models.GPT4)
+    
+    # Use LLM to intelligently extract learning objective from query
+    _llm = LLM()
+    response = _llm.chat(
+        query=user_query,
+        chat_history=chat_history,
+        model=model,
+        system_prompt=DIAGNOSE_PROMPT
+    )
+    
+    if response.content is None or response.content.strip() == "":
+        # Fallback to simple heuristic if LLM fails
+        learning_objective = f"Verstehen: {user_query}"
+    else:
+        learning_objective = response.content.strip()
     
     # Initialize student model with unknown baseline
     # Will be updated based on student's responses in core loop
