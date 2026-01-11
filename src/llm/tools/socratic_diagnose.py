@@ -13,6 +13,10 @@ from src.llm.state.models import GraphState
 # Load prompt once at module level
 DIAGNOSE_PROMPT = load_prompt("socratic_diagnose_prompt")
 
+# Constants for fallback learning objective generation
+MAX_QUERY_LENGTH = 100  # Maximum length of user query in fallback objective
+TRUNCATION_SUFFIX_LENGTH = 3  # Length of "..." suffix
+
 
 @observe()
 def socratic_diagnose(state: GraphState) -> GraphState:
@@ -58,7 +62,11 @@ def socratic_diagnose(state: GraphState) -> GraphState:
     if response.content is None or response.content.strip() == "":
         # Fallback to simple heuristic if LLM fails
         # Truncate long queries to keep objectives concise
-        query_truncated = user_query if len(user_query) <= 100 else user_query[:97] + "..."
+        if len(user_query) <= MAX_QUERY_LENGTH:
+            query_truncated = user_query
+        else:
+            truncate_at = MAX_QUERY_LENGTH - TRUNCATION_SUFFIX_LENGTH
+            query_truncated = user_query[:truncate_at] + "..."
         learning_objective = f"Verstehen: {query_truncated}"
     else:
         learning_objective = response.content.strip()
