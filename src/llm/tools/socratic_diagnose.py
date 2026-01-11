@@ -7,6 +7,11 @@ Second step in socratic workflow: Diagnostic assessment to establish baseline.
 from langfuse.decorators import observe
 
 from src.llm.state.models import GraphState
+from src.llm.objects.LLMs import LLM
+from src.llm.prompts.prompt_loader import load_prompt
+
+# Load prompt once at module level
+SOCRATIC_DIAGNOSE_PROMPT = load_prompt("socratic_diagnose")
 
 
 @observe()
@@ -37,29 +42,42 @@ def socratic_diagnose(state: GraphState) -> GraphState:
     """
     user_query = state["user_query"]
     chat_history = state.get("chat_history", [])
+    model = state.get("model", "gpt-4o-mini")
     
-    # Extract learning objective from query (simple heuristic for now)
-    # TODO Phase 11: Use LLM to intelligently extract learning goal
-    learning_objective = f"Verstehen: {user_query}"
+    # LLM-Call to extract learning objective and diagnostic question
+    _llm = LLM()
+    response = _llm.chat(
+        query=user_query,
+        chat_history=chat_history,
+        model=model,
+        system_prompt=SOCRATIC_DIAGNOSE_PROMPT
+    )
+    
+    # Parse response
+    learning_objective = ""
+    diagnostic_question = ""
+    
+    if response.content:
+        lines = response.content.strip().split('\n')
+        for line in lines:
+            if line.startswith('LEARNING_OBJECTIVE:'):
+                learning_objective = line.split(':', 1)[1].strip()
+            elif line.startswith('DIAGNOSTIC_QUESTION:'):
+                diagnostic_question = line.split(':', 1)[1].strip()
+    
+    # Fallback if parsing fails
+    if not learning_objective:
+        learning_objective = f"Verstehe: {user_query}"
+    if not diagnostic_question:
+        diagnostic_question = "Was weißt du bereits über dieses Thema?"
     
     # Initialize student model with unknown baseline
-    # Will be updated based on student's responses in core loop
     student_model = {
-        "mastery": "unknown",  # Will become "low", "medium", or "high" based on responses
-        "misconceptions": [],  # Detected misconceptions will be added during core loop
-        "affect": "neutral",  # Emotional state: "engaged", "frustrated", "confused", etc.
-        "prior_knowledge": None,  # Will be filled from diagnostic response
+        "mastery": "unknown",
+        "misconceptions": [],
+        "affect": "neutral",
+        "prior_knowledge": None,
     }
-    
-    # Ask diagnostic question to assess baseline knowledge
-    # This helps us understand where to start the Socratic dialogue
-    diagnostic_question = (
-        f"Um dir bestmöglich helfen zu können, möchte ich zuerst verstehen, "
-        f"wo du gerade stehst:\n"
-        f"**Was weißt du bereits über dieses Thema?**\n"
-        f"Beschreibe mir gerne deine bisherigen Gedanken, Überlegungen oder "
-        f"was du schon darüber gelernt hast – egal wie viel oder wenig das ist!"
-    )
     
     return {
         **state,
