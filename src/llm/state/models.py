@@ -4,6 +4,7 @@ from llama_index.core.llms import ChatMessage
 from llama_index.core.schema import TextNode
 
 Scenario = Literal["no_vectordb", "simple_hop", "multi_hop", "socratic"]
+SocraticMode = Literal["contract", "diagnose", "core", "hinting", "reflection", "explain"]
 
 class GraphState(TypedDict, total=False):
     mode: Optional[Scenario]
@@ -29,12 +30,14 @@ class GraphState(TypedDict, total=False):
     multi_contexts: List[List[TextNode]]  # Retrieved contexts per sub-query (parallel)
 
     # socratic specific artifacts
-    #VOERST DIESE ABER ICH MÖCHTE DIE UMSETZUNG NOCHMAL ÜBERDENKEN
-    """
-    learning_goal: Optional[str] = None
-    student_model: Dict[str, Any] = {}
-    socratic_steps: Optional[str] = None # 'ask', 'hint', 'explain', 'quiz' ...
-    """
+    socratic_mode: Optional[SocraticMode]  # Internal routing: "contract" | "diagnose" | "core" | "hinting" | "reflection" | "explain"
+    learning_objective: Optional[str]  # Identified learning goal for the interaction
+    hint_level: int  # 0-3, tracks escalation of hints (0=no hints yet, 3=maximum help before explain)
+    attempt_count: int  # Number of attempts student made at current question/concept
+    stuckness_score: float  # 0.0-1.0, heuristic measure of student being stuck (>0.7 triggers hinting)
+    goal_achieved: bool  # Whether the learning objective has been reached
+    socratic_contract: Optional[Dict[str, bool]]  # {"allow_explain": bool, "allow_direct_answer": bool}
+    student_model: Optional[Dict[str, Any]]  # {"mastery": "low"|"med"|"high", "misconceptions": [], "affect": ...}
 
     # output
     answer: Optional[str] = None
