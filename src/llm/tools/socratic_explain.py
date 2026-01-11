@@ -7,6 +7,11 @@ Fallback mechanism when hints don't suffice or student explicitly requests expla
 from langfuse.decorators import observe
 
 from src.llm.state.models import GraphState
+from src.llm.objects.LLMs import LLM
+from src.llm.prompts.prompt_loader import load_prompt
+
+# Load prompt once at module level
+SOCRATIC_EXPLAIN_PROMPT = load_prompt("socratic_explain")
 
 
 @observe()
@@ -52,38 +57,39 @@ def socratic_explain(state: GraphState) -> GraphState:
     student_model = state.get("student_model", {})
     reranked_chunks = state.get("reranked", [])
     attempt_count = state.get("attempt_count", 0)
+    model = state.get("model", "gpt-4o-mini")
     
-    # Acknowledge student's effort
-    # TODO Phase 11: Analyze chat_history to reference specific student attempts
-    acknowledgment = (
-        "Ich sehe, du hast dich wirklich bemüht! "
-        "Deine bisherigen Überlegungen zeigen, dass du schon einige Aspekte verstanden hast."
+    # Prepare context for LLM
+    course_materials = "\n\n".join([
+        f"[Material {i+1}]\n{chunk.page_content}"
+        for i, chunk in enumerate(reranked_chunks[:3])
+    ]) if reranked_chunks else "No specific course materials retrieved."
+    
+    query_for_llm = f"""Learning Objective: {learning_objective}
+
+Attempt Count: {attempt_count}
+
+Retrieved Course Materials:
+{course_materials}"""
+    
+    # Generate explanation using LLM
+    _llm = LLM()
+    llm_response = _llm.chat(
+        query=query_for_llm,
+        chat_history=chat_history,
+        model=model,
+        system_prompt=SOCRATIC_EXPLAIN_PROMPT
     )
     
-    # Provide structured explanation
-    # TODO Phase 11: Use LLM + reranked chunks to generate grounded explanation
-    # Should reference actual course content and student's misconceptions
-    explanation = (
-        f"\n\n📖 **Erklärung zu: {learning_objective}**\n\n"
-        "Lass mich das Konzept nun strukturiert erklären:\n\n"
-        "**1. Grundidee:**\n"
-        "[Kernkonzept in einfachen Worten]\n\n"
-        "**2. Wie es funktioniert:**\n"
-        "[Schritt-für-Schritt Ablauf]\n\n"
-        "**3. Warum es wichtig ist:**\n"
-        "[Praktische Bedeutung und Anwendung]\n\n"
-        "**4. Häufige Missverständnisse:**\n"
-        "[Was oft verwechselt wird und warum]\n\n"
-    )
-    
-    # Transition to reflection
-    reflection_transition = (
-        "\n**Lass uns das Gelernte festigen:**\n"
-        "Jetzt, wo du die Erklärung gehört hast, lass uns kurz reflektieren, "
-        "damit das Wissen wirklich bei dir ankommt."
-    )
-    
-    full_response = acknowledgment + explanation + reflection_transition
+    if llm_response.content is None:
+        # Fallback if LLM fails
+        full_response = (
+            f"Lass mich {learning_objective} erklären:\n\n"
+            "Leider konnte ich keine detaillierte Erklärung generieren. "
+            "Bitte versuche es nochmal oder stelle eine spezifischere Frage."
+        )
+    else:
+        full_response = llm_response.content.strip()
     
     # Update student model to mark concept as explained
     updated_student_model = {

@@ -7,6 +7,11 @@ Escalates support when student is stuck, using course content for contextual hin
 from langfuse.decorators import observe
 
 from src.llm.state.models import GraphState
+from src.llm.objects.LLMs import LLM
+from src.llm.prompts.prompt_loader import load_prompt
+
+# Load prompt once at module level
+SOCRATIC_HINTING_PROMPT = load_prompt("socratic_hinting")
 
 
 @observe()
@@ -52,52 +57,51 @@ def socratic_hinting(state: GraphState) -> GraphState:
     learning_objective = state.get("learning_objective", "")
     contract = state.get("socratic_contract", {})
     reranked_chunks = state.get("reranked", [])
+    user_query = state["user_query"]
+    chat_history = state.get("chat_history", [])
+    model = state.get("model", "gpt-4o-mini")
     
     # Increment hint level (max 3)
     new_hint_level = min(3, hint_level + 1)
     
-    # Generate hint based on level
-    # TODO Phase 11: Use LLM + reranked chunks to generate contextual hints
-    # For now, use template-based hints with different specificity levels
+    # Prepare context for LLM
+    course_materials = "\n\n".join([
+        f"[Material {i+1}]\n{chunk.page_content}"
+        for i, chunk in enumerate(reranked_chunks[:3])
+    ]) if reranked_chunks else "No specific course materials retrieved."
     
-    if new_hint_level == 1:
-        # Level 1: General direction, point to concept area
-        hint_text = (
-            "💡 **Hinweis 1:**\n\n"
-            "Denke an die grundlegenden Konzepte, die wir besprochen haben. "
-            "Welches dieser Konzepte könnte hier besonders relevant sein?\n\n"
-            "Nimm dir einen Moment und versuche es nochmal mit diesem Gedanken im Hinterkopf."
-        )
+    query_for_llm = f"""Learning Objective: {learning_objective}
+
+Hint Level: {new_hint_level}
+
+Student's Current Response: {user_query}
+
+Retrieved Course Materials:
+{course_materials}"""
+    
+    # Generate hint using LLM
+    _llm = LLM()
+    llm_response = _llm.chat(
+        query=query_for_llm,
+        chat_history=chat_history,
+        model=model,
+        system_prompt=SOCRATIC_HINTING_PROMPT
+    )
+    
+    if llm_response.content is None:
+        # Fallback if LLM fails
+        hint_text = f"💡 **Hinweis {new_hint_level}:** Denke nochmal über die Grundkonzepte nach."
+    else:
+        hint_text = llm_response.content.strip()
+    
+    # Determine next mode based on hint level
+    if new_hint_level < 3:
         next_mode = "core"  # Back to core for another attempt
-        
-    elif new_hint_level == 2:
-        # Level 2: More specific, narrow down solution space
-        hint_text = (
-            "💡 **Hinweis 2:**\n\n"
-            "Gut, du bist auf dem richtigen Weg! Lass uns konkreter werden:\n\n"
-            "Betrachte den Zusammenhang zwischen den verschiedenen Komponenten. "
-            "Wie beeinflussen sie sich gegenseitig? Was passiert Schritt für Schritt?\n\n"
-            "Versuche, den Prozess in kleinere Teile zu zerlegen."
-        )
-        next_mode = "core"  # Back to core for another attempt
-        
-    else:  # Level 3
-        # Level 3: Very specific, almost giving the answer
-        hint_text = (
-            "💡 **Hinweis 3:**\n\n"
-            "Okay, lass mich sehr konkret werden:\n\n"
-            "Der Schlüssel liegt in [spezifischer Aspekt des Konzepts]. "
-            "Versuche, dieses Prinzip direkt auf deine Ausgangsfrage anzuwenden.\n\n"
-            "Wenn du jetzt immernoch unsicher bist, kann ich dir auch eine "
-            "vollständige Erklärung geben – sag einfach Bescheid!"
-        )
-        
-        # Check if we should escalate to explain
-        # Only if contract explicitly allows it
+    else:
+        # Level 3: Check if we should escalate to explain
         if contract.get("allow_explain", False):
             next_mode = "explain"
         else:
-            # Give student one more chance with the strong hint
             next_mode = "core"
     
     # Reduce stuckness after providing hint (hints reduce frustration)
