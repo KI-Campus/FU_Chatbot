@@ -57,7 +57,9 @@ def socratic_diagnose(state: GraphState) -> GraphState:
     
     if response.content is None or response.content.strip() == "":
         # Fallback to simple heuristic if LLM fails
-        learning_objective = f"Verstehen: {user_query}"
+        # Truncate long queries to keep objectives concise
+        query_truncated = user_query if len(user_query) <= 100 else user_query[:97] + "..."
+        learning_objective = f"Verstehen: {query_truncated}"
     else:
         learning_objective = response.content.strip()
     
