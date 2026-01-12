@@ -10,7 +10,7 @@ from qdrant_client.http import models
 from tqdm import tqdm
 
 from src.env import env
-from llm.objects.LLMs import LLM
+from src.llm.objects.LLMs import LLM
 from src.vectordb.sparse_encoder import BM25SparseEncoder
 from src.loaders.drupal import Drupal
 from src.loaders.moochup import Moochup
@@ -93,7 +93,45 @@ class Fetch_Data:
             for i in range(0, len(lst), chunk_size):
                 yield lst[i : i + chunk_size]
 
-        chunk_size = 100
+        # Qdrant payload size limit: 32MB, we target 30MB to be safe
+        MAX_BATCH_SIZE_BYTES = 30 * 1024 * 1024  # 30 MB
+        
+        def calculate_point_size(point: dict) -> int:
+            """Calculate the exact JSON payload size of a single point in bytes."""
+            import json
+            return len(json.dumps(point, default=str).encode('utf-8'))
+        
+        def batch_by_size(points: list, max_size_bytes: int):
+            """Yield batches of points that fit within the size limit."""
+            current_batch = []
+            current_size = 0
+            
+            for point in points:
+                point_size = calculate_point_size(point)
+                
+                # If a single point exceeds the limit, log warning and send it alone
+                if point_size > max_size_bytes:
+                    if current_batch:
+                        yield current_batch
+                        current_batch = []
+                        current_size = 0
+                    yield [point]  # Send oversized point alone
+                    continue
+                
+                # Check if adding this point would exceed the limit
+                if current_size + point_size > max_size_bytes:
+                    yield current_batch
+                    current_batch = [point]
+                    current_size = point_size
+                else:
+                    current_batch.append(point)
+                    current_size += point_size
+            
+            # Don't forget the last batch
+            if current_batch:
+                yield current_batch
+
+        chunk_size = 100  # For document processing, not Qdrant batching
 
         self.logger.debug("Deleting old collection from Qdrant...")
         self.dev_vector_store.client.delete_collection(collection_name=DEFAULT_COLLECTION)
@@ -116,6 +154,7 @@ class Fetch_Data:
         # Manual processing for hybrid vectors (replacing LlamaIndex pipeline)
         splitter = SentenceSplitter(chunk_size=256, chunk_overlap=16)
         
+        total_points_upserted = 0
         for batch in tqdm(chunk_list(all_docs, chunk_size), desc="Processing batches"):
             # Step 1: Chunk documents into nodes
             nodes = splitter.get_nodes_from_documents(batch)
@@ -143,14 +182,20 @@ class Fetch_Data:
                 }
                 hybrid_points.append(point)
             
-            # Step 4: Upsert batch to Qdrant
-            self.dev_vector_store.upsert(DEFAULT_COLLECTION, hybrid_points)
+            # Step 4: Upsert to Qdrant in size-limited batches
+            for size_batch in batch_by_size(hybrid_points, MAX_BATCH_SIZE_BYTES):
+                batch_size_mb = sum(calculate_point_size(p) for p in size_batch) / (1024 * 1024)
+                self.logger.debug(f"Upserting batch of {len(size_batch)} points (~{batch_size_mb:.1f} MB)")
+                self.dev_vector_store.upsert(DEFAULT_COLLECTION, size_batch)
+                total_points_upserted += len(size_batch)
+        
+        self.logger.info(f"Total points upserted: {total_points_upserted}")
 
         self.logger.info("Finished loading Docs into Dev Qdrant.")
         self.logger.info(f"Migrate dev collection '{DEFAULT_COLLECTION}' to prod collection")
         self.dev_vector_store.client.migrate(
             self.prod_vector_store.client, [DEFAULT_COLLECTION], recreate_on_collision=True
-        )
+          )
         self.logger.info("Migration successful")
 
         self.sanity_check()
