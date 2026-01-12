@@ -19,6 +19,12 @@ def test_moochup_course_attributes(input: str, expected: str):
 
 
 def test_moochup_payload_creation():
+    """Test that CourseInfo correctly parses the actual Moochup API response structure.
+    
+    Note: The actual API returns a minimal structure with only:
+    - id, type, attributes.name, attributes.description, attributes.url, attributes.languages
+    This test uses a more comprehensive example structure for validation purposes.
+    """
     course_example = {
         "id": "0cf46a4b-9022-4cd5-9815-92312b3a84dcc",
         "type": "courses",

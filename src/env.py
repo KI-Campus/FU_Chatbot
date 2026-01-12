@@ -15,7 +15,7 @@ class EnvHelper(BaseModel):
     If a variable without a default value retrieved, an error is raised."""
 
     ENVIRONMENT: str = Field(
-        default="STAGING", description="Whether to use production or staging APIs from ki-campus sites "
+        default="PRODUCTION", description="Whether to use production or staging APIs from ki-campus sites "
     )
     DEBUG_MODE: bool = False
     REST_API_KEYS: list[str] = []
@@ -28,7 +28,7 @@ class EnvHelper(BaseModel):
     AZURE_OPENAI_EMBEDDER_DEPLOYMENT: str = "UNSET"
     AZURE_OPENAI_EMBEDDER_MODEL: str = "UNSET"
 
-    AZURE_MISTRAL_URL: str = "UNSET"
+    #AZURE_MISTRAL_URL: str = "UNSET" <-- Nicht in Azure Key Vault
     AZURE_MISTRAL_KEY: str = "UNSET"
 
     GWDG_URL: str = "UNSET"
@@ -45,8 +45,12 @@ class EnvHelper(BaseModel):
     DRUPAL_PASSWORD: str = "UNSET"
     DRUPAL_GRANT_TYPE: str = "password"
 
-    DEV_QDRANT_API_KEY: str = "UNSET"
-    DEV_QDRANT_URL: str = "UNSET"
+    # Generic Qdrant config (e.g. for lab / single-cluster setups)
+    QDRANT_API_KEY: str = "UNSET"
+    QDRANT_URL: str = "UNSET"
+
+    #DEV_QDRANT_API_KEY: str = "UNSET"
+    #DEV_QDRANT_URL: str = "UNSET"
 
     PROD_QDRANT_API_KEY: str = "UNSET"
     PROD_QDRANT_URL: str = "UNSET"
@@ -110,9 +114,11 @@ class EnvHelper(BaseModel):
         for key in self.model_json_schema()["properties"].keys():
             if key not in kwargs.keys():
                 self.append_variable(kwargs, variable_key=key, secret_client=secret_client)
+        # Use default ENVIRONMENT if not loaded from Key Vault or env
+        environment = kwargs.get("ENVIRONMENT", "PRODUCTION")
 
         # Variables with different names
-        if kwargs.get("ENVIRONMENT") == "PRODUCTION":
+        if environment == "PRODUCTION":
             self.append_variable(
                 kwargs,
                 variable_key="DATA_SOURCE_PRODUCTION_MOODLE_URL",

@@ -11,12 +11,16 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.env import env
 from src.llm.assistant import KICampusAssistant
-from src.llm.LLMs import Models
+from src.llm.objects.LLMs import Models
 from src.vectordb.qdrant import VectorDBQdrant
+
+# Singleton instances for performance - avoid recreating on every request
+_vector_db = VectorDBQdrant()
+_assistant = KICampusAssistant()
 
 app = FastAPI()
 # authentication with OAuth2
-api_key_hearder = APIKeyHeader(name="Api-Key")
+api_key_header = APIKeyHeader(name="Api-Key")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -30,7 +34,7 @@ app.add_middleware(
 )
 
 
-async def api_key_auth(api_key: Annotated[str, Depends(api_key_hearder)]):
+async def api_key_auth(api_key: Annotated[str, Depends(api_key_header)]):
     ALLOWED_API_KEYS = env.REST_API_KEYS
 
     if api_key not in ALLOWED_API_KEYS:
@@ -85,6 +89,11 @@ class ChatRequest(BaseModel):
         ],
         min_length=1,
     )
+    conversation_id: str | None = Field(
+        default=None,
+        description="Optional conversation/thread ID for persistent conversations. If None, a new conversation is created.",
+        examples=["550e8400-e29b-41d4-a716-446655440000"],
+    )
     course_id: int | None = Field(
         default=None,
         description="The course identifier to restrict the search on.",
@@ -125,7 +134,7 @@ class ChatRequest(BaseModel):
                 detail="module_id is required when course_id is set.",
             )
         if self.module_id is not None:
-            if not VectorDBQdrant().check_if_module_exists(self.module_id):
+            if not _vector_db.check_if_module_exists(self.module_id):
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail=f"no module found with the given id: {self.module_id}.",
@@ -135,7 +144,7 @@ class ChatRequest(BaseModel):
     @model_validator(mode="after")
     def validate_course_id(self):
         if self.course_id is not None:
-            if not VectorDBQdrant().check_if_course_exists(self.course_id):
+            if not _vector_db.check_if_course_exists(self.course_id):
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     detail=f"no course found with the given id: {self.course_id}.",
@@ -155,26 +164,25 @@ class ChatResponse(BaseModel):
 @observe()
 def chat(chat_request: ChatRequest) -> ChatResponse:
     """Returns the response to the user message in one response (no streaming)."""
-    assistant = KICampusAssistant()
-
-    if chat_request.course_id and not chat_request.module_id:
-        llm_response = assistant.chat_with_course(
+    # Use singleton assistant for performance
+    
+    if chat_request.course_id is not None:
+        # Chat with course content (with or without module filter)
+        llm_response = _assistant.chat_with_course(
             query=chat_request.get_user_query(),
             chat_history=chat_request.get_chat_history(),
             model=chat_request.model,
             course_id=chat_request.course_id,
-        )
-
-    elif chat_request.course_id and chat_request.module_id:
-        llm_response = assistant.chat_with_course(
-            query=chat_request.get_user_query(),
-            chat_history=chat_request.get_chat_history(),
-            model=chat_request.model,
-            module_id=chat_request.module_id,
+            module_id=chat_request.module_id,  # Can be None
+            conversation_id=chat_request.conversation_id,
         )
     else:
-        llm_response = assistant.chat(
-            query=chat_request.get_user_query(), chat_history=chat_request.get_chat_history(), model=chat_request.model
+        # General chat (Drupal content)
+        llm_response = _assistant.chat(
+            query=chat_request.get_user_query(), 
+            chat_history=chat_request.get_chat_history(), 
+            model=chat_request.model,
+            conversation_id=chat_request.conversation_id,
         )
 
     trace_id = langfuse_context.get_current_trace_id()
@@ -189,7 +197,7 @@ def chat(chat_request: ChatRequest) -> ChatResponse:
 class FeedbackRequest(BaseModel):
     response_id: str = Field(description="The ID of the response that the feedback belongs to.")
     feedback: str | None = Field(description="Feedback on the conversation.", default=None)
-    score: int = Field(default="Score between 0 and 1, where 1 is good and 0 is bad.")
+    score: int = Field(description="Score between 0 and 1, where 1 is good and 0 is bad.")
 
     @field_validator("score", mode="after")
     @classmethod

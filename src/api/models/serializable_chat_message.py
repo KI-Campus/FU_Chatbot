@@ -12,6 +12,6 @@ class SerializableChatMessage(BaseModel):
 
     @staticmethod
     def from_chat_message(chat_message: ChatMessage) -> "SerializableChatMessage":
-        if type(chat_message.content) != str:
+        if not isinstance(chat_message.content, str):
             raise ValueError(f"Response content is not a string: {chat_message.content}")
         return SerializableChatMessage(role=chat_message.role, content=chat_message.content)
