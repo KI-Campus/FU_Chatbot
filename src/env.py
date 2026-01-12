@@ -17,7 +17,7 @@ class EnvHelper(BaseModel):
     ENVIRONMENT: str = Field(
         default="STAGING", description="Whether to use production or staging APIs from ki-campus sites "
     )
-    DEBUG_MODE: bool = False
+    DEBUG_MODE: bool = True
     REST_API_KEYS: list[str] = []
 
     AZURE_OPENAI_URL: str = "UNSET"
@@ -28,7 +28,7 @@ class EnvHelper(BaseModel):
     AZURE_OPENAI_EMBEDDER_DEPLOYMENT: str = "UNSET"
     AZURE_OPENAI_EMBEDDER_MODEL: str = "UNSET"
 
-    AZURE_MISTRAL_URL: str = "UNSET"
+    #AZURE_MISTRAL_URL: str = "UNSET" <-- Nicht in Azure Key Vault
     AZURE_MISTRAL_KEY: str = "UNSET"
 
     GWDG_URL: str = "UNSET"
@@ -45,8 +45,12 @@ class EnvHelper(BaseModel):
     DRUPAL_PASSWORD: str = "UNSET"
     DRUPAL_GRANT_TYPE: str = "password"
 
-    DEV_QDRANT_API_KEY: str = "UNSET"
-    DEV_QDRANT_URL: str = "UNSET"
+    # Generic Qdrant config (e.g. for lab / single-cluster setups)
+    QDRANT_API_KEY: str = "UNSET"
+    QDRANT_URL: str = "UNSET"
+
+    #DEV_QDRANT_API_KEY: str = "UNSET"
+    #DEV_QDRANT_URL: str = "UNSET"
 
     PROD_QDRANT_API_KEY: str = "UNSET"
     PROD_QDRANT_URL: str = "UNSET"
@@ -101,7 +105,7 @@ class EnvHelper(BaseModel):
             logging.warning("No .env file found.")
 
         # Using Azure Key Vault when secrets are not set through environment variables
-        key_vault_name = os.environ.get("KEY_VAULT_NAME", "kicwa-keyvault-prod")
+        key_vault_name = os.environ.get("KEY_VAULT_NAME", "kicwa-keyvault-lab")
         key_vault_uri = f"https://{key_vault_name}.vault.azure.net/"
         credential = DefaultAzureCredential()
         secret_client = SecretClient(vault_url=key_vault_uri, credential=credential)
