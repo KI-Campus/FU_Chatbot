@@ -17,7 +17,7 @@ class EnvHelper(BaseModel):
     ENVIRONMENT: str = Field(
         default="PRODUCTION", description="Whether to use production or staging APIs from ki-campus sites "
     )
-    DEBUG_MODE: bool = True
+    DEBUG_MODE: bool = False
     REST_API_KEYS: list[str] = []
 
     AZURE_OPENAI_URL: str = "UNSET"
