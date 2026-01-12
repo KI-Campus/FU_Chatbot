@@ -133,19 +133,10 @@ class LLM:
         thread.start()
         thread.join(timeout=TIME_TO_WAIT_FOR_GWDG)
 
-        if thread.is_alive() or isinstance(result[-1], Exception):
+        if thread.is_alive() or isinstance(result[-1], Exception) or result[-1] is None:
+            # GWDG timeout or error - fallback to GPT-4
             LLM.gwdg_unavailable = True
             LLM.gwdg_unavailable_since = datetime.datetime.now()
-            llm = self.get_model(Models.GPT4)
-            chat_engine = SimpleChatEngine.from_defaults(
-                llm=llm, system_prompt=system_prompt, chat_history=copy_chat_history
-            )
-            response = chat_engine.chat(message=query)
-        else:
-            response = result[-1]
-
-        if isinstance(result[-1], Exception) or result[-1] is None:
-            self.gwdg_unavailable = True
             llm = self.get_model(Models.GPT4)
             chat_engine = SimpleChatEngine.from_defaults(
                 llm=llm, system_prompt=system_prompt, chat_history=copy_chat_history
