@@ -2,6 +2,7 @@ import logging
 import unicodedata
 from datetime import datetime
 from enum import Enum
+from pathlib import Path
 from typing import List
 import requests
 from bs4 import BeautifulSoup
@@ -36,12 +37,25 @@ class Drupal:
         # https://stackoverflow.com/questions/62599036/python-requests-is-slow-and-takes-very-long-to-complete-http-or-https-request
         requests.packages.urllib3.util.connection.HAS_IPV6 = False
 
+        self.important_courses = self._load_important_courses()
         self.oauth_token = self.get_oauth_token("https://ki-campus.org")
         self.header = {
             "Authorization": f"Bearer {self.oauth_token}",
             "Accept": "application/vnd.api+json",
             "Accept-Language": "de",
         }
+
+    def _load_important_courses(self) -> set[int]:
+        """Load important course IDs from IMPORTANT_COURSES.txt"""
+        important_courses_file = Path(__file__).parent / "IMPORTANT_COURSES.txt"
+        try:
+            content = important_courses_file.read_text().strip()
+            # Parse the list format: [99, 106, 313, ...]
+            course_ids = eval(content)
+            return set(course_ids)
+        except Exception as e:
+            self.logger.warning(f"Could not load IMPORTANT_COURSES.txt: {e}")
+            return set()
 
     def get_oauth_token(self, base_url: str):
         response = requests.post(
@@ -84,6 +98,9 @@ class Drupal:
 
                 if page.get("attributes", {}).get("field_moodle_course_id") is not None:
                     metadata["course_id"] = page["attributes"]["field_moodle_course_id"]
+                    # Mark popular/recommended courses
+                    if metadata["course_id"] in self.important_courses:
+                        metadata["is_important"] = True
 
                 # Fetch additional data for COURSE pages
                 if page_type == PageTypes.COURSE:
