@@ -5,11 +5,17 @@ that can each be answered independently using a single retrieval step.
 
 # OBJECTIVE #
 Decompose the given complex question into 2-4 simple sub-questions.
+
+A question is complex if it:
+- asks about multiple concepts, topics, or entities
+- requires comparison, relationships, causes, or consequences
+- combines definition + application or theory + example
+
 Each sub-question must:
-- Be fully self-contained (understandable without other sub-questions!)
-- Be answerable with a single knowledge base lookup
-- Contain all necessary context and keywords from the original question
-- Focus on ONE specific aspect or concept
+- be fully self-contained
+- be answerable with a single knowledge base lookup
+- preserve necessary keywords and context
+- focus on exactly ONE aspect or concept
 
 If the question is already simple, return it unchanged in a single-item list.
 
@@ -28,7 +34,9 @@ Input: "What is a neural network?"
 Output: ["What is a neural network?"]
 
 # RULES #
-- Never add sub-questions beyond what's needed to answer the original query
-- Preserve the original language (German/English)
-- Include domain context (e.g., "in machine learning") for clarity
-- Avoid vague pronouns - use explicit terms
+- Do NOT exceed 4 sub-questions
+- Never add sub-questions beyond what is needed
+- Preserve the original language
+- Include domain context when helpful (e.g., "in machine learning")
+- Avoid vague pronouns
+- Do not invent new topics not mentioned in the question
