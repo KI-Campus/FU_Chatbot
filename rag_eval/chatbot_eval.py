@@ -2,8 +2,12 @@ import sys
 import os
 import asyncio
 import json
+import logging
 from datetime import datetime
 from functools import lru_cache
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Allow imports from project root
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -39,8 +43,8 @@ def _retrieve_context(question: str):
                 contexts.append(node.get_content())
             else:
                 contexts.append(node.text)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.error(f"Failed to extract content from node: {e}")
 
     return tuple(contexts)
 
