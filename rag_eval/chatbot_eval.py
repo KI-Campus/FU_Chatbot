@@ -14,7 +14,7 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from ragas.llms import LangchainLLMWrapper
 
 # Backend imports
-from llm.objects.LLMs import Models
+from src.llm.objects.LLMs import Models
 from src.llm.assistant import KICampusAssistant
 
 
