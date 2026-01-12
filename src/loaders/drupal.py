@@ -4,7 +4,6 @@ from datetime import datetime
 from enum import Enum
 from pathlib import Path
 from typing import List
-
 import requests
 from bs4 import BeautifulSoup
 from llama_index.core import Document
@@ -103,10 +102,22 @@ class Drupal:
                     if metadata["course_id"] in self.important_courses:
                         metadata["is_important"] = True
 
+                # Fetch additional data for COURSE pages
+                if page_type == PageTypes.COURSE:
+                    metadata.update(self.get_course_metadata(page))
+                
+                # Fetch author names for BLOGPOST pages
+                if page_type == PageTypes.BLOGPOST:
+                    author_data = page.get("relationships", {}).get("field_author", {}).get("data", [])
+                    if author_data:
+                        author_names = self.get_authors(author_data)
+                        if author_names:
+                            metadata["authors"] = author_names
+
                 documents.append(
                     Document(
                         metadata=metadata,
-                        text=self.get_page_representation(page, page_type),
+                        text=self.get_page_representation(page, page_type, metadata),
                     )
                 )
 
@@ -117,6 +128,11 @@ class Drupal:
 
         while url:
             response = requests.get(url, headers=self.header)
+            
+            if response.status_code != 200:
+                self.logger.warning(f"API request failed with status {response.status_code} for URL: {url}")
+                return data  # Return whatever data we have so far
+            
             result = response.json()
             data.extend(result["data"])
             next_link = result["links"].get("next")
@@ -187,11 +203,15 @@ class Drupal:
 
         return lectures_text
 
-    def get_page_representation(self, page, page_type: PageTypes):
+    def get_page_representation(self, page, page_type: PageTypes, metadata):
         final_representations = ""
 
         match page_type:
-            case PageTypes.PAGE | PageTypes.BLOGPOST:
+            case PageTypes.COURSE:
+                final_representations += self.get_course_representation(page, page_type, metadata)
+            case PageTypes.BLOGPOST:
+                final_representations += self.get_blogpost_representation(page, page_type, metadata)
+            case PageTypes.PAGE:
                 final_representations += self.get_basic_representation(page, page_type)
 
             case PageTypes.SPEZIAL:
@@ -273,6 +293,98 @@ class Drupal:
 
         return topics_str
 
+    def get_institutions(self, institution_list: list) -> List[str]:
+        """Fetch institution names from the API by their IDs.
+        
+        Args:
+            institution_list: List of institution data objects containing 'id' and 'type' keys
+            
+        Returns:
+            List of institution names
+        """
+        institution_names = []
+
+        for institution in institution_list:
+            if institution.get("id") is None:
+                continue
+            
+            institution_data = self.fetch_data(
+                f"https://ki-campus.org/jsonapi/taxonomy_term/institution/{institution['id']}"
+            )
+            if institution_data.get("data") is not None:
+                name = institution_data["data"].get("attributes", {}).get("name")
+                if name:
+                    institution_names.append(name)
+
+        return institution_names
+
+    def get_lecturers(self, lecturer_list: list) -> List[str]:
+        """Fetch lecturer names from the API by their IDs.
+        
+        Args:
+            lecturer_list: List of lecturer data objects containing 'id' and 'type' keys
+            
+        Returns:
+            List of lecturer names
+        """
+        lecturer_names = []
+
+        for lecturer in lecturer_list:
+            if lecturer.get("id") is None:
+                continue
+            
+            lecturer_data = self.fetch_data(
+                f"https://ki-campus.org/jsonapi/node/lecturer/{lecturer['id']}"
+            )
+            if lecturer_data.get("data") is not None:
+                name = lecturer_data["data"].get("attributes", {}).get("title")
+                if name:
+                    lecturer_names.append(name)
+
+        return lecturer_names
+
+    def get_authors(self, author_list: list) -> List[str]:
+        """Fetch author names from the API by their IDs.
+        
+        Args:
+            author_list: List of author data objects containing 'id' and 'type' keys
+            
+        Returns:
+            List of author names
+        """
+        author_names = []
+
+        for author in author_list:
+            if author.get("id") is None:
+                continue
+            
+            author_data = self.fetch_data(
+                f"https://ki-campus.org/jsonapi/node/person/{author['id']}"
+            )
+            if author_data.get("data") is not None:
+                name = author_data["data"].get("attributes", {}).get("title")
+                if name:
+                    author_names.append(name)
+
+        return author_names
+
+    def get_related_name(self, url: str) -> str | None:
+        """Fetch the name attribute from a related JSON API URL.
+        
+        Args:
+            url: The related href URL to fetch data from
+            
+        Returns:
+            The name attribute from the response, or None if not found
+        """
+        try:
+            data = self.fetch_data(url)
+            if data.get("data") is not None:
+                return data["data"].get("attributes", {}).get("name")
+        except Exception:
+            pass
+        return None
+
     def get_basic_representation(self, page, page_type: PageTypes):
         final_representations = f"""
                     {page_type.value[1]} Title: {page["attributes"]["title"]}
@@ -285,6 +397,134 @@ class Drupal:
                 final_representations += content_text
 
         return final_representations
+    
+    def get_course_metadata(self, page):
+        metadata = {}
+        institution_data = page.get("relationships", {}).get("field_institution", {}).get("data", [])
+        if institution_data:
+            institution_names = self.get_institutions(institution_data)
+            if institution_names:
+                metadata["institutions"] = institution_names
+
+        lecturer_data = page.get("relationships", {}).get("field_lecturer", {}).get("data", [])
+        if lecturer_data:
+            lecturer_names = self.get_lecturers(lecturer_data)
+            if lecturer_names:
+                metadata["lecturers"] = lecturer_names
+
+        # description
+        if page.get("attributes", {}).get("field_description") is not None:
+            metadata["description"] = BeautifulSoup(
+                page["attributes"]["field_description"]["value"], "html.parser"
+            ).getText()
+
+        # course_type (field_format)
+        if page.get("attributes", {}).get("field_format") is not None:
+            metadata["course_type"] = self.get_course_type(page["attributes"]["field_format"])
+
+        # field_umfang (course duration/scope)
+        if page.get("attributes", {}).get("field_umfang") is not None:
+            metadata["field_umfang"] = page["attributes"]["field_umfang"]
+
+        # difficulty (field_level)
+        if page.get("attributes", {}).get("field_level") is not None:
+            metadata["difficulty"] = page["attributes"]["field_level"]
+
+        # topics (field_occupational_field)
+        if page.get("relationships", {}).get("field_occupational_field", {}).get("data") is not None:
+            metadata["topics"] = self.get_course_topic(page["relationships"]["field_occupational_field"]["data"])
+
+        # course_level
+        course_level_url = page.get("relationships", {}).get("field_course_level", {}).get("links", {}).get("related", {}).get("href")
+        if course_level_url:
+            course_level_name = self.get_related_name(course_level_url)
+            if course_level_name:
+                metadata["course_level"] = course_level_name
+
+        # degree (achievement record)
+        degree_url = page.get("relationships", {}).get("field_achievement_record", {}).get("links", {}).get("related", {}).get("href")
+        if degree_url:
+            degree_name = self.get_related_name(degree_url)
+            if degree_name:
+                metadata["degree"] = degree_name
+
+        # rating_avg (divide by 2 and format as "X Sterne")
+        rating_avg_str = page.get("attributes", {}).get("field_rating_avg")
+        if rating_avg_str:
+            try:
+                rating_value = float(rating_avg_str) / 2
+                metadata["rating_avg"] = f"{rating_value} Sterne"
+            except (ValueError, TypeError):
+                pass
+
+        # rating_count
+        rating_count = page.get("attributes", {}).get("field_rating_count")
+        if rating_count is not None:
+            metadata["rating_count"] = rating_count
+
+        # language (content language)
+        language_url = page.get("relationships", {}).get("field_content_language", {}).get("links", {}).get("related", {}).get("href")
+        if language_url:
+            language_name = self.get_related_name(language_url)
+            if language_name:
+                metadata["language"] = language_name
+
+        # license
+        license_url = page.get("relationships", {}).get("field_license", {}).get("links", {}).get("related", {}).get("href")
+        if license_url:
+            license_name = self.get_related_name(license_url)
+            if license_name:
+                metadata["license"] = license_name
+
+
+        return metadata
+
+    
+    def get_course_representation(self, page, page_type: PageTypes, metadata):
+        paragraphs = self.get_page_paragraphs(page["id"], page_type)
+
+        rating_line = ""
+        if metadata.get("rating_avg"):
+            rating_line = f"Average {page_type.value[1]} Rating on a scale from 0 to 5, 0 being the worst, 5 being the best: {metadata.get('rating_avg')} at {metadata.get('rating_count', 0)} ratings"
+        else:
+            rating_line = "No ratings available for this course."
+
+        final_representations = f"""
+        {page_type.value[1]} Title: {page["attributes"]["title"]}
+        {page_type.value[1]} Description: {metadata.get("description", "")}
+        {page_type.value[1]} Type: {metadata.get("course_type", "")}
+        {page_type.value[1]} Length: {metadata.get("field_umfang", "")}
+        {page_type.value[1]} Difficulty: {metadata.get("difficulty", "")}
+        {page_type.value[1]} Target Group: {metadata.get("course_level", "")}
+        {page_type.value[1]} Language: {metadata.get("language", "")}
+        {page_type.value[1]} Topic(s): {metadata.get("topics", "")}
+        {page_type.value[1]} Institutions: {', '.join(metadata.get("institutions", []))}
+        {page_type.value[1]} Lecturers: {', '.join(metadata.get("lecturers", []))}
+        {page_type.value[1]} Degree: {metadata.get("degree", "")}
+        {rating_line}
+        {page_type.value[1]} License: {metadata.get("license", "")}
+
+        {paragraphs}
+        """
+
+        return final_representations
+    
+    def get_blogpost_representation(self, page, page_type: PageTypes, metadata):
+        final_representations = f"""
+                    {page_type.value[1]} Title: {metadata}
+                    {page_type.value[1]} Authors: {', '.join(metadata.get("authors", []))}
+                    {page_type.value[1]} Published on: {metadata.get("date_created", "")}
+                """
+        if page["attributes"]["body"] is not None:
+            content = BeautifulSoup(page["attributes"]["body"]["value"], "html.parser").getText()
+
+            if content is not None:
+                content_text = f"\n{page_type.value[1]} Content: {content}"
+                final_representations += content_text
+
+        return final_representations
+
+
 
 
 if __name__ == "__main__":

@@ -4,6 +4,9 @@ from pathlib import Path
 import requests
 from pydantic import HttpUrl
 
+# Warnung unterdrücken wenn SSL-Verification deaktiviert ist
+# requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
+
 
 class APICaller:
     def __init__(self, url: HttpUrl, params: dict = {}, headers: dict = {}, **kwargs) -> None:
@@ -20,7 +23,9 @@ class APICaller:
         requests.packages.urllib3.util.connection.HAS_IPV6 = False
 
     def get(self, **kwargs):
-        self.response = requests.get(url=self.url, params=self.params, headers=self.headers)
+        # Workaround: dont verify if server certificate is invalid
+        # self.response = requests.get(url=self.url, params=self.params, headers=self.headers, verify=False)
+        self.response = requests.get(url=self.url, params=self.params, headers=self.headers, verify=True)
         try:
             self.response.raise_for_status()
         except requests.exceptions.HTTPError as err:
@@ -51,7 +56,8 @@ class APICaller:
 
     def getFile(self, filename, tmp_dir):
         local_filename = Path(f"{tmp_dir}/{filename}")
-        with requests.get(self.url, params=self.params, stream=True) as r:
+        # TEMPORARY: verify=False wegen abgelaufenem Server-Zertifikat
+        with requests.get(self.url, params=self.params, stream=True, verify=False) as r:
             r.raise_for_status()
             with open(local_filename, "wb") as f:
                 for chunk in r.iter_content(chunk_size=8192):

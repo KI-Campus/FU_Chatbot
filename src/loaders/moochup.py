@@ -1,4 +1,5 @@
 from typing import Optional
+import logging
 
 import requests
 from bs4 import BeautifulSoup
@@ -71,18 +72,29 @@ class Moochup:
         Course infromation is distribuded over multiple pages."""
 
         def fetch_pages(api_url) -> dict:
-            response = requests.get(
-                api_url, headers={"Accept": "application/vnd.api+json; moochub-version=3.0, application/problem+json"}
-            )
-            response.raise_for_status()
-            return response.json()
+            try:
+                response = requests.get(
+                    api_url,
+                    headers={
+                        "Accept": "application/vnd.api+json; moochub-version=3.0, application/problem+json",
+                    },
+                )
+                response.raise_for_status()
+                return response.json()
+            except requests.exceptions.RequestException as err:
+                # Netzwerk-/HTTP-Fehler bei Moochup: Protokollieren und leere Seite zurückgeben,
+                # damit die übrige Ingestion weiterlaufen kann.
+                logging.getLogger("loader").warning(
+                    "Failed to retrieve Moochup data from %s: %s", api_url, err
+                )
+                return {"data": [], "links": {}}
 
         courses = []
         course_infos_page = fetch_pages(self.api_url)
-        courses.extend(course_infos_page["data"])
-        while "next" in course_infos_page["links"] and course_infos_page["links"]["next"]:
+        courses.extend(course_infos_page.get("data", []))
+        while course_infos_page.get("links", {}).get("next"):
             course_infos_page = fetch_pages(course_infos_page["links"]["next"])
-            courses.extend(course_infos_page["data"])
+            courses.extend(course_infos_page.get("data", []))
 
         courses = [CourseInfo(**course) for course in courses]
         return courses
