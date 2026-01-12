@@ -1,6 +1,6 @@
 import pytest
 
-from src.llm.tools.language_detector import LanguageDetector
+from llm.objects.language_detector import LanguageDetector
 
 
 @pytest.fixture

@@ -4,6 +4,7 @@ FROM mcr.microsoft.com/azure-functions/python:4-python3.11
 
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
+    AzureWebJobsFeatureFlags=EnableWorkerIndexing \
     POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_CACHE_DIR='/var/cache/pypoetry' \
@@ -13,7 +14,8 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 
 WORKDIR /home/site/wwwroot
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+# Install Poetry via pip instead of the bootstrap script (more reliable in this base image)
+RUN pip install "poetry==${POETRY_VERSION}"
 
 COPY poetry.lock pyproject.toml ./
 RUN poetry config virtualenvs.create false && poetry install --with azfunction --no-interaction --no-ansi

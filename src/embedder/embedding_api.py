@@ -17,8 +17,9 @@ class EmbedRequest(BaseModel):
 
 
 @app.post("/embed")
-def read_root(query: EmbedRequest):
-    vector = model.embed(query)
+def embed_text(request: EmbedRequest):
+    """Generate embedding for the provided text query."""
+    vector = model.embed(request.query)
     return {"Embedding": vector}
 
 
