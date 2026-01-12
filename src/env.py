@@ -15,7 +15,7 @@ class EnvHelper(BaseModel):
     If a variable without a default value retrieved, an error is raised."""
 
     ENVIRONMENT: str = Field(
-        default="PRODUCTION", description="Whether to use production or staging APIs from ki-campus sites "
+        default="STAGING", description="Whether to use production or staging APIs from ki-campus sites "
     )
     DEBUG_MODE: bool = False
     REST_API_KEYS: list[str] = []
