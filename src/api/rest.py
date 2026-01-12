@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.env import env
 from src.llm.assistant import KICampusAssistant
-from llm.objects.LLMs import Models
+from src.llm.objects.LLMs import Models
 from src.vectordb.qdrant import VectorDBQdrant
 
 # Singleton instances for performance - avoid recreating on every request
