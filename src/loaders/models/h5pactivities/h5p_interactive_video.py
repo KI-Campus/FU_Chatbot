@@ -120,6 +120,63 @@ class InteractiveVideo(H5PContainer):
         
         return err_message
     
+    @classmethod
+    def from_h5p_params(cls, library: str, params: dict) -> Optional["InteractiveVideo"]:
+        """
+        Extract InteractiveVideo from H5P params dict (when used as child content).
+        Note: InteractiveVideo typically requires full package context, so this is limited.
+        """
+        # InteractiveVideo needs the full package (zip file, vimeo service, etc.)
+        # When embedded as child content, we extract what we can from params
+        if "interactiveVideo" not in params:
+            return None
+        
+        iv = params["interactiveVideo"]
+        
+        # Try to get video URL
+        try:
+            video_url = iv["video"]["files"][0]["path"]
+        except (KeyError, IndexError):
+            video_url = ""
+        
+        # Extract interactions if possible
+        interactions = []
+        interaction_list = []
+        if "assets" in iv and "interactions" in iv["assets"]:
+            interaction_list = iv["assets"]["interactions"]
+        elif "interactions" in iv:
+            interaction_list = iv["interactions"]
+        
+        for interaction in interaction_list:
+            action = interaction.get("action", {})
+            lib = action.get("library", "")
+            prms = action.get("params", {})
+            extracted = cls.extract_child_content(lib, prms)
+            if extracted:
+                interactions.append(extracted)
+        
+        return cls(
+            video_url=video_url,
+            vimeo_id=None,
+            interactions=interactions
+        )
+    
+    def to_text(self) -> str:
+        """Convert InteractiveVideo content to text representation."""
+        from src.loaders.models.h5pactivities.h5p_wrappers import Accordion
+        filtered_interactions = [i for i in self.interactions if not isinstance(i, Accordion)]
+        
+        parts = []
+        if self.video_url:
+            parts.append(f"Video: {self.video_url}")
+        if self.vimeo_id:
+            parts.append(f"Vimeo ID: {self.vimeo_id}")
+        
+        for interaction in filtered_interactions:
+            parts.append(interaction.to_text())
+        
+        return "\n".join(parts)
+    
     def to_dict(self) -> dict:
         """Konvertiert InteractiveVideo zu dict für Speicherung in Module."""
         # Filtere Accordion-Elemente raus
