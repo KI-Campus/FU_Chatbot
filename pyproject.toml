@@ -22,6 +22,9 @@ llama-index-llms-azure-inference = "0.1.1"
 llama-index-callbacks-langfuse = "0.1.6"
 llama-index-vector-stores-qdrant = "0.2.14"
 llamaapi = "~0.1.36"
+langgraph = "^0.2.0"
+langgraph-checkpoint = "^1.0.0"
+langgraph-cli = {extras = ["inmem"], version = "^0.1.0"}
 openai = "~1.16.2"
 python-dotenv = "~1.0.1"
 # Self hosting llms
@@ -49,6 +52,7 @@ gunicorn = "~22.0.0"
 optional = true
 [tool.poetry.group.azfunction.dependencies]
 azure-functions = "^1.21.3"
+azure-functions-durable = "^1.2.9"
 requests = "~2.31.0"
 beautifulsoup4 = "~4.12.2"
 

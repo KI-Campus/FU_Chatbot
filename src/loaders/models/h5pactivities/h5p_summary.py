@@ -65,6 +65,22 @@ class Summary(H5PLeaf):
         
         return None
     
+    @classmethod
+    def from_h5p_package(cls, module, content: dict, h5p_zip_path: str, **kwargs) -> Optional[str]:
+        """
+        Handler for standalone H5P Summary content.
+        Summary is typically embedded in InteractiveVideo, not standalone.
+        Returns error message or None on success.
+        """
+        params = content.get("params", {})
+        summary = cls.from_h5p_params("H5P.Summary", params)
+        
+        if summary:
+            module.content = summary.to_text()
+            return None
+        
+        return "Summary konnte nicht extrahiert werden"
+
     def to_text(self) -> str:
         intro_clean = strip_html(self.intro)
         result = f"[Abschluss] {intro_clean}\n"
