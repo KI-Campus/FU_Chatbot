@@ -22,10 +22,6 @@ class MultilingualE5LargeEmbedder(BaseEmbedding):
 
     def tokenize(self, input_text: str) -> dict[str, Tensor]:
         token_dict = self._tokenizer(input_text, max_length=513, padding=True, truncation=True, return_tensors="pt")
-
-        token_len = token_dict["input_ids"].shape[1]
-        if token_len > 512:
-            raise ValueError(f"input text length of {len(input_text)} exceeds max length of 512 tokens.")
         return token_dict
 
     def embed(self, input_text: str, type: str = "query") -> list[float]:
