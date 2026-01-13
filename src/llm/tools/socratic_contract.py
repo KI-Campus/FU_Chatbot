@@ -42,11 +42,9 @@ def socratic_contract(state: GraphState) -> GraphState:
     
     # Welcome message explaining the Socratic approach
     welcome_message = (
-        "🎓 Ich sehe, du möchtest etwas lernen!\n\n"
-        "Ich werde dich durch gezielte Fragen dabei unterstützen, "
-        "die Antwort selbst zu erarbeiten. Das hilft dir, das Thema wirklich zu verstehen.\n"
-        "Bist du bereit, gemeinsam zu arbeiten? "
-        "(Du kannst jederzeit sagen \"Gib mir einfach die Antwort\", falls du eine direkte Erklärung bevorzugst.)"
+        "🎓 Ich sehe, du möchtest etwas lernen!\n"
+        "Ich wechsele nun in den Lernmodus. Dies bedeutet, dass ich dich durch gezielte Fragen dabei unterstütze, die Antwort selbst zu erarbeiten. Wie kann ich dich heute unterstützen?\n"
+        "(Du kannst jederzeit die korrekte Antwort einfordern oder das Thema wechseln.)"
     )
     
     return {
@@ -58,4 +56,5 @@ def socratic_contract(state: GraphState) -> GraphState:
         "stuckness_score": 0.0,
         "goal_achieved": False,
         "answer": welcome_message,
+        "citations_markdown": None,  # Clear citations from previous requests
     }

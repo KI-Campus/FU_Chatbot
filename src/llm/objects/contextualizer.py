@@ -62,3 +62,5 @@ class Contextualizer:
             raise ValueError(
                 f"Contextualized socratic question is None. Please check the LLM implementation. Response: {contextualized_question}"
             )
+        
+        return contextualized_question.content
