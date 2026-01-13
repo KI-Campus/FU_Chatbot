@@ -3,7 +3,7 @@
 from qdrant_client.http.exceptions import UnexpectedResponse
 from src.vectordb.qdrant import VectorDBQdrant
 
-COLLECTION = "web_assistant_hybrid_TEST"
+COLLECTION = "web_assistant"
 
 
 def check(version: str) -> None:
@@ -17,7 +17,19 @@ def check(version: str) -> None:
     except Exception as e:
         print(f"[{version}] Fehler beim Prüfen: {e}")
 
+def check_payload(version: str) -> None:
+    try:
+        db = VectorDBQdrant(version=version)
+        points = db.client.scroll(
+            collection_name=COLLECTION,
+            limit=1
+        )
+        print(points)
+    except Exception as e:
+        print(f"[{version}] Fehler beim Abrufen der Payload: {e}")
 
 if __name__ == "__main__":
-    check("dev_remote")
-    check("prod_remote")
+    #check("dev_remote")
+    #check("prod_remote")
+    check_payload("dev_remote")
+    check_payload("prod_remote")

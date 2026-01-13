@@ -22,7 +22,7 @@ class KiCampusRetriever:
             self.sparse_encoder = BM25SparseEncoder()
             # For hybrid search, we use direct Qdrant client instead of LlamaIndex wrapper
             self.vector_db = VectorDBQdrant("prod_remote")
-            self.collection_name = "web_assistant_hybrid_TEST"
+            self.collection_name = "web_assistant_hybrid"
         else:
             self.vector_store = VectorDBQdrant("prod_remote").as_llama_vector_store(collection_name="web_assistant_hybrid")
 
