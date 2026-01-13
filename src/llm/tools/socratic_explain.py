@@ -9,6 +9,7 @@ from langfuse.decorators import observe
 from src.llm.state.models import GraphState
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
+from src.llm.state.socratic_routing import reset_socratic_state
 
 # Load prompt once at module level
 SOCRATIC_EXPLAIN_PROMPT = load_prompt("socratic_explain")
@@ -52,16 +53,16 @@ def socratic_explain(state: GraphState) -> GraphState:
     Returns:
         Updated state with explanation and routing decision
     """
-    learning_objective = state.get("learning_objective", "")
-    chat_history = state.get("chat_history", [])
-    student_model = state.get("student_model", {})
-    reranked_chunks = state.get("reranked", [])
-    attempt_count = state.get("attempt_count", 0)
-    model = state.get("model", "gpt-4o-mini")
+    learning_objective = state["learning_objective"]
+    chat_history = state["chat_history"]
+    student_model = state["student_model"]
+    reranked_chunks = state["reranked_chunks"]
+    attempt_count = state["attempt_count"]
+    model = state["runtime_config"]["model"]
     
     # Prepare context for LLM
     course_materials = "\n\n".join([
-        f"[Material {i+1}]\n{chunk.page_content}"
+        f"[Material {i+1}]\n{chunk.text}"
         for i, chunk in enumerate(reranked_chunks[:3])
     ]) if reranked_chunks else "No specific course materials retrieved."
     
@@ -83,38 +84,24 @@ Retrieved Course Materials:
     
     if llm_response.content is None:
         # Fallback if LLM fails
-        full_response = (
+        explanation = (
             f"Lass mich {learning_objective} erklären:\n\n"
             "Leider konnte ich keine detaillierte Erklärung generieren. "
             "Bitte versuche es nochmal oder stelle eine spezifischere Frage."
         )
     else:
-        full_response = llm_response.content.strip()
+        explanation = llm_response.content.strip()
     
-    # Update student model to mark concept as explained
-    updated_student_model = {
-        **student_model,
-        "mastery": "explained",  # Concept was explained, not self-discovered
-        "learning_path": "socratic_with_explanation",  # Tracked for analytics
-    }
+    # Add closing text encouraging continuation
+    closing_text = "\n\nWir können das Thema gerne nochmal durchgehen oder uns verwandte Konzepte angucken."
+    full_response = explanation + closing_text
     
-    # Reset hint level and stuckness (explanation resolves both)
-    new_hint_level = 0
-    new_stuckness = 0.0
-    
-    # After explanation, move to reflection to consolidate learning
-    # This is the natural endpoint of the explain path
-    next_mode = "reflection"
-    
-    # Mark goal as achieved (explanation given)
-    goal_achieved = True
+    # Reset all socratic state (explanation given = session complete)
+    socratic_reset = reset_socratic_state()
     
     return {
         **state,
-        "student_model": updated_student_model,
-        "socratic_mode": next_mode,
-        "hint_level": new_hint_level,
-        "stuckness_score": new_stuckness,
-        "goal_achieved": goal_achieved,
+        **socratic_reset,  # Reset all socratic fields including socratic_mode=None
         "answer": full_response,
+        "citations_markdown": None,  # Clear citations from previous requests
     }

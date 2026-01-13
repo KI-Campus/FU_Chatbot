@@ -7,7 +7,7 @@ from langfuse.decorators import observe
 from src.llm.objects.contextualizer import Contextualizer
 from src.llm.state.models import GraphState
 from src.llm.state.routing import classify_scenario
-from src.llm.state.socratic_routing import should_continue_socratic
+from src.llm.state.socratic_routing import should_continue_socratic, reset_socratic_state
 
 
 @observe()
@@ -37,20 +37,20 @@ def contextualize_and_route(state: GraphState) -> GraphState:
     contextualizer = Contextualizer()
     
     # Extract config
-    model = state["runtime_config"].get("model")
+    model = state["runtime_config"]["model"]
     user_query = state["user_query"]
-    chat_history = state.get("chat_history", [])
+    chat_history = state["chat_history"]
     
     # Check if socratic_mode is active
-    socratic_mode = state.get("socratic_mode")
+    socratic_mode = state.get("socratic_mode", None)
     
     if socratic_mode is not None and socratic_mode != "complete":
         # Socratic mode is active - check if user wants to continue
-        continue_socratic = should_continue_socratic(user_query, model)
+        continue_socratic = should_continue_socratic(user_query, chat_history, model)
         
         if not continue_socratic:
             # User wants to exit - clear socratic_mode and reroute
-            mode = classify_scenario(query=user_query, model=model)
+            mode = classify_scenario(query=user_query, chat_history=chat_history, model=model)
             
             # Contextualize normally
             if mode == "no_vectordb":
@@ -62,21 +62,24 @@ def contextualize_and_route(state: GraphState) -> GraphState:
                     model=model
                 )
             
-            # Return with socratic_mode cleared
+            # Reset all socratic state (user exited)
+            socratic_reset = reset_socratic_state()
+            
+            # Return with socratic state cleared and new mode
             return {
                 **state,
+                **socratic_reset,  # Reset all socratic fields
                 "mode": mode,
                 "contextualized_query": contextualized_query,
-                "socratic_mode": None,
             }
         else:
             # User wants to continue socratic
             mode = "socratic"
             
             # Contextualize only if in core mode (retrieval needed)
-            if socratic_mode == "core":
+            if socratic_mode == "core" or socratic_mode == "explain":
                 # Use socratic-specific contextualization
-                learning_objective = state.get("learning_objective", "")
+                learning_objective = state["learning_objective"]
                 contextualized_query = contextualizer.contextualize_socratic(
                     query=user_query,
                     chat_history=chat_history,
@@ -95,7 +98,7 @@ def contextualize_and_route(state: GraphState) -> GraphState:
             }
     else:
         # Normal mode (no active socratic session)
-        mode = classify_scenario(query=user_query, model=model)
+        mode = classify_scenario(query=user_query, chat_history=chat_history, model=model)
         
         # Contextualize query if needed
         if mode == "no_vectordb":

@@ -41,8 +41,8 @@ def socratic_diagnose(state: GraphState) -> GraphState:
         Updated state with learning objective and student model
     """
     user_query = state["user_query"]
-    chat_history = state.get("chat_history", [])
-    model = state.get("model", "gpt-4o-mini")
+    chat_history = state["chat_history"]
+    model = state["runtime_config"]["model"]
     
     # LLM-Call to extract learning objective and diagnostic question
     _llm = LLM()
@@ -85,4 +85,5 @@ def socratic_diagnose(state: GraphState) -> GraphState:
         "student_model": student_model,
         "socratic_mode": "core",
         "answer": diagnostic_question,
+        "citations_markdown": None,  # Clear citations from previous requests
     }

@@ -1,11 +1,17 @@
+from typing import List
+
 from src.llm.state.models import Scenario
 from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
 
+from llama_index.core.llms import ChatMessage
+from langfuse.decorators import observe
+
 # Load prompt
 ROUTER_PROMPT = load_prompt("router_prompt")
 
-def classify_scenario(query: str, model: Models) -> Scenario:
+@observe()
+def classify_scenario(query: str, chat_history: List[ChatMessage], model: Models) -> Scenario:
     """
     LLM-based classification of user query into scenario.
     
@@ -21,7 +27,7 @@ def classify_scenario(query: str, model: Models) -> Scenario:
 
     # Call LLM to classify scenario
     contextualized_question = _llm.chat(
-        query=query, chat_history=[], model=model, system_prompt=ROUTER_PROMPT
+        query=query, chat_history=chat_history, model=model, system_prompt=ROUTER_PROMPT
     )
     
     if contextualized_question.content is None:
