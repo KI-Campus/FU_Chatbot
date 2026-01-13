@@ -1,4 +1,4 @@
-from langfuse.decorators import observe
+from langfuse.decorators import observe, langfuse_context
 from llama_index.core.llms import ChatMessage, MessageRole
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
@@ -105,6 +105,11 @@ class KICampusAssistant:
 
     @observe()
     def chat(self, query: str, model: Models, chat_history: list[ChatMessage] | None = None, conversation_id: str | None = None) -> ChatMessage:
+        langfuse_context.update_current_observation(
+            metadata={
+                "conversation_id": conversation_id
+            }
+        )
         """
         Chat with general bot about drupal and functions of ki-campus.
         For frontend integrated in Drupal.
@@ -177,6 +182,12 @@ class KICampusAssistant:
         Returns:
             ChatMessage with answer (including citations)
         """
+        langfuse_context.update_current_observation(
+            metadata={
+                "conversation_id": conversation_id
+            }
+        )
+
         if chat_history is None:
             chat_history = []
 
