@@ -24,8 +24,6 @@ from src.llm.state.models import GraphState
 from src.llm.tools.socratic_contract import socratic_contract
 from src.llm.tools.socratic_diagnose import socratic_diagnose
 from src.llm.tools.socratic_core import socratic_core
-from src.llm.tools.socratic_hinting import socratic_hinting
-from src.llm.tools.socratic_reflection import socratic_reflection
 from src.llm.tools.socratic_explain import socratic_explain
 
 
@@ -43,8 +41,7 @@ def build_socratic_graph() -> StateGraph:
     Request 1: socratic_mode=None     → Router → Contract → END (response to user)
     Request 2: socratic_mode="diagnose" → Router → Diagnose → END (response to user)
     Request 3: socratic_mode="core"    → Router → Core → END (response to user)
-    Request 4: socratic_mode="core"    → Router → Core → END (response to user, loop)
-    Request 5: socratic_mode="hinting" → Router → Hinting → END (response to user)
+    Request 4: socratic_mode="core"    → Router → Core (question, hinting, reflection)→ END (response to user, loop)
     ...
     
     Node Transitions (via socratic_mode):
@@ -62,12 +59,10 @@ def build_socratic_graph() -> StateGraph:
     """
     graph = StateGraph(GraphState)
     
-    # Add all 6 socratic nodes
+    # Add socratic nodes (hinting and reflection are now part of core)
     graph.add_node("socratic_contract_node", socratic_contract)
     graph.add_node("socratic_diagnose_node", socratic_diagnose)
     graph.add_node("socratic_core_node", socratic_core)
-    graph.add_node("socratic_hinting_node", socratic_hinting)
-    graph.add_node("socratic_reflection_node", socratic_reflection)
     graph.add_node("socratic_explain_node", socratic_explain)
     
     # Router function: Selects ONE node based on socratic_mode
@@ -89,10 +84,7 @@ def build_socratic_graph() -> StateGraph:
             "contract": "socratic_contract_node",
             "diagnose": "socratic_diagnose_node",
             "core": "socratic_core_node",
-            "hinting": "socratic_hinting_node",
-            "reflection": "socratic_reflection_node",
             "explain": "socratic_explain_node",
-            "complete": "END",  # Terminal state, no node to execute
         }
         
         return mode_to_node.get(mode, "socratic_contract_node")
@@ -105,10 +97,7 @@ def build_socratic_graph() -> StateGraph:
             "socratic_contract_node": "socratic_contract_node",
             "socratic_diagnose_node": "socratic_diagnose_node",
             "socratic_core_node": "socratic_core_node",
-            "socratic_hinting_node": "socratic_hinting_node",
-            "socratic_reflection_node": "socratic_reflection_node",
             "socratic_explain_node": "socratic_explain_node",
-            "END": END,  # If mode="complete", go directly to END
         }
     )
     
@@ -116,8 +105,6 @@ def build_socratic_graph() -> StateGraph:
     graph.add_edge("socratic_contract_node", END)
     graph.add_edge("socratic_diagnose_node", END)
     graph.add_edge("socratic_core_node", END)
-    graph.add_edge("socratic_hinting_node", END)
-    graph.add_edge("socratic_reflection_node", END)
     graph.add_edge("socratic_explain_node", END)
     
     return graph.compile()

@@ -14,6 +14,59 @@ from src.llm.prompts.prompt_loader import load_prompt
 SOCRATIC_HINTING_PROMPT = load_prompt("socratic_hinting")
 
 
+def generate_hint_text(
+    hint_level: int,
+    learning_objective: str,
+    user_query: str,
+    reranked_chunks: list,
+    chat_history: list,
+    model: str
+) -> str:
+    """
+    Helper function to generate a hint based on current level.
+    
+    Args:
+        hint_level: Current hint level (1-3)
+        learning_objective: The learning goal
+        user_query: Student's current response
+        reranked_chunks: Retrieved course materials
+        chat_history: Conversation history
+        model: LLM model to use
+        
+    Returns:
+        Generated hint text
+    """
+    # Prepare context for LLM
+    course_materials = "\n\n".join([
+        f"[Material {i+1}]\n{chunk.text}"
+        for i, chunk in enumerate(reranked_chunks[:3])
+    ]) if reranked_chunks else "No specific course materials retrieved."
+    
+    query_for_llm = f"""Learning Objective: {learning_objective}
+
+Hint Level: {hint_level}
+
+Student's Current Response: {user_query}
+
+Retrieved Course Materials:
+{course_materials}"""
+    
+    # Generate hint using LLM
+    _llm = LLM()
+    llm_response = _llm.chat(
+        query=query_for_llm,
+        chat_history=chat_history,
+        model=model,
+        system_prompt=SOCRATIC_HINTING_PROMPT
+    )
+    
+    if llm_response.content is None:
+        # Fallback if LLM fails
+        return f"💡 **Hinweis {hint_level}:** Denke nochmal über die Grundkonzepte nach."
+    else:
+        return llm_response.content.strip()
+
+### UNGENUTZT ###
 @observe()
 def socratic_hinting(state: GraphState) -> GraphState:
     """
@@ -53,20 +106,20 @@ def socratic_hinting(state: GraphState) -> GraphState:
     Returns:
         Updated state with hint and routing decision
     """
-    hint_level = state.get("hint_level", 0)
-    learning_objective = state.get("learning_objective", "")
-    contract = state.get("socratic_contract", {})
-    reranked_chunks = state.get("reranked", [])
+    hint_level = state["hint_level"]
+    learning_objective = state["learning_objective"]
+    contract = state["socratic_contract"]
+    reranked_chunks = state["reranked"]
     user_query = state["user_query"]
-    chat_history = state.get("chat_history", [])
-    model = state.get("model", "gpt-4o-mini")
+    chat_history = state["chat_history"]
+    model = state["runtime_config"]["model"]
     
     # Increment hint level (max 3)
     new_hint_level = min(3, hint_level + 1)
     
     # Prepare context for LLM
     course_materials = "\n\n".join([
-        f"[Material {i+1}]\n{chunk.page_content}"
+        f"[Material {i+1}]\n{chunk.text}"
         for i, chunk in enumerate(reranked_chunks[:3])
     ]) if reranked_chunks else "No specific course materials retrieved."
     
@@ -99,7 +152,7 @@ Retrieved Course Materials:
         next_mode = "core"  # Back to core for another attempt
     else:
         # Level 3: Check if we should escalate to explain
-        if contract.get("allow_explain", False):
+        if contract["allow_explain"]:
             next_mode = "explain"
         else:
             next_mode = "core"
@@ -118,4 +171,5 @@ Retrieved Course Materials:
         "stuckness_score": new_stuckness,
         "attempt_count": new_attempt_count,
         "answer": hint_text,
+        "citations_markdown": None,  # Clear citations from previous requests
     }
