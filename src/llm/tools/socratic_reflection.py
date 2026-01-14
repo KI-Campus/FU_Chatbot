@@ -6,11 +6,8 @@ Final step in socratic workflow: Helps student internalize and generalize what t
 
 from langfuse.decorators import observe
 
-from src.llm.state.models import GraphState
-
 @observe()
 def generate_reflection_text(
-    learning_objective: str,
     student_model: dict
 ) -> tuple[str, dict]:
     """
@@ -23,16 +20,9 @@ def generate_reflection_text(
     Returns:
         Tuple of (reflection_text, updated_student_model)
     """
-    mastery_level = student_model.get("mastery", "unknown")
     
-    # Positive reinforcement based on how they got here
-    if mastery_level == "explained":
-        encouragement = (
-            "🎓 **Sehr gut!** Du hast durchgehalten, auch als es schwierig wurde. "
-            "Das zeigt echte Lernbereitschaft!"
-        )
-    else:
-        encouragement = (
+    # Positive reinforcement
+    encouragement = (
             "🎓 **Ausgezeichnet!** Du hast das Konzept eigenständig erarbeitet. "
             "Das ist der beste Weg zum tiefen Verständnis!"
         )

@@ -13,7 +13,7 @@ RERANK_TOP_N = 5
 
 def parse_args():
     p = argparse.ArgumentParser(description="Interactive CLI chat with KICampusAssistant.")
-    p.add_argument("--model", default="QWEN2", help="Model enum name from Models, e.g. GPT4")
+    p.add_argument("--model", default="GPT4", help="Model enum name from Models, e.g. GPT4")
     p.add_argument("--course-id", type=int, default=DEFAULT_COURSE_ID, help="Optional Moodle course_id")
     p.add_argument("--module-id", type=int, default=DEFAULT_MODULE_ID, help="Optional module_id")
     p.add_argument("--rerank-top-n", type=int, default=RERANK_TOP_N, help="Assistant rerank_top_n")
@@ -31,7 +31,7 @@ def main():
             f"Unknown model '{args.model}'. Available: {[m.name for m in Models]}"
         ) from e
 
-    assistant = KICampusAssistant(rerank_top_n=args.rerank_top_n, n_chunks=args.n_chunks)
+    assistant = KICampusAssistant(rerank_top_n=args.rerank_top_n, retrieve_top_n=args.n_chunks)
     
     # Chat history wie im Frontend (in-memory, kein LangGraph State)
     chat_history = []
