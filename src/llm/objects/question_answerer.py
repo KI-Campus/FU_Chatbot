@@ -1,6 +1,5 @@
 import json
 import sys
-import re
 
 from langfuse.decorators import observe
 from llama_index.core.llms import ChatMessage, MessageRole
@@ -15,7 +14,7 @@ from src.llm.prompts.prompt_loader import load_prompt
 # =============================
 
 ANSWER_SMALL_TALK = (
-    "Ich bin der KI-Chatbot des KI-Campus 😊 "
+    "Ich bin der KI-Chatbot des KI-Campus. 😊 "
     "Ich kann keine persönlichen Gespräche führen, unterstütze dich aber gerne bei Fragen zu unseren Kursen."
 )
 
@@ -48,6 +47,31 @@ ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE = (
 SHORT_SYSTEM_PROMPT = load_prompt("short_system_prompt")
 SYSTEM_PROMPT = load_prompt("long_system_prompt")
 
+GIBBERISH_CLASSIFIER_PROMPT = """
+You are a text quality classifier.
+
+Decide whether the user input is GIBBERISH.
+
+GIBBERISH includes:
+- random characters or keyboard mashing (e.g. "asdkjhasdkjh")
+- unreadable or meaningless strings
+- extremely distorted text with no clear words
+- text that cannot reasonably be interpreted as a question or message
+
+NOT gibberish:
+- short but meaningful inputs (e.g. "Hi", "AI?")
+- grammatically incorrect but understandable text
+- spelling mistakes
+- foreign language text
+
+IMPORTANT:
+- If you are unsure, assume it is NOT gibberish.
+
+Answer exactly:
+YES
+NO
+""".strip()
+
 SMALL_TALK_CLASSIFIER_PROMPT = """
 You are an intent classifier.
 
@@ -71,17 +95,29 @@ NO   (otherwise)
 """.strip()
 
 SCOPE_CLASSIFIER_PROMPT = """
-You are a scope classifier for the KI-Campus assistant.
+You are a strict scope classifier for the KI-Campus assistant.
 
-Decide whether the user question is IN SCOPE for KI-Campus course-related support.
+Decide whether the user question is IN_SCOPE or OUT_OF_SCOPE.
 
-IN SCOPE includes:
-- AI, Machine Learning, Deep Learning, Data Science, NLP, ethics of AI, AI basics
-- questions about learning, courses, KI-Campus content
+IN_SCOPE:
+- Artificial Intelligence (AI)
+- Machine Learning, Deep Learning
+- Data Science, NLP
+- ethics of AI
+- learning about AI
+- KI-Campus courses, platform, certificates, learning content
 
-OUT OF SCOPE includes:
-- unrelated general knowledge topics (e.g., astronomy like "stars", sports, celebrities)
-- everyday unrelated questions
+OUT_OF_SCOPE:
+- general knowledge questions (e.g. stars, flowers, animals, geography, history)
+- school knowledge
+- everyday life questions
+- biology, astronomy, physics (unless explicitly about AI)
+- topics unrelated to learning AI or KI-Campus
+
+Rules:
+- The language of the question does NOT matter (German or English).
+- If the topic is NOT CLEARLY about AI, learning AI, or KI-Campus → OUT_OF_SCOPE.
+- When in doubt, choose OUT_OF_SCOPE.
 
 Answer exactly:
 IN_SCOPE
@@ -124,23 +160,10 @@ def format_sources(sources: list[TextNode], max_length: int = 8000) -> str:
     return "<SOURCES>:\n" + sources_text.strip()
 
 
-def looks_like_gibberish(text: str) -> bool:
-    t = text.strip().lower()
-
-    if len(t) < 4:
-        return True
-
-    if " " not in t and len(t) > 12:
-        return True
-
-    letters = re.findall(r"[a-zäöü]", t)
-    if not letters:
-        return True
-
-    vowels = re.findall(r"[aeiouäöü]", t)
-    if len(vowels) / len(letters) < 0.2:
-        return True
-
+def previous_not_understood(chat_history) -> bool:
+    for msg in reversed(chat_history or []):
+        if msg.role == MessageRole.ASSISTANT:
+            return msg.content == ANSWER_NOT_UNDERSTOOD_FIRST
     return False
 
 
@@ -164,17 +187,32 @@ class QuestionAnswerer:
         course_id: int,
     ) -> ChatMessage:
 
+        was_not_understood_before = previous_not_understood(chat_history)
+
         # -------------------------------------------------
-        # 0) Gibberish first (so it won't be mistaken as small talk)
+        # 0) GIBBERISH
         # -------------------------------------------------
-        if looks_like_gibberish(query):
+        gib = self.llm.chat(
+            query=query,
+            chat_history=[],
+            model=model,
+            system_prompt=GIBBERISH_CLASSIFIER_PROMPT,
+        )
+
+        if gib.content.strip().upper() == "YES":
             return ChatMessage(
                 role=MessageRole.ASSISTANT,
-                content=ANSWER_NOT_UNDERSTOOD_FIRST,
+                content=(
+                    ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE.format(course_id=course_id)
+                    if was_not_understood_before and is_moodle and course_id
+                    else ANSWER_NOT_UNDERSTOOD_SECOND_DRUPAL
+                    if was_not_understood_before
+                    else ANSWER_NOT_UNDERSTOOD_FIRST
+                ),
             )
 
         # -------------------------------------------------
-        # 1) SMALL TALK → immediate response (LLM classifier)
+        # 1) SMALL TALK
         # -------------------------------------------------
         st = self.llm.chat(
             query=query,
@@ -182,6 +220,7 @@ class QuestionAnswerer:
             model=model,
             system_prompt=SMALL_TALK_CLASSIFIER_PROMPT,
         )
+
         if st.content.strip().upper() == "YES":
             return ChatMessage(
                 role=MessageRole.ASSISTANT,
@@ -189,23 +228,25 @@ class QuestionAnswerer:
             )
 
         # -------------------------------------------------
-        # 2) If NO SOURCES: decide IN_SCOPE vs OUT_OF_SCOPE and answer accordingly
+        # 1.5) GLOBAL SCOPE CHECK  
         # -------------------------------------------------
-        if not sources:
-            scope = self.llm.chat(
-                query=query,
-                chat_history=[],
-                model=model,
-                system_prompt=SCOPE_CLASSIFIER_PROMPT,
+        scope = self.llm.chat(
+            query=query,
+            chat_history=[],
+            model=model,
+            system_prompt=SCOPE_CLASSIFIER_PROMPT,
+        )
+
+        if scope.content.strip().upper() == "OUT_OF_SCOPE":
+            return ChatMessage(
+                role=MessageRole.ASSISTANT,
+                content=ANSWER_OUT_OF_SCOPE,
             )
 
-            if scope.content.strip().upper() == "OUT_OF_SCOPE":
-                return ChatMessage(
-                    role=MessageRole.ASSISTANT,
-                    content=ANSWER_OUT_OF_SCOPE,
-                )
-
-            # IN_SCOPE -> answer from general knowledge (no retrieval)
+        # -------------------------------------------------
+        # 2) NO SOURCES → GENERAL ANSWER ONLY
+        # -------------------------------------------------
+        if not sources:
             general = self.llm.chat(
                 query=query,
                 chat_history=chat_history,
@@ -213,7 +254,6 @@ class QuestionAnswerer:
                 system_prompt=GENERAL_KICAMPUS_PROMPT,
             )
 
-            # Keep old safety-net behavior
             if general.content.strip() == "NO ANSWER FOUND":
                 return ChatMessage(
                     role=MessageRole.ASSISTANT,
@@ -223,7 +263,7 @@ class QuestionAnswerer:
             return general
 
         # -------------------------------------------------
-        # 3) Normal answering with sources (RAG path)
+        # 3) RAG path 
         # -------------------------------------------------
         system_prompt = (
             SHORT_SYSTEM_PROMPT.format(language=language)
@@ -245,7 +285,6 @@ class QuestionAnswerer:
             system_prompt=system_prompt,
         )
 
-        # Best-effort JSON parsing
         try:
             cleaned = response.content.replace("json\n", "").replace("\n", "")
             response_json = json.loads(cleaned)
@@ -253,17 +292,11 @@ class QuestionAnswerer:
         except Exception:
             pass
 
-        previous_not_understood = False
-        for msg in reversed(chat_history or []):
-            if msg.role == MessageRole.ASSISTANT:
-                previous_not_understood = (msg.content == ANSWER_NOT_UNDERSTOOD_FIRST)
-                break
-
         # -------------------------------------------------
-        # 4) NO ANSWER FOUND handling
+        # 4) NO ANSWER FOUND 
         # -------------------------------------------------
         if response.content == "NO ANSWER FOUND":
-            if not previous_not_understood:
+            if not was_not_understood_before:
                 response.content = ANSWER_NOT_UNDERSTOOD_FIRST
             else:
                 response.content = (
@@ -271,8 +304,5 @@ class QuestionAnswerer:
                     if is_moodle and course_id
                     else ANSWER_NOT_UNDERSTOOD_SECOND_DRUPAL
                 )
-
-        if response.content == "NO ANSWER FOUND":
-            response.content = ANSWER_NOT_UNDERSTOOD_FIRST
 
         return response
