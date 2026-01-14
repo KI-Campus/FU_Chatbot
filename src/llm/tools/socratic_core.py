@@ -82,8 +82,8 @@ def socratic_core(state: GraphState) -> GraphState:
     # Get model from state
     model = state["runtime_config"]["model"]
     
-    # LLM-based assessment of stuckness and goal achievement
-    new_stuckness_score, goal_achieved = assess_stuckness_and_goal(
+    # LLM-based assessment of stuckness, goal achievement, and mastery
+    new_stuckness_score, goal_achieved, mastery_level = assess_stuckness_and_goal(
         user_query=user_query,
         chat_history=chat_history,
         learning_objective=learning_objective,
@@ -92,9 +92,16 @@ def socratic_core(state: GraphState) -> GraphState:
         model=model
     )
     
+    # Update student model with current mastery level
+    current_student_model = state.get("student_model", {})
+    updated_student_model = {
+        **current_student_model,
+        "mastery": mastery_level,
+    }
+    
     # Decide next mode based on stuckness and attempts
-    if new_stuckness_score > 0.7 or new_attempt_count > 3:
-        # Student is stuck, provide hint INLINE
+    if new_stuckness_score > 0.7 or new_attempt_count > 2:
+        # Student is stuck, provide hint inline
         next_mode = "core"  # Stay in core after hint
         
         # Increment hint level (max 3)
@@ -105,6 +112,7 @@ def socratic_core(state: GraphState) -> GraphState:
         response = generate_hint_text(
             hint_level=new_hint_level,
             learning_objective=learning_objective,
+            mastery_level=mastery_level,
             user_query=user_query,
             reranked_chunks=reranked_chunks,
             chat_history=chat_history,
@@ -112,17 +120,17 @@ def socratic_core(state: GraphState) -> GraphState:
         )
         
         # Reduce stuckness after providing hint
-        new_stuckness_score = max(0.0, new_stuckness_score - 0.2)
+        new_stuckness_score = max(0.0, new_stuckness_score - 0.35)
         # Reset attempt counter
         new_attempt_count = 0
         
-        # Check if we've given 3 hints and should escalate to explain
+        # Check if we've given 2 hints and should escalate to explain
         contract = state.get("socratic_contract", {})
-        if new_hint_level >= 3 and contract.get("allow_explain", False):
+        if new_hint_level >= 2 and contract.get("allow_explain", False):
             next_mode = "explain"
             
     elif goal_achieved:
-        # Student has reached understanding, provide reflection INLINE
+        # Student has reached understanding, provide reflection inline
         # Generate reflection using helper function
         student_model = state.get("student_model", {})
         response, _ = generate_reflection_text(
@@ -153,6 +161,7 @@ Student's Current Response: {user_query}
 
 Attempt Count: {new_attempt_count}
 Stuckness Score: {new_stuckness_score}
+Mastery Level: {mastery_level}
 
 Retrieved Course Materials:
 {course_materials}"""
@@ -178,6 +187,7 @@ Retrieved Course Materials:
         "attempt_count": new_attempt_count,
         "stuckness_score": new_stuckness_score,
         "goal_achieved": goal_achieved,
+        "student_model": updated_student_model,
         "answer": response,
         "citations_markdown": None,  # Clear citations from previous requests
     }

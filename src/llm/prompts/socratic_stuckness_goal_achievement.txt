@@ -22,6 +22,11 @@ Determine:
    - true → student demonstrates clear understanding of the learning objective
    - false → concept not yet mastered
 
+3. MASTERY (low/medium/high)
+   - low → fundamental gaps, needs extensive scaffolding
+   - medium → partial understanding, can progress with guidance
+   - high → solid grasp, able to apply independently
+
 # STUCKNESS GUIDELINES #
 Signs of LOW stuckness (0.0–0.3):
 - Formulates meaningful hypotheses
@@ -31,7 +36,7 @@ Signs of LOW stuckness (0.0–0.3):
 - Asks productive follow-up questions
 
 Signs of HIGH stuckness (0.7–1.0):
-- Repeats the same mistakes
+- Repeats the same mistakes and answers
 - Expresses confusion or frustration
 - Very short or directionless responses
 - Ignores previous hints
@@ -49,19 +54,14 @@ Goal not achieved (false) if:
 - Answers are vague or partially correct
 - Unable to apply or generalize
 
-# TREND RULE #
-Compare with Current Stuckness:
-- Increase only if evidence of worsening
-- Decrease only if clear improvement
-- Avoid large swings (e.g., 0.8 → 0.1) unless strong justification
-
 # LANGUAGE POLICY #
 Return the numeric score and boolean in English, regardless of user language.
 
 # STRICT OUTPUT FORMAT #
-Return EXACTLY two lines:
+Return EXACTLY three lines:
 
 STUCKNESS: <number between 0.0 and 1.0>
 GOAL_ACHIEVED: <true or false>
+MASTERY: <low or medium or high>
 
 No explanations, no reasoning steps, no extra text.

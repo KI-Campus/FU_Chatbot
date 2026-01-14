@@ -48,14 +48,13 @@ def socratic_explain(state: GraphState) -> GraphState:
     - Sets socratic_mode for next step
     
     Args:
-        state: Current graph state with reranked chunks, student_model, chat_history
+        state: Current graph state with reranked chunks, chat_history
         
     Returns:
         Updated state with explanation and routing decision
     """
     learning_objective = state["learning_objective"]
     chat_history = state["chat_history"]
-    student_model = state["student_model"]
     reranked_chunks = state["reranked_chunks"]
     attempt_count = state["attempt_count"]
     model = state["runtime_config"]["model"]
