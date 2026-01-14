@@ -8,14 +8,16 @@ from src.vectordb.qdrant import VectorDBQdrant, models
 
 
 class KiCampusRetriever:
-    def __init__(self, use_hybrid: bool = True):
+    def __init__(self, use_hybrid: bool = True, n_chunks: int = 10):
         """Initialize retriever with optional hybrid search.
         
         Args:
             use_hybrid: If True, uses both dense and sparse vectors for retrieval.
                        If False, uses only dense vectors (legacy mode).
+            n_chunks: Number of chunks to retrieve from vector database.
         """
         self.use_hybrid = use_hybrid
+        self.n_chunks = n_chunks
         self.embedder = LLM().get_embedder()
         
         if use_hybrid:
@@ -75,7 +77,7 @@ class KiCampusRetriever:
 
         filter = models.Filter(must=conditions) if conditions else None
 
-        vector_store_query = VectorStoreQuery(query_embedding=embedding, similarity_top_k=10)
+        vector_store_query = VectorStoreQuery(query_embedding=embedding, similarity_top_k=self.n_chunks)
 
         query_result = self.vector_store.query(vector_store_query, qdrant_filters=filter)
 
@@ -138,18 +140,18 @@ class KiCampusRetriever:
                 Prefetch(
                     query=dense_embedding,
                     using="dense",
-                    limit=20,  # Get more candidates for fusion
+                    limit=self.n_chunks * 2,  # Get more candidates for fusion
                     filter=query_filter,
                 ),
                 Prefetch(
                     query=sparse_embedding,
                     using="sparse",
-                    limit=20,
+                    limit=self.n_chunks * 2,
                     filter=query_filter,
                 ),
             ],
             query=FusionQuery(fusion=Fusion.RRF),
-            limit=10,  # Final top-k after fusion
+            limit=self.n_chunks,  # Final top-k after fusion
             with_payload=True,
         )
         
