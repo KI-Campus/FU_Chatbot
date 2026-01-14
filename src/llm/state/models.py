@@ -34,11 +34,11 @@ class GraphState(TypedDict, total=False):
     socratic_contract: Optional[Dict[str, bool]]  # {"allow_explain": bool, "allow_direct_answer": bool}
     #diagnostic
     learning_objective: Optional[str]  # Identified learning goal for the interaction
-    student_model: Optional[Dict[str, Any]]  # {"mastery": "low"|"med"|"high", "misconceptions": [], "affect": ...}
+    student_model: Optional[Dict[str, Any]]  # for now only: {"mastery": "low"|"medium"|"high"}
     #core
     hint_level: int  # 0-3, tracks escalation of hints (0=no hints yet, 3=maximum help before explain)
     attempt_count: int  # Number of attempts student made at current question/concept
-    stuckness_score: float  # 0.0-1.0, heuristic measure of student being stuck (>0.7 triggers hinting)
+    stuckness_score: float  # 0.0-1.0, heuristic measure of student being stuck
     goal_achieved: bool  # Whether the learning objective has been reached
 
     # output

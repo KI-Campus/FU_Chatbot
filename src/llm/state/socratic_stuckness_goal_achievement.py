@@ -23,20 +23,22 @@ def assess_stuckness_and_goal(
     attempt_count: int,
     current_stuckness: float,
     model: Models
-) -> tuple[float, bool]:
+) -> tuple[float, bool, str]:
     """
-    Assesses student's stuckness level and goal achievement using LLM.
+    Assesses student's stuckness level, goal achievement, and mastery using LLM.
     
     Uses socratic_stuckness_goal_achievement.txt prompt to analyze:
     - Quality of student's response
     - Progress toward learning objective
     - Signs of confusion, frustration, or misconceptions
     - Evidence of understanding
+    - Current mastery level
     
     Expected LLM output format:
     ```
     STUCKNESS: 0.5
     GOAL_ACHIEVED: false
+    MASTERY: medium
     ```
     
     Args:
@@ -48,9 +50,10 @@ def assess_stuckness_and_goal(
         model: LLM model to use
         
     Returns:
-        Tuple of (stuckness_score, goal_achieved)
+        Tuple of (stuckness_score, goal_achieved, mastery_level)
         - stuckness_score: float 0.0-1.0 (0=progressing, 1=completely stuck)
         - goal_achieved: bool (True if student demonstrates understanding)
+        - mastery_level: str 'low'|'medium'|'high' (current understanding level)
     """
     # Initialize LLM instance
     _llm = LLM()
@@ -80,9 +83,11 @@ Student's Current Response: {user_query}"""
     # Expected format:
     # STUCKNESS: 0.5
     # GOAL_ACHIEVED: false
+    # MASTERY: medium
     
     stuckness_score = current_stuckness  # Default: keep current
     goal_achieved = False  # Default: not achieved
+    mastery_level = "medium"  # Default: medium
     
     lines = response.content.strip().split('\n')
     for line in lines:
@@ -103,5 +108,14 @@ Student's Current Response: {user_query}"""
                 goal_achieved = value == 'true'
             except IndexError:
                 pass  # Keep default
+        
+        elif line_clean.startswith('mastery:'):
+            try:
+                value = line_clean.split(':', 1)[1].strip()
+                # Validate mastery level
+                if value in ['low', 'medium', 'high']:
+                    mastery_level = value
+            except IndexError:
+                pass  # Keep default
     
-    return stuckness_score, goal_achieved
+    return stuckness_score, goal_achieved, mastery_level
