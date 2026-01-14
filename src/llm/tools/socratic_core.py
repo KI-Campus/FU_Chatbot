@@ -64,9 +64,9 @@ def socratic_core(state: GraphState) -> GraphState:
     user_query = state["user_query"]
     chat_history = state["chat_history"]
     learning_objective = state["learning_objective"]
-    attempt_count = state.get("attempt_count", 0)
-    stuckness_score = state.get("stuckness_score", 0.0)
-    hint_level = state.get("hint_level", 0)
+    attempt_count = state["attempt_count"]
+    stuckness_score = state["stuckness_score"]
+    hint_level = state["hint_level"]
     
     # Step 1: Retrieve relevant course content
     # This grounds the Socratic dialogue in actual course material
