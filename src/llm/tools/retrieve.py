@@ -38,7 +38,10 @@ def retrieve_chunks(state: GraphState) -> GraphState:
     Returns:
         Updated state with retrieved chunks
     """
-    retriever = KiCampusRetriever(use_hybrid=True)
+    # Extract config
+    retrieve_top_n = state["system_config"].get("retrieve_top_n", 10)
+    
+    retriever = KiCampusRetriever(use_hybrid=True, n_chunks=retrieve_top_n)
     
     # Extract optional filters from runtime_config (set by frontend)
     course_id = state["runtime_config"].get("course_id")
