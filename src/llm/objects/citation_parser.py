@@ -9,11 +9,19 @@ CITATION_TEXT = '[<a href="{url}">{title}</a>]'
 
 def _get_display_title(doc: TextNode) -> str:
     """Get display title from document metadata, with fallback to shortened URL."""
-    title = doc.metadata.get("title")
+    title = doc.metadata.get("title") or doc.metadata.get("fullname")
     if title:
-        # Kürze sehr lange Titel
+        # Entferne führende Kapitelnummern (z.B. "3.1. Titel" → "Titel")
+        title = re.sub(r'^\d+(\.\d+)*\.?\s*', '', title)
+        
+        # Kürze sehr lange Titel (smart truncate am Wortende)
         if len(title) > 50:
-            return title[:47] + "..."
+            truncated = title[:47]
+            # Finde letztes Leerzeichen
+            last_space = truncated.rfind(' ')
+            if last_space > 30:  # Nur wenn noch genug Text übrig bleibt
+                truncated = truncated[:last_space]
+            return truncated + "..."
         return title
     
     # Fallback: URL kürzen

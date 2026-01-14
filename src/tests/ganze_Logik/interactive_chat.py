@@ -5,8 +5,8 @@ from llama_index.core.llms import ChatMessage, MessageRole
 from src.llm.objects.LLMs import Models
 from src.llm.assistant import KICampusAssistant
 
-DEFAULT_COURSE_ID = 56
-DEFAULT_MODULE_ID = None
+DEFAULT_COURSE_ID = 106
+DEFAULT_MODULE_ID = 7152
 
 RETRIEVE_TOP_N = 10
 RERANK_TOP_N = 5
