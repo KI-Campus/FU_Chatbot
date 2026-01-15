@@ -47,83 +47,6 @@ ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE = (
 SHORT_SYSTEM_PROMPT = load_prompt("short_system_prompt")
 SYSTEM_PROMPT = load_prompt("long_system_prompt")
 
-GIBBERISH_CLASSIFIER_PROMPT = """
-You are a text quality classifier.
-
-Decide whether the user input is GIBBERISH.
-
-GIBBERISH includes:
-- random characters or keyboard mashing (e.g. "asdkjhasdkjh")
-- unreadable or meaningless strings
-- extremely distorted text with no clear words
-- text that cannot reasonably be interpreted as a question or message
-
-NOT gibberish:
-- short but meaningful inputs (e.g. "Hi", "AI?")
-- grammatically incorrect but understandable text
-- spelling mistakes
-- foreign language text
-
-IMPORTANT:
-- If you are unsure, assume it is NOT gibberish.
-
-Answer exactly:
-YES
-NO
-""".strip()
-
-SMALL_TALK_CLASSIFIER_PROMPT = """
-You are an intent classifier.
-
-Decide whether the user message is SMALL TALK.
-
-SMALL TALK includes:
-- greetings
-- casual conversation
-- weather talk
-- personal questions
-- chit-chat
-- asking about the assistant
-- meta questions like "can you help me?"
-
-IMPORTANT:
-- If the message is random characters, nonsense, or unreadable, it is NOT small talk.
-
-Answer exactly:
-YES  (if small talk)
-NO   (otherwise)
-""".strip()
-
-SCOPE_CLASSIFIER_PROMPT = """
-You are a strict scope classifier for the KI-Campus assistant.
-
-Decide whether the user question is IN_SCOPE or OUT_OF_SCOPE.
-
-IN_SCOPE:
-- Artificial Intelligence (AI)
-- Machine Learning, Deep Learning
-- Data Science, NLP
-- ethics of AI
-- learning about AI
-- KI-Campus courses, platform, certificates, learning content
-
-OUT_OF_SCOPE:
-- general knowledge questions (e.g. stars, flowers, animals, geography, history)
-- school knowledge
-- everyday life questions
-- biology, astronomy, physics (unless explicitly about AI)
-- topics unrelated to learning AI or KI-Campus
-
-Rules:
-- The language of the question does NOT matter (German or English).
-- If the topic is NOT CLEARLY about AI, learning AI, or KI-Campus → OUT_OF_SCOPE.
-- When in doubt, choose OUT_OF_SCOPE.
-
-Answer exactly:
-IN_SCOPE
-OUT_OF_SCOPE
-""".strip()
-
 GENERAL_KICAMPUS_PROMPT = """
 You are the KI-Campus assistant.
 
@@ -141,9 +64,52 @@ Metadata: {metadata}
 """.strip()
 
 
-# =============================
-# Helpers
-# =============================
+CLASSIFIER_PROMPT = """
+You are a classifier for the KI-Campus assistant.
+
+Decide which ONE category the user input belongs to.
+
+GIBBERISH:
+- random characters or keyboard mashing
+- unreadable or meaningless strings
+- text that cannot reasonably be interpreted
+
+SMALL_TALK:
+- greetings
+- casual conversation
+- personal questions
+- chit-chat
+- asking about the assistant
+- meta questions like "can you help me?"
+
+OUT_OF_SCOPE:
+- general knowledge
+- everyday life questions
+- school knowledge
+- biology, astronomy, physics (unless explicitly about AI)
+- topics unrelated to AI, learning AI, or KI-Campus
+
+IN_SCOPE:
+- Artificial Intelligence (AI)
+- Machine Learning, Deep Learning
+- Data Science, NLP
+- ethics of AI
+- learning about AI
+- KI-Campus courses, platform, certificates, learning content
+
+Rules:
+- If the text is gibberish, choose GIBBERISH.
+- If it is small talk, choose SMALL_TALK.
+- If it is not clearly about AI or KI-Campus, choose OUT_OF_SCOPE.
+- Otherwise choose IN_SCOPE.
+
+Answer exactly ONE word:
+GIBBERISH
+SMALL_TALK
+OUT_OF_SCOPE
+IN_SCOPE
+""".strip()
+
 
 def format_sources(sources: list[TextNode], max_length: int = 8000) -> str:
     sources_text = ""
@@ -189,17 +155,16 @@ class QuestionAnswerer:
 
         was_not_understood_before = previous_not_understood(chat_history)
 
-        # -------------------------------------------------
-        # 0) GIBBERISH
-        # -------------------------------------------------
-        gib = self.llm.chat(
+        classification = self.llm.chat(
             query=query,
             chat_history=[],
             model=model,
-            system_prompt=GIBBERISH_CLASSIFIER_PROMPT,
+            system_prompt=CLASSIFIER_PROMPT,
         )
 
-        if gib.content.strip().upper() == "YES":
+        label = classification.content.strip().upper()
+
+        if label == "GIBBERISH":
             return ChatMessage(
                 role=MessageRole.ASSISTANT,
                 content=(
@@ -211,41 +176,18 @@ class QuestionAnswerer:
                 ),
             )
 
-        # -------------------------------------------------
-        # 1) SMALL TALK
-        # -------------------------------------------------
-        st = self.llm.chat(
-            query=query,
-            chat_history=[],
-            model=model,
-            system_prompt=SMALL_TALK_CLASSIFIER_PROMPT,
-        )
-
-        if st.content.strip().upper() == "YES":
+        if label == "SMALL_TALK":
             return ChatMessage(
                 role=MessageRole.ASSISTANT,
                 content=ANSWER_SMALL_TALK,
             )
 
-        # -------------------------------------------------
-        # 1.5) GLOBAL SCOPE CHECK  
-        # -------------------------------------------------
-        scope = self.llm.chat(
-            query=query,
-            chat_history=[],
-            model=model,
-            system_prompt=SCOPE_CLASSIFIER_PROMPT,
-        )
-
-        if scope.content.strip().upper() == "OUT_OF_SCOPE":
+        if label == "OUT_OF_SCOPE":
             return ChatMessage(
                 role=MessageRole.ASSISTANT,
                 content=ANSWER_OUT_OF_SCOPE,
             )
 
-        # -------------------------------------------------
-        # 2) NO SOURCES → GENERAL ANSWER ONLY
-        # -------------------------------------------------
         if not sources:
             general = self.llm.chat(
                 query=query,
@@ -262,9 +204,6 @@ class QuestionAnswerer:
 
             return general
 
-        # -------------------------------------------------
-        # 3) RAG path 
-        # -------------------------------------------------
         system_prompt = (
             SHORT_SYSTEM_PROMPT.format(language=language)
             if model != Models.GPT4
@@ -292,9 +231,6 @@ class QuestionAnswerer:
         except Exception:
             pass
 
-        # -------------------------------------------------
-        # 4) NO ANSWER FOUND 
-        # -------------------------------------------------
         if response.content == "NO ANSWER FOUND":
             if not was_not_understood_before:
                 response.content = ANSWER_NOT_UNDERSTOOD_FIRST
