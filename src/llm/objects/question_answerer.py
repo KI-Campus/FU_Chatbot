@@ -8,45 +8,182 @@ from llama_index.core.schema import TextNode
 from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
 
-ANSWER_NOT_FOUND_FIRST_TIME = """Entschuldige, ich habe deine Frage nicht ganz verstanden. Könntest du dein Problem bitte noch einmal etwas genauer erklären oder anders formulieren?
-"""
 
-ANSWER_NOT_FOUND_SECOND_TIME_DRUPAL = """Entschuldigung, ich habe deine Frage nicht immer noch verstanden, bitte wende dich an unseren Support unter support@ki-campus.org.
-"""
+# =============================
+# User-facing messages
+# =============================
 
-ANSWER_NOT_FOUND_SECOND_TIME_MOODLE = """Es tut mir leid, aber ich konnte die benötigten Informationen im Kurs nicht finden, um deine Frage zu beantworten. Schau bitte im Kurs selbst nach, um weitere Hilfe zu erhalten. Hier ist der Kurslink: https://moodle.ki-campus.org/course/view.php?id={course_id}
-"""
+ANSWER_SMALL_TALK = (
+    "Ich bin der KI-Chatbot des KI-Campus. 😊 "
+    "Ich kann keine persönlichen Gespräche führen, unterstütze dich aber gerne bei Fragen zu unseren Kursen."
+)
+
+ANSWER_OUT_OF_SCOPE = (
+    "Zu diesem Thema kann ich leider keine Informationen bereitstellen. 🤔 "
+    "Ich unterstütze dich gerne bei Fragen zu den Kursen des KI-Campus."
+)
+
+ANSWER_NOT_UNDERSTOOD_FIRST = (
+    "Entschuldige, ich habe deine Frage nicht ganz verstanden. 🤔 "
+    "Könntest du dein Problem bitte noch einmal etwas genauer erklären "
+    "oder anders formulieren?"
+)
+
+ANSWER_NOT_UNDERSTOOD_SECOND_DRUPAL = (
+    "Entschuldigung, ich habe deine Frage immer noch nicht verstanden. 📩 "
+    "Bitte wende dich an unseren Support unter support@ki-campus.org."
+)
+
+ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE = (
+    "Es tut mir leid, aber ich konnte die benötigten Informationen im Kurs nicht finden. 📚\n"
+    "Schau bitte im Kurs selbst nach:\n"
+    "https://moodle.ki-campus.org/course/view.php?id={course_id}"
+)
+
+
+# =============================
+# Prompts
+# =============================
 
 SHORT_SYSTEM_PROMPT = load_prompt("short_system_prompt")
-
 SYSTEM_PROMPT = load_prompt("long_system_prompt")
+
+
+CLASSIFIER_PROMPT_SOURCES_AVAILABLE = """
+You are a classifier for the KI-Campus assistant.
+
+Decide which ONE category the user input belongs to.
+
+GIBBERISH:
+- random characters or keyboard mashing
+- unreadable or meaningless strings
+
+SMALL_TALK:
+- greetings
+- casual conversation
+- personal questions
+- chit-chat
+- asking about the assistant
+
+OUT_OF_SCOPE:
+- general knowledge
+- everyday life questions
+- school knowledge
+- biology, astronomy, physics (unless explicitly about AI)
+- topics unrelated to AI, learning AI, or KI-Campus
+
+IN_SCOPE:
+- any topic that could reasonably be part of a KI-Campus course
+- foundational or advanced learning content
+- technical, scientific, or mathematical topics used in courses
+- concepts taught as prerequisites or core material
+- explanations of terms, methods, or concepts from courses
+- questions about KI-Campus courses, platform, or learning content
+
+Rules:
+- If the text is gibberish, choose GIBBERISH.
+- If it is small talk, choose SMALL_TALK.
+- If it is not clearly about AI or KI-Campus, choose OUT_OF_SCOPE.
+- Otherwise choose IN_SCOPE.
+
+Answer exactly ONE word:
+GIBBERISH
+SMALL_TALK
+OUT_OF_SCOPE
+IN_SCOPE
+""".strip()
+
+
+CLASSIFIER_PROMPT_SOURCES_NOT_AVAILABLE = """
+You are a classifier and gatekeeper for the KI-Campus assistant.
+
+Decide which ONE category the user input belongs to.
+
+GIBBERISH:
+- random characters or keyboard mashing
+- unreadable or meaningless strings
+
+SMALL_TALK:
+- greetings
+- casual conversation
+- personal questions
+- chit-chat
+- meta questions like "can you help me?"
+
+OUT_OF_SCOPE:
+- general knowledge
+- everyday life questions
+- school knowledge
+- biology, astronomy, physics
+- anything NOT related to AI learning or KI-Campus
+
+IN_SCOPE_ANSWER:
+- any topic that could reasonably be part of a KI-Campus course
+- foundational or advanced learning content
+- technical, scientific, or mathematical concepts
+- explanations of methods, terms, or concepts used in courses
+- questions about KI-Campus courses or the learning platform
+- AND the question can be answered without requiring specific course materials
+
+IN_SCOPE_NO_ANSWER:
+- AI or KI-Campus related
+- BUT cannot be answered reliably without course sources
+
+Rules:
+- If gibberish → GIBBERISH
+- If small talk → SMALL_TALK
+- If unrelated → OUT_OF_SCOPE
+- If AI-related and answerable without sources → IN_SCOPE_ANSWER
+- Otherwise → IN_SCOPE_NO_ANSWER
+
+Answer exactly ONE word:
+GIBBERISH
+SMALL_TALK
+OUT_OF_SCOPE
+IN_SCOPE_ANSWER
+IN_SCOPE_NO_ANSWER
+""".strip()
+
 
 USER_QUERY_WITH_SOURCES_PROMPT = """
 [doc{index}]
 Content: {content}
 Metadata: {metadata}
-"""
+""".strip()
 
+
+# =============================
+# Helper functions
+# =============================
 
 def format_sources(sources: list[TextNode], max_length: int = 8000) -> str:
     sources_text = ""
     for i, source in enumerate(sources):
-        source_entry = USER_QUERY_WITH_SOURCES_PROMPT.format(
-            index=i + 1, content=source.get_text(), metadata=source.metadata
+        entry = USER_QUERY_WITH_SOURCES_PROMPT.format(
+            index=i + 1,
+            content=source.get_text(),
+            metadata=source.metadata,
         )
-        # max_length must not exceed 8k for non-GPT models, otherwise the output will be garbled
-        if len(sources_text) + len(source_entry) > max_length:
+        if len(sources_text) + len(entry) > max_length:
             break
-        sources_text += source_entry + "\n"
+        sources_text += entry + "\n"
 
-    sources_text = sources_text.strip()
+    return "<SOURCES>:\n" + sources_text.strip()
 
-    return "<SOURCES>:\n" + sources_text
 
+def previous_not_understood(chat_history) -> bool:
+    for msg in reversed(chat_history or []):
+        if msg.role == MessageRole.ASSISTANT:
+            return msg.content == ANSWER_NOT_UNDERSTOOD_FIRST
+    return False
+
+
+# =============================
+# Core class
+# =============================
 
 class QuestionAnswerer:
     def __init__(self) -> None:
-        self.name = "QuestionAnswer"
         self.llm = LLM()
 
     @observe()
@@ -60,57 +197,98 @@ class QuestionAnswerer:
         is_moodle: bool,
         course_id: int,
     ) -> ChatMessage:
-        if model != Models.GPT4:
-            system_prompt = SHORT_SYSTEM_PROMPT.format(language=language)
-            formatted_sources = format_sources(sources, max_length=8000)
-        else:
-            system_prompt = SYSTEM_PROMPT.format(language=language)
-            formatted_sources = format_sources(sources, max_length=sys.maxsize)
 
-        prompted_user_query = f"<QUERY>:\n {query}\n---\n\n{formatted_sources}"
+        was_not_understood_before = previous_not_understood(chat_history)
+
+        classifier_prompt = (
+            CLASSIFIER_PROMPT_SOURCES_AVAILABLE
+            if sources
+            else CLASSIFIER_PROMPT_SOURCES_NOT_AVAILABLE
+        )
+
+        classification = self.llm.chat(
+            query=query,
+            chat_history=[],
+            model=model,
+            system_prompt=classifier_prompt,
+        )
+
+        label = classification.content.strip().upper()
+
+        # =============================
+        # Classification handling
+        # =============================
+
+        if label == "GIBBERISH":
+            return ChatMessage(
+                role=MessageRole.ASSISTANT,
+                content=(
+                    ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE.format(course_id=course_id)
+                    if was_not_understood_before and is_moodle and course_id
+                    else ANSWER_NOT_UNDERSTOOD_SECOND_DRUPAL
+                    if was_not_understood_before
+                    else ANSWER_NOT_UNDERSTOOD_FIRST
+                ),
+            )
+
+        if label == "SMALL_TALK":
+            return ChatMessage(
+                role=MessageRole.ASSISTANT,
+                content=ANSWER_SMALL_TALK,
+            )
+
+        if label in {"OUT_OF_SCOPE", "IN_SCOPE_NO_ANSWER"}:
+            return ChatMessage(
+                role=MessageRole.ASSISTANT,
+                content=ANSWER_OUT_OF_SCOPE,
+            )
+
+        # =============================
+        # IN_SCOPE / IN_SCOPE_ANSWER
+        # =============================
+
+        system_prompt = (
+            SHORT_SYSTEM_PROMPT.format(language=language)
+            if model != Models.GPT4
+            else SYSTEM_PROMPT.format(language=language)
+        )
+
+        prompted_query = query
+
+        if sources:
+            formatted_sources = format_sources(
+                sources,
+                max_length=8000 if model != Models.GPT4 else sys.maxsize,
+            )
+            prompted_query = f"<QUERY>:\n{query}\n---\n\n{formatted_sources}"
 
         response = self.llm.chat(
-            query=prompted_user_query,
+            query=prompted_query,
             chat_history=chat_history,
             model=model,
             system_prompt=system_prompt,
         )
 
-        try:
-            response.content = response.content.replace("```json\n", "").replace("\n```", "")
-            response_json = json.loads(response.content)
-            response.content = response_json["answer"]
+        # =============================
+        # Optional JSON cleanup
+        # =============================
 
-        except (json.JSONDecodeError, KeyError) as e:
-            # LLM forgets to respond with JSON or missing "answer" key - use response as-is
-            # Log the issue for monitoring
-            print(f"Warning: Failed to parse JSON response: {e}. Using raw response.")
+        try:
+            cleaned = response.content.replace("json\n", "").replace("\n", "")
+            response_json = json.loads(cleaned)
+            response.content = response_json["answer"]
+        except Exception:
             pass
 
-        # Check if this is the second "NO ANSWER FOUND" in a row
-        # Look for ASSISTANT messages (bot responses) in history to check if we already said we can't help
-        previous_bot_response_was_no_answer = False
-        if chat_history:
-            # Find the last assistant message in the history
-            for msg in reversed(chat_history):
-                if msg.role == MessageRole.ASSISTANT:
-                    previous_bot_response_was_no_answer = (msg.content == ANSWER_NOT_FOUND_FIRST_TIME)
-                    break
-
         if response.content == "NO ANSWER FOUND":
-            if not previous_bot_response_was_no_answer:
-                # First time we can't answer - ask for clarification
-                response.content = ANSWER_NOT_FOUND_FIRST_TIME
-            else:
-                # Second time in a row - provide support contact
-                if is_moodle and course_id is not None:
-                    response.content = ANSWER_NOT_FOUND_SECOND_TIME_MOODLE.format(course_id=course_id)
-                elif is_moodle:
-                    # Fallback if course_id is None
-                    response.content = ANSWER_NOT_FOUND_SECOND_TIME_MOODLE.format(course_id="UNKNOWN")
-                else:
-                    response.content = ANSWER_NOT_FOUND_SECOND_TIME_DRUPAL
+            response.content = (
+                ANSWER_NOT_UNDERSTOOD_FIRST
+                if not was_not_understood_before
+                else (
+                    ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE.format(course_id=course_id)
+                    if is_moodle and course_id
+                    else ANSWER_NOT_UNDERSTOOD_SECOND_DRUPAL
+                )
+            )
 
-        if response is None:
-            raise ValueError(f"LLM produced no response. Please check the LLM implementation. Response: {response}")
         return response
