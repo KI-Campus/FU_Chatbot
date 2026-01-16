@@ -40,6 +40,7 @@ ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE = (
     "https://moodle.ki-campus.org/course/view.php?id={course_id}"
 )
 
+
 # =============================
 # Prompts
 # =============================
@@ -47,24 +48,8 @@ ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE = (
 SHORT_SYSTEM_PROMPT = load_prompt("short_system_prompt")
 SYSTEM_PROMPT = load_prompt("long_system_prompt")
 
-GENERAL_KICAMPUS_PROMPT = """
-You are the KI-Campus assistant.
 
-If the user asks about AI / Machine Learning / Deep Learning / KI basics, answer clearly and helpfully.
-Keep it short and educational.
-
-If the user asks something unrelated to AI learning or KI-Campus, answer exactly:
-NO ANSWER FOUND
-""".strip()
-
-USER_QUERY_WITH_SOURCES_PROMPT = """
-[doc{index}]
-Content: {content}
-Metadata: {metadata}
-""".strip()
-
-
-CLASSIFIER_PROMPT = """
+CLASSIFIER_PROMPT_SOURCES_AVAILABLE = """
 You are a classifier for the KI-Campus assistant.
 
 Decide which ONE category the user input belongs to.
@@ -72,7 +57,6 @@ Decide which ONE category the user input belongs to.
 GIBBERISH:
 - random characters or keyboard mashing
 - unreadable or meaningless strings
-- text that cannot reasonably be interpreted
 
 SMALL_TALK:
 - greetings
@@ -80,7 +64,6 @@ SMALL_TALK:
 - personal questions
 - chit-chat
 - asking about the assistant
-- meta questions like "can you help me?"
 
 OUT_OF_SCOPE:
 - general knowledge
@@ -90,12 +73,12 @@ OUT_OF_SCOPE:
 - topics unrelated to AI, learning AI, or KI-Campus
 
 IN_SCOPE:
-- Artificial Intelligence (AI)
-- Machine Learning, Deep Learning
-- Data Science, NLP
-- ethics of AI
-- learning about AI
-- KI-Campus courses, platform, certificates, learning content
+- any topic that could reasonably be part of a KI-Campus course
+- foundational or advanced learning content
+- technical, scientific, or mathematical topics used in courses
+- concepts taught as prerequisites or core material
+- explanations of terms, methods, or concepts from courses
+- questions about KI-Campus courses, platform, or learning content
 
 Rules:
 - If the text is gibberish, choose GIBBERISH.
@@ -110,6 +93,68 @@ OUT_OF_SCOPE
 IN_SCOPE
 """.strip()
 
+
+CLASSIFIER_PROMPT_SOURCES_NOT_AVAILABLE = """
+You are a classifier and gatekeeper for the KI-Campus assistant.
+
+Decide which ONE category the user input belongs to.
+
+GIBBERISH:
+- random characters or keyboard mashing
+- unreadable or meaningless strings
+
+SMALL_TALK:
+- greetings
+- casual conversation
+- personal questions
+- chit-chat
+- meta questions like "can you help me?"
+
+OUT_OF_SCOPE:
+- general knowledge
+- everyday life questions
+- school knowledge
+- biology, astronomy, physics
+- anything NOT related to AI learning or KI-Campus
+
+IN_SCOPE_ANSWER:
+- any topic that could reasonably be part of a KI-Campus course
+- foundational or advanced learning content
+- technical, scientific, or mathematical concepts
+- explanations of methods, terms, or concepts used in courses
+- questions about KI-Campus courses or the learning platform
+- AND the question can be answered without requiring specific course materials
+
+IN_SCOPE_NO_ANSWER:
+- AI or KI-Campus related
+- BUT cannot be answered reliably without course sources
+
+Rules:
+- If gibberish → GIBBERISH
+- If small talk → SMALL_TALK
+- If unrelated → OUT_OF_SCOPE
+- If AI-related and answerable without sources → IN_SCOPE_ANSWER
+- Otherwise → IN_SCOPE_NO_ANSWER
+
+Answer exactly ONE word:
+GIBBERISH
+SMALL_TALK
+OUT_OF_SCOPE
+IN_SCOPE_ANSWER
+IN_SCOPE_NO_ANSWER
+""".strip()
+
+
+USER_QUERY_WITH_SOURCES_PROMPT = """
+[doc{index}]
+Content: {content}
+Metadata: {metadata}
+""".strip()
+
+
+# =============================
+# Helper functions
+# =============================
 
 def format_sources(sources: list[TextNode], max_length: int = 8000) -> str:
     sources_text = ""
@@ -155,14 +200,24 @@ class QuestionAnswerer:
 
         was_not_understood_before = previous_not_understood(chat_history)
 
+        classifier_prompt = (
+            CLASSIFIER_PROMPT_SOURCES_AVAILABLE
+            if sources
+            else CLASSIFIER_PROMPT_SOURCES_NOT_AVAILABLE
+        )
+
         classification = self.llm.chat(
             query=query,
             chat_history=[],
             model=model,
-            system_prompt=CLASSIFIER_PROMPT,
+            system_prompt=classifier_prompt,
         )
 
         label = classification.content.strip().upper()
+
+        # =============================
+        # Classification handling
+        # =============================
 
         if label == "GIBBERISH":
             return ChatMessage(
@@ -182,27 +237,15 @@ class QuestionAnswerer:
                 content=ANSWER_SMALL_TALK,
             )
 
-        if label == "OUT_OF_SCOPE":
+        if label in {"OUT_OF_SCOPE", "IN_SCOPE_NO_ANSWER"}:
             return ChatMessage(
                 role=MessageRole.ASSISTANT,
                 content=ANSWER_OUT_OF_SCOPE,
             )
 
-        if not sources:
-            general = self.llm.chat(
-                query=query,
-                chat_history=chat_history,
-                model=model,
-                system_prompt=GENERAL_KICAMPUS_PROMPT,
-            )
-
-            if general.content.strip() == "NO ANSWER FOUND":
-                return ChatMessage(
-                    role=MessageRole.ASSISTANT,
-                    content=ANSWER_OUT_OF_SCOPE,
-                )
-
-            return general
+        # =============================
+        # IN_SCOPE / IN_SCOPE_ANSWER
+        # =============================
 
         system_prompt = (
             SHORT_SYSTEM_PROMPT.format(language=language)
@@ -210,12 +253,14 @@ class QuestionAnswerer:
             else SYSTEM_PROMPT.format(language=language)
         )
 
-        formatted_sources = format_sources(
-            sources,
-            max_length=8000 if model != Models.GPT4 else sys.maxsize,
-        )
+        prompted_query = query
 
-        prompted_query = f"<QUERY>:\n{query}\n---\n\n{formatted_sources}"
+        if sources:
+            formatted_sources = format_sources(
+                sources,
+                max_length=8000 if model != Models.GPT4 else sys.maxsize,
+            )
+            prompted_query = f"<QUERY>:\n{query}\n---\n\n{formatted_sources}"
 
         response = self.llm.chat(
             query=prompted_query,
@@ -223,6 +268,10 @@ class QuestionAnswerer:
             model=model,
             system_prompt=system_prompt,
         )
+
+        # =============================
+        # Optional JSON cleanup
+        # =============================
 
         try:
             cleaned = response.content.replace("json\n", "").replace("\n", "")
@@ -232,13 +281,14 @@ class QuestionAnswerer:
             pass
 
         if response.content == "NO ANSWER FOUND":
-            if not was_not_understood_before:
-                response.content = ANSWER_NOT_UNDERSTOOD_FIRST
-            else:
-                response.content = (
+            response.content = (
+                ANSWER_NOT_UNDERSTOOD_FIRST
+                if not was_not_understood_before
+                else (
                     ANSWER_NOT_UNDERSTOOD_SECOND_MOODLE.format(course_id=course_id)
                     if is_moodle and course_id
                     else ANSWER_NOT_UNDERSTOOD_SECOND_DRUPAL
                 )
+            )
 
         return response
