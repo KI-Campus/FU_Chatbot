@@ -4,7 +4,7 @@ from langfuse import Langfuse
 from src.llm.objects.LLMs import Models
 from src.llm.assistant import KICampusAssistant
 
-DEFAULT_COURSE_ID = 106
+DEFAULT_COURSE_ID = None
 DEFAULT_MODULE_ID = None
 
 RETRIEVE_TOP_N = 10
