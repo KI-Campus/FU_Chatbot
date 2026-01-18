@@ -81,12 +81,8 @@ class ChatRequest(BaseModel):
     user_query: SerializableChatMessage = Field(
         description="The new user message. Should contain exactly one USER message.",
         examples=[
-            [
-                SerializableChatMessage(content="I need help with my assignment", role=MessageRole.USER),
-            ]
+            SerializableChatMessage(content="I need help with my assignment", role=MessageRole.USER)
         ],
-        min_length=1,
-        max_length=1,
     )
     thread_id: str | None = Field(
         default=None,
@@ -110,7 +106,8 @@ class ChatRequest(BaseModel):
     )
 
     def get_user_query(self) -> str:
-        return self.messages[0].content
+        """Extract the query string from user_query SerializableChatMessage."""
+        return self.user_query.content
 
     @model_validator(mode="after")
     def validate_module_id(self):
@@ -176,8 +173,10 @@ def chat(chat_request: ChatRequest) -> ChatResponse:
     trace_id = langfuse_context.get_current_trace_id()
     if not trace_id:
         trace_id = "TRACING_UNAVAILABLE"
+    
+    # llm_response is SerializableChatMessage, extract content string
     chat_response = ChatResponse(
-        message=SerializableChatMessage.from_chat_message(llm_response).content,
+        message=llm_response.content,
         response_id=trace_id,
         thread_id=thread_id
     )

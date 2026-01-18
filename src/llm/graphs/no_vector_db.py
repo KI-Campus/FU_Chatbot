@@ -33,6 +33,7 @@ def direct_answer_node(state: GraphState) -> dict:
     
     return {
         "answer": response.content,
+        "citations_markdown": None  # No citations in no_vectordb mode
     }
 
 
