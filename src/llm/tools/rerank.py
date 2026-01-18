@@ -33,8 +33,13 @@ def rerank_chunks(state: GraphState) -> dict:
     """
     # Get necessary variables from state
     model = state["runtime_config"]["model"]
-    query=state["contextualized_query"]
+    # Fallback to user_query if contextualized_query is not available (e.g., multi_hop)
+    query = state["contextualized_query"] or state["user_query"]
     rerank_top_n = state["system_config"]["rerank_top_n"]
+    
+    # Guard: If no query available, cannot rerank
+    if not query:
+        return {"reranked": state.get("retrieved", [])}
     
     # Guard: If no documents retrieved or too few for reranking, skip reranking
     if not state["retrieved"] or len(state["retrieved"]) == 0:
