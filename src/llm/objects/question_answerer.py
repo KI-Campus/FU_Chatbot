@@ -2,7 +2,7 @@ import json
 import sys
 
 from langfuse.decorators import observe
-from llama_index.core.llms import ChatMessage, MessageRole
+from llama_index.core.llms import MessageRole
 from llama_index.core.schema import TextNode
 
 from src.api.models.serializable_chat_message import SerializableChatMessage
@@ -54,13 +54,14 @@ class QuestionAnswerer:
     def answer_question(
         self,
         query: str,
-        chat_history: list[ChatMessage],
+        chat_history: list[SerializableChatMessage],
         sources: list[TextNode],
         model: Models,
         language: str,
         is_moodle: bool,
         course_id: int,
     ) -> SerializableChatMessage:
+        
         if model != Models.GPT4:
             system_prompt = SHORT_SYSTEM_PROMPT.format(language=language)
             formatted_sources = format_sources(sources, max_length=8000)

@@ -5,7 +5,7 @@ Node wrapper for generating answers using QuestionAnswerer.
 from langfuse.decorators import observe
 
 from src.llm.objects.LLMs import Models
-from src.llm.state.models import GraphState, get_chat_history_as_messages, get_doc_as_textnodes
+from src.llm.state.models import GraphState, get_doc_as_textnodes
 
 # Module-level singleton
 _question_answerer_instance = None
@@ -38,7 +38,7 @@ def generate_answer(state: GraphState) -> dict:
     
     # Get variables from state (convert to LlamaIndex types)
     query = state["user_query"]
-    chat_history = get_chat_history_as_messages(state)
+    chat_history = state.get("chat_history", [])
     language = state["detected_language"]
     sources = get_doc_as_textnodes(state, "reranked")
     model = state["runtime_config"]["model"]

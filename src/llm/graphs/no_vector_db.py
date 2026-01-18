@@ -7,7 +7,7 @@ For simple conversational messages that don't require knowledge retrieval
 
 from langgraph.graph import StateGraph, START, END
 
-from src.llm.state.models import GraphState, get_chat_history_as_messages
+from src.llm.state.models import GraphState
 from src.llm.tools.language import detect_language
 
 # Module-level singleton
@@ -32,7 +32,7 @@ def direct_answer_node(state: GraphState) -> dict:
     answerer = get_question_answerer()
     model = state["runtime_config"]["model"]
     query = state["user_query"]
-    chat_history = get_chat_history_as_messages(state)
+    chat_history = state["chat_history"]
     language = state["detected_language"]
     
     # Simple conversational response (no sources)

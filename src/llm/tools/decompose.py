@@ -6,7 +6,7 @@ import json
 from langfuse.decorators import observe
 
 from src.llm.objects.LLMs import LLM
-from src.llm.state.models import GraphState, get_chat_history_as_messages
+from src.llm.state.models import GraphState
 from src.llm.prompts.prompt_loader import load_prompt
 
 # Load prompt
@@ -36,11 +36,12 @@ def decompose_query(state: GraphState) -> dict:
     # Extract model from runtime_config
     model = state["runtime_config"]["model"]
     query = state["user_query"]
+    chat_history = state["chat_history"]
     
     # Call LLM to decompose query
     response = _llm.chat(
         query=query,
-        chat_history=get_chat_history_as_messages(state),
+        chat_history=chat_history,
         model=model,
         system_prompt=DECOMPOSE_PROMPT
     )

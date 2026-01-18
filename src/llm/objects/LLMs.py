@@ -111,8 +111,10 @@ class LLM:
             model = Models.GPT4
 
         llm = self.get_model(model)
+        # Convert SerializableChatMessage to ChatMessage for SimpleChatEngine
+        chat_history_messages = [msg.to_chat_message() for msg in chat_history]
         copy_chat_history = (
-            chat_history.copy()
+            chat_history_messages.copy()
         )  # creating a copy of the history because the SimpleChatEngine modifies it
         # Only way of automatic tracing Langfuse is to use such an Engine. Direct calling llama_index models is not traced.
         chat_engine = SimpleChatEngine.from_defaults(
