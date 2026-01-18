@@ -35,13 +35,12 @@ class GraphState(TypedDict, total=False):
     multi_contexts: List[List[SerializableTextNode]]  # Retrieved contexts per sub-query (parallel)
 
     # socratic specific artifacts
-    socratic_mode: Optional[SocraticMode]  # Internal routing: "contract" | "diagnose" | "core" | "hinting" | "reflection" | "explain"
-    socratic_contract: Optional[Dict[str, bool]]  # {"allow_explain": bool, "allow_hint": bool}
+    socratic_mode: Optional[SocraticMode]  # Internal routing: "contract" | "diagnose" | "core" ("hinting", "reflection" and "explain" handled in core)
     #diagnostic
     learning_objective: Optional[str]  # Identified learning goal for the interaction
     #core
-    attempt_count: int  # Number of attempts student made at current question/concept
-    goal_achieved: bool  # Whether the learning objective has been reached
+    attempt_count: int  # Total number of attempts student made at current question/concept
+    attempt_count_since_last_hint: int  # Number of attempts since last hint (for hint graduierung)
 
     # output
     answer: Optional[str]

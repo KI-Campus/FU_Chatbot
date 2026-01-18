@@ -13,14 +13,15 @@ def evaluate_user_response(user_query: str,
                            chat_history: List[SerializableChatMessage],
                            learning_objective: str,
                            attempt_count: int,
-                           model: Models) -> Tuple[bool, bool, bool]:
+                           model: Models) -> str:
     """
-    Evaluate user response to determine if they need hint, achieved goal, or want explanation.
+    Evaluate user response to determine which mode the Socratic dialogue should take.
     
-    Uses LLM to assess:
-    1. Whether the student explicitly requests explanation (allow_explain)
-    2. Whether the student needs a hint (allow_hint)
-    3. Whether the learning objective has been achieved (goal_achieved)
+    Uses LLM to assess the student's state and return one of four modes:
+    - EXPLAIN: Student explicitly requests direct explanation
+    - HINT: Student is stuck and needs guidance
+    - REFLECT: Student has achieved the learning objective
+    - CONTINUE: Student is progressing well, continue Socratic dialogue
     
     Args:
         user_query: Student's current response
@@ -30,10 +31,7 @@ def evaluate_user_response(user_query: str,
         model: Which LLM model to use
         
     Returns:
-        Tuple[allow_explain, allow_hint, goal_achieved]:
-        - allow_explain: True if student explicitly requests direct explanation
-        - allow_hint: True if student appears stuck/frustrated and needs hint
-        - goal_achieved: True if student demonstrates understanding of objective
+        str: One of "EXPLAIN", "HINT", "REFLECT", or "CONTINUE"
     """
     
     # Build evaluation query
@@ -53,27 +51,19 @@ Student's Current Response: {user_query}"""
     
     if response.content is None:
         # Fallback: assume student is progressing
-        return False, False, False
+        return "CONTINUE"
     
     # Parse LLM response
-    lines = response.content.strip().split('\n')
-    allow_explain = False
-    allow_hint = False
-    goal_achieved = False
+    content = response.content.strip()
     
-    for line in lines:
-        line = line.strip()
-        if line.startswith('ALLOW_EXPLAIN:'):
-            value = line.split(':', 1)[1].strip().lower()
-            allow_explain = value == 'true'
-        elif line.startswith('ALLOW_HINT:'):
-            value = line.split(':', 1)[1].strip().lower()
-            allow_hint = value == 'true'
-        elif line.startswith('GOAL_ACHIEVED:'):
-            value = line.split(':', 1)[1].strip().lower()
-            goal_achieved = value == 'true'
+    # Look for MODE: prefix
+    if "MODE:" in content:
+        mode = content.split("MODE:")[1].strip().split()[0].upper()
+        if mode in ["EXPLAIN", "HINT", "REFLECT", "CONTINUE"]:
+            return mode
     
-    return allow_explain, allow_hint, goal_achieved
+    # Fallback if parsing fails
+    return "CONTINUE"
 
 def reset_socratic_state() -> Dict[str, Any]:
     """
@@ -90,6 +80,7 @@ def reset_socratic_state() -> Dict[str, Any]:
         "socratic_contract": None,
         "learning_objective": None,
         "attempt_count": 0,
+        "attempt_count_since_last_hint": 0,
         "goal_achieved": False
     }
 
@@ -108,6 +99,7 @@ def answer_and_reset_socratic_state(next_mode: str, response: str) -> Dict[str, 
         "socratic_contract": None,
         "learning_objective": None,
         "attempt_count": 0,
+        "attempt_count_since_last_hint": 0,
         "goal_achieved": False,
         "answer": response
     }
