@@ -63,10 +63,11 @@ def socratic_core(state: GraphState) -> dict:
     # Increment attempt counter
     new_attempt_count = attempt_count + 1
     
-    # LLM-based assessment to determine mode after 2 given hints we explain directly
-    if number_given_hints > 2:
+    # After 2 hints given, automatically explain (no more hints)
+    if number_given_hints >= 2:
         mode = "EXPLAIN"
     else:
+        # LLM-based assessment to determine mode
         mode = evaluate_user_response(
             user_query=user_query,
             chat_history=chat_history,
