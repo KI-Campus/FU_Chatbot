@@ -1,10 +1,14 @@
+import hashlib
 import json
 import logging
+import os
 import re
 import tempfile
+import time
 import unicodedata
 import zipfile
 from pathlib import Path
+from typing import Iterable, Optional
 
 from bs4 import BeautifulSoup, ParserRejectedMarkup
 from llama_index.core import Document
@@ -33,6 +37,57 @@ from src.loaders.audio import Audio
 from src.loaders.pdf import PDF
 from src.loaders.vimeo import Vimeo
 from src.loaders.youtube import Youtube
+from src.loaders.run_logger import RunContext, format_kv
+from src.loaders.helper import normalize_text_for_rag
+
+
+MODULE_FINGERPRINT_VERSION = 1
+
+
+def compute_module_fingerprint(module) -> str:
+    """Compute a stable fingerprint for a Moodle module.
+
+    We intentionally use *only* timestamps from Moodle (no text), so we can detect
+    changes before expensive extraction.
+
+    Sources (in priority order):
+      1) module.contentsinfo.lastmodified (from core_course_get_contents)
+      2) max(module.contents[].timemodified)
+
+    Returns:
+        sha256 hex digest string.
+    """
+    lastmodified = None
+    try:
+        ci = getattr(module, "contentsinfo", None) or {}
+        if isinstance(ci, dict):
+            lastmodified = ci.get("lastmodified")
+    except Exception:
+        lastmodified = None
+
+    if lastmodified is None:
+        try:
+            contents = getattr(module, "contents", None) or []
+            ts = []
+            for c in contents:
+                # DownloadableContent is a pydantic model; moodle raw dicts have timemodified.
+                v = getattr(c, "timemodified", None)
+                if v is None and isinstance(c, dict):
+                    v = c.get("timemodified")
+                if isinstance(v, int):
+                    ts.append(v)
+            lastmodified = max(ts) if ts else 0
+        except Exception:
+            lastmodified = 0
+
+    payload = {
+        "v": MODULE_FINGERPRINT_VERSION,
+        "module_id": int(getattr(module, "id", 0) or 0),
+        "modname": str(getattr(module, "modname", "") or ""),
+        "lastmodified": int(lastmodified) if isinstance(lastmodified, int) else 0,
+    }
+    raw = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(raw).hexdigest()
 
 
 class Moodle:
@@ -40,8 +95,10 @@ class Moodle:
     base_url: base url of moodle instance
     token: token for moodle api"""
     
-    def __init__(self) -> None:
+    def __init__(self, run_ctx: Optional[RunContext] = None) -> None:
         self.logger = logging.getLogger("loader")
+        self.run_ctx = run_ctx
+        self._extract_started_ts = time.time()
         self.base_url = env.DATA_SOURCE_MOODLE_URL
         self.api_endpoint = f"{self.base_url}webservice/rest/server.php"
         self.token = env.DATA_SOURCE_MOODLE_TOKEN
@@ -104,28 +161,344 @@ class Moodle:
         return videotime_content
 
     def extract(self) -> list[Document]:
-        """extracts all courses and their contents from moodle"""
+        """Extracts all Moodle courses and returns a full list of documents.
+
+        NOTE: This is memory heavy. Prefer `iter_course_documents()` for ingestion.
+        """
+        docs: list[Document] = []
+        courses: list[MoodleCourse] = []
+        for course, course_docs in self.iter_course_documents():
+            courses.append(course)
+            docs.extend(course_docs)
+        docs.append(self.get_toc_document(courses))
+        return docs
+
+
+    def iter_course_documents_stream(
+        self,
+        *,
+        existing_module_fingerprints: dict[int, dict[int, str]] | None = None,
+        delta_by_module: bool = True,
+    ) -> Iterable[tuple[MoodleCourse, Document]]:
+        """Yield Moodle documents as a stream: (course_obj, doc).
+
+        This is a bounded-memory iterator designed for ingestion:
+        - yields the course-level Document first
+        - then yields one Document per module
+
+        The caller can delete old Qdrant points once per course and then upsert
+        documents incrementally.
+        """
 
         failedTranscripts: FailedTranscripts = FailedTranscripts(courses=[])
 
         courses = self.get_courses()
+        self.logger.info("Moodle: fetched %s visible courses", len(courses))
+        if self.run_ctx:
+            self.run_ctx.set_counter("moodle_courses_total", len(courses))
+            self.run_ctx.set_counter("moodle_courses_done", 0)
+            self.run_ctx.set_counter("moodle_topics_done", 0)
+            self.run_ctx.set_counter("moodle_modules_done", 0)
+            self.run_ctx.set_counter("moodle_modules_failed", 0)
+
+        progress_every = int(os.getenv("RUN_MOODLE_PROGRESS_EVERY", "50"))
+
         for i, course in enumerate(courses):
-            self.logger.debug(f"Processing course id: {course.id}, course {i+1}/{len(courses)}")
-            
-            # Lade alle Module-Intros für diesen Kurs (1x pro Kurs)
-            self._load_module_intros_for_course(course.id)
-            
+            self.logger.debug("Processing course id=%s (%s/%s)", course.id, i + 1, len(courses))
+
+            # Load the lightweight course structure first. This is required both for
+            # extraction and for delta fingerprinting.
             course.topics = self.get_course_contents(course.id)
+            self.logger.info("Moodle: course_id=%s topics=%s", course.id, len(course.topics))
+
+            # Compute current module fingerprints from timestamps only.
+            current_module_fps: dict[int, str] = {}
+            current_module_ids: set[int] = set()
+            for topic in course.topics or []:
+                for m in getattr(topic, "modules", None) or []:
+                    if m is None:
+                        continue
+                    try:
+                        mid = int(getattr(m, "id", 0) or 0)
+                    except Exception:
+                        continue
+                    if mid <= 0:
+                        continue
+                    current_module_ids.add(mid)
+                    try:
+                        current_module_fps[mid] = compute_module_fingerprint(m)
+                    except Exception:
+                        # best-effort: missing contentsinfo etc.
+                        current_module_fps[mid] = compute_module_fingerprint(m)
+
+            existing_for_course: dict[int, str] = {}
+            if delta_by_module and existing_module_fingerprints:
+                existing_for_course = existing_module_fingerprints.get(int(course.id), {}) or {}
+
+            changed_module_ids: set[int] = set(current_module_ids)
+            removed_module_ids: list[int] = []
+            if delta_by_module:
+                removed_module_ids = sorted(set(existing_for_course.keys()) - current_module_ids)
+                changed_module_ids = {mid for mid, fp in current_module_fps.items() if existing_for_course.get(mid) != fp}
+
+                if not changed_module_ids and not removed_module_ids and existing_for_course:
+                    # Nothing changed - skip the entire course without any heavy extraction.
+                    self.logger.info(
+                        "Moodle: course_id=%s unchanged (modules=%s). Skipping extraction.",
+                        course.id,
+                        len(current_module_ids),
+                    )
+                    if self.run_ctx:
+                        self.run_ctx.inc("moodle_courses_done")
+                        self.run_ctx.set_last(course_id=course.id)
+                        self.run_ctx.checkpoint()
+                    # Release memory
+                    try:
+                        course.topics = []
+                    except Exception:
+                        pass
+                    continue
+
+                self.logger.info(
+                    "Moodle delta: course_id=%s modules_total=%s changed=%s removed=%s",
+                    course.id,
+                    len(current_module_ids),
+                    len(changed_module_ids),
+                    len(removed_module_ids),
+                )
+
+            if self.run_ctx:
+                self.run_ctx.set_last(course_id=course.id)
+                self.run_ctx.inc("moodle_courses_done")
+                self.run_ctx.checkpoint()
+                self.logger.info(
+                    "CHECKPOINT %s",
+                    format_kv(
+                        RUN_ID=self.run_ctx.run_id,
+                        STAGE="MOODLE",
+                        EVENT="COURSE_START",
+                        COURSE_ID=course.id,
+                        COURSE_INDEX=f"{i+1}/{len(courses)}",
+                    ),
+                )
+
+            # Refresh per-course intro cache (avoid unbounded growth)
+            self.module_intros_cache = {}
+            self._load_module_intros_for_course(course.id)
+
             h5p_activity_ids = self.get_h5p_module_ids(course.id)
+            self.logger.info("Moodle: course_id=%s h5p_activities=%s", course.id, len(h5p_activity_ids))
+
+            # Yield course document (summary) first.
+            # NOTE: MoodleCourse.__str__ can include topics, but CourseTopic.__str__ does NOT
+            # include modules, so this stays reasonably small.
+            course_doc_md = {
+                "course_id": course.id,
+                "shortname": course.shortname,
+                "fullname": course.fullname,
+                "type": "Kurs",
+                "source": "Moodle",
+                "url": course.url,
+                **({"language": course.lang} if getattr(course, "lang", None) else {}),
+            }
+            if delta_by_module:
+                course_doc_md.update(
+                    {
+                        "delta_mode": "module_fingerprint",
+                        "module_fingerprint_version": MODULE_FINGERPRINT_VERSION,
+                        "modules_total": len(current_module_ids),
+                        "modules_changed": len(changed_module_ids),
+                        "modules_removed": len(removed_module_ids),
+                        "removed_module_ids": removed_module_ids,
+                    }
+                )
+            yield course, Document(text=str(course), metadata=course_doc_md)
+
+            # If delta mode is enabled, reduce the work we do by extracting only changed modules.
+            if delta_by_module:
+                for topic in course.topics or []:
+                    filtered = []
+                    for m in getattr(topic, "modules", None) or []:
+                        if m is None:
+                            continue
+                        try:
+                            mid = int(getattr(m, "id", 0) or 0)
+                        except Exception:
+                            continue
+                        if mid in changed_module_ids:
+                            filtered.append(m)
+                    topic.modules = filtered
+
+            # Process each topic and module (this fills module objects with extracted content)
             for topic in course.topics:
+                if self.run_ctx:
+                    self.run_ctx.set_last(topic_id=getattr(topic, "id", None))
+                    self.run_ctx.inc("moodle_topics_done")
+                    self.run_ctx.checkpoint()
                 failed_modules = self.get_module_contents(topic, h5p_activity_ids)
                 if failed_modules:
                     failedTranscripts.courses.append(FailedCourse(course=course, modules=failed_modules))
 
-        course_documents = [doc for course in courses for doc in course.to_document()]
-        course_documents.append(self.get_toc_document(courses))
-        save_failed_transcripts_to_excel(transcripts=failedTranscripts, file_name="FailedTranscripts.xlsx")
-        return course_documents
+                # Periodic progress log
+                if self.run_ctx:
+                    modules_done = int(self.run_ctx.snapshot().get("counters", {}).get("moodle_modules_done", 0))
+                    if progress_every > 0 and modules_done > 0 and modules_done % progress_every == 0:
+                        elapsed_s = max(1, int(time.time() - self._extract_started_ts))
+                        rate = round(modules_done / (elapsed_s / 60), 2)
+                        self.logger.info(
+                            "PROGRESS %s",
+                            format_kv(
+                                RUN_ID=self.run_ctx.run_id,
+                                STAGE="MOODLE",
+                                EVENT="MODULE_PROGRESS",
+                                MODULES_DONE=modules_done,
+                                COURSES_DONE=self.run_ctx.snapshot().get("counters", {}).get("moodle_courses_done"),
+                                ELAPSED_S=elapsed_s,
+                                MODULES_PER_MIN=rate,
+                                LAST_COURSE_ID=self.run_ctx.snapshot().get("last_course_id"),
+                                LAST_MODULE_ID=self.run_ctx.snapshot().get("last_module_id"),
+                                LAST_MODULE_TYPE=self.run_ctx.snapshot().get("last_module_type"),
+                            ),
+                        )
+
+            # Yield module documents one by one
+            if course.topics:
+                for topic in course.topics:
+                    for module in topic.modules or []:
+                        if module is None:
+                            continue
+                        try:
+                            doc = module.to_document(course.id)
+                            # Attach module fingerprint for the ingestion pipeline, so it can upsert
+                            # the companion ModuleFingerprint point in Qdrant.
+                            try:
+                                mid = int(getattr(module, "id", 0) or 0)
+                            except Exception:
+                                mid = None
+                            if delta_by_module and mid and mid in current_module_fps:
+                                doc.metadata["module_fingerprint"] = current_module_fps[mid]
+                                doc.metadata["module_fingerprint_version"] = MODULE_FINGERPRINT_VERSION
+                            yield course, doc
+                        except Exception as e:
+                            self.logger.warning(
+                                "Failed to build module Document (course_id=%s module_id=%s): %s",
+                                course.id,
+                                getattr(module, "id", None),
+                                e,
+                            )
+
+            # Release memory held by this course (modules can contain huge extracted texts)
+            try:
+                course.topics = []
+            except Exception:
+                pass
+
+        # Best-effort: write failed transcripts report
+        try:
+            save_failed_transcripts_to_excel(transcripts=failedTranscripts, file_name="FailedTranscripts.xlsx")
+        except Exception as e:
+            self.logger.warning("Failed to write FailedTranscripts.xlsx: %s", e)
+
+
+    def iter_course_documents(self) -> Iterable[tuple[MoodleCourse, list[Document]]]:
+        """Streaming extractor.
+
+        Yields (course, docs_for_course) so the ingestion pipeline can delete+upsert
+        per course and keep peak memory bounded.
+        """
+
+        failedTranscripts: FailedTranscripts = FailedTranscripts(courses=[])
+
+        courses = self.get_courses()
+        self.logger.info("Moodle: fetched %s visible courses", len(courses))
+        if self.run_ctx:
+            self.run_ctx.set_counter("moodle_courses_total", len(courses))
+            self.run_ctx.set_counter("moodle_courses_done", 0)
+            self.run_ctx.set_counter("moodle_topics_done", 0)
+            self.run_ctx.set_counter("moodle_modules_done", 0)
+            self.run_ctx.set_counter("moodle_modules_failed", 0)
+
+        progress_every = int(os.getenv("RUN_MOODLE_PROGRESS_EVERY", "50"))
+
+        for i, course in enumerate(courses):
+            self.logger.debug("Processing course id=%s (%s/%s)", course.id, i + 1, len(courses))
+
+            if self.run_ctx:
+                self.run_ctx.set_last(course_id=course.id)
+                self.run_ctx.inc("moodle_courses_done")
+                self.run_ctx.checkpoint()
+                self.logger.info(
+                    "CHECKPOINT %s",
+                    format_kv(
+                        RUN_ID=self.run_ctx.run_id,
+                        STAGE="MOODLE",
+                        EVENT="COURSE_START",
+                        COURSE_ID=course.id,
+                        COURSE_INDEX=f"{i+1}/{len(courses)}",
+                    ),
+                )
+
+            # Refresh per-course intro cache (avoid unbounded growth)
+            self.module_intros_cache = {}
+            self._load_module_intros_for_course(course.id)
+
+            course.topics = self.get_course_contents(course.id)
+            self.logger.info("Moodle: course_id=%s topics=%s", course.id, len(course.topics))
+
+            h5p_activity_ids = self.get_h5p_module_ids(course.id)
+            self.logger.info("Moodle: course_id=%s h5p_activities=%s", course.id, len(h5p_activity_ids))
+
+            for topic in course.topics:
+                if self.run_ctx:
+                    self.run_ctx.set_last(topic_id=getattr(topic, "id", None))
+                    self.run_ctx.inc("moodle_topics_done")
+                    self.run_ctx.checkpoint()
+                    self.logger.debug(
+                        "CHECKPOINT %s",
+                        format_kv(
+                            RUN_ID=self.run_ctx.run_id,
+                            STAGE="MOODLE",
+                            EVENT="TOPIC_START",
+                            COURSE_ID=course.id,
+                            TOPIC_ID=getattr(topic, "id", None),
+                            MODULES_IN_TOPIC=len(getattr(topic, "modules", []) or []),
+                        ),
+                    )
+                failed_modules = self.get_module_contents(topic, h5p_activity_ids)
+                if failed_modules:
+                    failedTranscripts.courses.append(FailedCourse(course=course, modules=failed_modules))
+
+                # Periodic progress log
+                if self.run_ctx:
+                    modules_done = int(self.run_ctx.snapshot().get("counters", {}).get("moodle_modules_done", 0))
+                    if progress_every > 0 and modules_done > 0 and modules_done % progress_every == 0:
+                        elapsed_s = max(1, int(time.time() - self._extract_started_ts))
+                        rate = round(modules_done / (elapsed_s / 60), 2)
+                        self.logger.info(
+                            "PROGRESS %s",
+                            format_kv(
+                                RUN_ID=self.run_ctx.run_id,
+                                STAGE="MOODLE",
+                                EVENT="MODULE_PROGRESS",
+                                MODULES_DONE=modules_done,
+                                COURSES_DONE=self.run_ctx.snapshot().get("counters", {}).get("moodle_courses_done"),
+                                ELAPSED_S=elapsed_s,
+                                MODULES_PER_MIN=rate,
+                                LAST_COURSE_ID=self.run_ctx.snapshot().get("last_course_id"),
+                                LAST_MODULE_ID=self.run_ctx.snapshot().get("last_module_id"),
+                                LAST_MODULE_TYPE=self.run_ctx.snapshot().get("last_module_type"),
+                            ),
+                        )
+
+            # Convert only this course's objects to documents, then yield.
+            docs_for_course = course.to_document()
+            yield course, docs_for_course
+
+        # Keep current behavior of saving failed transcript report (best-effort)
+        try:
+            save_failed_transcripts_to_excel(transcripts=failedTranscripts, file_name="FailedTranscripts.xlsx")
+        except Exception as e:
+            self.logger.warning("Failed to write FailedTranscripts.xlsx: %s", e)
 
     def get_toc_document(self, courses) -> Document:
         toc_str = "List of all available courses:\n"
@@ -145,10 +518,21 @@ class Moodle:
     def get_module_contents(self, topic, h5p_activities):
         failed_modules: list[FailedModule] = []
 
+        self.logger.debug(
+            "Moodle: topic_id=%s modules=%s", getattr(topic, "id", None), len(topic.modules)
+        )
         for module in topic.modules:
             err_message = None
             if module.visible == 0:
                 continue
+
+            if self.run_ctx:
+                self.run_ctx.set_last(
+                    module_id=getattr(module, "id", None),
+                    module_type=getattr(getattr(module, "type", None), "value", getattr(module, "type", None)),
+                    url=getattr(module, "url", None),
+                )
+                self.run_ctx.checkpoint()
             match module.type:
                 case ModuleTypes.VIDEOTIME:
                     err_message = self.extract_videotime(module)
@@ -170,6 +554,10 @@ class Moodle:
                     err_message = self.extract_url(module)
             if err_message:
                 failed_modules.append(FailedModule(modul=module, err_message=err_message))
+                if self.run_ctx:
+                    self.run_ctx.inc("moodle_modules_failed")
+            if self.run_ctx:
+                self.run_ctx.inc("moodle_modules_done")
 
         return failed_modules
 
@@ -188,8 +576,7 @@ class Moodle:
 
             if soup.text is not None:
                 module.text = soup.get_text("\n")
-                # Normalize parsed text (remove \xa0 from str)
-                module.text = unicodedata.normalize("NFKD", module.text)
+                module.text = normalize_text_for_rag(module.text)
 
             for p_link in links:
                 pattern = r"https://player\.vimeo\.com/video/\d+"
@@ -227,7 +614,11 @@ class Moodle:
         if videotime_data.get('intro') and videotime_data['intro'].strip():
             module.intro = videotime_data['intro']
         
-        videotime = Video(**videotime_data)
+        try:
+            videotime = Video(**videotime_data)
+        except ValidationError as e:
+            self.logger.error(f"Validation error for VideoTime module {module.id}: {e}")
+            return
 
         err_message = None
 
@@ -767,8 +1158,7 @@ class Moodle:
             # Extrahiere Text
             if soup.text is not None:
                 html_text = soup.get_text("\n")
-                # Normalize parsed text (remove \xa0 from str)
-                html_text = unicodedata.normalize("NFKD", html_text)
+                html_text = normalize_text_for_rag(html_text)
             
             # Extrahiere Videos aus Links (wie bei PAGE)
             links = soup.find_all("a")
@@ -941,9 +1331,7 @@ class Moodle:
         try:
             soup = BeautifulSoup(intro_html, "html.parser")
             text = soup.get_text("\n")
-            text = unicodedata.normalize("NFKD", text)
-            lines = [line.strip() for line in text.split('\n') if line.strip()]
-            text = '\n'.join(lines)
+            text = normalize_text_for_rag(text)
             return text + "\n\n" if text else ""
         except Exception as e:
             self.logger.warning(f"Fehler beim Parsen des Intro-Texts für Modul {module_id}: {e}")

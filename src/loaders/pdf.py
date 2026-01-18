@@ -540,6 +540,4 @@ if __name__ == "__main__":
     sample_pdf = Path("sample.pdf")
     if sample_pdf.exists():
         text = pdf_extractor.extract_text(sample_pdf)
-        print(f"Extracted {len(text)} characters")
-        print("\nFull text:")
-        print(text)
+        logging.getLogger("loader").info("Extracted %s characters from %s", len(text), sample_pdf)

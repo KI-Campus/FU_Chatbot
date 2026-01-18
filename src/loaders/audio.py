@@ -214,5 +214,7 @@ if __name__ == "__main__":
     # Sample bytes for demonstration
     sample_bytes = b"fake audio data" * 1000
     
-    text = audio.extract_metadata_from_bytes(sample_bytes, "podcast.mp3", "audio/mp3")
-    print(text)
+    # NOTE: keep this as a simple manual demo only; do not use print() in ingestion.
+    # The correct method is extract_text_from_bytes (extract_metadata_from_bytes does not exist).
+    text = audio.extract_text_from_bytes(sample_bytes, "podcast.mp3", "audio/mp3")
+    logging.getLogger("loader").info("Demo transcription length=%s", len(text))

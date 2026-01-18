@@ -49,6 +49,16 @@ class KiCampusRetriever:
 
         conditions = []
 
+        # Exclude internal bookkeeping points (e.g. ModuleFingerprint) from retrieval.
+        # We do this via must_not so it doesn't change existing retrieval behavior
+        # (e.g. Drupal-only retrieval when no course/module filters are given).
+        must_not = [
+            models.FieldCondition(
+                key="type",
+                match=models.MatchValue(value="ModuleFingerprint"),
+            )
+        ]
+
         if course_id is None and module_id is None:
             conditions.append(
                 models.FieldCondition(
@@ -73,7 +83,7 @@ class KiCampusRetriever:
                 )
             )
 
-        filter = models.Filter(must=conditions) if conditions else None
+        filter = models.Filter(must=conditions, must_not=must_not) if (conditions or must_not) else None
 
         vector_store_query = VectorStoreQuery(query_embedding=embedding, similarity_top_k=10)
 
@@ -102,6 +112,13 @@ class KiCampusRetriever:
         # Build filter conditions
         conditions = []
         
+        must_not = [
+            models.FieldCondition(
+                key="type",
+                match=models.MatchValue(value="ModuleFingerprint"),
+            )
+        ]
+
         if course_id is None and module_id is None:
             conditions.append(
                 models.FieldCondition(
@@ -126,7 +143,7 @@ class KiCampusRetriever:
                 )
             )
         
-        query_filter = models.Filter(must=conditions) if conditions else None
+        query_filter = models.Filter(must=conditions, must_not=must_not) if (conditions or must_not) else None
         
         # Hybrid search using prefetch + fusion
         # Qdrant performs automatic RRF (Reciprocal Rank Fusion)

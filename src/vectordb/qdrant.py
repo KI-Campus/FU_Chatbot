@@ -1,3 +1,4 @@
+import logging
 import os
 import sys
 from typing import List
@@ -6,7 +7,6 @@ from llama_index.vector_stores.qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient, models
 from qdrant_client.http.exceptions import ResponseHandlingException, UnexpectedResponse
 from qdrant_client.http.models import Distance, PointStruct, VectorParams, SparseVectorParams
-from qdrant_client.http.api_client import ResponseHandlingException
 
 from src.env import env
 
@@ -17,6 +17,7 @@ sys.path.append(parent)
 
 class VectorDBQdrant:
     def __init__(self, version: str = "prod_remote"):
+        self.logger = logging.getLogger("loader")
         self.version = version
         if version == "memory":
             self.client = QdrantClient(":memory:")
@@ -25,9 +26,9 @@ class VectorDBQdrant:
             try:
                 _ = self.client.get_collections()
             except ResponseHandlingException as e:
-                print("Qdrant container not running? Run:")
-                print(
-                    "docker run -p 6333:6333 -p 6334:6334 -v $(pwd)/qdrant_storage:/qdrant/storage:z qdrant/qdrant:v1.6.1"
+                self.logger.error(
+                    "Qdrant container not running? For local dev you can run: %s",
+                    "docker run -p 6333:6333 -p 6334:6334 -v $(pwd)/qdrant_storage:/qdrant/storage:z qdrant/qdrant:v1.6.1",
                 )
                 raise e
         # Longer timeout for dev, because container app is scaled down to 0 instances
@@ -40,9 +41,11 @@ class VectorDBQdrant:
                 url = env.QDRANT_URL
                 api_key = env.QDRANT_API_KEY
 
+            self.logger.info("Connecting to DEV Qdrant at %s", url)
             self.client = QdrantClient(url=url, port=443, https=True, timeout=120, api_key=api_key)
             _ = self.client.get_collections()
         elif version == "prod_remote":
+            self.logger.info("Connecting to PROD Qdrant at %s", env.PROD_QDRANT_URL)
             self.client = QdrantClient(
                 url=env.PROD_QDRANT_URL, port=443, https=True, timeout=30, api_key=env.PROD_QDRANT_API_KEY
             )
@@ -63,8 +66,16 @@ class VectorDBQdrant:
         """
         try:
             _ = self.client.get_collection(collection_name=collection_name)
-            print(f"Collection '{collection_name}' already exists.")
+            self.logger.info("Qdrant collection '%s' already exists.", collection_name)
         except UnexpectedResponse as e:
+            self.logger.info(
+                "Qdrant create_collection %s",
+                {
+                    "collection": collection_name,
+                    "vector_size": vector_size,
+                    "enable_sparse": enable_sparse,
+                },
+            )
             if enable_sparse:
                 # Create collection with both dense and sparse vectors for hybrid retrieval
                 _ = self.client.create_collection(
@@ -76,14 +87,30 @@ class VectorDBQdrant:
                         "sparse": SparseVectorParams(),
                     },
                 )
-                print(f"Created hybrid collection '{collection_name}' with dense (size={vector_size}) and sparse vectors.")
+                self.logger.info(
+                    "Created hybrid collection '%s' with dense(size=%s) + sparse vectors.",
+                    collection_name,
+                    vector_size,
+                )
             else:
                 # Legacy: Dense-only collection
                 _ = self.client.create_collection(
                     collection_name=collection_name,
                     vectors_config=VectorParams(size=vector_size, distance=Distance.DOT),
                 )
-                print(f"Created dense-only collection '{collection_name}' with size={vector_size}.")
+                self.logger.info(
+                    "Created dense-only collection '%s' with size=%s.",
+                    collection_name,
+                    vector_size,
+                )
+        except Exception as e:
+            self.logger.exception(
+                "Failed to create Qdrant collection '%s' (enable_sparse=%s): %s",
+                collection_name,
+                enable_sparse,
+                e,
+            )
+            raise
 
     def upsert(self, collection_name, points: list[dict]) -> None:
         """Upsert points into Qdrant collection.
@@ -99,6 +126,11 @@ class VectorDBQdrant:
         """
         qdrant_points = [PointStruct(**point) for point in points]
         try:
+            self.logger.debug(
+                "Qdrant upsert request: collection=%s points=%s",
+                collection_name,
+                len(points),
+            )
             operation_info = self.client.upsert(
                 collection_name=collection_name,
                 wait=True,
@@ -107,12 +139,20 @@ class VectorDBQdrant:
         except ResponseHandlingException as e:
             # Z.B. httpx.RemoteProtocolError: "Server disconnected without sending a response".
             # Nur diesen Batch überspringen und weitermachen, statt den gesamten Lauf abzubrechen.
-            print(
-                f"Qdrant upsert failed for batch of {len(points)} points into '{collection_name}': {e}"
+            self.logger.warning(
+                "Qdrant upsert failed: collection=%s points=%s exc=%s",
+                collection_name,
+                len(points),
+                e,
             )
             return
 
-        print(f"Upserted {len(points)} points into '{collection_name}': {operation_info}")
+        self.logger.debug(
+            "Upserted %s points into '%s' (operation=%s)",
+            len(points),
+            collection_name,
+            operation_info,
+        )
 
     def search(self, collection_name, query_vector, query_filter=None, with_payload=True, limit=10) -> list[dict]:
         """Search in Qdrant collection.
@@ -158,10 +198,10 @@ class VectorDBQdrant:
                 )
             
             except ResponseHandlingException as e:
-                print(f"Qdrant ResponseHandlingException: {e}")
+                self.logger.warning("Qdrant scroll ResponseHandlingException: %s", e)
                 return [], []
             except Exception as e:
-                print(f"Qdrant unknown Exception: {e}")
+                self.logger.exception("Qdrant scroll unexpected exception: %s", e)
                 return [], []
 
             next_page_offset = records[1]
@@ -211,6 +251,7 @@ class VectorDBQdrant:
         return bool(self.query_with_filter("web_assistant", scroll_filter))
 
     def query_with_filter(self, collection_name, scroll_filter) -> List:
+        self.logger.debug("Qdrant scroll query on '%s' with filter=%s", collection_name, scroll_filter)
         records = self.client.scroll(
             collection_name=collection_name,
             scroll_filter=scroll_filter,
@@ -220,6 +261,38 @@ class VectorDBQdrant:
         )
 
         return records
+
+
+    def delete_by_filter(self, collection_name: str, qdrant_filter: models.Filter, *, wait: bool = True) -> None:
+        """Delete all points matching a payload filter.
+
+        Note: For large deletes, Qdrant runs this as an internal operation. We still
+        set wait=True by default so ingestion ordering is deterministic.
+        """
+        try:
+            self.logger.info(
+                "Qdrant delete_by_filter: collection=%s filter=%s",
+                collection_name,
+                qdrant_filter,
+            )
+            _ = self.client.delete(
+                collection_name=collection_name,
+                points_selector=models.FilterSelector(filter=qdrant_filter),
+                wait=wait,
+            )
+        except ResponseHandlingException as e:
+            self.logger.warning(
+                "Qdrant delete_by_filter failed (collection=%s): %s",
+                collection_name,
+                e,
+            )
+        except Exception as e:
+            self.logger.exception(
+                "Qdrant delete_by_filter unexpected error (collection=%s): %s",
+                collection_name,
+                e,
+            )
+            raise
 
 
 if __name__ == "__main__":

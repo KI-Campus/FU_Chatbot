@@ -1,4 +1,5 @@
 import logging
+import os
 import unicodedata
 from datetime import datetime
 from enum import Enum
@@ -9,6 +10,7 @@ from bs4 import BeautifulSoup
 from llama_index.core import Document
 
 from src.env import env
+from src.loaders.run_logger import RunContext, format_kv
 
 
 class PageTypes(Enum):
@@ -30,9 +32,16 @@ DRUPAL_API_BASE_URL = "https://ki-campus.org/jsonapi/node/"
 
 class Drupal:
     def __init__(
-        self, base_url: str = "", username: str = "", client_id: str = "", client_secret: str = "", grant_type: str = ""
+        self,
+        base_url: str = "",
+        username: str = "",
+        client_id: str = "",
+        client_secret: str = "",
+        grant_type: str = "",
+        run_ctx: RunContext | None = None,
     ) -> None:
         self.logger = logging.getLogger("loader")
+        self.run_ctx = run_ctx
         # This fixes very slow requests, IPV6 is not properly supported by the ki-campus.org server
         # https://stackoverflow.com/questions/62599036/python-requests-is-slow-and-takes-very-long-to-complete-http-or-https-request
         requests.packages.urllib3.util.connection.HAS_IPV6 = False
@@ -70,20 +79,44 @@ class Drupal:
         )
 
         if response.status_code != 200:
+            self.logger.warning(
+                "Drupal OAuth failed %s",
+                format_kv(
+                    STAGE="DRUPAL",
+                    EVENT="OAUTH_FAILED",
+                    STATUS_CODE=response.status_code,
+                ),
+            )
             return
 
-        return response.json()["access_token"]
+        token = response.json().get("access_token")
+        if token:
+            self.logger.info(
+                "Drupal OAuth %s",
+                format_kv(STAGE="DRUPAL", EVENT="OAUTH_OK"),
+            )
+        return token
 
     def extract(self):
-        all_docs = []
+        all_docs: list[Document] = []
 
-        for type in PageTypes:
-            all_docs += self.get_page_type(type)
+        self.logger.info("Drupal: starting extraction for %s page types", len(list(PageTypes)))
+        for page_type in PageTypes:
+            if self.run_ctx:
+                self.run_ctx.set_last(url=f"{DRUPAL_API_BASE_URL}{page_type.value[0]}")
+                self.run_ctx.checkpoint()
+            docs = self.get_page_type(page_type)
+            self.logger.info("Drupal: page_type=%s -> %s documents", page_type.value[0], len(docs))
+            all_docs += docs
+        self.logger.info("Drupal: total documents=%s", len(all_docs))
         return all_docs
 
     def get_page_type(self, page_type: PageTypes) -> List[Document]:
         documents: list[Document] = []
-        node = self.get_data(f"{DRUPAL_API_BASE_URL}{page_type.value[0]}")
+        url = f"{DRUPAL_API_BASE_URL}{page_type.value[0]}"
+        self.logger.debug("Drupal: fetching %s", url)
+        node = self.get_data(url)
+        self.logger.info("Drupal: fetched %s raw nodes for type=%s", len(node), page_type.value[0])
         for i, page in enumerate(node):
             self.logger.debug(f"Processing {page_type.value[0]} number: {i+1}/{len(node)}")
 
@@ -101,11 +134,7 @@ class Drupal:
                     # Mark popular/recommended courses
                     if metadata["course_id"] in self.important_courses:
                         metadata["is_important"] = True
-
-                # Fetch additional data for COURSE pages
-                if page_type == PageTypes.COURSE:
-                    metadata.update(self.get_course_metadata(page))
-                
+               
                 # Fetch author names for BLOGPOST pages
                 if page_type == PageTypes.BLOGPOST:
                     author_data = page.get("relationships", {}).get("field_author", {}).get("data", [])
@@ -121,12 +150,25 @@ class Drupal:
                     )
                 )
 
+        if len(node) > 0 and len(documents) == 0:
+            self.logger.warning(
+                "Drupal: fetched %s nodes for type=%s but created 0 documents (maybe all nodes are unpublished?)",
+                len(node),
+                page_type.value[0],
+            )
+
         return documents
 
     def get_data(self, url: str):
         data = []
 
+        page = 0
+
         while url:
+            page += 1
+            if self.run_ctx:
+                self.run_ctx.set_last(url=url)
+                self.run_ctx.checkpoint()
             response = requests.get(url, headers=self.header)
             
             if response.status_code != 200:
@@ -135,6 +177,16 @@ class Drupal:
             
             result = response.json()
             data.extend(result["data"])
+            if page == 1 or page % int(os.getenv("RUN_DRUPAL_PROGRESS_EVERY_PAGES", "5")) == 0:
+                self.logger.info(
+                    "Drupal paging %s",
+                    format_kv(
+                        STAGE="DRUPAL",
+                        EVENT="PAGE",
+                        PAGE=page,
+                        NODES_CUMULATIVE=len(data),
+                    ),
+                )
             next_link = result["links"].get("next")
             url = next_link["href"] if next_link else None
         return data
@@ -208,7 +260,7 @@ class Drupal:
 
         match page_type:
             case PageTypes.COURSE:
-                final_representations += self.get_course_representation(page, page_type, metadata)
+                final_representations += self.get_course_representation(page, page_type)
             case PageTypes.BLOGPOST:
                 final_representations += self.get_blogpost_representation(page, page_type, metadata)
             case PageTypes.PAGE:
@@ -398,111 +450,110 @@ class Drupal:
 
         return final_representations
     
-    def get_course_metadata(self, page):
-        metadata = {}
+    def get_course_data(self, page):
+        course_data = {}
         institution_data = page.get("relationships", {}).get("field_institution", {}).get("data", [])
         if institution_data:
             institution_names = self.get_institutions(institution_data)
             if institution_names:
-                metadata["institutions"] = institution_names
+                course_data["institutions"] = institution_names
 
         lecturer_data = page.get("relationships", {}).get("field_lecturer", {}).get("data", [])
         if lecturer_data:
             lecturer_names = self.get_lecturers(lecturer_data)
             if lecturer_names:
-                metadata["lecturers"] = lecturer_names
+                course_data["lecturers"] = lecturer_names
 
         # description
         if page.get("attributes", {}).get("field_description") is not None:
-            metadata["description"] = BeautifulSoup(
+            course_data["description"] = BeautifulSoup(
                 page["attributes"]["field_description"]["value"], "html.parser"
             ).getText()
 
         # course_type (field_format)
         if page.get("attributes", {}).get("field_format") is not None:
-            metadata["course_type"] = self.get_course_type(page["attributes"]["field_format"])
+            course_data["course_type"] = self.get_course_type(page["attributes"]["field_format"])
 
         # field_umfang (course duration/scope)
         if page.get("attributes", {}).get("field_umfang") is not None:
-            metadata["field_umfang"] = page["attributes"]["field_umfang"]
-
+            course_data["field_umfang"] = page["attributes"]["field_umfang"]
         # difficulty (field_level)
         if page.get("attributes", {}).get("field_level") is not None:
-            metadata["difficulty"] = page["attributes"]["field_level"]
+            course_data["difficulty"] = page["attributes"]["field_level"]
 
         # topics (field_occupational_field)
         if page.get("relationships", {}).get("field_occupational_field", {}).get("data") is not None:
-            metadata["topics"] = self.get_course_topic(page["relationships"]["field_occupational_field"]["data"])
-
+            course_data["topics"] = self.get_course_topic(page["relationships"]["field_occupational_field"]["data"])
         # course_level
         course_level_url = page.get("relationships", {}).get("field_course_level", {}).get("links", {}).get("related", {}).get("href")
         if course_level_url:
             course_level_name = self.get_related_name(course_level_url)
             if course_level_name:
-                metadata["course_level"] = course_level_name
+                course_data["course_level"] = course_level_name
 
         # degree (achievement record)
         degree_url = page.get("relationships", {}).get("field_achievement_record", {}).get("links", {}).get("related", {}).get("href")
         if degree_url:
             degree_name = self.get_related_name(degree_url)
             if degree_name:
-                metadata["degree"] = degree_name
+                course_data["degree"] = degree_name
 
         # rating_avg (divide by 2 and format as "X Sterne")
         rating_avg_str = page.get("attributes", {}).get("field_rating_avg")
         if rating_avg_str:
             try:
                 rating_value = float(rating_avg_str) / 2
-                metadata["rating_avg"] = f"{rating_value} Sterne"
+                course_data["rating_avg"] = f"{rating_value} Sterne"
             except (ValueError, TypeError):
                 pass
 
         # rating_count
         rating_count = page.get("attributes", {}).get("field_rating_count")
         if rating_count is not None:
-            metadata["rating_count"] = rating_count
+            course_data["rating_count"] = rating_count
 
         # language (content language)
         language_url = page.get("relationships", {}).get("field_content_language", {}).get("links", {}).get("related", {}).get("href")
         if language_url:
             language_name = self.get_related_name(language_url)
             if language_name:
-                metadata["language"] = language_name
+                course_data["language"] = language_name
 
         # license
         license_url = page.get("relationships", {}).get("field_license", {}).get("links", {}).get("related", {}).get("href")
         if license_url:
             license_name = self.get_related_name(license_url)
             if license_name:
-                metadata["license"] = license_name
+                course_data["license"] = license_name
 
 
-        return metadata
-
+        return course_data
     
-    def get_course_representation(self, page, page_type: PageTypes, metadata):
+    def get_course_representation(self, page, page_type: PageTypes):
         paragraphs = self.get_page_paragraphs(page["id"], page_type)
 
+        course_data = self.get_course_data(page)
+
         rating_line = ""
-        if metadata.get("rating_avg"):
-            rating_line = f"Average {page_type.value[1]} Rating on a scale from 0 to 5, 0 being the worst, 5 being the best: {metadata.get('rating_avg')} at {metadata.get('rating_count', 0)} ratings"
+        if course_data.get("rating_avg"):
+            rating_line = f"Average {page_type.value[1]} Rating on a scale from 0 to 5, 0 being the worst, 5 being the best: {course_data.get('rating_avg')} at {course_data.get('rating_count', 0)} ratings"
         else:
             rating_line = "No ratings available for this course."
 
         final_representations = f"""
         {page_type.value[1]} Title: {page["attributes"]["title"]}
-        {page_type.value[1]} Description: {metadata.get("description", "")}
-        {page_type.value[1]} Type: {metadata.get("course_type", "")}
-        {page_type.value[1]} Length: {metadata.get("field_umfang", "")}
-        {page_type.value[1]} Difficulty: {metadata.get("difficulty", "")}
-        {page_type.value[1]} Target Group: {metadata.get("course_level", "")}
-        {page_type.value[1]} Language: {metadata.get("language", "")}
-        {page_type.value[1]} Topic(s): {metadata.get("topics", "")}
-        {page_type.value[1]} Institutions: {', '.join(metadata.get("institutions", []))}
-        {page_type.value[1]} Lecturers: {', '.join(metadata.get("lecturers", []))}
-        {page_type.value[1]} Degree: {metadata.get("degree", "")}
+        {page_type.value[1]} Description: {course_data.get("description", "")}
+        {page_type.value[1]} Type: {course_data.get("course_type", "")}
+        {page_type.value[1]} Length: {course_data.get("field_umfang", "")}
+        {page_type.value[1]} Difficulty: {course_data.get("difficulty", "")}
+        {page_type.value[1]} Target Group: {course_data.get("course_level", "")}
+        {page_type.value[1]} Language: {course_data.get("language", "")}
+        {page_type.value[1]} Topic(s): {course_data.get("topics", "")}
+        {page_type.value[1]} Institutions: {', '.join(course_data.get("institutions", []))}
+        {page_type.value[1]} Lecturers: {', '.join(course_data.get("lecturers", []))}
+        {page_type.value[1]} Degree: {course_data.get("degree", "")}
         {rating_line}
-        {page_type.value[1]} License: {metadata.get("license", "")}
+        {page_type.value[1]} License: {course_data.get("license", "")}
 
         {paragraphs}
         """
@@ -511,7 +562,7 @@ class Drupal:
     
     def get_blogpost_representation(self, page, page_type: PageTypes, metadata):
         final_representations = f"""
-                    {page_type.value[1]} Title: {metadata}
+                    {page_type.value[1]} Title: {metadata.get("title", "")}
                     {page_type.value[1]} Authors: {', '.join(metadata.get("authors", []))}
                     {page_type.value[1]} Published on: {metadata.get("date_created", "")}
                 """

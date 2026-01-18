@@ -2,6 +2,8 @@ from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
 from pydantic import BaseModel
 
+import logging
+
 from src.loaders.models.module import Module
 from src.loaders.models.moodlecourse import MoodleCourse
 
@@ -49,4 +51,4 @@ def save_failed_transcripts_to_excel(transcripts: FailedTranscripts, file_name: 
 
     # Save the workbook
     wb.save(file_name)
-    print(f"Data has been saved to {file_name}")
+    logging.getLogger("loader").info("Failed transcripts saved to %s", file_name)

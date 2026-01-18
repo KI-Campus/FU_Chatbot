@@ -1,5 +1,5 @@
 from enum import StrEnum
-from typing import Optional
+from typing import Any, Optional
 
 from llama_index.core import Document
 from pydantic import BaseModel, HttpUrl, computed_field
@@ -38,6 +38,9 @@ class Module(BaseModel):
     text: str | None = None
     intro: str | None = None  # HTML intro text from API (available for resources, activities, etc.)
     contents: list[DownloadableContent] | None = None
+    # Raw metadata from core_course_get_contents. We keep it as a dict so we can compute
+    # stable fingerprints without changing extraction logic.
+    contentsinfo: dict[str, Any] | None = None
     videotime: Video | None = None
     transcripts: list[TextTrack] = []
     interactive_video: dict | None = None  # H5P Interactive Video data (als dict, nicht typisiert)
@@ -174,6 +177,7 @@ class Module(BaseModel):
             "module_id": self.id,
             "fullname": self.name,
             "type": "module",
+            "source": "Moodle",
             "url": str(self.url),
         }
 

@@ -1,4 +1,5 @@
 from typing import Optional
+import os
 import logging
 
 import requests
@@ -65,6 +66,7 @@ class Moochup:
 
     def __init__(self, api_url) -> None:
         self.api_url = api_url
+        self.logger = logging.getLogger("loader")
 
     def fetch_data(self) -> list[CourseInfo]:
         """Course information currently is available from two moochub endpoints.
@@ -89,17 +91,31 @@ class Moochup:
                 )
                 return {"data": [], "links": {}}
 
+        self.logger.info("Moochup: fetching courses from %s", self.api_url)
         courses = []
+        pages = 0
         course_infos_page = fetch_pages(self.api_url)
+        pages += 1
         courses.extend(course_infos_page.get("data", []))
         while course_infos_page.get("links", {}).get("next"):
             course_infos_page = fetch_pages(course_infos_page["links"]["next"])
+            pages += 1
             courses.extend(course_infos_page.get("data", []))
 
+            if pages % int(os.getenv("RUN_MOOCHUP_PROGRESS_EVERY_PAGES", "5")) == 0:
+                self.logger.info(
+                    "Moochup paging: pages=%s courses=%s",
+                    pages,
+                    len(courses),
+                )
+
         courses = [CourseInfo(**course) for course in courses]
+        self.logger.info("Moochup: parsed %s courses", len(courses))
         return courses
 
     def get_course_documents(self) -> list[Document]:
         """Returns a list of all course payloads."""
         course_data = self.fetch_data()
-        return [course.to_document() for course in course_data]
+        docs = [course.to_document() for course in course_data]
+        self.logger.info("Moochup: converted %s courses to %s documents", len(course_data), len(docs))
+        return docs
