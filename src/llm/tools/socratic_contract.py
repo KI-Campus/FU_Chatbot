@@ -52,7 +52,7 @@ def socratic_contract(state: GraphState) -> dict:
         "socratic_mode": "diagnose",
         "hint_level": 0,
         "attempt_count": 0,
-        "attempt_count_since_last_hint": 0,
+        "number_given_hints": 0,
         "goal_achieved": False,
         "answer": welcome_message,
         "citations_markdown": None,  # Clear citations from previous requests

@@ -1,3 +1,5 @@
+from langfuse.decorators import observe
+
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
 
@@ -5,10 +7,12 @@ from src.llm.prompts.prompt_loader import load_prompt
 llm = LLM()
 SOCRATIC_EXPLAIN_PROMPT = load_prompt("socratic_explain")
 
+@observe(name="socratic_explain")
 def socratic_explain(learning_objective: str,
                      user_query: str,
                      reranked_chunks: list,
                      chat_history: list,
+                     number_given_hints: int,
                      attempt_count: int,
                      model: str) -> str:
     """
@@ -42,7 +46,7 @@ def socratic_explain(learning_objective: str,
     - Sets socratic_mode for next step
     
     Args:
-        state: Current graph state with reranked chunks, chat_history
+        state: Current graph state with reranked chunks, chat_history, number_given_hints
         
     Returns:
         Updated state with explanation and routing decision
@@ -59,6 +63,7 @@ def socratic_explain(learning_objective: str,
 Student's Current Response: {user_query}
 
 Attempt Count: {attempt_count}
+Number of given Hints: {number_given_hints}
 
 Retrieved Course Materials:
 {course_materials}"""

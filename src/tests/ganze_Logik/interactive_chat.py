@@ -4,13 +4,13 @@ from langfuse import Langfuse
 from src.llm.objects.LLMs import Models
 from src.llm.assistant import KICampusAssistant
 
-DEFAULT_COURSE_ID = None
+DEFAULT_COURSE_ID = 106
 DEFAULT_MODULE_ID = None
 
 RETRIEVE_TOP_N = 10
 RERANK_TOP_N = 5
 
-THREAD_ID = "TestTest"
+THREAD_ID = "finale_workflow_thread"
 
 def parse_args():
     p = argparse.ArgumentParser(description="Interactive CLI chat with KICampusAssistant.")
