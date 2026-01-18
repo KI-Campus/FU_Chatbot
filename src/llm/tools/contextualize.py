@@ -58,7 +58,7 @@ def contextualize_and_route(state: GraphState) -> dict:
     # Handle socratic mode if active
     if socratic_mode is not None:
         # Socratic mode is active - check if user wants to continue
-        continue_socratic = response_clean not in ["exit", "quit", "stop", "stopp"]
+        continue_socratic = response_clean not in ["exit", "quit", "stop", "stopp", "beende den lernmodus", "ich möchte aufhören"]
         
         if not continue_socratic:
             # User wants to exit - provide prefabricated message and skip LLM call
@@ -103,7 +103,7 @@ def contextualize_and_route(state: GraphState) -> dict:
     else:
         # Normal mode handling (no active socratic session)
         # Check if user wants to start socratic mode
-        if response_clean in ["start socratic", "begin socratic", "enter socratic"]:
+        if response_clean in ["start socratic", "begin socratic", "enter socratic", "unterstütze mich beim lernen"]:
             return {
                 "mode": "socratic",
                 "socratic_mode": "contract"
