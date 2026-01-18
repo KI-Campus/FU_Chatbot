@@ -7,9 +7,7 @@ Uses Retrieval to ground questions in actual course content.
 
 from langfuse.decorators import observe
 
-from src.llm.state.models import GraphState
-from src.llm.tools.retrieve import retrieve_chunks
-from src.llm.tools.rerank import rerank_chunks
+from src.llm.state.models import GraphState, get_chat_history_as_messages
 from src.llm.state.socratic_stuckness_goal_achievement import assess_stuckness_and_goal
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
@@ -22,7 +20,7 @@ SOCRATIC_CORE_PROMPT = load_prompt("socratic_core")
 
 
 @observe()
-def socratic_core(state: GraphState) -> GraphState:
+def socratic_core(state: GraphState) -> dict:
     """
     Core Socratic dialogue: Ask one guiding question per turn, never give direct answer.
     
@@ -61,26 +59,18 @@ def socratic_core(state: GraphState) -> GraphState:
         Updated state with next Socratic question and routing decision
     """
     
+    # Get necessary data from state
     user_query = state["user_query"]
-    chat_history = state["chat_history"]
+    chat_history = get_chat_history_as_messages(state)
     learning_objective = state["learning_objective"]
     attempt_count = state["attempt_count"]
     stuckness_score = state["stuckness_score"]
     hint_level = state["hint_level"]
-    
-    # Step 1: Retrieve relevant course content
-    # This grounds the Socratic dialogue in actual course material
-    # Annahme: Fragen sind spezifisch auf Kursinhalte bezogen --> simple_hop genügt
-    state_after_retrieval = retrieve_chunks(state)
-    
-    # Step 2: Rerank retrieved chunks for relevance
-    state_after_rerank = rerank_chunks(state_after_retrieval)
+    model = state["runtime_config"]["model"]
+    reranked = state["reranked"]
     
     # Increment attempt counter
     new_attempt_count = attempt_count + 1
-    
-    # Get model from state
-    model = state["runtime_config"]["model"]
     
     # LLM-based assessment of stuckness, goal achievement, and mastery
     new_stuckness_score, goal_achieved, mastery_level = assess_stuckness_and_goal(
@@ -108,13 +98,12 @@ def socratic_core(state: GraphState) -> GraphState:
         new_hint_level = min(3, hint_level + 1)
         
         # Generate hint using helper function
-        reranked_chunks = state_after_rerank["reranked"]
         response = generate_hint_text(
             hint_level=new_hint_level,
             learning_objective=learning_objective,
             mastery_level=mastery_level,
             user_query=user_query,
-            reranked_chunks=reranked_chunks,
+            reranked_chunks=reranked,
             chat_history=chat_history,
             model=model
         )
@@ -146,14 +135,12 @@ def socratic_core(state: GraphState) -> GraphState:
         next_mode = "core"
         
         # Generate LLM-based Socratic question using reranked course materials
-        reranked_chunks = state_after_rerank["reranked"]
-        
         # Prepare context for LLM
         # Format reranked chunks as course materials
         course_materials = "\n\n".join([
             f"[Material {i+1}]\n{chunk.text}"
-            for i, chunk in enumerate(reranked_chunks[:3])  # Top 3 chunks
-        ]) if reranked_chunks else "No specific course materials retrieved."
+            for i, chunk in enumerate(reranked[:3])  # Top 3 chunks
+        ]) if reranked else "No specific course materials retrieved."
         
         query_for_llm = f"""Learning Objective: {learning_objective}
 
@@ -181,15 +168,13 @@ Retrieved Course Materials:
         else:
             response = llm_response.content.strip()
     
-    # Build return state
+    # Build return state (only changed fields)
     result = {
-        **state_after_rerank,  # Include retrieved and reranked chunks
         "attempt_count": new_attempt_count,
         "stuckness_score": new_stuckness_score,
         "goal_achieved": goal_achieved,
         "student_model": updated_student_model,
-        "answer": response,
-        "citations_markdown": None,  # Clear citations from previous requests
+        "answer": response
     }
     
     # Add hint_level if we gave a hint

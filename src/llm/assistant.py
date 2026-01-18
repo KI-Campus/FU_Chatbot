@@ -1,8 +1,9 @@
+import uuid
 from langfuse.decorators import observe, langfuse_context
-from llama_index.core.llms import ChatMessage, MessageRole
-from langgraph.graph import StateGraph, START, END
+from langgraph.graph import StateGraph, START, END 
 from langgraph.checkpoint.memory import MemorySaver
 
+from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import Models
 from src.llm.state.models import GraphState
 from src.llm.tools.contextualize import contextualize_and_route
@@ -34,10 +35,10 @@ class KICampusAssistant:
         }
         
         # Initialize checkpoint/persistence backend
-        # MemorySaver for development - replace with PostgresSQL for production
+        # MemorySaver for development --> replace with PostgresSQL for production
         self.checkpointer = MemorySaver()
-        
-        # Compile main router graph once (singleton pattern for performance)
+
+        # Compile main router graph
         self.graph = self._build_main_graph()
     
     def _build_main_graph(self) -> StateGraph:
@@ -77,17 +78,15 @@ class KICampusAssistant:
         # Conditional routing based on mode
         def route_by_mode(state: GraphState) -> str:
             """Route to appropriate subgraph based on classified scenario."""
-            return state["mode"]  # Returns "no_vectordb", "simple_hop", "multi_hop", or "socratic"
+            mode = state["mode"]
+            # Special case: exit_complete skips directly to END --> used when exiting socratic mode
+            if mode == "exit_complete":
+                return END
+            return mode  # Returns "no_vectordb", "simple_hop", "multi_hop" or "socratic"
         
         graph.add_conditional_edges(
             "contextualize_and_route",
-            route_by_mode,
-            {
-                "no_vectordb": "no_vectordb",
-                "simple_hop": "simple_hop",
-                "multi_hop": "multi_hop",
-                "socratic": "socratic",
-            }
+            route_by_mode
         )
         
         # All subgraphs end at END
@@ -99,19 +98,88 @@ class KICampusAssistant:
         return graph.compile(checkpointer=self.checkpointer)
 
     @observe()
-    def limit_chat_history(self, chat_history: list[ChatMessage], limit: int) -> list[ChatMessage]:
+    def limit_chat_history(self, chat_history: list[SerializableChatMessage], limit: int) -> list[SerializableChatMessage]:
         """Limit chat history to last N messages to save context window."""
         if len(chat_history) > limit:
             chat_history = chat_history[-limit:]
         return chat_history
 
     @observe()
-    def chat(self, query: str, model: Models, chat_history: list[ChatMessage] | None = None, conversation_id: str | None = None) -> ChatMessage:
-        langfuse_context.update_current_observation(
-            metadata={
-                "conversation_id": conversation_id
+    def _get_or_create_state(
+        self, 
+        query: str, 
+        model: Models,
+        thread_id: str | None,
+        course_id: int | None = None,
+        module_id: int | None = None,
+    ) -> tuple[GraphState, dict, str]:
+        """
+        Lädt bestehenden State aus Checkpoint oder erstellt neuen Initial State.
+        
+        Args:
+            query: User's question
+            model: LLM model to use
+            thread_id: Optional thread ID for persistent conversations
+            course_id: Optional course ID filter
+            module_id: Optional module ID filter
+        
+        Returns:
+            tuple: (state_update, config, thread_id)
+        """
+        # Generiere oder nutze bestehende thread_id
+        thread_id = thread_id or str(uuid.uuid4())
+        
+        config = {
+            "configurable": {
+                "thread_id": thread_id
             }
-        )
+        }
+        
+        # Versuche, bestehenden State zu laden
+        try:
+            checkpoint = self.graph.get_state(config)
+            
+            if checkpoint and checkpoint.values:
+                # State existiert → Nur neue Query + runtime_config updaten
+                # Lade bestehende chat_history (OHNE neue User-Message, die kommt später)
+                existing_history = checkpoint.values.get("chat_history", [])
+                
+                # Limitiere Chat-History auf letzte 6 Nachrichten
+                limited_existing_history = self.limit_chat_history(existing_history, limit=6)
+                
+                state_update: GraphState = {
+                    "user_query": query,
+                    "chat_history": limited_existing_history,
+                    "runtime_config": {
+                        "model": model,
+                        "course_id": course_id,
+                        "module_id": module_id,
+                        "thread_id": thread_id,
+                    }
+                }
+                return state_update, config, thread_id
+        
+        except Exception:
+            # Checkpoint existiert nicht oder Fehler beim Laden
+            pass
+        
+        # Kein State vorhanden → Erstelle Initial State
+        initial_state: GraphState = {
+            "user_query": query,
+            "chat_history": [],
+            "runtime_config": {
+                "model": model,
+                "course_id": course_id,
+                "module_id": module_id,
+                "thread_id": thread_id,
+            },
+            "system_config": self.system_config
+        }
+        
+        return initial_state, config, thread_id
+
+    @observe()
+    def chat(self, query: str, model: Models, thread_id: str | None = None) -> tuple[SerializableChatMessage, str]:
         """
         Chat with general bot about drupal and functions of ki-campus.
         For frontend integrated in Drupal.
@@ -119,45 +187,46 @@ class KICampusAssistant:
         Args:
             query: User's question
             model: LLM model to use
-            chat_history: Previous conversation messages
-            conversation_id: Optional thread ID for persistent conversations
+            thread_id: Optional thread ID for persistent conversations
+                - If provided: Loads state from checkpoint
+                - If None: Creates new conversation with generated ID
             
         Returns:
-            ChatMessage with answer (including citations)
+            tuple: (SerializableChatMessage with answer, thread_id)
         """
-        if chat_history is None:
-            chat_history = []
-
-        # Limit context window to save resources
-        limited_chat_history = self.limit_chat_history(chat_history, 10)
-
-        # Create initial state
-        initial_state: GraphState = {
-            "user_query": query,
-            "chat_history": limited_chat_history,
-            "runtime_config": {
-                "model": model,
-                "conversation_id": conversation_id,
-                # No course_id/module_id for general chat
-            },
-            "system_config": self.system_config
-        }
-
-        # Thread config for LangGraph persistence
-        config = {
-            "configurable": {
-                "thread_id": conversation_id or "default"
-            }
-        }
-
-        # Execute graph with persistence
-        result = self.graph.invoke(initial_state, config=config)
-
-        # Return as ChatMessage for backward compatibility
-        return ChatMessage(
-            role=MessageRole.ASSISTANT,
-            content=result.get("citations_markdown") or result.get("answer") or ""
+        # Lade oder erstelle State
+        state, config, thread_id = self._get_or_create_state(
+            query=query,
+            model=model,
+            thread_id=thread_id
         )
+        
+        # Allow easier tracing of conversations in Langfuse
+        langfuse_context.update_current_observation(
+            metadata={
+                "thread_id": thread_id
+            }
+        )
+
+        # Execute graph mit State (update oder initial)
+        result = self.graph.invoke(state, config=config)
+        
+        # Generiere Assistant-Response
+        assistant_content = result.get("citations_markdown") or result.get("answer") or ""
+        assistant_message = SerializableChatMessage(role="assistant", content=assistant_content)
+        
+        # Füge User-Message und Assistant-Message zur History hinzu
+        user_message = SerializableChatMessage(role="user", content=query)
+        updated_history = result["chat_history"] + [user_message, assistant_message]
+        
+        # Update State mit finaler chat_history
+        self.graph.update_state(
+            config=config,
+            values={"chat_history": updated_history}
+        )
+
+        # Return SerializableChatMessage and thread_id
+        return (assistant_message, thread_id)
 
     @observe()
     def chat_with_course(
@@ -165,10 +234,9 @@ class KICampusAssistant:
         query: str,
         model: Models,
         course_id: int | None = None,
-        chat_history: list[ChatMessage] | None = None,
         module_id: int | None = None,
-        conversation_id: str | None = None,
-    ) -> ChatMessage:
+        thread_id: str | None = None,
+    ) -> tuple[SerializableChatMessage, str]:
         """
         Chat with the contents of a specific course and optionally submodule.
         For frontend hosted on Moodle.
@@ -177,52 +245,49 @@ class KICampusAssistant:
             query: User's question
             model: LLM model to use
             course_id: Moodle course ID to filter by
-            chat_history: Previous conversation messages
             module_id: Optional module/topic ID within course
-            conversation_id: Optional thread ID for persistent conversations
+            thread_id: Optional thread ID for persistent conversations
+                - If provided: Loads state from checkpoint
+                - If None: Creates new conversation with generated ID
             
         Returns:
-            ChatMessage with answer (including citations)
+            tuple: (SerializableChatMessage with answer, thread_id)
         """
+        # Lade oder erstelle State
+        state, config, thread_id = self._get_or_create_state(
+            query=query,
+            model=model,
+            thread_id=thread_id,
+            course_id=course_id,
+            module_id=module_id
+        )
+        
+        # Allow easier tracing of conversations in Langfuse
         langfuse_context.update_current_observation(
             metadata={
-                "conversation_id": conversation_id
+                "thread_id": thread_id
             }
         )
 
-        if chat_history is None:
-            chat_history = []
-
-        limited_chat_history = self.limit_chat_history(chat_history, 10)
-
-        # Create initial state with course filters
-        initial_state: GraphState = {
-            "user_query": query,
-            "chat_history": limited_chat_history,
-            "runtime_config": {
-                "model": model,
-                "course_id": course_id,
-                "module_id": module_id,
-                "conversation_id": conversation_id,
-            },
-            "system_config": self.system_config
-        }
-
-        # Thread config for LangGraph persistence
-        config = {
-            "configurable": {
-                "thread_id": conversation_id or "default"
-            }
-        }
-
-        # Execute graph with persistence
-        result = self.graph.invoke(initial_state, config=config)
-
-        # Return as ChatMessage for backward compatibility
-        return ChatMessage(
-            role=MessageRole.ASSISTANT,
-            content=result.get("citations_markdown") or result.get("answer") or ""
+        # Execute graph mit State (update oder initial)
+        result = self.graph.invoke(state, config=config)
+        
+        # Generiere Assistant-Response
+        assistant_content = result.get("citations_markdown") or result.get("answer") or ""
+        assistant_message = SerializableChatMessage(role="assistant", content=assistant_content)
+        
+        # Füge User-Message und Assistant-Message zur History hinzu
+        user_message = SerializableChatMessage(role="user", content=query)
+        updated_history = result["chat_history"] + [user_message, assistant_message]
+        
+        # Update State mit finaler chat_history
+        self.graph.update_state(
+            config=config,
+            values={"chat_history": updated_history}
         )
+
+        # Return SerializableChatMessage and thread_id
+        return (assistant_message, thread_id)
 
 
 if __name__ == "__main__":

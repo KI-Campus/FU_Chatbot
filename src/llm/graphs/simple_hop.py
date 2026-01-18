@@ -31,7 +31,7 @@ def build_simple_hop_graph() -> StateGraph:
     """
     graph = StateGraph(GraphState)
     
-    # Add nodes (using imported node functions from tools/)
+    # Add nodes
     graph.add_node("retrieve_node", retrieve_chunks)
     graph.add_node("rerank_node", rerank_chunks)
     graph.add_node("detect_language_node", detect_language)

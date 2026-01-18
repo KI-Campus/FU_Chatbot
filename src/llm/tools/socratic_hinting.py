@@ -6,7 +6,7 @@ Escalates support when student is stuck, using course content for contextual hin
 
 from langfuse.decorators import observe
 
-from src.llm.state.models import GraphState
+from src.llm.state.models import GraphState, get_chat_history_as_messages
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
 

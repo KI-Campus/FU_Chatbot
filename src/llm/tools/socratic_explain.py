@@ -6,7 +6,7 @@ Fallback mechanism when hints don't suffice or student explicitly requests expla
 
 from langfuse.decorators import observe
 
-from src.llm.state.models import GraphState
+from src.llm.state.models import GraphState, get_chat_history_as_messages
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
 from src.llm.state.socratic_routing import reset_socratic_state
@@ -54,16 +54,17 @@ def socratic_explain(state: GraphState) -> GraphState:
         Updated state with explanation and routing decision
     """
     learning_objective = state["learning_objective"]
-    chat_history = state["chat_history"]
-    reranked_chunks = state["reranked_chunks"]
+    chat_history = get_chat_history_as_messages(state)
+    # Read reranked chunks from state (populated by retrieve→rerank nodes)
+    reranked = state["reranked"]
     attempt_count = state["attempt_count"]
     model = state["runtime_config"]["model"]
     
     # Prepare context for LLM
     course_materials = "\n\n".join([
         f"[Material {i+1}]\n{chunk.text}"
-        for i, chunk in enumerate(reranked_chunks[:3])
-    ]) if reranked_chunks else "No specific course materials retrieved."
+        for i, chunk in enumerate(reranked[:3])
+    ]) if reranked else "No specific course materials retrieved."
     
     query_for_llm = f"""Learning Objective: {learning_objective}
 
