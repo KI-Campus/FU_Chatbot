@@ -6,7 +6,7 @@ complementing dense semantic vectors for hybrid search in Qdrant.
 """
 
 from collections import Counter
-from typing import Dict, List
+from typing import List
 
 from qdrant_client.models import SparseVector
 

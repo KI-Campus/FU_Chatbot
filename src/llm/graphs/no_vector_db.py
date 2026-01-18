@@ -7,25 +7,39 @@ For simple conversational messages that don't require knowledge retrieval
 
 from langgraph.graph import StateGraph, START, END
 
-from src.llm.state.models import GraphState
+from src.llm.state.models import GraphState, get_chat_history_as_messages
 from src.llm.tools.language import detect_language
-from src.llm.objects.question_answerer import QuestionAnswerer
+
+# Module-level singleton
+_question_answerer_instance = None
+
+def get_question_answerer():
+    """Get or create singleton question answerer instance."""
+    global _question_answerer_instance
+    if _question_answerer_instance is None:
+        from src.llm.objects.question_answerer import QuestionAnswerer
+        _question_answerer_instance = QuestionAnswerer()
+    return _question_answerer_instance
 
 
-def direct_answer_node(state: GraphState) -> GraphState:
+def direct_answer_node(state: GraphState) -> dict:
     """
     Generate direct conversational response without retrieval.
     
     For no_vectordb scenario: Simple, friendly responses to conversational queries.
     """
-    answerer = QuestionAnswerer()
-    model = state["runtime_config"].get("model")
+    # Get singleton question answerer
+    answerer = get_question_answerer()
+    model = state["runtime_config"]["model"]
+    query = state["user_query"]
+    chat_history = get_chat_history_as_messages(state)
+    language = state["detected_language"]
     
     # Simple conversational response (no sources)
     response = answerer.answer_question(
-        query=state["user_query"],
-        chat_history=state["chat_history"],
-        language=state["detected_language"],
+        query=query,
+        chat_history=chat_history,
+        language=language,
         sources=[],  # No retrieval
         model=model,
         is_moodle=False,
@@ -33,9 +47,7 @@ def direct_answer_node(state: GraphState) -> GraphState:
     )
     
     return {
-        **state,
         "answer": response.content,
-        "citations_markdown": response.content
     }
 
 

@@ -1,10 +1,12 @@
 from langfuse.decorators import observe
 from llama_index.core.schema import NodeWithScore, TextNode
 from llama_index.core.vector_stores import VectorStoreQuery
+from qdrant_client.models import Prefetch, Query, Fusion, FusionQuery
 
 from src.llm.objects.LLMs import LLM
 from src.vectordb.sparse_encoder import BM25SparseEncoder
 from src.vectordb.qdrant import VectorDBQdrant, models
+from src.api.models.serializable_text_node import SerializableTextNode
 
 
 class KiCampusRetriever:
@@ -29,7 +31,7 @@ class KiCampusRetriever:
             self.vector_store = VectorDBQdrant("prod_remote").as_llama_vector_store(collection_name="web_assistant_hybrid")
 
     @observe()
-    def retrieve(self, query: str, course_id: int | None = None, module_id: int | None = None) -> list[TextNode]:
+    def retrieve(self, query: str, course_id: int | None = None, module_id: int | None = None) -> list[SerializableTextNode]:
         """Retrieve relevant documents using hybrid search (dense + sparse vectors).
         
         Args:
@@ -45,10 +47,13 @@ class KiCampusRetriever:
         else:
             return self._retrieve_dense_only(query, course_id, module_id)
     
-    def _retrieve_dense_only(self, query: str, course_id: int | None, module_id: int | None) -> list[TextNode]:
+    def _retrieve_dense_only(self, query: str, course_id: int | None, module_id: int | None) -> list[SerializableTextNode]:
         """Legacy dense-only retrieval using LlamaIndex wrapper."""
+
+        # Generate query embedding
         embedding = self.embedder.get_query_embedding(query)
 
+        # Build filter conditions
         conditions = []
 
         if course_id is None and module_id is None:
@@ -77,19 +82,19 @@ class KiCampusRetriever:
 
         filter = models.Filter(must=conditions) if conditions else None
 
+        # Perform vector store query
         vector_store_query = VectorStoreQuery(query_embedding=embedding, similarity_top_k=self.n_chunks)
 
+        # Get results
         query_result = self.vector_store.query(vector_store_query, qdrant_filters=filter)
 
         if query_result.nodes is None:
             return []
 
-        for node in query_result.nodes:
-            node.text_template = "{metadata_str}\nContent: {content}"
-
-        return query_result.nodes
+        # Convert to SerializableTextNode
+        return [SerializableTextNode.from_text_node(node) for node in query_result.nodes]
     
-    def _retrieve_hybrid(self, query: str, course_id: int | None, module_id: int | None) -> list[TextNode]:
+    def _retrieve_hybrid(self, query: str, course_id: int | None, module_id: int | None) -> list[SerializableTextNode]:
         """Hybrid retrieval using both dense and sparse vectors.
         
         Qdrant automatically performs fusion (Reciprocal Rank Fusion) when both
@@ -132,7 +137,6 @@ class KiCampusRetriever:
         
         # Hybrid search using prefetch + fusion
         # Qdrant performs automatic RRF (Reciprocal Rank Fusion)
-        from qdrant_client.models import Prefetch, Query, Fusion, FusionQuery
         
         search_results = self.vector_db.client.query_points(
             collection_name=self.collection_name,
@@ -140,13 +144,13 @@ class KiCampusRetriever:
                 Prefetch(
                     query=dense_embedding,
                     using="dense",
-                    limit=self.n_chunks * 2,  # Get more candidates for fusion
+                    limit=self.n_chunks * 3,  # Get more candidates for fusion
                     filter=query_filter,
                 ),
                 Prefetch(
                     query=sparse_embedding,
                     using="sparse",
-                    limit=self.n_chunks * 2,
+                    limit=self.n_chunks * 3,  # Get more candidates for fusion
                     filter=query_filter,
                 ),
             ],
@@ -155,22 +159,22 @@ class KiCampusRetriever:
             with_payload=True,
         )
         
-        # Convert Qdrant results to TextNodes
+        # Convert Qdrant results to SerializableTextNodes
         nodes = []
         for result in search_results.points:
             # Extract text from payload
             text = result.payload.get("text", result.payload.get("content", ""))
             
-            # Create TextNode
-            node = TextNode(
+            # Create metadata without text/content (avoid duplication)
+            metadata = {k: v for k, v in result.payload.items() if k not in ("text", "content")}
+            
+            # Create SerializableTextNode
+            node = SerializableTextNode(
                 text=text,
                 id_=str(result.id),
-                metadata=result.payload,
+                metadata=metadata,
                 score=result.score if hasattr(result, 'score') else None,
             )
-            
-            # Set template for LLM context
-            node.text_template = "{metadata_str}\nContent: {content}"
             
             nodes.append(node)
         

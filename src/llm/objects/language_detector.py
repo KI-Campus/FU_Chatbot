@@ -40,4 +40,5 @@ class LanguageDetector:
         if language is None:
             return "German"
         camelcase_name = language.name.capitalize()
+        
         return camelcase_name

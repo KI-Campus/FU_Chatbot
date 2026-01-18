@@ -58,6 +58,11 @@ def assess_stuckness_and_goal(
     # Initialize LLM instance
     _llm = LLM()
     
+    # Convert chat_history if needed (expecting List[ChatMessage])
+    # If coming from state, chat_history might be SerializableChatMessage
+    if chat_history and hasattr(chat_history[0], 'to_chat_message'):
+        chat_history = [msg.to_chat_message() for msg in chat_history]
+    
     # Prepare context for LLM
     context = f"""Learning Objective: {learning_objective}
 

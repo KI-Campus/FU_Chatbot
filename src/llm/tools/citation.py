@@ -4,12 +4,22 @@ Node wrapper for parsing citations and converting [docN] markers to clickable li
 
 from langfuse.decorators import observe
 
-from src.llm.objects.citation_parser import CitationParser
-from src.llm.state.models import GraphState
+from src.llm.state.models import GraphState, get_doc_as_textnodes
+
+# Module-level singleton
+_citation_parser_instance = None
+
+def get_citation_parser():
+    """Get or create singleton citation parser instance."""
+    global _citation_parser_instance
+    if _citation_parser_instance is None:
+        from src.llm.objects.citation_parser import CitationParser
+        _citation_parser_instance = CitationParser()
+    return _citation_parser_instance
 
 
 @observe()
-def parse_citations(state: GraphState) -> GraphState:
+def parse_citations(state: GraphState) -> dict:
     """
     Parses [docN] citations in answer and converts them to markdown links.
     
@@ -22,12 +32,17 @@ def parse_citations(state: GraphState) -> GraphState:
     Returns:
         Updated state with parsed citations
     """
-    parser = CitationParser()
+    # Get singleton citation parser
+    parser = get_citation_parser()
+
+    # Get necessary variables from state
+    answer = state["answer"]
+    sources = get_doc_as_textnodes(state, "reranked")
     
-    # Parse citations in answer (reranked already contains TextNodes)
+    # Parse citations in answer (convert SerializableTextNode to TextNode)
     parsed_answer = parser.parse(
-        answer=state["answer"],
-        source_documents=state["reranked"]
+        answer=answer,
+        source_documents=sources
     )
     
-    return {**state, "citations_markdown": parsed_answer}
+    return {"citations_markdown": parsed_answer}

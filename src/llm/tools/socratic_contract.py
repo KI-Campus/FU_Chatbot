@@ -10,7 +10,7 @@ from src.llm.state.models import GraphState
 
 
 @observe()
-def socratic_contract(state: GraphState) -> GraphState:
+def socratic_contract(state: GraphState) -> dict:
     """
     Establishes a learning contract with the student.
     
@@ -48,7 +48,6 @@ def socratic_contract(state: GraphState) -> GraphState:
     )
     
     return {
-        **state,
         "socratic_contract": contract,
         "socratic_mode": "diagnose",
         "hint_level": 0,

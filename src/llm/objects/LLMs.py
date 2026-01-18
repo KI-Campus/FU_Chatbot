@@ -6,7 +6,6 @@ from langfuse.decorators import langfuse_context, observe
 from llama_index.core import Settings
 from llama_index.core.callbacks import CallbackManager
 from llama_index.core.chat_engine import SimpleChatEngine
-from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.llms.function_calling import FunctionCallingLLM
 from llama_index.core.llms.llm import LLM as llama_llm
 from llama_index.embeddings.azure_openai import AzureOpenAIEmbedding
@@ -14,18 +13,17 @@ from llama_index.llms.azure_inference import AzureAICompletionsModel
 from llama_index.llms.azure_openai import AzureOpenAI
 from llama_index.llms.openai_like import OpenAILike
 
+from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.env import env
 
 TIME_TO_WAIT_FOR_GWDG = 7  # in seconds
 TIME_TO_RESET_UNAVAILABLE_STATUS = 60 * 5  # in seconds
-
 
 class Models(str, Enum):
     GPT4 = "GPT-4"
     MISTRAL8 = "Mistral8"
     LLAMA3 = "Llama3"
     QWEN2 = "Qwen2"
-
 
 class LLM:
     gwdg_unavailable = False
@@ -97,7 +95,7 @@ class LLM:
         return llm
 
     @observe()
-    def chat(self, query: str, chat_history: list[ChatMessage], model: Models, system_prompt: str) -> ChatMessage:
+    def chat(self, query: str, chat_history: list[SerializableChatMessage], model: Models, system_prompt: str) -> SerializableChatMessage:
         langfuse_handler = langfuse_context.get_current_llama_index_handler()
         Settings.callback_manager = CallbackManager([langfuse_handler])
 
@@ -147,7 +145,7 @@ class LLM:
 
         if type(response.response) is not str:
             raise ValueError(f"Response is not a string. Please check the LLM implementation. Response: {response}")
-        return ChatMessage(content=response.response, role=MessageRole.ASSISTANT)
+        return SerializableChatMessage(role="assistant", content=response.response)
 
 
 if __name__ == "__main__":

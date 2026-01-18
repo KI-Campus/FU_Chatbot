@@ -5,6 +5,7 @@ from langfuse.decorators import observe
 from llama_index.core.llms import ChatMessage, MessageRole
 from llama_index.core.schema import TextNode
 
+from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
 
@@ -59,7 +60,7 @@ class QuestionAnswerer:
         language: str,
         is_moodle: bool,
         course_id: int,
-    ) -> ChatMessage:
+    ) -> SerializableChatMessage:
         if model != Models.GPT4:
             system_prompt = SHORT_SYSTEM_PROMPT.format(language=language)
             formatted_sources = format_sources(sources, max_length=8000)
@@ -67,7 +68,7 @@ class QuestionAnswerer:
             system_prompt = SYSTEM_PROMPT.format(language=language)
             formatted_sources = format_sources(sources, max_length=sys.maxsize)
 
-        prompted_user_query = f"<QUERY>:\n {query}\n---\n\n{formatted_sources}"
+        prompted_user_query = f"<QUERY>:\n {query}\n\n{formatted_sources}"
 
         response = self.llm.chat(
             query=prompted_user_query,
@@ -113,4 +114,5 @@ class QuestionAnswerer:
 
         if response is None:
             raise ValueError(f"LLM produced no response. Please check the LLM implementation. Response: {response}")
+        
         return response

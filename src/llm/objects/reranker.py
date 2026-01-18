@@ -1,15 +1,9 @@
-"""
-Reranker for improving retrieval quality using LLM-based reranking.
-
-This reranker takes retrieved nodes and reranks them based on relevance
-to the query using an LLM, improving precision over pure vector similarity.
-"""
-
 from langfuse.decorators import observe
 from llama_index.core.postprocessor import LLMRerank
 from llama_index.core.schema import NodeWithScore, TextNode
 
 from src.llm.objects.LLMs import LLM, Models
+from src.api.models.serializable_text_node import SerializableTextNode
 
 
 class Reranker:
@@ -19,17 +13,36 @@ class Reranker:
     based on their relevance to the query.
     """
     
-    def __init__(self, top_n: int = 5):
+    def __init__(self, top_n: int, max_chars_per_node: int = 999999):
         """Initialize the reranker.
         
         Args:
             top_n: Number of top results to return after reranking
+            max_chars_per_node: Maximum characters per node text to avoid token limits
         """
         self.llm = LLM()
         self.top_n = top_n
+        self.max_chars_per_node = max_chars_per_node
+        if self.max_chars_per_node <= 1500:
+            self.choice_batch_size = 10
+        else:
+            self.choice_batch_size = 5
+    
+    def _truncate(self, text: str) -> str:
+        """Truncate text to max_chars_per_node to reduce token usage.
+        
+        Args:
+            text: Text to truncate
+            
+        Returns:
+            Truncated text if longer than max_chars_per_node, otherwise unchanged
+        """
+        if not text:
+            return text
+        return text[:self.max_chars_per_node] if len(text) > self.max_chars_per_node else text
     
     @observe(name="rerank")
-    def rerank(self, query: str, nodes: list[TextNode], model: Models) -> list[TextNode]:
+    def rerank(self, query: str, nodes: list[TextNode], model: Models) -> list[SerializableTextNode]:
         """Rerank nodes based on query relevance using LLM.
         
         Args:
@@ -40,12 +53,12 @@ class Reranker:
         Returns:
             Reranked list of nodes (top_n best matches)
         """
+        # No nodes no rerank
         if not nodes:
             return []
-        
-        # If only 1 node, no need to rerank
+        # One node no rerank
         if len(nodes) == 1:
-            return nodes
+            return nodes[:self.top_n]
         
         # Get LLM instance for reranking
         llm = self.llm.get_model(model)
@@ -54,17 +67,16 @@ class Reranker:
         llm_rerank = LLMRerank(
             llm=llm,
             top_n=self.top_n,
-            choice_batch_size=5,  # Process 5 nodes at a time to avoid token limits
+            choice_batch_size=self.choice_batch_size,  # limit batch size
         )
         
-        # LLMRerank expects NodeWithScore, convert if needed
+        # LLMRerank expects NodeWithScore with TextNode
+        # Truncate long texts to avoid token limits and reduce latency
         nodes_with_score = []
         for node in nodes:
-            if isinstance(node, NodeWithScore):
-                nodes_with_score.append(node)
-            else:
-                # Wrap TextNode in NodeWithScore
-                nodes_with_score.append(NodeWithScore(node=node, score=node.score if hasattr(node, 'score') else None))
+            # Truncate text directly on TextNode copy
+            node.text = self._truncate(getattr(node, "text", "") or "")
+            nodes_with_score.append(NodeWithScore(node=node, score=getattr(node, 'score', 0.0)))
         
         # Perform reranking with error handling
         try:
@@ -72,17 +84,21 @@ class Reranker:
                 nodes=nodes_with_score,
                 query_str=query
             )
-        except (IndexError, ValueError, KeyError) as e:
-            # If reranking fails (e.g., parsing errors), return original nodes
-            print(f"Reranking failed, returning original nodes: {e}")
-            return nodes[:self.top_n]
+        except Exception as e:
+            # If reranking fails (network, Azure, parsing errors), return original nodes
+            print(f"Reranking failed (model={model}, nodes={len(nodes)}): {e}")
+            # Convert original nodes to SerializableTextNode
+            return [SerializableTextNode.from_text_node(n) for n in nodes[:self.top_n]]
         
-        # Extract nodes from NodeWithScore
-        result_nodes = []
-        for node_with_score in reranked_nodes:
-            if isinstance(node_with_score, NodeWithScore):
-                result_nodes.append(node_with_score.node)
-            else:
-                result_nodes.append(node_with_score)
+        # Convert TextNode to SerializableTextNode and preserve rerank scores
+        result = []
+        for nws in reranked_nodes:
+            stn = SerializableTextNode.from_text_node(nws.node)
+            # Preserve rerank score
+            try:
+                stn.score = float(nws.score)
+            except (AttributeError, ValueError, TypeError):
+                pass  # Keep original score if setting fails
+            result.append(stn)
         
-        return result_nodes
+        return result[:self.top_n]
