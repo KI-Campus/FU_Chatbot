@@ -78,17 +78,6 @@ class QuestionAnswerer:
             system_prompt=system_prompt,
         )
 
-        try:
-            response.content = response.content.replace("```json\n", "").replace("\n```", "")
-            response_json = json.loads(response.content)
-            response.content = response_json["answer"]
-
-        except (json.JSONDecodeError, KeyError) as e:
-            # LLM forgets to respond with JSON or missing "answer" key - use response as-is
-            # Log the issue for monitoring
-            print(f"Warning: Failed to parse JSON response: {e}. Using raw response.")
-            pass
-
         # Check if this is the second "NO ANSWER FOUND" in a row
         # Look for ASSISTANT messages (bot responses) in history to check if we already said we can't help
         previous_bot_response_was_no_answer = False

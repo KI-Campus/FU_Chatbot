@@ -12,7 +12,7 @@ from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
 from src.llm.tools.socratic_hinting import generate_hint_text
 from src.llm.tools.socratic_reflection import generate_reflection_text
-from src.llm.state.socratic_routing import answer_and_reset_socratic_state, evaluate_user_response
+from src.llm.state.socratic_routing import evaluate_user_response, answer_and_reset_socratic_state
 from src.llm.tools.socratic_explain import socratic_explain
 
 # Load prompt once at module level
@@ -56,14 +56,16 @@ def socratic_core(state: GraphState) -> dict:
     chat_history = state["chat_history"]
     learning_objective = state["learning_objective"]
     attempt_count = state["attempt_count"]
+    attempt_count_since_last_hint = state["attempt_count_since_last_hint"]
     model = state["runtime_config"]["model"]
     reranked = state["reranked"]
     
-    # Increment attempt counter
+    # Increment both attempt counters
     new_attempt_count = attempt_count + 1
+    new_attempt_count_since_last_hint = attempt_count_since_last_hint + 1
     
-    # LLM-based assessment of stuckness, goal achievement, and mastery
-    allow_explain, allow_hint, goal_achieved = evaluate_user_response(
+    # LLM-based assessment to determine mode
+    mode = evaluate_user_response(
         user_query=user_query,
         chat_history=chat_history,
         learning_objective=learning_objective,
@@ -71,9 +73,10 @@ def socratic_core(state: GraphState) -> dict:
         model=model
     )
     
-    # Decide next mode
-    if allow_explain:
-        next_mode = "diagnose"  # Move to diagnose to reset socratic flow
+    # Handle different modes
+    if mode == "EXPLAIN":
+        # Reset soctate --> student can decide whether he wants to continue or not
+        next_mode = "diagnose"
 
         # Generate explanation using helper function
         response = socratic_explain(
@@ -87,23 +90,29 @@ def socratic_core(state: GraphState) -> dict:
 
         return answer_and_reset_socratic_state(next_mode, response)
 
-    elif allow_hint:
+    elif mode == "HINT":
         # Student is stuck, provide hint inline
         next_mode = "core"  # Stay in core after hint
         
-        # Generate hint using helper function
+        # Generate hint using helper function (use hint-specific counter)
         response = generate_hint_text(
             learning_objective=learning_objective,
             user_query=user_query,
             reranked_chunks=reranked,
             chat_history=chat_history,
-            attempt_count=new_attempt_count,
+            attempt_count=new_attempt_count_since_last_hint,
             model=model
         )
 
-        return answer_and_reset_socratic_state(next_mode, response)
+        # Update state with hint and reset hint counter
+        return {
+            "socratic_mode": next_mode,
+            "attempt_count": new_attempt_count,
+            "attempt_count_since_last_hint": 0,  # Reset after providing hint
+            "answer": response
+        }
             
-    elif goal_achieved:
+    elif mode == "REFLECT":
         # Reset socratic state --> student can decide whether he wants to continue or not
         next_mode = "diagnose"
 
@@ -114,7 +123,7 @@ def socratic_core(state: GraphState) -> dict:
         # Reset all socratic state (session complete)
         return answer_and_reset_socratic_state(next_mode, response)
         
-    else:
+    else:  # mode == "CONTINUE"
         # Continue Socratic dialogue
         next_mode = "core"
         
@@ -131,6 +140,7 @@ def socratic_core(state: GraphState) -> dict:
 Student's Current Response: {user_query}
 
 Attempt Count: {new_attempt_count}
+Attempt Count last hint: {new_attempt_count_since_last_hint}
 
 Retrieved Course Materials:
 {course_materials}"""
@@ -150,11 +160,11 @@ Retrieved Course Materials:
         else:
             response = llm_response.content.strip()
     
-    # Build return state (only changed fields)
+    # Build return state
     result = {
         "socratric_mode": next_mode,
         "attempt_count": new_attempt_count,
-        "goal_achieved": goal_achieved,
+        "attempt_count_since_last_hint": new_attempt_count_since_last_hint,
         "answer": response
     }
     

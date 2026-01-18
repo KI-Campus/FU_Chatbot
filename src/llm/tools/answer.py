@@ -38,7 +38,7 @@ def generate_answer(state: GraphState) -> dict:
     
     # Get variables from state (convert to LlamaIndex types)
     query = state["user_query"]
-    chat_history = state.get("chat_history", [])
+    chat_history = state["chat_history"]
     language = state["detected_language"]
     sources = get_doc_as_textnodes(state, "reranked")
     model = state["runtime_config"]["model"]

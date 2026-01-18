@@ -1,26 +1,12 @@
-"""
-No Vector DB Subgraph - Conversational queries without retrieval.
-
-For simple conversational messages that don't require knowledge retrieval
-(e.g., greetings, acknowledgments, small talk).
-"""
-
 from langgraph.graph import StateGraph, START, END
 
 from src.llm.state.models import GraphState
+from src.llm.objects.LLMs import LLM
 from src.llm.tools.language import detect_language
+from src.llm.prompts.prompt_loader import load_prompt
 
-# Module-level singleton
-_question_answerer_instance = None
-
-def get_question_answerer():
-    """Get or create singleton question answerer instance."""
-    global _question_answerer_instance
-    if _question_answerer_instance is None:
-        from src.llm.objects.question_answerer import QuestionAnswerer
-        _question_answerer_instance = QuestionAnswerer()
-    return _question_answerer_instance
-
+llm = LLM()
+NO_VECTORDB_PROMPT = load_prompt("no_vector_db_prompt")
 
 def direct_answer_node(state: GraphState) -> dict:
     """
@@ -28,22 +14,21 @@ def direct_answer_node(state: GraphState) -> dict:
     
     For no_vectordb scenario: Simple, friendly responses to conversational queries.
     """
-    # Get singleton question answerer
-    answerer = get_question_answerer()
+    # Get necessary variables from state
     model = state["runtime_config"]["model"]
     query = state["user_query"]
     chat_history = state["chat_history"]
     language = state["detected_language"]
+
+    # Insert language in system prmpt
+    language_enriched_prompt = NO_VECTORDB_PROMPT.replace("{language}", language)
     
     # Simple conversational response (no sources)
-    response = answerer.answer_question(
+    response = llm.chat(
         query=query,
         chat_history=chat_history,
-        language=language,
-        sources=[],  # No retrieval
-        model=model,
-        is_moodle=False,
-        course_id=None
+        system_prompt= language_enriched_prompt,
+        model=model
     )
     
     return {
