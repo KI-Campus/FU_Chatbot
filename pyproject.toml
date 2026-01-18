@@ -55,6 +55,7 @@ azure-functions = "^1.21.3"
 azure-functions-durable = "^1.2.9"
 requests = "~2.31.0"
 beautifulsoup4 = "~4.12.2"
+azure-storage-blob = "^12.26.0"
 
 [tool.poetry.group.frontend]
 optional = true

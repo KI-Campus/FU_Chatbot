@@ -1,6 +1,12 @@
 {
   "version": "2.0",
   "functionTimeout": "05:00:00",
+  "extensions": {
+    "durableTask": {
+      "maxConcurrentActivityFunctions": 1,
+      "maxConcurrentOrchestratorFunctions": 1
+    }
+  },
   "logging": {
     "logLevel": {
       "default": "Trace",

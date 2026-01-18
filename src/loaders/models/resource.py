@@ -160,6 +160,11 @@ class Resource(BaseModel):
                 filename=self.filename,
                 mimetype=self.mimetype
             )
+            # Drop heavy Vosk model ASAP
+            try:
+                del audio
+            except Exception:
+                pass
             if text:
                 logger.info(f"Audio {self.filename} transkribiert")
                 return f"Transkribiertes Audio:\n{text}"

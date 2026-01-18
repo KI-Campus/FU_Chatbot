@@ -1,4 +1,5 @@
 import logging
+import os
 from pathlib import Path
 
 import requests
@@ -23,9 +24,20 @@ class APICaller:
         requests.packages.urllib3.util.connection.HAS_IPV6 = False
 
     def get(self, **kwargs):
+        # NOTE: requests.get() without timeouts can hang forever. Use conservative defaults.
+        # Override via env if needed.
+        timeout_connect = float(os.getenv("HTTP_TIMEOUT_CONNECT", "10"))
+        timeout_read = float(os.getenv("HTTP_TIMEOUT_READ", "60"))
+
         # Workaround: dont verify if server certificate is invalid
         # self.response = requests.get(url=self.url, params=self.params, headers=self.headers, verify=False)
-        self.response = requests.get(url=self.url, params=self.params, headers=self.headers, verify=True)
+        self.response = requests.get(
+            url=self.url,
+            params=self.params,
+            headers=self.headers,
+            verify=True,
+            timeout=(timeout_connect, timeout_read),
+        )
         try:
             self.response.raise_for_status()
         except requests.exceptions.HTTPError as err:

@@ -36,13 +36,13 @@ class Video(BaseModel):
             self.video_url = HttpUrl(query_params.get("url", [None])[0])
 
         try:
-            response = requests.get(self.video_url, allow_redirects=True)
+            response = requests.get(self.video_url, allow_redirects=True, timeout=(5, 20))
             if response.history and self.video_url.host == "learn.ki-campus.org":
                 logger.debug(f"The URL was redirected to {response.url}")
                 self.video_url = HttpUrl(response.url)
         except requests.exceptions.RequestException as e:
-            logger.exception(f"An error occurred: {e}")
-            raise ValueError()
+            logger.exception(f"An error occurred trying to validate video {self.video_url}: {e}")
+            return self
 
     @computed_field  # type: ignore[misc]
     @property
