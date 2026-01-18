@@ -1,22 +1,16 @@
-"""
-Socratic Explain Node - Provides controlled explanation when Socratic method reaches its limit.
-
-Fallback mechanism when hints don't suffice or student explicitly requests explanation.
-"""
-
-from langfuse.decorators import observe
-
-from src.llm.state.models import GraphState, get_chat_history_as_messages
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
-from src.llm.state.socratic_routing import reset_socratic_state
 
 # Load prompt once at module level
+llm = LLM()
 SOCRATIC_EXPLAIN_PROMPT = load_prompt("socratic_explain")
 
-
-@observe()
-def socratic_explain(state: GraphState) -> GraphState:
+def socratic_explain(learning_objective: str,
+                     user_query: str,
+                     reranked_chunks: list,
+                     chat_history: list,
+                     attempt_count: int,
+                     model: str) -> str:
     """
     Provides controlled explanation when Socratic method reaches its limit.
     
@@ -53,20 +47,16 @@ def socratic_explain(state: GraphState) -> GraphState:
     Returns:
         Updated state with explanation and routing decision
     """
-    learning_objective = state["learning_objective"]
-    chat_history = get_chat_history_as_messages(state)
-    # Read reranked chunks from state (populated by retrieve→rerank nodes)
-    reranked = state["reranked"]
-    attempt_count = state["attempt_count"]
-    model = state["runtime_config"]["model"]
     
     # Prepare context for LLM
     course_materials = "\n\n".join([
         f"[Material {i+1}]\n{chunk.text}"
-        for i, chunk in enumerate(reranked[:3])
-    ]) if reranked else "No specific course materials retrieved."
+        for i, chunk in enumerate(reranked_chunks)
+    ]) if reranked_chunks else "No specific course materials retrieved."
     
     query_for_llm = f"""Learning Objective: {learning_objective}
+
+Student's Current Response: {user_query}
 
 Attempt Count: {attempt_count}
 
@@ -74,8 +64,7 @@ Retrieved Course Materials:
 {course_materials}"""
     
     # Generate explanation using LLM
-    _llm = LLM()
-    llm_response = _llm.chat(
+    llm_response = llm.chat(
         query=query_for_llm,
         chat_history=chat_history,
         model=model,
@@ -93,15 +82,7 @@ Retrieved Course Materials:
         explanation = llm_response.content.strip()
     
     # Add closing text encouraging continuation
-    closing_text = "\n\nWir können das Thema gerne nochmal durchgehen oder uns verwandte Konzepte angucken."
+    closing_text = "\nFalls du weiterhin im Lernmodus bleiben möchtest, lasse mich wissen, bei welchem Thema ich dir weiterhin helfen kann! Andernfalls verlasse den Lernmodus mit 'quit'."
     full_response = explanation + closing_text
     
-    # Reset all socratic state (explanation given = session complete)
-    socratic_reset = reset_socratic_state()
-    
-    return {
-        **state,
-        **socratic_reset,  # Reset all socratic fields including socratic_mode=None
-        "answer": full_response,
-        "citations_markdown": None,  # Clear citations from previous requests
-    }
+    return full_response

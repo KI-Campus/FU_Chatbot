@@ -1,6 +1,7 @@
 from langfuse.decorators import observe
 from lingua import Language, LanguageDetectorBuilder
-from llama_index.core.llms import ChatMessage
+
+from src.api.models.serializable_chat_message import SerializableChatMessage
 
 
 class LanguageDetector:
@@ -12,7 +13,7 @@ class LanguageDetector:
         self.detector = LanguageDetectorBuilder.from_languages(*languages).build()
 
     @observe()
-    def detect(self, query: str, chat_history: list[ChatMessage] | None = None) -> str:
+    def detect(self, query: str, chat_history: list[SerializableChatMessage] | None = None) -> str:
         """Detect language from current query and chat history context.
         
         Uses the full conversation history to determine the dominant language,

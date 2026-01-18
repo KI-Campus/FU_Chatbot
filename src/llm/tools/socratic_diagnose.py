@@ -6,7 +6,7 @@ Second step in socratic workflow: Diagnostic assessment to establish baseline.
 
 from langfuse.decorators import observe
 
-from src.llm.state.models import GraphState, get_chat_history_as_messages
+from src.llm.state.models import GraphState
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
 
@@ -45,7 +45,7 @@ def socratic_diagnose(state: GraphState) -> dict:
     """
     # Get necessary data from state
     user_query = state["user_query"]
-    chat_history = get_chat_history_as_messages(state)
+    chat_history = state.get("chat_history", [])
     model = state["runtime_config"]["model"]
     
     # LLM-Call to extract learning objective and diagnostic question

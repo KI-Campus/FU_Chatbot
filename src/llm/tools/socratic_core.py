@@ -7,13 +7,13 @@ Uses Retrieval to ground questions in actual course content.
 
 from langfuse.decorators import observe
 
-from src.llm.state.models import GraphState, get_chat_history_as_messages
-from src.llm.state.socratic_stuckness_goal_achievement import assess_stuckness_and_goal
+from src.llm.state.models import GraphState
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
 from src.llm.tools.socratic_hinting import generate_hint_text
 from src.llm.tools.socratic_reflection import generate_reflection_text
-from src.llm.state.socratic_routing import reset_socratic_state
+from src.llm.state.socratic_routing import answer_and_reset_socratic_state, evaluate_user_response
+from src.llm.tools.socratic_explain import socratic_explain
 
 # Load prompt once at module level
 SOCRATIC_CORE_PROMPT = load_prompt("socratic_core")
@@ -36,21 +36,13 @@ def socratic_core(state: GraphState) -> dict:
     - Increment attempt counter with each turn
     - Calculate stuckness based on attempts and response quality
     - Loop back to "core" if student is progressing
-    - Escalate to "hinting" if stuck (stuckness > 0.7 or attempts > 3)
+    - Escalate to "hinting" if stuck
     - Move to "reflection" if goal achieved
     
     Flow Transitions:
     - → "core" (loop): Student progressing, continue Socratic dialogue
     - → "hinting": Student stuck, needs graduated hints
     - → "reflection": Goal achieved, consolidate learning
-    
-    Changes:
-    - Sets retrieved and reranked chunks (for grounding in course content)
-    - Increments attempt_count
-    - Updates stuckness_score
-    - Updates goal_achieved (if student shows understanding)
-    - Sets socratic_mode for next step
-    - Sets answer with Socratic question or transition message
     
     Args:
         state: Current graph state with user_query, chat_history, learning_objective
@@ -61,11 +53,9 @@ def socratic_core(state: GraphState) -> dict:
     
     # Get necessary data from state
     user_query = state["user_query"]
-    chat_history = get_chat_history_as_messages(state)
+    chat_history = state["chat_history"]
     learning_objective = state["learning_objective"]
     attempt_count = state["attempt_count"]
-    stuckness_score = state["stuckness_score"]
-    hint_level = state["hint_level"]
     model = state["runtime_config"]["model"]
     reranked = state["reranked"]
     
@@ -73,62 +63,56 @@ def socratic_core(state: GraphState) -> dict:
     new_attempt_count = attempt_count + 1
     
     # LLM-based assessment of stuckness, goal achievement, and mastery
-    new_stuckness_score, goal_achieved, mastery_level = assess_stuckness_and_goal(
+    allow_explain, allow_hint, goal_achieved = evaluate_user_response(
         user_query=user_query,
         chat_history=chat_history,
         learning_objective=learning_objective,
         attempt_count=new_attempt_count,
-        current_stuckness=stuckness_score,
         model=model
     )
     
-    # Update student model with current mastery level
-    current_student_model = state.get("student_model", {})
-    updated_student_model = {
-        **current_student_model,
-        "mastery": mastery_level,
-    }
-    
-    # Decide next mode based on stuckness and attempts
-    if new_stuckness_score > 0.7 or new_attempt_count > 2:
-        # Student is stuck, provide hint inline
-        next_mode = "core"  # Stay in core after hint
-        
-        # Increment hint level (max 3)
-        new_hint_level = min(3, hint_level + 1)
-        
-        # Generate hint using helper function
-        response = generate_hint_text(
-            hint_level=new_hint_level,
+    # Decide next mode
+    if allow_explain:
+        next_mode = "diagnose"  # Move to diagnose to reset socratic flow
+
+        # Generate explanation using helper function
+        response = socratic_explain(
             learning_objective=learning_objective,
-            mastery_level=mastery_level,
             user_query=user_query,
             reranked_chunks=reranked,
             chat_history=chat_history,
+            attempt_count=new_attempt_count,
             model=model
         )
+
+        return answer_and_reset_socratic_state(next_mode, response)
+
+    elif allow_hint:
+        # Student is stuck, provide hint inline
+        next_mode = "core"  # Stay in core after hint
         
-        # Reduce stuckness after providing hint
-        new_stuckness_score = max(0.0, new_stuckness_score - 0.35)
-        # Reset attempt counter
-        new_attempt_count = 0
-        
-        # Check if we've given 2 hints and should escalate to explain
-        contract = state.get("socratic_contract", {})
-        if new_hint_level >= 2 and contract.get("allow_explain", False):
-            next_mode = "explain"
+        # Generate hint using helper function
+        response = generate_hint_text(
+            learning_objective=learning_objective,
+            user_query=user_query,
+            reranked_chunks=reranked,
+            chat_history=chat_history,
+            attempt_count=new_attempt_count,
+            model=model
+        )
+
+        return answer_and_reset_socratic_state(next_mode, response)
             
     elif goal_achieved:
+        # Reset socratic state --> student can decide whether he wants to continue or not
+        next_mode = "diagnose"
+
         # Student has reached understanding, provide reflection inline
         # Generate reflection using helper function
-        student_model = state.get("student_model", {})
-        response, _ = generate_reflection_text(
-            learning_objective=learning_objective,
-            student_model=student_model
-        )
+        response = generate_reflection_text(learning_objective=learning_objective)
         
         # Reset all socratic state (session complete)
-        socratic_reset = reset_socratic_state()
+        return answer_and_reset_socratic_state(next_mode, response)
         
     else:
         # Continue Socratic dialogue
@@ -139,7 +123,7 @@ def socratic_core(state: GraphState) -> dict:
         # Format reranked chunks as course materials
         course_materials = "\n\n".join([
             f"[Material {i+1}]\n{chunk.text}"
-            for i, chunk in enumerate(reranked[:3])  # Top 3 chunks
+            for i, chunk in enumerate(reranked)
         ]) if reranked else "No specific course materials retrieved."
         
         query_for_llm = f"""Learning Objective: {learning_objective}
@@ -147,8 +131,6 @@ def socratic_core(state: GraphState) -> dict:
 Student's Current Response: {user_query}
 
 Attempt Count: {new_attempt_count}
-Stuckness Score: {new_stuckness_score}
-Mastery Level: {mastery_level}
 
 Retrieved Course Materials:
 {course_materials}"""
@@ -170,22 +152,10 @@ Retrieved Course Materials:
     
     # Build return state (only changed fields)
     result = {
+        "socratric_mode": next_mode,
         "attempt_count": new_attempt_count,
-        "stuckness_score": new_stuckness_score,
         "goal_achieved": goal_achieved,
-        "student_model": updated_student_model,
         "answer": response
     }
-    
-    # Add hint_level if we gave a hint
-    if 'new_hint_level' in locals():
-        result["hint_level"] = new_hint_level
-    
-    # If reflection was done, reset all socratic state
-    if 'socratic_reset' in locals():
-        result.update(socratic_reset)
-    else:
-        # Normal flow: keep socratic_mode
-        result["socratic_mode"] = next_mode
     
     return result

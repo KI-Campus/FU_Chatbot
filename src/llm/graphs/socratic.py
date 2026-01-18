@@ -26,7 +26,6 @@ from src.llm.tools.rerank import rerank_chunks
 from src.llm.tools.socratic_contract import socratic_contract
 from src.llm.tools.socratic_diagnose import socratic_diagnose
 from src.llm.tools.socratic_core import socratic_core
-from src.llm.tools.socratic_explain import socratic_explain
 
 
 def build_socratic_graph() -> StateGraph:
@@ -69,7 +68,6 @@ def build_socratic_graph() -> StateGraph:
     graph.add_node("socratic_contract_node", socratic_contract)
     graph.add_node("socratic_diagnose_node", socratic_diagnose)
     graph.add_node("socratic_core_node", socratic_core)
-    graph.add_node("socratic_explain_node", socratic_explain)
     
     # Router function: Selects ONE node based on socratic_mode
     def route_socratic_mode(state: GraphState) -> str:
@@ -90,7 +88,6 @@ def build_socratic_graph() -> StateGraph:
             "contract": "socratic_contract_node",
             "diagnose": "socratic_diagnose_node",
             "core": "retrieve",  # Retrieval path
-            "explain": "retrieve",  # Retrieval path
         }
         
         return mode_to_node.get(mode, "socratic_contract_node")
@@ -106,29 +103,13 @@ def build_socratic_graph() -> StateGraph:
         }
     )
     
-    # Retrieval path: retrieve → rerank → [core or explain]
+    # Retrieval path: retrieve → rerank → core
     graph.add_edge("retrieve", "rerank")
-    
-    def route_after_rerank(state: GraphState) -> str:
-        """After reranking, route to core or explain based on socratic_mode."""
-        mode = state["socratic_mode"]
-        if mode == "explain":
-            return "socratic_explain_node"
-        return "socratic_core_node"  # Default to core
-    
-    graph.add_conditional_edges(
-        "rerank",
-        route_after_rerank,
-        {
-            "socratic_core_node": "socratic_core_node",
-            "socratic_explain_node": "socratic_explain_node",
-        }
-    )
+    graph.add_edge("rerank", "socratic_core_node")
     
     # ALL nodes lead directly to END (return to user after each node)
     graph.add_edge("socratic_contract_node", END)
     graph.add_edge("socratic_diagnose_node", END)
     graph.add_edge("socratic_core_node", END)
-    graph.add_edge("socratic_explain_node", END)
     
     return graph.compile()

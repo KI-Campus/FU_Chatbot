@@ -4,7 +4,7 @@ Node wrapper for contextualizing user query and routing to appropriate scenario.
 
 from langfuse.decorators import observe
 
-from src.llm.state.models import GraphState, get_chat_history_as_messages
+from src.llm.state.models import GraphState
 from src.llm.state.socratic_routing import reset_socratic_state
 from src.api.models.serializable_chat_message import SerializableChatMessage
 
@@ -50,14 +50,13 @@ def contextualize_and_route(state: GraphState) -> dict:
     # Get necessary fields from state
     model = state["runtime_config"]["model"]
     user_query = state["user_query"]
-    chat_history_serializable = state.get("chat_history", [])
-    chat_history_messages = get_chat_history_as_messages(state)
+    chat_history = state["chat_history"]
     socratic_mode = state.get("socratic_mode", None)
     # Cleaned user response for entry/exit intent (socratic mode)
     response_clean = user_query.lower().strip()
     
     # Handle socratic mode if active
-    if socratic_mode is not None and socratic_mode != "complete":
+    if socratic_mode is not None:
         # Socratic mode is active - check if user wants to continue
         continue_socratic = response_clean not in ["exit", "quit", "stop", "stopp"]
         
@@ -82,13 +81,13 @@ def contextualize_and_route(state: GraphState) -> dict:
             # User wants to continue socratic
             mode = "socratic"
             
-            # Contextualize only if in core or explain mode (retrieval needed)
-            if socratic_mode == "core" or socratic_mode == "explain":
+            # Contextualize only if in core mode (retrieval needed)
+            if socratic_mode == "core":
                 # Use socratic-specific contextualization
                 learning_objective = state["learning_objective"]
                 contextualized_query = contextualizer.contextualize_socratic(
                     query=user_query,
-                    chat_history=chat_history_serializable,
+                    chat_history=chat_history,
                     model=model,
                     learning_objective=learning_objective
                 )
@@ -119,7 +118,7 @@ def contextualize_and_route(state: GraphState) -> dict:
         else:
             contextualized_query = contextualizer.contextualize(
                 query=user_query,
-                chat_history=chat_history_messages,
+                chat_history=chat_history,
                 model=model
             )
         

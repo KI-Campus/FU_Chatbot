@@ -1,5 +1,4 @@
 from langfuse.decorators import observe
-from llama_index.core.llms import ChatMessage
 
 from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import LLM, Models
@@ -56,8 +55,7 @@ class Contextualizer:
         
         contextualized_question = self.llm.chat(
             query=query_with_objective,
-            # Convert serializable to ChatMessage for LLM
-            chat_history=[msg.to_chat_message() for msg in chat_history],
+            chat_history=chat_history,
             model=model,
             system_prompt=self.CONDENSE_SOCRATIC_PROMPT
         )
