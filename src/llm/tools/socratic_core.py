@@ -19,7 +19,7 @@ from src.llm.tools.socratic_explain import socratic_explain
 SOCRATIC_CORE_PROMPT = load_prompt("socratic_core")
 
 
-@observe()
+@observe(name="socratic_core")
 def socratic_core(state: GraphState) -> dict:
     """
     Core Socratic dialogue: Ask one guiding question per turn, never give direct answer.
@@ -56,26 +56,28 @@ def socratic_core(state: GraphState) -> dict:
     chat_history = state["chat_history"]
     learning_objective = state["learning_objective"]
     attempt_count = state["attempt_count"]
-    attempt_count_since_last_hint = state["attempt_count_since_last_hint"]
+    number_given_hints = state["number_given_hints"]
     model = state["runtime_config"]["model"]
     reranked = state["reranked"]
     
-    # Increment both attempt counters
+    # Increment attempt counter
     new_attempt_count = attempt_count + 1
-    new_attempt_count_since_last_hint = attempt_count_since_last_hint + 1
     
-    # LLM-based assessment to determine mode
-    mode = evaluate_user_response(
-        user_query=user_query,
-        chat_history=chat_history,
-        learning_objective=learning_objective,
-        attempt_count=new_attempt_count,
-        model=model
-    )
+    # LLM-based assessment to determine mode after 2 given hints we explain directly
+    if number_given_hints > 2:
+        mode = "EXPLAIN"
+    else:
+        mode = evaluate_user_response(
+            user_query=user_query,
+            chat_history=chat_history,
+            learning_objective=learning_objective,
+            attempt_count=new_attempt_count,
+            model=model
+        )
     
     # Handle different modes
     if mode == "EXPLAIN":
-        # Reset soctate --> student can decide whether he wants to continue or not
+        # Reset socratic state --> student can decide whether he wants to continue or not
         next_mode = "diagnose"
 
         # Generate explanation using helper function
@@ -85,6 +87,7 @@ def socratic_core(state: GraphState) -> dict:
             reranked_chunks=reranked,
             chat_history=chat_history,
             attempt_count=new_attempt_count,
+            number_given_hints=number_given_hints,
             model=model
         )
 
@@ -94,21 +97,24 @@ def socratic_core(state: GraphState) -> dict:
         # Student is stuck, provide hint inline
         next_mode = "core"  # Stay in core after hint
         
-        # Generate hint using helper function (use hint-specific counter)
+        # Increment number of hints given
+        new_number_given_hints = number_given_hints + 1
+        
+        # Generate hint using helper function (pass total number of hints)
         response = generate_hint_text(
             learning_objective=learning_objective,
             user_query=user_query,
             reranked_chunks=reranked,
             chat_history=chat_history,
-            attempt_count=new_attempt_count_since_last_hint,
+            number_given_hints=new_number_given_hints,
             model=model
         )
 
-        # Update state with hint and reset hint counter
+        # Update state with hint
         return {
             "socratic_mode": next_mode,
             "attempt_count": new_attempt_count,
-            "attempt_count_since_last_hint": 0,  # Reset after providing hint
+            "number_given_hints": new_number_given_hints,
             "answer": response
         }
             
@@ -128,44 +134,71 @@ def socratic_core(state: GraphState) -> dict:
         next_mode = "core"
         
         # Generate LLM-based Socratic question using reranked course materials
-        # Prepare context for LLM
-        # Format reranked chunks as course materials
-        course_materials = "\n\n".join([
-            f"[Material {i+1}]\n{chunk.text}"
-            for i, chunk in enumerate(reranked)
+        response = generate_socratic_question(
+            learning_objective=learning_objective,
+            user_query=user_query,
+            reranked=reranked,
+            chat_history=chat_history,
+            new_attempt_count=new_attempt_count,
+            model=model
+        )
+    
+    # Build return dict
+        # Build return state
+    result = {
+        "socratic_mode": next_mode,
+        "attempt_count": new_attempt_count,
+        "answer": response
+    }
+
+    return result
+
+@observe(name="socratic_question_generation")
+def generate_socratic_question(learning_objective: str,
+                     user_query: str,
+                     reranked: list,
+                     chat_history: list,
+                     new_attempt_count: int,
+                     model: str) -> str:
+    """
+    Generates the next Socratic question to ask the student.
+    Args:
+        learning_objective: The learning goal
+        user_query: Student's current response
+        reranked: Retrieved and reranked course materials
+        chat_history: Conversation history
+        new_attempt_count: Updated total attempt count
+        model: LLM model to use
+    Returns:
+        str: The generated Socratic question
+    """
+    course_materials = "\n\n".join([
+        f"[Material {i+1}]\n{chunk.text}"
+        for i, chunk in enumerate(reranked)
         ]) if reranked else "No specific course materials retrieved."
         
-        query_for_llm = f"""Learning Objective: {learning_objective}
+    query_for_llm = f"""Learning Objective: {learning_objective}
 
 Student's Current Response: {user_query}
 
 Attempt Count: {new_attempt_count}
-Attempt Count last hint: {new_attempt_count_since_last_hint}
 
 Retrieved Course Materials:
 {course_materials}"""
         
-        # Call LLM to generate Socratic question
-        _llm = LLM()
-        llm_response = _llm.chat(
-            query=query_for_llm,
-            chat_history=chat_history,
-            model=model,
-            system_prompt=SOCRATIC_CORE_PROMPT
+    # Call LLM to generate Socratic question
+    _llm = LLM()
+    llm_response = _llm.chat(
+        query=query_for_llm,
+        chat_history=chat_history,
+        model=model,
+        system_prompt=SOCRATIC_CORE_PROMPT
         )
         
-        if llm_response.content is None:
-            # Fallback if LLM fails
-            response = "Kannst du deine Überlegung genauer erklären?"
-        else:
-            response = llm_response.content.strip()
+    if llm_response.content is None:
+        # Fallback if LLM fails
+        response = "Kannst du deine Überlegung genauer erklären?"
+    else:
+        response = llm_response.content.strip()
     
-    # Build return state
-    result = {
-        "socratric_mode": next_mode,
-        "attempt_count": new_attempt_count,
-        "attempt_count_since_last_hint": new_attempt_count_since_last_hint,
-        "answer": response
-    }
-    
-    return result
+    return response

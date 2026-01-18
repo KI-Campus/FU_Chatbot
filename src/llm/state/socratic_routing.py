@@ -1,4 +1,4 @@
-from typing import Dict, Tuple, Any, List
+from typing import Dict, Any, List
 
 from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import LLM, Models
@@ -80,7 +80,7 @@ def reset_socratic_state() -> Dict[str, Any]:
         "socratic_contract": None,
         "learning_objective": None,
         "attempt_count": 0,
-        "attempt_count_since_last_hint": 0,
+        "number_given_hints": 0,
         "goal_achieved": False
     }
 
@@ -99,7 +99,7 @@ def answer_and_reset_socratic_state(next_mode: str, response: str) -> Dict[str, 
         "socratic_contract": None,
         "learning_objective": None,
         "attempt_count": 0,
-        "attempt_count_since_last_hint": 0,
+        "number_given_hints": 0,
         "goal_achieved": False,
         "answer": response
     }

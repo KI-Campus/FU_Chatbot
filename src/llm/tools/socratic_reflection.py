@@ -1,3 +1,6 @@
+from langfuse.decorators import observe
+
+@observe(name="socratic_reflection")
 def generate_reflection_text() -> str:
     """
     Helper function to generate reflection text after goal achievement.

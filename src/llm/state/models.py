@@ -40,7 +40,7 @@ class GraphState(TypedDict, total=False):
     learning_objective: Optional[str]  # Identified learning goal for the interaction
     #core
     attempt_count: int  # Total number of attempts student made at current question/concept
-    attempt_count_since_last_hint: int  # Number of attempts since last hint (for hint graduierung)
+    number_given_hints: int  # Total number of hints given so far (for hint graduation)
 
     # output
     answer: Optional[str]

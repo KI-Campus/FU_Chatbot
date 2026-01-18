@@ -1,23 +1,26 @@
+from langfuse.decorators import observe
+
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
 
 # Load prompt once at module level
 SOCRATIC_HINTING_PROMPT = load_prompt("socratic_hinting")
 
+@observe(name="socratic_hinting")
 def generate_hint_text(
     learning_objective: str,
-    attempt_count: int,
+    number_given_hints: int,
     user_query: str,
     reranked_chunks: list,
     chat_history: list,
     model: str
 ) -> str:
     """
-    Helper function to generate a hint based on current level.
+    Helper function to generate a hint based on how many hints have been given.
     
     Args:
         learning_objective: The learning goal
-        attempt_count: Current attempt number
+        number_given_hints: Total number of hints given so far
         user_query: Student's current response
         reranked_chunks: Retrieved course materials
         chat_history: Conversation history
@@ -33,7 +36,7 @@ def generate_hint_text(
     ]) if reranked_chunks else "No specific course materials retrieved."
     
     query_for_llm = f"""Learning Objective: {learning_objective}
-Current Attempt Count: {attempt_count}
+Number of Hints Given: {number_given_hints}
 
 Student's Current Response: {user_query}
 
