@@ -63,10 +63,7 @@ def contextualize_and_route(state: GraphState) -> dict:
         if not continue_socratic:
             # User wants to exit - provide prefabricated message and skip LLM call
             
-            exit_message = SerializableChatMessage(
-                role="assistant",
-                content="Du hast den Lernmodus verlassen. Wenn du weitere Fragen hast, stehe ich dir gerne zur Verfügung!"
-            )
+            exit_message = "Du hast den Lernmodus verlassen. Wenn du weitere Fragen hast, stehe ich dir gerne zur Verfügung!"
             
             # Reset all socratic state (user exited)
             socratic_reset = reset_socratic_state()
@@ -75,8 +72,9 @@ def contextualize_and_route(state: GraphState) -> dict:
             return {
                 **socratic_reset,  # Reset all socratic fields
                 "mode": "exit_complete",
-                "final_answer": exit_message,
+                "answer": exit_message
             }
+        
         else:
             # User wants to continue socratic
             mode = "socratic"
