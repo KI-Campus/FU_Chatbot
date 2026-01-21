@@ -1,7 +1,13 @@
 from typing import Annotated
 
+import json
+import queue
+import threading
+import uuid
+
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from fastapi.security import APIKeyHeader
 from langfuse import Langfuse
 from langfuse.decorators import langfuse_context, observe
@@ -13,6 +19,7 @@ from src.env import env
 from src.llm.assistant import KICampusAssistant
 from src.llm.objects.LLMs import Models
 from src.vectordb.qdrant import VectorDBQdrant
+from src.llm.streaming import TokenCallbackContext
 
 # Singleton instances for performance - avoid recreating on every request
 _vector_db = VectorDBQdrant()
@@ -181,6 +188,81 @@ def chat(chat_request: ChatRequest) -> ChatResponse:
         thread_id=thread_id
     )
     return chat_response
+
+
+@app.post("/api/chat/stream", dependencies=[Depends(api_key_auth)])
+def chat_stream(chat_request: ChatRequest) -> StreamingResponse:
+    """Stream the assistant response token-by-token as NDJSON.
+
+    Response (application/x-ndjson):
+      - {"type":"meta", "thread_id":..., "response_id":...}
+      - {"type":"token", "token":...}  (many)
+      - {"type":"final", "message":..., "thread_id":..., "response_id":...}
+      - {"type":"error", "message":...} (optional)
+    """
+
+    # Ensure we control the thread_id that will be used for checkpointing.
+    thread_id = chat_request.thread_id or str(uuid.uuid4())
+
+    # Create a stable trace_id that will be used as Langfuse trace id.
+    # We set it as "root trace id" before invoking @observe-decorated code.
+    trace_id = str(uuid.uuid4())
+
+    q: queue.Queue[object] = queue.Queue()
+    DONE = object()
+
+    def token_callback(token: str) -> None:
+        q.put({"type": "token", "token": token})
+
+    def worker() -> None:
+        try:
+            # Make all nested @observe spans use our predefined trace_id.
+            # This is important because the streaming response needs the ID early.
+            langfuse_context._set_root_trace_id(trace_id)
+
+            with TokenCallbackContext(token_callback):
+                if chat_request.course_id is not None:
+                    llm_response, _thread_id = _assistant.chat_with_course(
+                        query=chat_request.get_user_query(),
+                        model=chat_request.model,
+                        course_id=chat_request.course_id,
+                        module_id=chat_request.module_id,
+                        thread_id=thread_id,
+                    )
+                else:
+                    llm_response, _thread_id = _assistant.chat(
+                        query=chat_request.get_user_query(),
+                        model=chat_request.model,
+                        thread_id=thread_id,
+                    )
+
+            q.put(
+                {
+                    "type": "final",
+                    "message": llm_response.content,
+                    "response_id": trace_id,
+                    "thread_id": _thread_id,
+                }
+            )
+        except Exception as e:
+            q.put({"type": "error", "message": str(e), "response_id": trace_id, "thread_id": thread_id})
+        finally:
+            q.put(DONE)
+
+    threading.Thread(target=worker, daemon=True).start()
+
+    def gen():
+        # Send metadata first so the client can store ids immediately.
+        yield (json.dumps({"type": "meta", "thread_id": thread_id, "response_id": trace_id}) + "\n").encode(
+            "utf-8"
+        )
+        while True:
+            item = q.get()
+            if item is DONE:
+                break
+            yield (json.dumps(item, ensure_ascii=False) + "\n").encode("utf-8")
+
+    return StreamingResponse(gen(), media_type="application/x-ndjson")
 
 
 class FeedbackRequest(BaseModel):
