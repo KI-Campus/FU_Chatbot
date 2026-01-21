@@ -127,6 +127,7 @@ def reset_history():
     st.session_state.messages = []
     st.session_state.course_id = None
     st.session_state.module_id = None
+    st.session_state.thread_id = None  # Reset thread_id for new conversation
 
 
 def submit_feedback(feedback: dict, trace_id: str):
@@ -153,6 +154,9 @@ if "course_id" not in st.session_state:
 
 if "module_id" not in st.session_state:
     st.session_state.module_id = None
+
+if "thread_id" not in st.session_state:
+    st.session_state.thread_id = None  # Managed by backend, stored for UI display
 
 
 with st.sidebar:
@@ -202,15 +206,19 @@ if query := st.chat_input("Wie lautet Ihre Frage?"):
     with st.chat_message("user"):
         st.markdown(query)
 
+    # Store user message in UI history (for display only)
     st.session_state.messages.append({"role": MessageRole.USER, "content": query})
+    
+    # Send only the new user message + thread_id to backend
     response = st.session_state.assistant.post(
         "/api/chat",
         headers={"Api-Key": env.REST_API_KEYS[0]},
         json={
-            "messages": st.session_state.messages,
+            "user_query": {"role": MessageRole.USER, "content": query},  # Single message object (not array)
             "model": st.session_state.llm_select.value if isinstance(st.session_state.llm_select, Models) else st.session_state.llm_select,
             "course_id": st.session_state.course_id if hasattr(st.session_state, "course_id") else None,
             "module_id": st.session_state.module_id if hasattr(st.session_state, "module_id") else None,
+            "thread_id": st.session_state.thread_id,  # Backend manages history via this ID
         },
     )
     if response.status_code != 200:
@@ -221,6 +229,11 @@ if query := st.chat_input("Wie lautet Ihre Frage?"):
         st.markdown(response_content["message"], unsafe_allow_html=True)
 
     st.session_state["trace_id"] = response_content["response_id"]
+    
+    # Store thread_id from backend for subsequent requests
+    st.session_state.thread_id = response_content["thread_id"]
+    
+    # Store assistant response in UI history (for display only)
     st.session_state.messages.append({"role": MessageRole.ASSISTANT, "content": response_content["message"]})
 
 if trace_id := st.session_state.get("trace_id"):

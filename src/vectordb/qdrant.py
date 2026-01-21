@@ -53,7 +53,7 @@ class VectorDBQdrant:
     def as_llama_vector_store(self, collection_name) -> QdrantVectorStore:
         return QdrantVectorStore(client=self.client, collection_name=collection_name, max_retries=10)
 
-    def create_collection(self, collection_name, vector_size, enable_sparse: bool = False) -> None:
+    def create_collection(self, collection_name, vector_size, enable_sparse: bool = True) -> None:
         """Create a Qdrant collection with optional sparse vector support.
         
         Args:

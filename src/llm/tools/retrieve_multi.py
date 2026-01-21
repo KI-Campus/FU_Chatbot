@@ -5,12 +5,22 @@ Node wrapper for parallel retrieval of multiple sub-queries (Multi-Hop).
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from langfuse.decorators import observe
 
-from src.llm.objects.retriever import KiCampusRetriever
 from src.llm.state.models import GraphState
+
+# Module-level singleton
+_retriever_instance = None
+
+def get_retriever(use_hybrid: bool = True, n_chunks: int = 10):
+    """Get or create singleton retriever instance."""
+    global _retriever_instance
+    if _retriever_instance is None:
+        from src.llm.objects.retriever import KiCampusRetriever
+        _retriever_instance = KiCampusRetriever(use_hybrid=use_hybrid, n_chunks=n_chunks)
+    return _retriever_instance
 
 
 @observe()
-def retrieve_multi_parallel(state: GraphState) -> GraphState:
+def retrieve_multi_parallel(state: GraphState) -> dict:
     """
     Retrieves relevant chunks for all sub-queries in parallel.
     
@@ -28,14 +38,15 @@ def retrieve_multi_parallel(state: GraphState) -> GraphState:
     """
     # Guard: If no sub_queries, skip
     if "sub_queries" not in state or not state["sub_queries"]:
-        return {**state, "multi_contexts": []}
+        return {"multi_contexts": []}
     
-    # Initialize retriever
-    retriever = KiCampusRetriever(use_hybrid=True)
+    # Get necessary variables from state
+    course_id = state["runtime_config"]["course_id"]
+    module_id = state["runtime_config"]["module_id"]
+    retrieve_top_n = state["system_config"]["retrieve_top_n"]
     
-    # Extract optional filters from runtime_config
-    course_id = state["runtime_config"].get("course_id")
-    module_id = state["runtime_config"].get("module_id")
+    # Get singleton retriever
+    retriever = get_retriever(use_hybrid=True, n_chunks=retrieve_top_n)
     
     # Define retrieval function for parallel execution
     def retrieve_for_query(sub_query: str):
@@ -70,4 +81,5 @@ def retrieve_multi_parallel(state: GraphState) -> GraphState:
         for sq in state["sub_queries"]:
             multi_contexts.append(results.get(sq, []))
     
-    return {**state, "multi_contexts": multi_contexts}
+    # Already SerializableTextNode from retriever
+    return {"multi_contexts": multi_contexts}

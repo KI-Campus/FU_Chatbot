@@ -1,41 +1,39 @@
-"""
-No Vector DB Subgraph - Conversational queries without retrieval.
-
-For simple conversational messages that don't require knowledge retrieval
-(e.g., greetings, acknowledgments, small talk).
-"""
-
 from langgraph.graph import StateGraph, START, END
 
 from src.llm.state.models import GraphState
+from src.llm.objects.LLMs import LLM
 from src.llm.tools.language import detect_language
-from src.llm.objects.question_answerer import QuestionAnswerer
+from src.llm.prompts.prompt_loader import load_prompt
 
+llm = LLM()
+NO_VECTORDB_PROMPT = load_prompt("no_vector_db_prompt")
 
-def direct_answer_node(state: GraphState) -> GraphState:
+def direct_answer_node(state: GraphState) -> dict:
     """
     Generate direct conversational response without retrieval.
     
     For no_vectordb scenario: Simple, friendly responses to conversational queries.
     """
-    answerer = QuestionAnswerer()
-    model = state["runtime_config"].get("model")
+    # Get necessary variables from state
+    model = state["runtime_config"]["model"]
+    query = state["user_query"]
+    chat_history = state["chat_history"]
+    language = state["detected_language"]
+
+    # Insert language in system prmpt
+    language_enriched_prompt = NO_VECTORDB_PROMPT.replace("{language}", language)
     
     # Simple conversational response (no sources)
-    response = answerer.answer_question(
-        query=state["user_query"],
-        chat_history=state["chat_history"],
-        language=state["detected_language"],
-        sources=[],  # No retrieval
-        model=model,
-        is_moodle=False,
-        course_id=None
+    response = llm.chat(
+        query=query,
+        chat_history=chat_history,
+        system_prompt= language_enriched_prompt,
+        model=model
     )
     
     return {
-        **state,
         "answer": response.content,
-        "citations_markdown": response.content
+        "citations_markdown": None  # No citations in no_vectordb mode
     }
 
 

@@ -41,10 +41,7 @@ Friendly, supportive, empowering. Never produce harmful or discriminatory conten
 Learners of all backgrounds seeking clear, reliable guidance.
 
 # RESPONSE FORMAT #
-{{
-    "answer": str
-}}
-Respond in JSON only.  
+Only the string containing the answer. 
 If outside scope or unsupported by sources → "NO ANSWER FOUND".  
 Cite sources as [docX] or [docX],[docY].  
 Keep answers under 500 characters (ideally under 280).  
