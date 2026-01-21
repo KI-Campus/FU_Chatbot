@@ -15,6 +15,7 @@ from llama_index.llms.openai_like import OpenAILike
 
 from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.env import env
+from src.llm.streaming import stream_phase_var, token_callback_var
 
 TIME_TO_WAIT_FOR_GWDG = 7  # in seconds
 TIME_TO_RESET_UNAVAILABLE_STATUS = 60 * 5  # in seconds
@@ -96,8 +97,17 @@ class LLM:
 
     @observe()
     def chat(self, query: str, chat_history: list[SerializableChatMessage], model: Models, system_prompt: str) -> SerializableChatMessage:
+        """Chat with the selected LLM.
+
+        If a request-scoped token callback is set (via ``token_callback_var``),
+        this method will *stream* token deltas to that callback while also
+        returning the final assembled message.
+        """
         langfuse_handler = langfuse_context.get_current_llama_index_handler()
-        Settings.callback_manager = CallbackManager([langfuse_handler])
+        Settings.callback_manager = CallbackManager([langfuse_handler] if langfuse_handler else [])
+
+        token_callback = token_callback_var.get()
+        stream_phase = stream_phase_var.get()
 
         if LLM.gwdg_unavailable and LLM.gwdg_unavailable_since:
             if datetime.datetime.now() - LLM.gwdg_unavailable_since > datetime.timedelta(
@@ -120,6 +130,66 @@ class LLM:
         chat_engine = SimpleChatEngine.from_defaults(
             llm=llm, system_prompt=system_prompt, chat_history=copy_chat_history
         )
+
+        # --- Streaming path (if enabled for this request) --------------------
+        # We do not apply the GWDG timeout fallback when streaming, because the
+        # timeout logic is implemented with threads that would swallow token
+        # deltas. Instead we try streaming; if it fails, we fall back to a
+        # single non-streaming completion and emit it as one chunk.
+        if token_callback is not None and stream_phase == "final":
+            try:
+                streaming_resp = chat_engine.stream_chat(message=query)
+                full_text = ""
+                last_text = ""
+                for chunk in streaming_resp.response_gen:
+                    # LlamaIndex StreamingAgentChatResponse.response_gen can yield either:
+                    #   1) `str` deltas (common for some wrappers), OR
+                    #   2) `ChatResponse` objects with `.delta` / `.message.content`.
+                    #
+                    # We normalize both into a string `delta`.
+                    if isinstance(chunk, str):
+                        delta = chunk
+                    else:
+                        # Depending on LLM wrapper, incremental text might be in:
+                        #   - chunk.delta (preferred)
+                        #   - chunk.message.content (common)
+                        delta = getattr(chunk, "delta", None)
+
+                        if not delta:
+                            msg = getattr(chunk, "message", None)
+                            msg_text = getattr(msg, "content", None) if msg is not None else None
+                            if isinstance(msg_text, str) and msg_text:
+                                # Derive delta from the growing message content.
+                                if msg_text.startswith(last_text):
+                                    delta = msg_text[len(last_text) :]
+                                else:
+                                    # If the provider rewrites the whole string (rare),
+                                    # fall back to emitting the full text.
+                                    delta = msg_text
+                                last_text = msg_text
+
+                    if not delta:
+                        continue
+
+                    full_text += delta
+                    token_callback(delta)
+
+                # In some edge cases, streaming yields chunks but we still couldn't
+                # derive deltas. Fall back to final response string.
+                if not full_text:
+                    full_text = getattr(streaming_resp, "response", "") or getattr(
+                        streaming_resp, "unformatted_response", ""
+                    )
+                    if full_text:
+                        token_callback(full_text)
+
+                return SerializableChatMessage(role="assistant", content=full_text)
+            except Exception:
+                # Fall back to non-streaming and emit as a single chunk.
+                response = chat_engine.chat(message=query)
+                text = response.response if isinstance(response.response, str) else str(response.response)
+                token_callback(text)
+                return SerializableChatMessage(role="assistant", content=text)
 
         result = [None]  # Use a list to hold the result (mutable object to modify inside threads)
 
