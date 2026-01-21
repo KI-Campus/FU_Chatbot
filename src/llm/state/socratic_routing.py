@@ -1,17 +1,69 @@
-"""
-Socratic intent routing - checks if user wants to continue or exit socratic mode.
-"""
-from typing import List, Dict, Any
+from typing import Dict, Any, List
 
-from llama_index.core.llms import ChatMessage
-from langfuse.decorators import observe
-
+from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
 
+# Initiate LLm instance
+llm = LLM()
 # Load prompt once at module level
-ROUTER_SOCRATIC_PROMPT = load_prompt("router_socratic_prompt")
+ROUTER_SOCRATIC_PROMPT = load_prompt("socratic_stuckness_goal_achievement")
 
+def evaluate_user_response(user_query: str,
+                           chat_history: List[SerializableChatMessage],
+                           learning_objective: str,
+                           attempt_count: int,
+                           model: Models) -> str:
+    """
+    Evaluate user response to determine which mode the Socratic dialogue should take.
+    
+    Uses LLM to assess the student's state and return one of four modes:
+    - EXPLAIN: Student explicitly requests direct explanation
+    - HINT: Student is stuck and needs guidance
+    - REFLECT: Student has achieved the learning objective
+    - CONTINUE: Student is progressing well, continue Socratic dialogue
+    
+    Args:
+        user_query: Student's current response
+        chat_history: Previous conversation messages
+        learning_objective: The learning goal for this session
+        attempt_count: Number of attempts so far
+        model: Which LLM model to use
+        
+    Returns:
+        str: One of "EXPLAIN", "HINT", "REFLECT", or "CONTINUE"
+    """
+    
+    # Build evaluation query
+    evaluation_query = f"""Learning Objective: {learning_objective}
+
+Attempt Count: {attempt_count}
+
+Student's Current Response: {user_query}"""
+    
+    # Call LLM for evaluation
+    response = llm.chat(
+        query=evaluation_query,
+        chat_history=chat_history,
+        model=model,
+        system_prompt=ROUTER_SOCRATIC_PROMPT
+    )
+    
+    if response.content is None:
+        # Fallback: assume student is progressing
+        return "CONTINUE"
+    
+    # Parse LLM response
+    content = response.content.strip()
+    
+    # Look for MODE: prefix
+    if "MODE:" in content:
+        mode = content.split("MODE:")[1].strip().split()[0].upper()
+        if mode in ["EXPLAIN", "HINT", "REFLECT", "CONTINUE"]:
+            return mode
+    
+    # Fallback if parsing fails
+    return "CONTINUE"
 
 def reset_socratic_state() -> Dict[str, Any]:
     """
@@ -25,66 +77,29 @@ def reset_socratic_state() -> Dict[str, Any]:
     """
     return {
         "socratic_mode": None,
-        "student_model": {
-            "mastery": "unknown",
-            "misconceptions": [],
-            "affect": "neutral",
-            "prior_knowledge": None,
-        },
+        "socratic_contract": None,
         "learning_objective": None,
         "attempt_count": 0,
-        "hint_level": 0,
-        "stuckness_score": 0.0,
-        "goal_achieved": False,
-        "socratic_contract": None,
+        "number_given_hints": 0,
+        "goal_achieved": False
     }
 
-
-@observe()
-def should_continue_socratic(user_query: str, chat_history: List[ChatMessage], model: Models) -> bool:
+def answer_and_reset_socratic_state(next_mode: str, response: str) -> Dict[str, Any]:
     """
-    Checks if user wants to continue socratic dialogue or exit.
+    Reset all socratic-specific state fields to initial/clean state.
     
-    Uses LLM with router_socratic_prompt.txt to determine intent.
-    Expects LLM to return: "true" or "false"
+    Called when socratic mode ends (reflection, explain, or contextualizer exit).
+    Ensures clean slate for next socratic or non-socratic interaction.
     
-    Args:
-        user_query: Current user query
-        model: LLM model to use
-        
     Returns:
-        True if continue socratic, False if user wants to exit
+        Dict with all socratic fields reset to None/0/False
     """
-    # Initialize LLM instance
-    _llm = LLM()
-    
-    # Call LLM to determine intent
-    response = _llm.chat(
-        query=user_query,
-        chat_history=chat_history,
-        model=model,
-        system_prompt=ROUTER_SOCRATIC_PROMPT
-    )
-    
-    if response.content is None:
-        raise ValueError(
-            f"Socratic router response is None. Please check the LLM implementation. Response: {response}"
-        )
-    
-    # Parse boolean response
-    response_clean = response.content.lower().strip()
-    
-    # Expected: "true" or "false"
-    if response_clean == "true":
-        return True
-    elif response_clean == "false":
-        return False
-    else:
-        # Fallback parsing for partial matches
-        if "true" in response_clean:
-            return True
-        elif "false" in response_clean:
-            return False
-        else:
-            # Default: Continue (be conservative, don't exit unless clear signal)
-            return True
+    return {
+        "socratic_mode": next_mode,
+        "socratic_contract": None,
+        "learning_objective": None,
+        "attempt_count": 0,
+        "number_given_hints": 0,
+        "goal_achieved": False,
+        "answer": response
+    }

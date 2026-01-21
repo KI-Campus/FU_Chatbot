@@ -2,30 +2,24 @@
 Node wrapper for retrieving relevant chunks from vector database.
 """
 
-from langfuse.decorators import observe, langfuse_context
+from langfuse.decorators import observe
 
-from src.llm.objects.retriever import KiCampusRetriever
 from src.llm.state.models import GraphState
 
+# Module-level singleton
+_retriever_instance = None
 
-def serialize_nodes_for_langfuse(nodes):
-    """Extract text and metadata from TextNodes for Langfuse tracing."""
-    return [
-        {
-            "text": node.text[:500] + "..." if len(node.text) > 500 else node.text,  # Limit length
-            "score": node.score if hasattr(node, "score") else None,
-            "metadata": {
-                "source": node.metadata.get("url", "unknown"),
-                "course_id": node.metadata.get("course_id"),
-                "module_id": node.metadata.get("module_id"),
-            }
-        }
-        for node in (nodes or [])
-    ]
+def get_retriever(use_hybrid: bool = True, n_chunks: int = 10):
+    """Get or create singleton retriever instance."""
+    global _retriever_instance
+    if _retriever_instance is None:
+        from src.llm.objects.retriever import KiCampusRetriever
+        _retriever_instance = KiCampusRetriever(use_hybrid=use_hybrid, n_chunks=n_chunks)
+    return _retriever_instance
 
 
 @observe()
-def retrieve_chunks(state: GraphState) -> GraphState:
+def retrieve_chunks(state: GraphState) -> dict:
     """
     Retrieves relevant document chunks using hybrid search.
     
@@ -38,25 +32,20 @@ def retrieve_chunks(state: GraphState) -> GraphState:
     Returns:
         Updated state with retrieved chunks
     """
-    # Extract config
-    retrieve_top_n = state["system_config"].get("retrieve_top_n", 10)
-    
-    retriever = KiCampusRetriever(use_hybrid=True, n_chunks=retrieve_top_n)
-    
     # Extract optional filters from runtime_config (set by frontend)
-    course_id = state["runtime_config"].get("course_id")
-    module_id = state["runtime_config"].get("module_id")
+    course_id = state["runtime_config"]["course_id"]
+    module_id = state["runtime_config"]["module_id"]
+    query = state["contextualized_query"]
+    retrieve_top_n = state["system_config"]["retrieve_top_n"]
     
-    # Retrieve chunks using hybrid search (returns TextNode directly)
+    # Get singleton retriever
+    retriever = get_retriever(use_hybrid=True, n_chunks=retrieve_top_n)
+    
+    # Retrieve chunks (returns SerializableTextNode)
     nodes = retriever.retrieve(
-        query=state["contextualized_query"],
+        query=query,
         course_id=course_id,
         module_id=module_id
     )
     
-    # Add serialized nodes to Langfuse observation for better tracing
-    langfuse_context.update_current_observation(
-        output={"retrieved_count": len(nodes), "nodes": serialize_nodes_for_langfuse(nodes)}
-    )
-    
-    return {**state, "retrieved": nodes}
+    return {"retrieved": nodes}

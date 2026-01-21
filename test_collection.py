@@ -1,8 +1,8 @@
 from src.vectordb.qdrant import VectorDBQdrant
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue
 
-COLLECTION_NAME = "web_assistant"
-TARGET_COURSE_ID = 56
+COLLECTION_NAME = "web_assistant_hybrid"
+TARGET_COURSE_ID = None
 
 # Verbindung zu Qdrant
 db = VectorDBQdrant()
@@ -28,7 +28,7 @@ while True:
         collection_name=COLLECTION_NAME,
         scroll_filter=course_filter,
         limit=200,
-        with_payload=["module_id", "fullname", "url"],
+        with_payload=True,#with_payload=["module_id", "fullname", "url"],
         with_vectors=False,
         offset=next_page_offset
     )
@@ -41,8 +41,7 @@ while True:
 # Ausgabe
 #print(f"Gefundene Chunks: {len(all_points)}\n")
 
-#for p in all_points:
-#    print("ID:", p.id)
-#    print("Payload:", p.payload)
-#    print("-" * 40)
-print(f"Total points retrieved: {len(all_points)}")
+for p in all_points:
+    print("ID:", p.id)
+    print("Payload:", p.payload)
+    print("-" * 40)

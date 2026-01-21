@@ -1,15 +1,16 @@
 import argparse
 
 from langfuse import Langfuse
-from llama_index.core.llms import ChatMessage, MessageRole
 from src.llm.objects.LLMs import Models
 from src.llm.assistant import KICampusAssistant
 
-DEFAULT_COURSE_ID = 106
-DEFAULT_MODULE_ID = 7152
+DEFAULT_COURSE_ID = None
+DEFAULT_MODULE_ID = None
 
 RETRIEVE_TOP_N = 10
 RERANK_TOP_N = 5
+
+THREAD_ID = "finale_workflow_thread"
 
 def parse_args():
     p = argparse.ArgumentParser(description="Interactive CLI chat with KICampusAssistant.")
@@ -18,6 +19,7 @@ def parse_args():
     p.add_argument("--module-id", type=int, default=DEFAULT_MODULE_ID, help="Optional module_id")
     p.add_argument("--rerank-top-n", type=int, default=RERANK_TOP_N, help="Assistant rerank_top_n")
     p.add_argument("--n-chunks", type=int, default=RETRIEVE_TOP_N, help="Number of chunks to retrieve")
+    p.add_argument("--thread-id", type=str, default=THREAD_ID, help="Thread ID for persistence and tracing")
     return p.parse_args()
 
 def main():
@@ -33,13 +35,11 @@ def main():
 
     assistant = KICampusAssistant(rerank_top_n=args.rerank_top_n, retrieve_top_n=args.n_chunks)
     
-    # Chat history wie im Frontend (in-memory, kein LangGraph State)
-    chat_history = []
-    
     print("\n=== KI-Campus Assistant (Interactive Mode) ===")
     print(f"Model: {model.value}")
     print(f"Course ID: {args.course_id}")
     print(f"Module ID: {args.module_id}")
+    print(f"Thread ID: {args.thread_id}")
     print("\nType 'quit' or 'exit' to end the session.\n")
     
     while True:
@@ -57,31 +57,28 @@ def main():
             print("\nSession beendet.")
             break
         
-        # Call assistant (OHNE conversation_id, nur mit chat_history)
+        # Call assistant (MIT thread_id für persistence und leichteres Tracing)
         try:
             if args.course_id is not None or args.module_id is not None:
-                response = assistant.chat_with_course(
+                response, thread_id = assistant.chat_with_course(
                     query=query,
                     model=model,
                     course_id=args.course_id,
                     module_id=args.module_id,
-                    chat_history=chat_history,
-                    conversation_id=None,  # Keine Persistenz, nur in-memory
+                    thread_id=args.thread_id,
                 )
             else:
-                response = assistant.chat(
+                response, thread_id = assistant.chat(
                     query=query,
                     model=model,
-                    chat_history=chat_history,
-                    conversation_id=None,  # Keine Persistenz, nur in-memory
+                    thread_id=args.thread_id,
                 )
             
             # Output
             print(f"\n🤖 Assistant:\n{response.content}\n")
             
-            # Update history (wie im Frontend)
-            chat_history.append(ChatMessage(role=MessageRole.USER, content=query))
-            chat_history.append(ChatMessage(role=MessageRole.ASSISTANT, content=response.content))
+            # thread_id wird automatisch im Backend verwaltet
+            # Chat history ist jetzt persistent via LangGraph Checkpoints
             
         except Exception as e:
             print(f"\n❌ Fehler: {e}\n")

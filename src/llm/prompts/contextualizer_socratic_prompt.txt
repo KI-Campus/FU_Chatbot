@@ -23,9 +23,8 @@ Transform the student's current response into a retrieval query that:
    - Add new questions
    - Invent knowledge gaps
    - Interpret beyond what is explicitly said
-3. Preserve the student’s language.
-4. Query must be suitable for retrieval, not directly answer the concept.
+4. Query must be suitable for retrieval from a vector database, not directly answer the concept.
 
 # OUTPUT #
-Return ONE concise retrieval query (natural language, 1 short sentence).
-No commentary, no bullet points, no keywords list only.
+Return ONE concise retrieval query (natural language, 1 sentence).
+No commentary, no bullet points, no keywords list.

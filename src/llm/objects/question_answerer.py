@@ -2,9 +2,10 @@ import json
 import sys
 
 from langfuse.decorators import observe
-from llama_index.core.llms import ChatMessage, MessageRole
+from llama_index.core.llms import MessageRole
 from llama_index.core.schema import TextNode
 
+from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
 
@@ -53,13 +54,14 @@ class QuestionAnswerer:
     def answer_question(
         self,
         query: str,
-        chat_history: list[ChatMessage],
+        chat_history: list[SerializableChatMessage],
         sources: list[TextNode],
         model: Models,
         language: str,
         is_moodle: bool,
         course_id: int,
-    ) -> ChatMessage:
+    ) -> SerializableChatMessage:
+        
         if model != Models.GPT4:
             system_prompt = SHORT_SYSTEM_PROMPT.format(language=language)
             formatted_sources = format_sources(sources, max_length=8000)
@@ -67,7 +69,7 @@ class QuestionAnswerer:
             system_prompt = SYSTEM_PROMPT.format(language=language)
             formatted_sources = format_sources(sources, max_length=sys.maxsize)
 
-        prompted_user_query = f"<QUERY>:\n {query}\n---\n\n{formatted_sources}"
+        prompted_user_query = f"<QUERY>:\n {query}\n\n{formatted_sources}"
 
         response = self.llm.chat(
             query=prompted_user_query,
@@ -75,17 +77,6 @@ class QuestionAnswerer:
             model=model,
             system_prompt=system_prompt,
         )
-
-        try:
-            response.content = response.content.replace("```json\n", "").replace("\n```", "")
-            response_json = json.loads(response.content)
-            response.content = response_json["answer"]
-
-        except (json.JSONDecodeError, KeyError) as e:
-            # LLM forgets to respond with JSON or missing "answer" key - use response as-is
-            # Log the issue for monitoring
-            print(f"Warning: Failed to parse JSON response: {e}. Using raw response.")
-            pass
 
         # Check if this is the second "NO ANSWER FOUND" in a row
         # Look for ASSISTANT messages (bot responses) in history to check if we already said we can't help
@@ -113,4 +104,5 @@ class QuestionAnswerer:
 
         if response is None:
             raise ValueError(f"LLM produced no response. Please check the LLM implementation. Response: {response}")
+        
         return response

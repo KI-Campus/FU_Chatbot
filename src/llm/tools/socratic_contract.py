@@ -10,7 +10,7 @@ from src.llm.state.models import GraphState
 
 
 @observe()
-def socratic_contract(state: GraphState) -> GraphState:
+def socratic_contract(state: GraphState) -> dict:
     """
     Establishes a learning contract with the student.
     
@@ -34,10 +34,10 @@ def socratic_contract(state: GraphState) -> GraphState:
     Returns:
         Updated state with contract and initial socratic fields
     """
-    # Default contract: Socratic method enabled, no direct answers upfront
+    # Default contract: Socratic method enabled, no direct answers or hints upfront
     contract = {
-        "allow_explain": False,  # Only after hint_level==3 or explicit user request
-        "allow_direct_answer": False,  # Socratic method means no direct solutions
+        "allow_explain": False,
+        "allow_hint": False,
     }
     
     # Welcome message explaining the Socratic approach
@@ -48,12 +48,11 @@ def socratic_contract(state: GraphState) -> GraphState:
     )
     
     return {
-        **state,
         "socratic_contract": contract,
         "socratic_mode": "diagnose",
         "hint_level": 0,
         "attempt_count": 0,
-        "stuckness_score": 0.0,
+        "number_given_hints": 0,
         "goal_achieved": False,
         "answer": welcome_message,
         "citations_markdown": None,  # Clear citations from previous requests

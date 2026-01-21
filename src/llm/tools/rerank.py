@@ -2,30 +2,23 @@
 Node wrapper for reranking retrieved chunks.
 """
 
-from langfuse.decorators import observe, langfuse_context
+from langfuse.decorators import observe
 
-from src.llm.objects.reranker import Reranker
-from src.llm.state.models import GraphState
+from src.llm.state.models import GraphState, get_doc_as_textnodes
 
+# Module-level singleton
+_reranker_instance = None
 
-def serialize_nodes_for_langfuse(nodes):
-    """Extract text and metadata from TextNodes for Langfuse tracing."""
-    return [
-        {
-            "text": node.text[:500] + "..." if len(node.text) > 500 else node.text,  # Limit length
-            "score": node.score if hasattr(node, "score") else None,
-            "metadata": {
-                "source": node.metadata.get("url", "unknown"),
-                "course_id": node.metadata.get("course_id"),
-                "module_id": node.metadata.get("module_id"),
-            }
-        }
-        for node in (nodes or [])
-    ]
-
+def get_reranker(reranker_top_n: int):
+    """Get or create singleton reranker instance."""
+    global _reranker_instance
+    if _reranker_instance is None:
+        from src.llm.objects.reranker import Reranker
+        _reranker_instance = Reranker(reranker_top_n)
+    return _reranker_instance
 
 @observe()
-def rerank_chunks(state: GraphState) -> GraphState:
+def rerank_chunks(state: GraphState) -> dict:
     """
     Reranks retrieved chunks using LLM for improved precision.
     
@@ -38,35 +31,36 @@ def rerank_chunks(state: GraphState) -> GraphState:
     Returns:
         Updated state with reranked chunks
     """
-    # Extract config
-    model = state["runtime_config"].get("model")
-    rerank_top_n = state["system_config"].get("rerank_top_n", 5)
+    # Get necessary variables from state
+    model = state["runtime_config"]["model"]
+    # Fallback to user_query if contextualized_query is not available (e.g., multi_hop)
+    query = state["contextualized_query"] or state["user_query"]
+    rerank_top_n = state["system_config"]["rerank_top_n"]
+    
+    # Guard: If no query available, cannot rerank
+    if not query:
+        return {"reranked": state.get("retrieved", [])}
     
     # Guard: If no documents retrieved or too few for reranking, skip reranking
     if not state["retrieved"] or len(state["retrieved"]) == 0:
-        langfuse_context.update_current_observation(output={"reranked_count": 0, "nodes": []})
-        return {**state, "reranked": []}
+        return {"reranked": []}
     
     # If only 1 node, no need to rerank
     if len(state["retrieved"]) == 1:
-        langfuse_context.update_current_observation(
-            output={"reranked_count": 1, "nodes": serialize_nodes_for_langfuse(state["retrieved"])}
-        )
-        return {**state, "reranked": state["retrieved"]}
+        return {"reranked": state["retrieved"]}
     
-    # Initialize reranker
-    reranker = Reranker(top_n=rerank_top_n)
+    # Get shared reranker singleton
+    reranker = get_reranker(rerank_top_n)
     
-    # Rerank (works directly with TextNode)
+    # Convert to TextNode for reranker component
+    retrieved_nodes = get_doc_as_textnodes(state, "retrieved")
+    
+    # Rerank (return SerializableTextNode)
     reranked_nodes = reranker.rerank(
-        query=state["contextualized_query"],
-        nodes=state["retrieved"],
+        query=query,
+        nodes=retrieved_nodes,
         model=model
     )
     
-    # Add serialized nodes to Langfuse observation for better tracing
-    langfuse_context.update_current_observation(
-        output={"reranked_count": len(reranked_nodes), "nodes": serialize_nodes_for_langfuse(reranked_nodes)}
-    )
-    
-    return {**state, "reranked": reranked_nodes}
+    # Return top-N
+    return {"reranked": reranked_nodes}
