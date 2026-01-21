@@ -9,7 +9,7 @@ CITATION_TEXT = '[<a href="{url}">{title}</a>]'
 
 def _get_display_title(doc: TextNode) -> str:
     """Get display title from document metadata, with fallback to shortened URL."""
-    title = doc.metadata.get("fullname")
+    title = doc.metadata.get("title") or doc.metadata.get("fullname")
     if title:
         # Entferne führende Kapitelnummern (z.B. "3.1. Titel" → "Titel")
         title = re.sub(r'^\d+(\.\d+)*\.?\s*', '', title)
