@@ -2,6 +2,7 @@ from langgraph.graph import StateGraph, START, END
 
 from src.llm.state.models import GraphState
 from src.llm.objects.LLMs import LLM
+from src.llm.streaming import StreamPhaseContext
 from src.llm.tools.language import detect_language
 from src.llm.prompts.prompt_loader import load_prompt
 
@@ -24,12 +25,13 @@ def direct_answer_node(state: GraphState) -> dict:
     language_enriched_prompt = NO_VECTORDB_PROMPT.replace("{language}", language)
     
     # Simple conversational response (no sources)
-    response = llm.chat(
-        query=query,
-        chat_history=chat_history,
-        system_prompt= language_enriched_prompt,
-        model=model
-    )
+    with StreamPhaseContext("final"):
+        response = llm.chat(
+            query=query,
+            chat_history=chat_history,
+            system_prompt=language_enriched_prompt,
+            model=model,
+        )
     
     return {
         "answer": response.content,

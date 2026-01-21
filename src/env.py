@@ -20,6 +20,9 @@ class EnvHelper(BaseModel):
     DEBUG_MODE: bool = False
     REST_API_KEYS: list[str] = []
 
+    # Base URL for the FastAPI service (used by Streamlit when calling via HTTP)
+    REST_API_URL: str = "http://localhost:8000"
+
     AZURE_OPENAI_URL: str = "UNSET"
     AZURE_OPENAI_API_KEY: str = "UNSET"
 

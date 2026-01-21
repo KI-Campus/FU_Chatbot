@@ -8,6 +8,7 @@ from llama_index.core.schema import TextNode
 from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
+from src.llm.streaming import StreamPhaseContext
 
 ANSWER_NOT_FOUND_FIRST_TIME = """Entschuldige, ich habe deine Frage nicht ganz verstanden. Könntest du dein Problem bitte noch einmal etwas genauer erklären oder anders formulieren?
 """
@@ -71,12 +72,13 @@ class QuestionAnswerer:
 
         prompted_user_query = f"<QUERY>:\n {query}\n\n{formatted_sources}"
 
-        response = self.llm.chat(
-            query=prompted_user_query,
-            chat_history=chat_history,
-            model=model,
-            system_prompt=system_prompt,
-        )
+        with StreamPhaseContext("final"):
+            response = self.llm.chat(
+                query=prompted_user_query,
+                chat_history=chat_history,
+                model=model,
+                system_prompt=system_prompt,
+            )
 
         # Check if this is the second "NO ANSWER FOUND" in a row
         # Look for ASSISTANT messages (bot responses) in history to check if we already said we can't help
