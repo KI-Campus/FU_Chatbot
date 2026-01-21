@@ -180,8 +180,8 @@ class Fetch_Data:
         MAX_BATCH_SIZE_BYTES = 30 * 1024 * 1024  # 30 MB
 
         # Chunking defaults (token-aware). Tune via env vars.
-        chunk_size_tokens = int(os.getenv("CHUNK_SIZE_TOKENS", "900"))
-        chunk_overlap_tokens = int(os.getenv("CHUNK_OVERLAP_TOKENS", "150"))
+        chunk_size_tokens = int(os.getenv("CHUNK_SIZE_TOKENS", "500"))
+        chunk_overlap_tokens = int(os.getenv("CHUNK_OVERLAP_TOKENS", "83"))
         if chunk_overlap_tokens >= chunk_size_tokens:
             self.logger.warning(
                 "Invalid overlap >= size; adjusting overlap. %s",
@@ -660,7 +660,7 @@ class Fetch_Data:
                             fp = doc.metadata.get("module_fingerprint")
                             fp_v = doc.metadata.get("module_fingerprint_version")
                             if isinstance(fp, str) and (fp_v is None or int(fp_v) == MODULE_FINGERPRINT_VERSION):
-                                fp_point_id = f"moodle_module_fingerprint:{course_id}:{int(module_id)}"
+                                fp_point_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"moodle_module_fingerprint:{course_id}:{int(module_id)}"))
                                 fp_point = {
                                     "id": fp_point_id,
                                     "vector": {
