@@ -21,20 +21,23 @@ from ragas.llms import LangchainLLMWrapper
 # Backend imports
 from src.llm.objects.LLMs import Models
 from src.llm.assistant import KICampusAssistant
+from src.llm.objects.contextualizer import Contextualizer
+from src.llm.tools.retrieve import get_retriever
 
 
 # ---------------- CONTEXT RETRIEVAL (CACHED) ----------------
 def _retrieve_context(question: str):
-    assistant = KICampusAssistant()
+    contextualizer = Contextualizer()
+    retriever = get_retriever(use_hybrid=True, n_chunks=10)
     chat_history = []
 
-    rag_query = assistant.contextualizer.contextualize(
+    rag_query = contextualizer.contextualize(
         query=question,
         chat_history=chat_history,
         model=Models.GPT4,
     )
 
-    retrieved_nodes = assistant.retriever.retrieve(rag_query)
+    retrieved_nodes = retriever.retrieve(rag_query)
 
     contexts = []
     for node in retrieved_nodes:
@@ -58,11 +61,9 @@ def get_context(question: str):
 # ---------------- ANSWER GENERATION (NOT CACHED) ----------------
 def generate_answer(question: str):
     assistant = KICampusAssistant()
-    chat_history = []
 
-    response = assistant.chat(
+    response, _ = assistant.chat(
         query=question,
-        chat_history=chat_history,
         model=Models.GPT4,
     )
 
@@ -91,72 +92,84 @@ async def main():
     questions = [
 
         # 1. WISSEN ALLGEMEIN & KURSBEZOGEN (30)
-        "Welche Lernstile werden dem Maschinellen Lernen zugrunde gelegt?",
-        "Welche Potentiale oder Risiken entstehen durch KI für das Wohl von Patient:innen?",
-        "Wie wird KI eingesetzt, um Krankheiten wie Krebs besser zu diagnostizieren?",
-        "Welche Artikel des EU AI Act sind relevant für die Risikoklasse inakzeptables Risiko?",
-        "Wie funktionieren Neuronale Netze?",
-        "Welches der folgenden Ziele werden im EU AI Act verfolgt?",
-        "Gibt es KI-Lügendetektoren?",
-        "Wie wird das Berufsbild des Mediziners durch Data Science verändert?",
-        "What is AI thinking vs acting?",
-        "Was sind BIAS?",
-        "Was ist Parametrisierung?",
-        "Ich verstehe noch nicht ganz, wie die KI-Winter entstehen?",
-        "Welche Faktoren beeinflussen die Qualität von Antworten eines Large Language Models?",
-        "Wie erstelle ich eine Mermaid Mindmap mit KI?",
-        "Was bedeutet: Ein System basierend auf GPU und Deep Learning?",
-        "Was sind Gütekriterien bei der Datenerhebung?",
-        "Was versteht man unter Datenvorverarbeitung im Kontext von Machine Learning?",
-        "Welche Rolle spielen Trainingsdaten bei der Leistungsfähigkeit von KI-Modellen?",
-        "Gebe bitte einfache Beispiele für diskriminative KI.",
-        "Wozu ist der KI-Lernassistent gedacht?",
-        "Was bedeutet die Abkürzung HPI?",
-        "Could you explain embeddings?",
-        "Can you explain the difference between LSTM and GRU?",
-        "Can you explain how to create an LSTM with Python?",
-        "Was ist tmin in Python?",
-        "Wenn man KI-Campus auf HessenHub OER-Spaeti mit Hilfe einer JSON-Datei ablegen möchte, welches Format sollte man wählen?",
-        "What are PROs and CONs of XAI Methods?",
-        "Welche Grundkonzepte des Maschinellen Lernens werden in den KI-Campus-Kursen vermittelt?",
-        "Was ist der Unterschied zwischen überwachten, unüberwachten und bestärkenden Lernverfahren?",
-        "Welche Programmiersprachen werden im Bereich Data Science häufig eingesetzt?",
+        #single_hop_rag
+        "Give me 5 examples of Reinforcement Learning applications.",
+        "Was versteht man unter Bias in KI-Systemen?",
+        "Wie können Daten dargestellt werden?",
+        "Welche Vorteile bietet der Einsatz von KI in der öffentlichen Verwaltung?",
+        "Why is data awareness important?",
+        "Could you explain what embeddings are and how they are used?",
+        "Was ist der Unterschied zwischen Supervised und Unsupervised Learning?",
+        "Was ist KI und Ethik?",
+        "Welche Arten des Lernens werden im Maschinellen Lernen unterschieden?",
+        "Wie funktionieren neuronale Netze?",
+        "Was bedeutet KI eigentlich und wie wird sie fair?",
+        "Welche Ziele verfolgt der EU AI Act?",
+        "Wie wird Kundensegmentierung mithilfe von Clustering durchgeführt?",
+        "Was versteht man unter Datenvorverarbeitung im Machine Learning?",
+        "Welche Rolle spielen Trainingsdaten für die Leistungsfähigkeit von KI-Modellen?",
+        "What are the main phases of the data lifecycle?",
+        "Was versteht man unter Learning Analytics?",
+
+        #multi_hop_rag
+        "What is the relationship between AI and Robot Learning?", 
+        "Was ist GANs und wie funktionieren Neuronale Netze?", 
+        "Wie verändert Data Science das Berufsbild von Medizinerinnen und Medizinern in Bezug auf Aufgaben und Entscheidungsprozesse?",
+        "Wie hängen Data Awareness, Datenethik und die Qualität von Machine-Learning-Modellen miteinander zusammen?",
+        "Welche Rolle spielt KI-Didaktik in der Hochschullehre und wie unterscheidet sie sich von traditionellen didaktischen Ansätzen?",
+        "Welche Grundkonzepte des Maschinellen Lernens werden in KI-Campus-Kursen vermittelt?",
+        "Wie hängen LLMs und Chatbots zusammen?",
+        "Was sind die unterschiede zwischen vectorization und text pre-processing?", 
+        "Is there a difference between Automated Machine Learning and Machine Learning?", 
+        "Wie unterscheiden sich Data Literacy und AI Literacy im Bildungskontext?",
+        "Which factors influence the answer quality of large language models, and how do data, architecture, and prompting interact?",
+        "Wie kann KI zur Erreichung der Ziele für nachhaltige Entwicklung beitragen?",
+        "Welche ethischen und datenschutzrechtlichen Herausforderungen entstehen beim Einsatz von KI in der klinischen Praxis?",
 
         # 2. TECHNISCHER SUPPORT (10)
-        "Ich erhalte die Fehlermeldung 'The Vimeo video could not be loaded'. Was soll ich tun?",
-        "Wo finde ich den Prompt-Katalog?",
-        "Wie kann ich mich registrieren?",
-        "Kannst du auch Videos erstellen?",
-        "Auf dieser Seite wird kein Video angezeigt: https://moodle.ki-campus.org/mod/videotime/view.php?id=22070&forceview=1. Woran kann das liegen?",
-        "Gibt es die Möglichkeit, bei KI-Campus einen Lernpfad aus unterschiedlichen Formaten zusammenzustellen?",
-        "Wie lade ich ein Foto hoch?",
-        "Ich habe mein Passwort vergessen, aber es kommt keine Mail an. Woran kann das liegen?",
-        "Wie informiert der KI-Campus Nutzer:innen über technische Störungen oder Wartungsarbeiten?",
-        "Ich kann 'Meine Kurse' nicht aufrufen. Ist die Plattform derzeit nicht erreichbar?",
+        #single_hop_rag
+        "Wo befindet sich der Prompt-Katalog auf der KI-Campus-Plattform?",
+        "Wie funktioniert die Registrierung auf dem KI-Campus?",
+        "Wie kann ein Foto auf der Plattform hochgeladen werden?",
+        "Was kann man tun, wenn die Fehlermeldung 'The Vimeo video could not be loaded' erscheint?",
+        "Wie kann man das Benutzerprofil auf der KI-Campus-Plattform bearbeiten?",
+
+        #multi_hop_rag
+        "Welche Einstellungen oder Bedingungen sind wichtig, um Plattforminhalte vollständig nutzen zu können?",
+        "Welche Ursachen kann es haben, wenn nach dem Zurücksetzen des Passworts keine E-Mail ankommt?",
+        "Welche möglichen Ursachen gibt es, wenn 'Meine Kurse' nicht aufgerufen werden kann?",
+        "Welche Schritte sollte man durchführen, wenn der Login auf der KI-Campus-Plattform trotz korrekter Zugangsdaten nicht funktioniert?",
+        "Was kann man tun, wenn man einen Referenzlink anklickt, aber keinen Zugriff auf den verlinkten Inhalt hat, und welche möglichen Ursachen gibt es dafür?",
 
         # 3. KURSMODALITÄTEN (10)
-        "Lernziel-Check war negativ. Habe ich noch 2 Versuche?",
+        #single_hop_rag
         "Wann erhält man einen Leistungsnachweis?",
-        "Kann ich nur die Quiz machen, um das Zertifikat zu erhalten?",
-        "Was kann ich mit den Badges der Plattform machen?",
-        "Erscheint die Punktzahl auf dem Zertifikat?",
-        "Reicht es, wenn ich nur alle Übungsaufgaben der Wochen beantworte?",
-        "Was steht in der Teilnahmebestätigung und im Leistungsnachweis?",
-        "Für welche Kurse ist ein Micro-Degree erhältlich?",
-        "Are you accessible for free?",
-        "Wie viele Module umfasst der Kurs?",
+        "Welche Funktionen haben Badges auf dem KI-Campus?",
+        "Wird die Punktzahl auf dem Zertifikat angezeigt?",
+        "Welche Informationen enthält eine Teilnahmebestätigung?",
+        "Für welche Kurse wird ein Micro-Degree angeboten?",
 
+        #multi_hop_rag
+        "Welche Voraussetzungen müssen für den erfolgreichen Abschluss eines KI-Campus-Kurses erfüllt sein und wie hängen diese zusammen?",
+        "Welche Rolle spielen Übungsaufgaben und Quizformate für den erfolgreichen Abschluss eines KI-Campus-Kurses?",
+        "Worin unterscheiden sich Teilnahmebestätigung, Leistungsnachweis und Zertifikat auf dem KI-Campus, und wann bekommt man welches Dokument?",
+        "Wie hängen Fristen, Pflichtaufgaben und Bewertung zusammen, wenn man einen KI-Campus-Kurs erfolgreich abschließen möchte?",
+        "Wie wirken sich Quizversuche und der eigene Lernfortschritt auf den Erhalt von Badges oder Leistungsnachweisen aus?",
+        
         # 4. ANFRAGEN ZUR CHATBOTFUNKTION (10)
-        "Zu welchen Themen kann ich dir Fragen stellen?",
-        "Ich möchte selbst einen Chatbot erstellen. Kannst du mir dabei helfen?",
-        "What extra value do you bring for me as a student?",
-        "Do you have information only about AI topics?",
-        "Gibt es auf dieser Seite Quiz, um den Wissensstand zu testen? Wo genau finde ich diese?",
-        "Kannst du mir bei der Orientierung auf der Plattform helfen?",
-        "Wie gehst du vor, wenn du eine Frage nicht sicher beantworten kannst?",
-        "Can you explain how you use provided documents to answer questions?",
-        "Welche Einschränkungen hast du als Chatbot?",
-        "Willst du mir verraten, wie du als Chatbot konstruiert bist?"
+        #single_hop_rag
+        "Welche Arten von Fragen kann der KI-Campus-Chatbot beantworten?",
+        "Gibt es Quizformate auf der Plattform zur Selbstüberprüfung des Wissensstands?",
+        "Wie unterstützt der Chatbot bei der Orientierung auf der Plattform?",
+        "Kann der Chatbot bei der Erstellung eines eigenen Chatbots helfen?",
+        "Welche funktionalen Einschränkungen hat der Chatbot?",
+
+        #multi_hop_rag
+        "Wie nutzt der Chatbot bereitgestellte Dokumente zur Beantwortung von Fragen?",
+        "Welche Strategien nutzt der Chatbot, wenn eine Frage nicht eindeutig beantwortbar ist?",
+        "Wie ist der KI-Campus-Chatbot technisch aufgebaut?",
+        "Was macht der Chatbot, wenn eine Frage unklar gestellt ist oder mehrere mögliche Antworten zulässt?",
+        "Was passiert, wenn der KI-Campus-Chatbot eine Frage nicht beantworten kann, und welche Gründe können dafür zusammenkommen?",
     ]
 
     # --------------------------------------------------
