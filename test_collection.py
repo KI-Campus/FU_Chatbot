@@ -2,7 +2,7 @@ from src.vectordb.qdrant import VectorDBQdrant
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue
 
 COLLECTION_NAME = "web_assistant_hybrid"
-TARGET_COURSE_ID = 56
+TARGET_COURSE_ID = None
 
 # Verbindung zu Qdrant
 db = VectorDBQdrant()
@@ -14,7 +14,7 @@ course_filter = Filter(
             #key="course_id",
             #match=MatchValue(value=TARGET_COURSE_ID)
             key="source",
-            match=MatchValue(value="Moochup")
+            match=MatchValue(value="Drupal")
         )
     ]
 )
@@ -28,7 +28,7 @@ while True:
         collection_name=COLLECTION_NAME,
         scroll_filter=course_filter,
         limit=200,
-        with_payload=['text'],#with_payload=["module_id", "fullname", "url"],
+        with_payload=True,#with_payload=["module_id", "fullname", "url"],
         with_vectors=False,
         offset=next_page_offset
     )
