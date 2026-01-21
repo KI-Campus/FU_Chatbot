@@ -22,10 +22,10 @@ llama-index-llms-azure-inference = "0.1.1"
 llama-index-callbacks-langfuse = "0.1.6"
 llama-index-vector-stores-qdrant = "0.2.14"
 llamaapi = "~0.1.36"
-langgraph = "^0.2.0"
-langgraph-checkpoint = "^1.0.0"
+langgraph = "^1.0.0"
+langgraph-checkpoint = "^2.0.0"
 langgraph-cli = {extras = ["inmem"], version = "^0.1.0"}
-openai = "~1.16.2"
+openai = "~2.15.0"
 python-dotenv = "~1.0.1"
 # Self hosting llms
 webvtt-py = "~0.4.6"
@@ -53,7 +53,7 @@ optional = true
 [tool.poetry.group.azfunction.dependencies]
 azure-functions = "^1.21.3"
 azure-functions-durable = "^1.2.9"
-requests = "~2.31.0"
+requests = "~2.32.5"
 beautifulsoup4 = "~4.12.2"
 
 [tool.poetry.group.frontend]
@@ -69,9 +69,16 @@ optional = true
 ipykernel = "~6.26.0"
 ipywidgets = "~8.1.1"
 pytest = "~7.4.3"
-pre-commit = "~3.6.2"
+pre-commit = "~4.3.0"
 mypy = "~1.9.0"
 types-requests = "~2.31.0.20240311"
+
+[tool.poetry.group.ragas]
+optional = true
+[tool.poetry.group.ragas.dependencies]
+ragas = "~0.4.3"
+langchain-openai = "~1.1.7"
+tiktoken = "~0.12.0"
 
 [tool.mypy]
 plugins = [

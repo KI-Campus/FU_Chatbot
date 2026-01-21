@@ -21,20 +21,23 @@ from ragas.llms import LangchainLLMWrapper
 # Backend imports
 from src.llm.objects.LLMs import Models
 from src.llm.assistant import KICampusAssistant
+from src.llm.objects.contextualizer import Contextualizer
+from src.llm.tools.retrieve import get_retriever
 
 
 # ---------------- CONTEXT RETRIEVAL (CACHED) ----------------
 def _retrieve_context(question: str):
-    assistant = KICampusAssistant()
+    contextualizer = Contextualizer()
+    retriever = get_retriever(use_hybrid=True, n_chunks=10)
     chat_history = []
 
-    rag_query = assistant.contextualizer.contextualize(
+    rag_query = contextualizer.contextualize(
         query=question,
         chat_history=chat_history,
         model=Models.GPT4,
     )
 
-    retrieved_nodes = assistant.retriever.retrieve(rag_query)
+    retrieved_nodes = retriever.retrieve(rag_query)
 
     contexts = []
     for node in retrieved_nodes:
@@ -58,11 +61,9 @@ def get_context(question: str):
 # ---------------- ANSWER GENERATION (NOT CACHED) ----------------
 def generate_answer(question: str):
     assistant = KICampusAssistant()
-    chat_history = []
 
-    response = assistant.chat(
+    response, _ = assistant.chat(
         query=question,
-        chat_history=chat_history,
         model=Models.GPT4,
     )
 
