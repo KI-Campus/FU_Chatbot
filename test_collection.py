@@ -11,10 +11,10 @@ db = VectorDBQdrant()
 course_filter = Filter(
     must=[
         FieldCondition(
-            #key="course_id",
-            #match=MatchValue(value=TARGET_COURSE_ID)
-            key="source",
-            match=MatchValue(value="Drupal")
+            key="course_id",
+            match=MatchValue(value=TARGET_COURSE_ID)
+            #key="source",
+            #match=MatchValue(value="Drupal")
         )
     ]
 )

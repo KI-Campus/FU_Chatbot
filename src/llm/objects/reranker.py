@@ -47,7 +47,7 @@ class Reranker:
         
         Args:
             query: The user's query
-            nodes: List of retrieved nodes to rerank
+            nodes: List of retrieved nodes to rerank (SerializableTextNode or TextNode)
             model: Which LLM model to use for reranking (from LLM selection logic)
             
         Returns:
@@ -71,12 +71,21 @@ class Reranker:
         )
         
         # LLMRerank expects NodeWithScore with TextNode
+        # Convert SerializableTextNode to TextNode if needed
         # Truncate long texts to avoid token limits and reduce latency
         nodes_with_score = []
         for node in nodes:
-            # Truncate text directly on TextNode copy
-            node.text = self._truncate(getattr(node, "text", "") or "")
-            nodes_with_score.append(NodeWithScore(node=node, score=getattr(node, 'score', 0.0)))
+            # Convert SerializableTextNode to TextNode if necessary
+            if isinstance(node, SerializableTextNode):
+                text_node = node.to_text_node()
+                score = node.score or 0.0
+            else:
+                text_node = node
+                score = getattr(node, 'score', 0.0)
+            
+            # Truncate text on TextNode
+            text_node.text = self._truncate(text_node.text or "")
+            nodes_with_score.append(NodeWithScore(node=text_node, score=score))
         
         # Perform reranking with error handling
         try:

@@ -24,75 +24,67 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 # Backend
 # =========================
 from src.llm.objects.LLMs import Models
-from src.llm.assistant import KICampusAssistant
-from src.llm.objects.contextualizer import Contextualizer
+from src.llm.objects.question_answerer import QuestionAnswerer
+from src.llm.tools.contextualize import get_contextualizer
 from src.llm.tools.retrieve import get_retriever
+from src.llm.objects.reranker import Reranker
+from eval_decompose import decompose_query_eval
+from rag_eval.eval_retrieve_multi import retrieve_multi_parallel_eval
+from src.llm.objects.citation_parser import CitationParser
+from rag_eval.eval_synthesizer import synthesize_answer_eval
 
+course_ids = [1, 6, 10, 19, 27, 28, 29, 36, 37, 38, 41, 43, 44, 46, 48, 49, 50, 51, 53, 55, 56, 57, 58, 59, 60, 63, 64, 66, 67, 74, 75, 76, 78, 79, 80, 88, 92, 93, 95, 98, 99, 100, 103, 106, 107, 109, 111, 121, 124, 127, 128, 134, 136, 140, 141, 142, 143, 144, 145, 151, 152, 153, 158, 160, 161, 163, 164, 165, 168, 171, 176, 177, 180, 185, 186, 187, 190, 191, 192, 197, 198, 199, 202, 203, 213, 214, 215, 221, 223, 224, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 241, 242, 243, 245, 248, 249, 250, 251, 252, 253, 255, 256, 257, 258, 259, 266, 267, 268, 270, 271, 272, 274, 275, 276, 279, 282, 283, 284, 285, 286, 287, 289, 290, 291, 293, 294, 295, 296, 297, 301, 304, 305, 311, 313, 316, 317, 318, 319, 320, 321, 322, 323, 325, 329, 330, 331, 332, 334, 335, 337, 338, 340, 341, 342, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 362, 363, 364, 365, 367, 369, 370, 372, 373, 374, 385, 386, 387, 390, 397]
 
 # =====================================================
 # CONTEXT RETRIEVAL (NEW LOGIC)
 # =====================================================
 
-def _retrieve_context(question: str):
-    contextualizer = Contextualizer()
-    retriever = get_retriever(use_hybrid=True, n_chunks=5)
+def answer_question(question: str, course_id: int) -> tuple[str, ...]:
+    retrieve_top_n = 10
+    contextualizer = get_contextualizer()
+    retriever = get_retriever(use_hybrid=True, n_chunks=retrieve_top_n)
+    reranker = Reranker(top_n=5)
+    question_answerer = QuestionAnswerer()
+    citation_parser = CitationParser()
 
-    rag_query = contextualizer.contextualize(
-        query=question,
-        chat_history=[],
-        model=Models.GPT4,
-    )
+    if course_id is None:
+        is_moodle = False
+    else:
+        is_moodle = True
 
-    retrieved_nodes = retriever.retrieve(rag_query)
+    mode = contextualizer.classify_scenario(query=question, model=Models.GPT4)
+
+    if mode == "multi_hop":
+        decomposed = decompose_query_eval(model=Models.GPT4, query=question)
+        retrieved_nodes = retrieve_multi_parallel_eval(
+            subqueries=decomposed, course_id=course_id, module_id=None, retrieve_top_n=retrieve_top_n
+        )
+        combined_nodes = synthesize_answer_eval(retrieved_nodes=retrieved_nodes)
+        reranked_nodes = reranker.rerank(query=question, nodes=combined_nodes, model=Models.GPT4)
+    else:
+        retrieved_nodes = retriever.retrieve(query=question,course_id=course_id, module_id=None)
+        reranked_nodes = reranker.rerank(query=question, nodes=retrieved_nodes, model=Models.GPT4)
 
     contexts = []
-    for node in retrieved_nodes:
+    for node in reranked_nodes:
         try:
-            if hasattr(node, "get_content"):
-                contexts.append(node.get_content())
-            else:
-                contexts.append(node.text)
+            contexts.append(node.text)
         except Exception as e:
             logger.error(f"Failed to extract content from node: {e}")
 
-    # Precision guard 
-    if len(contexts) < 2:
-        return ()
-
-    return tuple(contexts[:3])
-
-
-@lru_cache(maxsize=None)
-def get_context(question: str):
-    """Caches retrieval + contextualization only."""
-    return _retrieve_context(question)
-
-
-# =====================================================
-# ANSWER GENERATION (CONTEXT-GROUNDED)
-# =====================================================
-
-def generate_answer(question: str, contexts: tuple[str, ...]):
-    assistant = KICampusAssistant()
-
-    context_block = "\n\n".join(
-        f"[Context {i+1}]\n{c}" for i, c in enumerate(contexts)
-    )
-
-    grounded_prompt = (
-    "Beantworte die folgende Frage ausschließlich mit den Informationen aus dem untenstehenden Kontext.\n\n"
-    "Kontext:\n"
-    f"{context_block}\n\n"
-    "Frage:\n"
-    f"{question}"
-    )
-
-    response, _ = assistant.chat(
-        query=grounded_prompt,
+    response = question_answerer.answer_question(
+        query=question,
+        chat_history=[],
+        sources=reranked_nodes,
         model=Models.GPT4,
+        language="German",
+        is_moodle=is_moodle,
+        course_id=None,
     )
 
-    return response.content
+    answer = citation_parser.parse(response.content, source_documents=reranked_nodes)
+
+    return tuple(tuple(contexts), answer)
 
 # =====================================================
 # MAIN EVALUATION
@@ -105,10 +97,10 @@ async def main():
         ChatOpenAI(model="gpt-4o", temperature=0)
     )
 
-    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+    embeddings_evaluator_llm = OpenAIEmbeddings(model="text-embedding-3-small")
 
     metrics = [
-        AnswerRelevancy(llm=evaluator_llm, embeddings=embeddings),
+        AnswerRelevancy(llm=evaluator_llm, embeddings=embeddings_evaluator_llm),
         ContextRelevance(llm=evaluator_llm),
         Faithfulness(llm=evaluator_llm),
     ]
@@ -116,6 +108,42 @@ async def main():
     # --------------------------------------------------
     # Evaluation Questions
     # --------------------------------------------------
+    moodle_questions = [
+        # 1. WISSEN ALLGEMEIN & KURSBEZOGEN
+        #simple_hop_rag
+        "Was ist erklärbarer KI (XAI)?",
+        "Was bedeutet der Begriff Prompt in KI-Systemen?",
+        "Welche Vorteile bietet der Einsatz von KI in der öffentlichen Verwaltung?",
+        "Warum ist Data Awareness wichtig?",
+        "Kannst du mir 3 podcasts zu Künstlicher Intelligenz empfehlen?",
+        "Wie arbeitet die Lernmethode Artificial Neural Networks (ANN)?",
+        "Was ist der Unterschied zwischen Supervised und Unsupervised Learning?",
+        "Was ist KI und Ethik?",
+        "Welche Arten des Lernens werden im Maschinellen Lernen unterschieden?",
+        "Wie funktionieren neuronale Netze?",
+        "Warum ist Ethik bei KI wichtig?",
+        "Welche Ziele verfolgt der EU AI Act?",
+        "Was bedeutet Clustering?",
+        "Was ist Reinforcement Learning?",
+        "Was sind Trainingsdaten bei KI-Modellen?",
+        "Was sind die Hauptphasen des Datenlebenszyklus?",
+        "Was versteht man unter Learning Analytics?",
+
+        #multi_hop_rag
+        "Wie hängen Künstliche Intelligenz und Robotik zusammen?",
+        "Was ist GANs und wie funktionieren Neuronale Netze?",
+        "Wie beeinflusst Data Science den medizinischen Bereich?",
+        "Wie beeinflusst Data Awareness die Qualität von Machine-Learning-Modellen?",
+        "Welche Rolle spielt KI-Didaktik in der Hochschullehre?",
+        "Welche Grundkonzepte des Maschinellen Lernens werden in KI-Campus-Kursen vermittelt?",
+        "Wie hängen LLMs und Chatbots zusammen?",
+        "Was sind k-NN und Regression?",
+        "Gibt es einen Unterschied zwischen Automated Machine Learning und Machine Learning?",
+        "Wie unterscheiden sich Data Literacy und AI Literacy im Bildungskontext?",
+        "Welche Faktoren beeinflussen die Antwortqualität großer Sprachmodelle?",
+        "Wie kann KI zur Erreichung der Ziele für nachhaltige Entwicklung beitragen?",
+        "Welche datenschutzrechtlichen Herausforderungen entstehen beim Einsatz von KI in Medizin?"]
+    
     questions = [
 
         # 1. WISSEN ALLGEMEIN & KURSBEZOGEN (30)
@@ -199,6 +227,7 @@ async def main():
 
     # --------------------------------------------------
 
+
     N_REPEATS = 5
 
     all_results = []
@@ -209,18 +238,20 @@ async def main():
         print(f"\n============================\nQuestion: {q}")
         per_question_metric_sums = {m.name: 0.0 for m in metrics}
 
-        contexts = get_context(q)
-
-        print("\nRetrieved Contexts (first 2):")
-        for c in list(contexts)[:2]:
-            print("-", c[:250], "...")
-
         runs = []
 
         for run_idx in range(N_REPEATS):
             print(f"\n--- Run {run_idx + 1}/{N_REPEATS} ---")
+            # Bei den Moodle Fragen muss course_id = course_ids gesetzt werden
+            # Bei den Drupal Fragen muss course_id = None gesetzt werden
+            if q in moodle_questions:
+                contexts, answer = answer_question(q, course_id = course_ids)
+            else:
+                contexts, answer = answer_question(q, course_id = None)
 
-            answer = generate_answer(q, contexts)
+            print("\nRetrieved Contexts (first 2):")
+            for c in list(contexts)[:2]:
+                print("-", c[:250], "...")
 
             print("\nAnswer:\n")
             print(answer)
