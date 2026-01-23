@@ -47,7 +47,7 @@ class KiCampusRetriever:
         else:
             return self._retrieve_dense_only(query, course_id, module_id)
     
-    def _retrieve_dense_only(self, query: str, course_id: int | None, module_id: int | None) -> list[SerializableTextNode]:
+    def _retrieve_dense_only(self, query: str, course_id: int | list[int] | tuple[int, ...] | None, module_id: int | None) -> list[SerializableTextNode]:
         """Legacy dense-only retrieval using LlamaIndex wrapper."""
 
         # Generate query embedding
@@ -65,12 +65,21 @@ class KiCampusRetriever:
             )
 
         if course_id is not None:
-            conditions.append(
-                models.FieldCondition(
-                    key="course_id",
-                    match=models.MatchValue(value=course_id),
+            # allow list/tuple of course_ids; falls back to single value
+            if isinstance(course_id, (list, tuple)):
+                conditions.append(
+                    models.FieldCondition(
+                        key="course_id",
+                        match=models.MatchAny(any=list(course_id)),
+                    )
                 )
-            )
+            else:
+                conditions.append(
+                    models.FieldCondition(
+                        key="course_id",
+                        match=models.MatchValue(value=course_id),
+                    )
+                )
 
         if module_id is not None:
             conditions.append(
@@ -94,7 +103,7 @@ class KiCampusRetriever:
         # Convert to SerializableTextNode
         return [SerializableTextNode.from_text_node(node) for node in query_result.nodes]
     
-    def _retrieve_hybrid(self, query: str, course_id: int | None, module_id: int | None) -> list[SerializableTextNode]:
+    def _retrieve_hybrid(self, query: str, course_id: int | list[int] | tuple[int, ...] | None, module_id: int | None) -> list[SerializableTextNode]:
         """Hybrid retrieval using both dense and sparse vectors.
         
         Qdrant automatically performs fusion (Reciprocal Rank Fusion) when both
@@ -118,12 +127,20 @@ class KiCampusRetriever:
             )
         
         if course_id is not None:
-            conditions.append(
-                models.FieldCondition(
-                    key="course_id",
-                    match=models.MatchValue(value=course_id),
+            if isinstance(course_id, (list, tuple)):
+                conditions.append(
+                    models.FieldCondition(
+                        key="course_id",
+                        match=models.MatchAny(any=list(course_id)),
+                    )
                 )
-            )
+            else:
+                conditions.append(
+                    models.FieldCondition(
+                        key="course_id",
+                        match=models.MatchValue(value=course_id),
+                    )
+                )
         
         if module_id is not None:
             conditions.append(

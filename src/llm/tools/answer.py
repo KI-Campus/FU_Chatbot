@@ -4,7 +4,6 @@ Node wrapper for generating answers using QuestionAnswerer.
 
 from langfuse.decorators import observe
 
-from src.llm.objects.LLMs import Models
 from src.llm.state.models import GraphState, get_doc_as_textnodes
 
 # Module-level singleton
