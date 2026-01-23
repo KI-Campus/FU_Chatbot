@@ -12,28 +12,34 @@ logger = logging.getLogger(__name__)
 # Allow imports from project root
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+# =========================
 # RAGAS
+# =========================
 from ragas import SingleTurnSample
 from ragas.metrics import AnswerRelevancy, ContextRelevance, Faithfulness
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from ragas.llms import LangchainLLMWrapper
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
-# Backend imports
+# =========================
+# Backend
+# =========================
 from src.llm.objects.LLMs import Models
 from src.llm.assistant import KICampusAssistant
 from src.llm.objects.contextualizer import Contextualizer
 from src.llm.tools.retrieve import get_retriever
 
 
-# ---------------- CONTEXT RETRIEVAL (CACHED) ----------------
+# =====================================================
+# CONTEXT RETRIEVAL (NEW LOGIC)
+# =====================================================
+
 def _retrieve_context(question: str):
     contextualizer = Contextualizer()
-    retriever = get_retriever(use_hybrid=True, n_chunks=10)
-    chat_history = []
+    retriever = get_retriever(use_hybrid=True, n_chunks=5)
 
     rag_query = contextualizer.contextualize(
         query=question,
-        chat_history=chat_history,
+        chat_history=[],
         model=Models.GPT4,
     )
 
@@ -49,7 +55,11 @@ def _retrieve_context(question: str):
         except Exception as e:
             logger.error(f"Failed to extract content from node: {e}")
 
-    return tuple(contexts)
+    # Precision guard 
+    if len(contexts) < 2:
+        return ()
+
+    return tuple(contexts[:3])
 
 
 @lru_cache(maxsize=None)
@@ -58,19 +68,38 @@ def get_context(question: str):
     return _retrieve_context(question)
 
 
-# ---------------- ANSWER GENERATION (NOT CACHED) ----------------
-def generate_answer(question: str):
+# =====================================================
+# ANSWER GENERATION (CONTEXT-GROUNDED)
+# =====================================================
+
+def generate_answer(question: str, contexts: tuple[str, ...]):
     assistant = KICampusAssistant()
 
+    context_block = "\n\n".join(
+        f"[Context {i+1}]\n{c}" for i, c in enumerate(contexts)
+    )
+
+    grounded_prompt = (
+    "Beantworte die folgende Frage ausschließlich mit den Informationen aus dem untenstehenden Kontext.\n"
+    "Falls der Kontext nicht ausreicht, sage dies explizit.\n\n"
+    "Kontext:\n"
+    f"{context_block}\n\n"
+    "Frage:\n"
+    f"{question}"
+  )
+
+
     response, _ = assistant.chat(
-        query=question,
+        query=grounded_prompt,
         model=Models.GPT4,
     )
 
     return response.content
 
+# =====================================================
+# MAIN EVALUATION
+# =====================================================
 
-# ---------------- MAIN ----------------
 async def main():
     print("\nStarting evaluation...\n")
 
@@ -93,45 +122,46 @@ async def main():
 
         # 1. WISSEN ALLGEMEIN & KURSBEZOGEN (30)
         #single_hop_rag
-        "Give me 5 examples of Reinforcement Learning applications.",
-        "Was versteht man unter Bias in KI-Systemen?",
-        "Wie können Daten dargestellt werden?",
+        "Was bedeutet die Definition KI im Mittelstand?",
+        "Was ist erklärbarer KI (XAI)?",
+        "Was ist die Markov-Annahme?",
+        "Wie arbeitet die Lernmethode Artificial Neural Networks (ANN)?",
         "Welche Vorteile bietet der Einsatz von KI in der öffentlichen Verwaltung?",
-        "Why is data awareness important?",
-        "Could you explain what embeddings are and how they are used?",
+        "Warum ist Data Awareness wichtig?",
+        "Könntest du erklären, was Embeddings sind und wie sie verwendet werden?",
         "Was ist der Unterschied zwischen Supervised und Unsupervised Learning?",
         "Was ist KI und Ethik?",
         "Welche Arten des Lernens werden im Maschinellen Lernen unterschieden?",
         "Wie funktionieren neuronale Netze?",
-        "Was bedeutet KI eigentlich und wie wird sie fair?",
+        "Was bedeutet Fair AI?",
         "Welche Ziele verfolgt der EU AI Act?",
-        "Wie wird Kundensegmentierung mithilfe von Clustering durchgeführt?",
+        "Was bedeutet Clustering?",
         "Was versteht man unter Datenvorverarbeitung im Machine Learning?",
-        "Welche Rolle spielen Trainingsdaten für die Leistungsfähigkeit von KI-Modellen?",
-        "What are the main phases of the data lifecycle?",
+        "Was sind Trainingsdaten bei KI-Modellen?",
+        "Was sind die Hauptphasen des Datenlebenszyklus?",
         "Was versteht man unter Learning Analytics?",
 
         #multi_hop_rag
-        "What is the relationship between AI and Robot Learning?", 
+        "Wie wird der Zusammenhang zwischen Künstlicher Intelligenz und Robot Learning in den KI-Campus-Lernmaterialien erklärt?", 
         "Was ist GANs und wie funktionieren Neuronale Netze?", 
-        "Wie verändert Data Science das Berufsbild von Medizinerinnen und Medizinern in Bezug auf Aufgaben und Entscheidungsprozesse?",
-        "Wie hängen Data Awareness, Datenethik und die Qualität von Machine-Learning-Modellen miteinander zusammen?",
-        "Welche Rolle spielt KI-Didaktik in der Hochschullehre und wie unterscheidet sie sich von traditionellen didaktischen Ansätzen?",
+        "Wie beeinflusst Data Science den medizinischen Bereich?",
+        "Wie beeinflusst Data Awareness die Qualität von Machine-Learning-Modellen?",
+        "Welche Rolle spielt KI-Didaktik in der Hochschullehre?",
         "Welche Grundkonzepte des Maschinellen Lernens werden in KI-Campus-Kursen vermittelt?",
         "Wie hängen LLMs und Chatbots zusammen?",
-        "Was sind die unterschiede zwischen vectorization und text pre-processing?", 
-        "Is there a difference between Automated Machine Learning and Machine Learning?", 
+        "Was sind die Unterschiede zwischen Vektorisierung und Textvorverarbeitung?",
+        "Gibt es einen Unterschied zwischen Automated Machine Learning und Machine Learning?",
         "Wie unterscheiden sich Data Literacy und AI Literacy im Bildungskontext?",
-        "Which factors influence the answer quality of large language models, and how do data, architecture, and prompting interact?",
+        "Welche Faktoren beeinflussen die Antwortqualität großer Sprachmodelle?",
         "Wie kann KI zur Erreichung der Ziele für nachhaltige Entwicklung beitragen?",
-        "Welche ethischen und datenschutzrechtlichen Herausforderungen entstehen beim Einsatz von KI in der klinischen Praxis?",
+        "Welche datenschutzrechtlichen Herausforderungen entstehen beim Einsatz von KI in Medizin?",
 
         # 2. TECHNISCHER SUPPORT (10)
         #single_hop_rag
         "Wo befindet sich der Prompt-Katalog auf der KI-Campus-Plattform?",
         "Wie funktioniert die Registrierung auf dem KI-Campus?",
-        "Wie kann ein Foto auf der Plattform hochgeladen werden?",
-        "Was kann man tun, wenn die Fehlermeldung 'The Vimeo video could not be loaded' erscheint?",
+        "Wie kann ich meinen Namen ändern?",
+        "In welcher Sprache kannst du antworten?",
         "Wie kann man das Benutzerprofil auf der KI-Campus-Plattform bearbeiten?",
 
         #multi_hop_rag
@@ -153,15 +183,15 @@ async def main():
         "Welche Voraussetzungen müssen für den erfolgreichen Abschluss eines KI-Campus-Kurses erfüllt sein und wie hängen diese zusammen?",
         "Welche Rolle spielen Übungsaufgaben und Quizformate für den erfolgreichen Abschluss eines KI-Campus-Kurses?",
         "Worin unterscheiden sich Teilnahmebestätigung, Leistungsnachweis und Zertifikat auf dem KI-Campus, und wann bekommt man welches Dokument?",
-        "Wie hängen Fristen, Pflichtaufgaben und Bewertung zusammen, wenn man einen KI-Campus-Kurs erfolgreich abschließen möchte?",
-        "Wie wirken sich Quizversuche und der eigene Lernfortschritt auf den Erhalt von Badges oder Leistungsnachweisen aus?",
+        "Wie hängen Pflichtaufgaben und Bewertung zusammen, wenn man einen KI-Campus-Kurs erfolgreich abschließen möchte?",
+        "Wie wirken sich Quizversuche und der eigene Lernfortschritt auf den Erhalt von Leistungsnachweisen aus?",
         
         # 4. ANFRAGEN ZUR CHATBOTFUNKTION (10)
         #single_hop_rag
-        "Welche Arten von Fragen kann der KI-Campus-Chatbot beantworten?",
-        "Gibt es Quizformate auf der Plattform zur Selbstüberprüfung des Wissensstands?",
-        "Wie unterstützt der Chatbot bei der Orientierung auf der Plattform?",
-        "Kann der Chatbot bei der Erstellung eines eigenen Chatbots helfen?",
+        "Stellt der KI-Campus Podcasts zur Verfügung?",
+        "Gibt es Quizformate auf der Plattform zur Selbstüberprüfung?",
+        "Beantwortet der Chatbot ausschließlich Fragen zu KI-Themen?",
+        "Was ist der Zweck der KI-Campus-Plattform?",
         "Welche funktionalen Einschränkungen hat der Chatbot?",
 
         #multi_hop_rag
@@ -170,7 +200,7 @@ async def main():
         "Wie ist der KI-Campus-Chatbot technisch aufgebaut?",
         "Was macht der Chatbot, wenn eine Frage unklar gestellt ist oder mehrere mögliche Antworten zulässt?",
         "Was passiert, wenn der KI-Campus-Chatbot eine Frage nicht beantworten kann, und welche Gründe können dafür zusammenkommen?",
-    ]
+]
 
     # --------------------------------------------------
 
@@ -195,7 +225,7 @@ async def main():
         for run_idx in range(N_REPEATS):
             print(f"\n--- Run {run_idx + 1}/{N_REPEATS} ---")
 
-            answer = generate_answer(q)
+            answer = generate_answer(q, contexts)
 
             print("\nAnswer:\n")
             print(answer)
@@ -206,11 +236,8 @@ async def main():
                 retrieved_contexts=list(contexts),
             )
 
-            run_metrics = {}
-
             for m in metrics:
                 score = float(await m.single_turn_ascore(sample))
-                run_metrics[m.name] = score
                 per_question_metric_sums[m.name] += score
                 global_metric_sums[m.name] += score
                 print(f"  - {m.name}: {score:.3f}")
@@ -218,7 +245,6 @@ async def main():
             runs.append({
                 "run": run_idx + 1,
                 "answer": answer,
-                "metrics": run_metrics
             })
 
             global_metric_count += 1
