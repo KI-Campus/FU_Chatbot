@@ -120,27 +120,27 @@ async def main():
 
         # 1. WISSEN ALLGEMEIN & KURSBEZOGEN (30)
         #single_hop_rag
-        "Was bedeutet die Definition KI im Mittelstand?",
+        "Was ist Overfitting?",
         "Was ist erklärbarer KI (XAI)?",
-        "Was ist die Markov-Annahme?",
+        "Was bedeutet der Begriff Prompt in KI-Systemen?",
         "Wie arbeitet die Lernmethode Artificial Neural Networks (ANN)?",
         "Welche Vorteile bietet der Einsatz von KI in der öffentlichen Verwaltung?",
         "Warum ist Data Awareness wichtig?",
-        "Könntest du erklären, was Embeddings sind und wie sie verwendet werden?",
+        "Was sind Embeddings?",
         "Was ist der Unterschied zwischen Supervised und Unsupervised Learning?",
         "Was ist KI und Ethik?",
         "Welche Arten des Lernens werden im Maschinellen Lernen unterschieden?",
         "Wie funktionieren neuronale Netze?",
-        "Was bedeutet Fair AI?",
+        "Was ist Fine-Tuning?",
         "Welche Ziele verfolgt der EU AI Act?",
         "Was bedeutet Clustering?",
-        "Was versteht man unter Datenvorverarbeitung im Machine Learning?",
+        "Was sind Testdaten?",
         "Was sind Trainingsdaten bei KI-Modellen?",
         "Was sind die Hauptphasen des Datenlebenszyklus?",
         "Was versteht man unter Learning Analytics?",
 
         #multi_hop_rag
-        "Wie wird der Zusammenhang zwischen Künstlicher Intelligenz und Robot Learning in den KI-Campus-Lernmaterialien erklärt?", 
+        "Wie hängen Künstliche Intelligenz und Robotik zusammen?", 
         "Was ist GANs und wie funktionieren Neuronale Netze?", 
         "Wie beeinflusst Data Science den medizinischen Bereich?",
         "Wie beeinflusst Data Awareness die Qualität von Machine-Learning-Modellen?",
@@ -161,19 +161,17 @@ async def main():
         "Wie kann ich meinen Namen ändern?",
         "In welcher Sprache kannst du antworten?",
         "Wie kann man das Benutzerprofil auf der KI-Campus-Plattform bearbeiten?",
-
-        #multi_hop_rag
-        "Welche Einstellungen oder Bedingungen sind wichtig, um Plattforminhalte vollständig nutzen zu können?",
-        "Welche Ursachen kann es haben, wenn nach dem Zurücksetzen des Passworts keine E-Mail ankommt?",
-        "Welche möglichen Ursachen gibt es, wenn 'Meine Kurse' nicht aufgerufen werden kann?",
-        "Welche Schritte sollte man durchführen, wenn der Login auf der KI-Campus-Plattform trotz korrekter Zugangsdaten nicht funktioniert?",
-        "Was kann man tun, wenn man einen Referenzlink anklickt, aber keinen Zugriff auf den verlinkten Inhalt hat, und welche möglichen Ursachen gibt es dafür?",
+        "Welche Voraussetzungen muss ich erfüllen, um alle Plattforminhalte nutzen zu können?",
+        "Was kann ich tun, wenn ich nach dem Zurücksetzen des Passworts keine E-Mail erhalte?",
+        "Wo finde ich den Bereich 'Meine Kurse'?",
+        "Wie kann ich ein Konto auf der KI-Campus-Website erstellen?",
+        "Was kann ich tun, wenn ich trotz eines Referenzlinks keinen Zugriff auf Inhalte habe?",
 
         # 3. KURSMODALITÄTEN (10)
         #single_hop_rag
         "Wann erhält man einen Leistungsnachweis?",
         "Welche Funktionen haben Badges auf dem KI-Campus?",
-        "Wird die Punktzahl auf dem Zertifikat angezeigt?",
+        "Wie bekomme ich Credits?",
         "Welche Informationen enthält eine Teilnahmebestätigung?",
         "Für welche Kurse wird ein Micro-Degree angeboten?",
 
