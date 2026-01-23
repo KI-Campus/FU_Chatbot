@@ -80,14 +80,12 @@ def generate_answer(question: str, contexts: tuple[str, ...]):
     )
 
     grounded_prompt = (
-    "Beantworte die folgende Frage ausschließlich mit den Informationen aus dem untenstehenden Kontext.\n"
-    "Falls der Kontext nicht ausreicht, sage dies explizit.\n\n"
+    "Beantworte die folgende Frage ausschließlich mit den Informationen aus dem untenstehenden Kontext.\n\n"
     "Kontext:\n"
     f"{context_block}\n\n"
     "Frage:\n"
     f"{question}"
-  )
-
+    )
 
     response, _ = assistant.chat(
         query=grounded_prompt,
