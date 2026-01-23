@@ -119,19 +119,18 @@ async def main():
     questions = [
 
         # 1. WISSEN ALLGEMEIN & KURSBEZOGEN (30)
-        #single_hop_rag
+        #simple_hop_rag
         "Was ist Overfitting?",
         "Was ist erklärbarer KI (XAI)?",
         "Was bedeutet der Begriff Prompt in KI-Systemen?",
-        "Wie arbeitet die Lernmethode Artificial Neural Networks (ANN)?",
         "Welche Vorteile bietet der Einsatz von KI in der öffentlichen Verwaltung?",
         "Warum ist Data Awareness wichtig?",
-        "Was sind Embeddings?",
+        "Wie arbeitet die Lernmethode Artificial Neural Networks (ANN)?",
         "Was ist der Unterschied zwischen Supervised und Unsupervised Learning?",
         "Was ist KI und Ethik?",
         "Welche Arten des Lernens werden im Maschinellen Lernen unterschieden?",
         "Wie funktionieren neuronale Netze?",
-        "Was ist Fine-Tuning?",
+        "Warum ist Ethik bei KI wichtig?",
         "Welche Ziele verfolgt der EU AI Act?",
         "Was bedeutet Clustering?",
         "Was sind Testdaten?",
@@ -155,7 +154,7 @@ async def main():
         "Welche datenschutzrechtlichen Herausforderungen entstehen beim Einsatz von KI in Medizin?",
 
         # 2. TECHNISCHER SUPPORT (10)
-        #single_hop_rag
+        #simple_hop_rag
         "Wo befindet sich der Prompt-Katalog auf der KI-Campus-Plattform?",
         "Wie funktioniert die Registrierung auf dem KI-Campus?",
         "Wie kann ich meinen Namen ändern?",
@@ -168,7 +167,7 @@ async def main():
         "Was kann ich tun, wenn ich trotz eines Referenzlinks keinen Zugriff auf Inhalte habe?",
 
         # 3. KURSMODALITÄTEN (10)
-        #single_hop_rag
+        #simple_hop_rag
         "Wann erhält man einen Leistungsnachweis?",
         "Welche Funktionen haben Badges auf dem KI-Campus?",
         "Wie bekomme ich Credits?",
@@ -183,7 +182,7 @@ async def main():
         "Wie wirken sich Quizversuche und der eigene Lernfortschritt auf den Erhalt von Leistungsnachweisen aus?",
         
         # 4. ANFRAGEN ZUR CHATBOTFUNKTION (10)
-        #single_hop_rag
+        #simple_hop_rag
         "Stellt der KI-Campus Podcasts zur Verfügung?",
         "Gibt es Quizformate auf der Plattform zur Selbstüberprüfung?",
         "Beantwortet der Chatbot ausschließlich Fragen zu KI-Themen?",
