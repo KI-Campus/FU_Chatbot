@@ -4,12 +4,11 @@ import asyncio
 import json
 import logging
 from datetime import datetime
-from functools import lru_cache
+from typing import List, Optional, Tuple
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Allow imports from project root
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # =========================
@@ -36,10 +35,14 @@ from rag_eval.eval_synthesizer import synthesize_answer_eval
 course_ids = [1, 6, 10, 19, 27, 28, 29, 36, 37, 38, 41, 43, 44, 46, 48, 49, 50, 51, 53, 55, 56, 57, 58, 59, 60, 63, 64, 66, 67, 74, 75, 76, 78, 79, 80, 88, 92, 93, 95, 98, 99, 100, 103, 106, 107, 109, 111, 121, 124, 127, 128, 134, 136, 140, 141, 142, 143, 144, 145, 151, 152, 153, 158, 160, 161, 163, 164, 165, 168, 171, 176, 177, 180, 185, 186, 187, 190, 191, 192, 197, 198, 199, 202, 203, 213, 214, 215, 221, 223, 224, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 241, 242, 243, 245, 248, 249, 250, 251, 252, 253, 255, 256, 257, 258, 259, 266, 267, 268, 270, 271, 272, 274, 275, 276, 279, 282, 283, 284, 285, 286, 287, 289, 290, 291, 293, 294, 295, 296, 297, 301, 304, 305, 311, 313, 316, 317, 318, 319, 320, 321, 322, 323, 325, 329, 330, 331, 332, 334, 335, 337, 338, 340, 341, 342, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359, 360, 362, 363, 364, 365, 367, 369, 370, 372, 373, 374, 385, 386, 387, 390, 397]
 
 # =====================================================
-# CONTEXT RETRIEVAL (NEW LOGIC)
+# CONTEXT RETRIEVAL
 # =====================================================
 
-def answer_question(question: str, course_id: int) -> tuple[str, ...]:
+def answer_question(
+    question: str,
+    course_id: Optional[List[int]]
+) -> Tuple[tuple, str]:
+
     retrieve_top_n = 10
     contextualizer = get_contextualizer()
     retriever = get_retriever(use_hybrid=True, n_chunks=retrieve_top_n)
@@ -47,30 +50,36 @@ def answer_question(question: str, course_id: int) -> tuple[str, ...]:
     question_answerer = QuestionAnswerer()
     citation_parser = CitationParser()
 
-    if course_id is None:
-        is_moodle = False
-    else:
-        is_moodle = True
-
+    is_moodle = course_id is not None
     mode = contextualizer.classify_scenario(query=question, model=Models.GPT4)
 
     if mode == "multi_hop":
         decomposed = decompose_query_eval(model=Models.GPT4, query=question)
         retrieved_nodes = retrieve_multi_parallel_eval(
-            subqueries=decomposed, course_id=course_id, module_id=None, retrieve_top_n=retrieve_top_n
+            subqueries=decomposed,
+            course_id=course_id,
+            module_id=None,
+            retrieve_top_n=retrieve_top_n
         )
         combined_nodes = synthesize_answer_eval(retrieved_nodes=retrieved_nodes)
-        reranked_nodes = reranker.rerank(query=question, nodes=combined_nodes, model=Models.GPT4)
+        reranked_nodes = reranker.rerank(
+            query=question,
+            nodes=combined_nodes,
+            model=Models.GPT4
+        )
     else:
-        retrieved_nodes = retriever.retrieve(query=question,course_id=course_id, module_id=None)
-        reranked_nodes = reranker.rerank(query=question, nodes=retrieved_nodes, model=Models.GPT4)
+        retrieved_nodes = retriever.retrieve(
+            query=question,
+            course_id=course_id,
+            module_id=None
+        )
+        reranked_nodes = reranker.rerank(
+            query=question,
+            nodes=retrieved_nodes,
+            model=Models.GPT4
+        )
 
-    contexts = []
-    for node in reranked_nodes:
-        try:
-            contexts.append(node.text)
-        except Exception as e:
-            logger.error(f"Failed to extract content from node: {e}")
+    contexts = [node.text for node in reranked_nodes]
 
     response = question_answerer.answer_question(
         query=question,
@@ -79,12 +88,16 @@ def answer_question(question: str, course_id: int) -> tuple[str, ...]:
         model=Models.GPT4,
         language="German",
         is_moodle=is_moodle,
-        course_id=None,
+        course_id=course_id,
     )
 
-    answer = citation_parser.parse(response.content, source_documents=reranked_nodes)
+    answer = citation_parser.parse(
+        response.content,
+        source_documents=reranked_nodes
+    )
 
-    return tuple(tuple(contexts), answer)
+    return tuple(contexts), answer
+
 
 # =====================================================
 # MAIN EVALUATION
@@ -97,10 +110,10 @@ async def main():
         ChatOpenAI(model="gpt-4o", temperature=0)
     )
 
-    embeddings_evaluator_llm = OpenAIEmbeddings(model="text-embedding-3-small")
+    embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
 
     metrics = [
-        AnswerRelevancy(llm=evaluator_llm, embeddings=embeddings_evaluator_llm),
+        AnswerRelevancy(llm=evaluator_llm, embeddings=embeddings),
         ContextRelevance(llm=evaluator_llm),
         Faithfulness(llm=evaluator_llm),
     ]
@@ -138,7 +151,6 @@ async def main():
         "Welche Grundkonzepte des Maschinellen Lernens werden in KI-Campus-Kursen vermittelt?",
         "Wie hängen LLMs und Chatbots zusammen?",
         "Was sind k-NN und Regression?",
-        "Gibt es einen Unterschied zwischen Automated Machine Learning und Machine Learning?",
         "Wie unterscheiden sich Data Literacy und AI Literacy im Bildungskontext?",
         "Welche Faktoren beeinflussen die Antwortqualität großer Sprachmodelle?",
         "Wie kann KI zur Erreichung der Ziele für nachhaltige Entwicklung beitragen?",
@@ -146,13 +158,13 @@ async def main():
     
     questions = [
 
-        # 1. WISSEN ALLGEMEIN & KURSBEZOGEN (30)
+        # 1. WISSEN ALLGEMEIN & KURSBEZOGEN
         #simple_hop_rag
-        "Was ist Overfitting?",
         "Was ist erklärbarer KI (XAI)?",
         "Was bedeutet der Begriff Prompt in KI-Systemen?",
         "Welche Vorteile bietet der Einsatz von KI in der öffentlichen Verwaltung?",
         "Warum ist Data Awareness wichtig?",
+        "Kannst du mir 3 podcasts zu Künstlicher Intelligenz empfehlen?",
         "Wie arbeitet die Lernmethode Artificial Neural Networks (ANN)?",
         "Was ist der Unterschied zwischen Supervised und Unsupervised Learning?",
         "Was ist KI und Ethik?",
@@ -161,62 +173,60 @@ async def main():
         "Warum ist Ethik bei KI wichtig?",
         "Welche Ziele verfolgt der EU AI Act?",
         "Was bedeutet Clustering?",
-        "Was sind Testdaten?",
+        "Was ist Reinforcement Learning?",
         "Was sind Trainingsdaten bei KI-Modellen?",
         "Was sind die Hauptphasen des Datenlebenszyklus?",
         "Was versteht man unter Learning Analytics?",
 
         #multi_hop_rag
-        "Wie hängen Künstliche Intelligenz und Robotik zusammen?", 
-        "Was ist GANs und wie funktionieren Neuronale Netze?", 
+        "Wie hängen Künstliche Intelligenz und Robotik zusammen?",
+        "Was ist GANs und wie funktionieren Neuronale Netze?",
         "Wie beeinflusst Data Science den medizinischen Bereich?",
         "Wie beeinflusst Data Awareness die Qualität von Machine-Learning-Modellen?",
         "Welche Rolle spielt KI-Didaktik in der Hochschullehre?",
         "Welche Grundkonzepte des Maschinellen Lernens werden in KI-Campus-Kursen vermittelt?",
         "Wie hängen LLMs und Chatbots zusammen?",
-        "Was sind die Unterschiede zwischen Vektorisierung und Textvorverarbeitung?",
+        "Was sind k-NN und Regression?",
         "Gibt es einen Unterschied zwischen Automated Machine Learning und Machine Learning?",
         "Wie unterscheiden sich Data Literacy und AI Literacy im Bildungskontext?",
         "Welche Faktoren beeinflussen die Antwortqualität großer Sprachmodelle?",
         "Wie kann KI zur Erreichung der Ziele für nachhaltige Entwicklung beitragen?",
         "Welche datenschutzrechtlichen Herausforderungen entstehen beim Einsatz von KI in Medizin?",
 
-        # 2. TECHNISCHER SUPPORT (10)
+        # 2. TECHNISCHER SUPPORT 
         #simple_hop_rag
-        "Wo befindet sich der Prompt-Katalog auf der KI-Campus-Plattform?",
+        "Wo befindet sich der Lernkatalog auf der KI-Campus-Plattform?",
         "Wie funktioniert die Registrierung auf dem KI-Campus?",
-        "Wie kann ich meinen Namen ändern?",
+        "Wie kann ich Informationen in meinem Profil ändern?",
         "In welcher Sprache kannst du antworten?",
-        "Wie kann man das Benutzerprofil auf der KI-Campus-Plattform bearbeiten?",
+        "Muss man sich auf der KI-Campus-Plattform anmelden, um den Chatbot zu benutzen?",
         "Welche Voraussetzungen muss ich erfüllen, um alle Plattforminhalte nutzen zu können?",
-        "Was kann ich tun, wenn ich nach dem Zurücksetzen des Passworts keine E-Mail erhalte?",
+        "Ich habe mein Passwort vergessen, was kann ich tun?",
         "Wo finde ich den Bereich 'Meine Kurse'?",
         "Wie kann ich ein Konto auf der KI-Campus-Website erstellen?",
         "Was kann ich tun, wenn ich trotz eines Referenzlinks keinen Zugriff auf Inhalte habe?",
 
-        # 3. KURSMODALITÄTEN (10)
+        # 3. KURSMODALITÄTEN 
         #simple_hop_rag
-        "Wann erhält man einen Leistungsnachweis?",
-        "Welche Funktionen haben Badges auf dem KI-Campus?",
-        "Wie bekomme ich Credits?",
+        "Ist der KI-Campus kostenlos?",
+        "Wo kann ich die Übung „Science-Fiction oder Realität“ finden?",
+        "Welche Funktionen haben Podcasts auf dem KI-Campus?",
         "Welche Informationen enthält eine Teilnahmebestätigung?",
         "Für welche Kurse wird ein Micro-Degree angeboten?",
-
         #multi_hop_rag
-        "Welche Voraussetzungen müssen für den erfolgreichen Abschluss eines KI-Campus-Kurses erfüllt sein und wie hängen diese zusammen?",
-        "Welche Rolle spielen Übungsaufgaben und Quizformate für den erfolgreichen Abschluss eines KI-Campus-Kurses?",
+        "Was sind die Voraussetzungen für den Abschluss eines KI-Campus-Kurses?",
+        "Welche Fristen gibt es in KI-Campus-Kursen und welche Bedeutung haben sie?",
         "Worin unterscheiden sich Teilnahmebestätigung, Leistungsnachweis und Zertifikat auf dem KI-Campus, und wann bekommt man welches Dokument?",
         "Wie hängen Pflichtaufgaben und Bewertung zusammen, wenn man einen KI-Campus-Kurs erfolgreich abschließen möchte?",
         "Wie wirken sich Quizversuche und der eigene Lernfortschritt auf den Erhalt von Leistungsnachweisen aus?",
         
-        # 4. ANFRAGEN ZUR CHATBOTFUNKTION (10)
+        # 4. ANFRAGEN ZUR CHATBOTFUNKTION 
         #simple_hop_rag
         "Stellt der KI-Campus Podcasts zur Verfügung?",
         "Gibt es Quizformate auf der Plattform zur Selbstüberprüfung?",
         "Beantwortet der Chatbot ausschließlich Fragen zu KI-Themen?",
         "Was ist der Zweck der KI-Campus-Plattform?",
         "Welche funktionalen Einschränkungen hat der Chatbot?",
-
         #multi_hop_rag
         "Wie nutzt der Chatbot bereitgestellte Dokumente zur Beantwortung von Fragen?",
         "Welche Strategien nutzt der Chatbot, wenn eine Frage nicht eindeutig beantwortbar ist?",
@@ -225,35 +235,30 @@ async def main():
         "Was passiert, wenn der KI-Campus-Chatbot eine Frage nicht beantworten kann, und welche Gründe können dafür zusammenkommen?",
 ]
 
-    # --------------------------------------------------
-
-
     N_REPEATS = 5
 
     all_results = []
     global_metric_sums = {m.name: 0.0 for m in metrics}
     global_metric_count = 0
 
+    # ungrounded tracking
+    ungrounded_count = 0
+    ungrounded_by_question = {}
+
     for q in questions:
         print(f"\n============================\nQuestion: {q}")
         per_question_metric_sums = {m.name: 0.0 for m in metrics}
-
         runs = []
 
         for run_idx in range(N_REPEATS):
             print(f"\n--- Run {run_idx + 1}/{N_REPEATS} ---")
-            # Bei den Moodle Fragen muss course_id = course_ids gesetzt werden
-            # Bei den Drupal Fragen muss course_id = None gesetzt werden
+
             if q in moodle_questions:
-                contexts, answer = answer_question(q, course_id = course_ids)
+                contexts, answer = answer_question(q, course_id=course_ids)
             else:
-                contexts, answer = answer_question(q, course_id = None)
+                contexts, answer = answer_question(q, course_id=None)
 
-            print("\nRetrieved Contexts (first 2):")
-            for c in list(contexts)[:2]:
-                print("-", c[:250], "...")
-
-            print("\nAnswer:\n")
+            print("\nAnswer:")
             print(answer)
 
             sample = SingleTurnSample(
@@ -262,15 +267,26 @@ async def main():
                 retrieved_contexts=list(contexts),
             )
 
+            run_scores = {}
             for m in metrics:
                 score = float(await m.single_turn_ascore(sample))
+                run_scores[m.name] = score
                 per_question_metric_sums[m.name] += score
                 global_metric_sums[m.name] += score
                 print(f"  - {m.name}: {score:.3f}")
 
+            # ungrounded detection
+            answer_relevancy = run_scores.get("answer_relevancy", 0.0)
+            context_relevance = run_scores.get("nv_context_relevance", 0.0)
+
+            if context_relevance < 0.3 and answer_relevancy > 0.7:
+                ungrounded_count += 1
+                ungrounded_by_question[q] = ungrounded_by_question.get(q, 0) + 1
+
             runs.append({
                 "run": run_idx + 1,
                 "answer": answer,
+                "scores": run_scores,
             })
 
             global_metric_count += 1
@@ -281,29 +297,35 @@ async def main():
 
         all_results.append({
             "question": q,
-            "contexts": list(contexts),
             "runs": runs,
             "average_metrics": avg_metrics
         })
-
-        print("\nAverage for question:")
-        for name, avg in avg_metrics.items():
-            print(f"  - {name}: {avg:.3f}")
 
     global_avg = {
         name: global_metric_sums[name] / global_metric_count
         for name in global_metric_sums
     }
 
+    ungrounded_rate = ungrounded_count / global_metric_count
+
     print("\n============================")
     print("GLOBAL AVERAGE METRICS:")
     for name, avg in global_avg.items():
         print(f"  - {name}: {avg:.3f}")
 
+    print("\nUNGROUNDED ANSWERS:")
+    print(f"  - Ungrounded answers: {ungrounded_count}")
+    print(f"  - Ungrounded answer rate: {ungrounded_rate:.3f}")
+
     output = {
         "results": all_results,
         "global_average_metrics": global_avg,
-        "repetitions": N_REPEATS
+        "repetitions": N_REPEATS,
+        "ungrounded_answers": {
+            "count": ungrounded_count,
+            "rate": ungrounded_rate,
+            "by_question": ungrounded_by_question,
+        },
     }
 
     outfile = f"chatbot_eval_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
