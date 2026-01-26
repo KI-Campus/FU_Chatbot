@@ -43,10 +43,10 @@ def answer_question(
     course_id: Optional[List[int]]
 ) -> Tuple[tuple, str]:
 
-    retrieve_top_n = 10
+    retrieve_top_n = 20
     contextualizer = get_contextualizer()
     retriever = get_retriever(use_hybrid=True, n_chunks=retrieve_top_n)
-    reranker = Reranker(top_n=5)
+    reranker = Reranker(top_n=10)
     question_answerer = QuestionAnswerer()
     citation_parser = CitationParser()
 
