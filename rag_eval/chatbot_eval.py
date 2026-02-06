@@ -3,6 +3,7 @@ import os
 import asyncio
 import json
 import logging
+
 from datetime import datetime
 from typing import List, Optional, Tuple
 
@@ -43,7 +44,7 @@ def answer_question(
     course_id: Optional[List[int]]
 ) -> Tuple[tuple, str]:
 
-    retrieve_top_n = 20
+    retrieve_top_n = 10
     contextualizer = get_contextualizer()
     retriever = get_retriever(use_hybrid=True, n_chunks=retrieve_top_n)
     reranker = Reranker(top_n=10)
@@ -128,7 +129,7 @@ async def main():
         "Was bedeutet der Begriff Prompt in KI-Systemen?",
         "Welche Vorteile bietet der Einsatz von KI in der öffentlichen Verwaltung?",
         "Warum ist Data Awareness wichtig?",
-        "Kannst du mir 3 podcasts zu Künstlicher Intelligenz empfehlen?",
+        "Welche Podcasts zu Künstlicher Intelligenz werden auf dem KI-Campus angeboten?",
         "Wie arbeitet die Lernmethode Artificial Neural Networks (ANN)?",
         "Was ist der Unterschied zwischen Supervised und Unsupervised Learning?",
         "Was ist KI und Ethik?",
@@ -141,9 +142,9 @@ async def main():
         "Was sind Trainingsdaten bei KI-Modellen?",
         "Was sind die Hauptphasen des Datenlebenszyklus?",
         "Was versteht man unter Learning Analytics?",
-
+       
         #multi_hop_rag
-        "Wie hängen Künstliche Intelligenz und Robotik zusammen?",
+        "Was ist „Generative KI & Chatbots“ und wie wird dieses Thema in den KI-Campus-Videos zur Reihe „ChatGPT – kurz erklärt“ erläutert?",
         "Was ist GANs und wie funktionieren Neuronale Netze?",
         "Wie beeinflusst Data Science den medizinischen Bereich?",
         "Wie beeinflusst Data Awareness die Qualität von Machine-Learning-Modellen?",
@@ -151,10 +152,12 @@ async def main():
         "Welche Grundkonzepte des Maschinellen Lernens werden in KI-Campus-Kursen vermittelt?",
         "Wie hängen LLMs und Chatbots zusammen?",
         "Was sind k-NN und Regression?",
-        "Wie unterscheiden sich Data Literacy und AI Literacy im Bildungskontext?",
+        "Gibt es einen Unterschied zwischen Automated Machine Learning und Machine Learning?",
+        "Wie erklären die Lernmaterialien des KI-Campus den Unterschied zwischen generativer KI und klassischer KI?",
         "Welche Faktoren beeinflussen die Antwortqualität großer Sprachmodelle?",
         "Wie kann KI zur Erreichung der Ziele für nachhaltige Entwicklung beitragen?",
-        "Welche datenschutzrechtlichen Herausforderungen entstehen beim Einsatz von KI in Medizin?"]
+        "Welche Datenschutzprobleme können beim Einsatz von KI in der Medizin auftreten?"
+        ]
     
     questions = [
 
@@ -164,7 +167,7 @@ async def main():
         "Was bedeutet der Begriff Prompt in KI-Systemen?",
         "Welche Vorteile bietet der Einsatz von KI in der öffentlichen Verwaltung?",
         "Warum ist Data Awareness wichtig?",
-        "Kannst du mir 3 podcasts zu Künstlicher Intelligenz empfehlen?",
+        "Welche Podcasts zu Künstlicher Intelligenz werden auf dem KI-Campus angeboten?",
         "Wie arbeitet die Lernmethode Artificial Neural Networks (ANN)?",
         "Was ist der Unterschied zwischen Supervised und Unsupervised Learning?",
         "Was ist KI und Ethik?",
@@ -179,7 +182,7 @@ async def main():
         "Was versteht man unter Learning Analytics?",
 
         #multi_hop_rag
-        "Wie hängen Künstliche Intelligenz und Robotik zusammen?",
+        "Was ist „Generative KI & Chatbots“ und wie wird dieses Thema in den KI-Campus-Videos zur Reihe „ChatGPT – kurz erklärt“ erläutert?",
         "Was ist GANs und wie funktionieren Neuronale Netze?",
         "Wie beeinflusst Data Science den medizinischen Bereich?",
         "Wie beeinflusst Data Awareness die Qualität von Machine-Learning-Modellen?",
@@ -188,37 +191,38 @@ async def main():
         "Wie hängen LLMs und Chatbots zusammen?",
         "Was sind k-NN und Regression?",
         "Gibt es einen Unterschied zwischen Automated Machine Learning und Machine Learning?",
-        "Wie unterscheiden sich Data Literacy und AI Literacy im Bildungskontext?",
+        "Wie erklären die Lernmaterialien des KI-Campus den Unterschied zwischen generativer KI und klassischer KI?",
         "Welche Faktoren beeinflussen die Antwortqualität großer Sprachmodelle?",
         "Wie kann KI zur Erreichung der Ziele für nachhaltige Entwicklung beitragen?",
-        "Welche datenschutzrechtlichen Herausforderungen entstehen beim Einsatz von KI in Medizin?",
+        "Welche Datenschutzprobleme können beim Einsatz von KI in der Medizin auftreten?",
 
         # 2. TECHNISCHER SUPPORT 
         #simple_hop_rag
-        "Wo befindet sich der Lernkatalog auf der KI-Campus-Plattform?",
+        "Welche Filteroptionen stehen im Lernkatalog des KI-Campus zur Verfügung, um Kurse einzugrenzen?",
         "Wie funktioniert die Registrierung auf dem KI-Campus?",
         "Wie kann ich Informationen in meinem Profil ändern?",
-        "In welcher Sprache kannst du antworten?",
-        "Muss man sich auf der KI-Campus-Plattform anmelden, um den Chatbot zu benutzen?",
+        "In welchen Sprachen sind die Kurse im Lernkatalog des KI-Campus verfügbar?",
         "Welche Voraussetzungen muss ich erfüllen, um alle Plattforminhalte nutzen zu können?",
         "Ich habe mein Passwort vergessen, was kann ich tun?",
         "Wo finde ich den Bereich 'Meine Kurse'?",
         "Wie kann ich ein Konto auf der KI-Campus-Website erstellen?",
         "Was kann ich tun, wenn ich trotz eines Referenzlinks keinen Zugriff auf Inhalte habe?",
-
+        "Wie kann ich Lernangebote nach Level (z. B. Einsteiger:innen) sortieren?",
+       
         # 3. KURSMODALITÄTEN 
         #simple_hop_rag
         "Ist der KI-Campus kostenlos?",
-        "Wo kann ich die Übung „Science-Fiction oder Realität“ finden?",
         "Welche Funktionen haben Podcasts auf dem KI-Campus?",
         "Welche Informationen enthält eine Teilnahmebestätigung?",
         "Für welche Kurse wird ein Micro-Degree angeboten?",
+        "Welche Meisterungskriterien gibt es für einen Kursabschluss auf dem KI-Campus?",
+        "Welche Arten von Lernformaten bietet der KI-Campus an (z. B. Kurse, Videos, Podcasts)?",
+
         #multi_hop_rag
         "Was sind die Voraussetzungen für den Abschluss eines KI-Campus-Kurses?",
         "Welche Fristen gibt es in KI-Campus-Kursen und welche Bedeutung haben sie?",
         "Worin unterscheiden sich Teilnahmebestätigung, Leistungsnachweis und Zertifikat auf dem KI-Campus, und wann bekommt man welches Dokument?",
         "Wie hängen Pflichtaufgaben und Bewertung zusammen, wenn man einen KI-Campus-Kurs erfolgreich abschließen möchte?",
-        "Wie wirken sich Quizversuche und der eigene Lernfortschritt auf den Erhalt von Leistungsnachweisen aus?",
         
         # 4. ANFRAGEN ZUR CHATBOTFUNKTION 
         #simple_hop_rag
@@ -227,13 +231,14 @@ async def main():
         "Beantwortet der Chatbot ausschließlich Fragen zu KI-Themen?",
         "Was ist der Zweck der KI-Campus-Plattform?",
         "Welche funktionalen Einschränkungen hat der Chatbot?",
+        "Wie kann der Chatbot Informationen zu Leistungsnachweisen in Kursen bereitstellen?",
+
         #multi_hop_rag
         "Wie nutzt der Chatbot bereitgestellte Dokumente zur Beantwortung von Fragen?",
-        "Welche Strategien nutzt der Chatbot, wenn eine Frage nicht eindeutig beantwortbar ist?",
+        "Welche Informationen erhalten Teilnehmende nach Abschluss eines KI-Campus-Kurses?",
         "Wie ist der KI-Campus-Chatbot technisch aufgebaut?",
-        "Was macht der Chatbot, wenn eine Frage unklar gestellt ist oder mehrere mögliche Antworten zulässt?",
-        "Was passiert, wenn der KI-Campus-Chatbot eine Frage nicht beantworten kann, und welche Gründe können dafür zusammenkommen?",
-]
+        "Welche Zielgruppen spricht der KI-Campus laut Plattformbeschreibung an?",
+    ]
 
     N_REPEATS = 5
 
