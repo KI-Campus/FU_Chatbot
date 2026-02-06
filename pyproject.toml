@@ -40,6 +40,7 @@ openpyxl = "^3.1.5"
 certifi = "^2025.11.12"
 pymupdf = "^1.26.7"
 vosk = "^0.3.45"
+ragas = "0.3.8"
 
 [tool.poetry.group.api]
 optional = true
@@ -76,7 +77,6 @@ types-requests = "~2.31.0.20240311"
 [tool.poetry.group.ragas]
 optional = true
 [tool.poetry.group.ragas.dependencies]
-ragas = "~0.4.3"
 langchain-openai = "~1.1.7"
 tiktoken = "~0.12.0"
 

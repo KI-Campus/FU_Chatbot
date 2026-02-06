@@ -6,7 +6,6 @@ from langfuse.decorators import observe
 
 from src.llm.state.models import GraphState
 from src.llm.state.socratic_routing import reset_socratic_state
-from src.api.models.serializable_chat_message import SerializableChatMessage
 
 # Module-level singleton
 _contextualizer_instance = None

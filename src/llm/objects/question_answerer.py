@@ -1,4 +1,3 @@
-import json
 import sys
 
 from langfuse.decorators import observe
@@ -33,8 +32,10 @@ Metadata: {metadata}
 def format_sources(sources: list[TextNode], max_length: int = 8000) -> str:
     sources_text = ""
     for i, source in enumerate(sources):
+        # Handle both TextNode (with get_text()) and SerializableTextNode (with .text attribute)
+        content = source.get_text() if hasattr(source, 'get_text') else source.text
         source_entry = USER_QUERY_WITH_SOURCES_PROMPT.format(
-            index=i + 1, content=source.get_text(), metadata=source.metadata
+            index=i + 1, content=content, metadata=source.metadata
         )
         # max_length must not exceed 8k for non-GPT models, otherwise the output will be garbled
         if len(sources_text) + len(source_entry) > max_length:
