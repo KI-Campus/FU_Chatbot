@@ -4,6 +4,8 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        
         {
             "name": "Loader",
             "type": "debugpy",
@@ -43,7 +45,7 @@
                 "--port=8000"
             ],
             "cwd": "${workspaceFolder}/src",
-            "python": "${workspaceFolder}/.venv/bin/python",
+            "python": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
             "env": {
                 "DEBUG_LANGCHAIN": "True"
             },
