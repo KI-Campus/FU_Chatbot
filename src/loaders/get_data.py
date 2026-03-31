@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from src.env import env
 from src.llm.objects.LLMs import LLM
-from src.vectordb.sparse_encoder import BM25SparseEncoder
+from fastembed import SparseTextEmbedding
 from src.loaders.drupal import Drupal
 from src.loaders.moochup import Moochup
 from src.loaders.moodle import Moodle
@@ -34,7 +34,7 @@ class Fetch_Data:
     def __init__(self):
         self.DATA_PATH = "./data"
         self.embedder = LLM().get_embedder()
-        self.sparse_encoder = BM25SparseEncoder()  # NEW: Sparse encoder for hybrid retrieval
+        self.sparse_encoder = SparseTextEmbedding("Qdrant/bm42-all-minilm-l6-v2-attentions")  # NEW: FastEmbed BM42 sparse encoder
         self.logger = logging.getLogger("loader")
         self.logger.propagate = False
         if not self.logger.handlers:
@@ -165,15 +165,22 @@ class Fetch_Data:
             
             # Step 3: Prepare hybrid points with both dense and sparse vectors
             hybrid_points = []
-            for node, dense_vec in zip(nodes, dense_embeddings):
+            
+            # FastEmbed process batch
+            sparse_embeddings_batch = list(self.sparse_encoder.embed(texts_to_embed))
+            
+            for index, (node, dense_vec) in enumerate(zip(nodes, dense_embeddings)):
                 text = node.get_content()
-                sparse_vec = self.sparse_encoder.encode(text)
+                sparse_result = sparse_embeddings_batch[index]
                 
                 point = {
                     "id": node.node_id or str(uuid.uuid4()),
                     "vector": {
                         "dense": dense_vec,
-                        "sparse": sparse_vec,
+                        "sparse": {
+                            "indices": sparse_result.indices.tolist(),
+                            "values": sparse_result.values.tolist()
+                        },
                     },
                     "payload": {
                         "text": text,

@@ -4,7 +4,7 @@ from llama_index.core.vector_stores import VectorStoreQuery
 from qdrant_client.models import Prefetch, Query, Fusion, FusionQuery
 
 from src.llm.objects.LLMs import LLM
-from src.vectordb.sparse_encoder import BM25SparseEncoder
+from fastembed import SparseTextEmbedding
 from src.vectordb.qdrant import VectorDBQdrant, models
 from src.api.models.serializable_text_node import SerializableTextNode
 
@@ -23,7 +23,7 @@ class KiCampusRetriever:
         self.embedder = LLM().get_embedder()
         
         if use_hybrid:
-            self.sparse_encoder = BM25SparseEncoder()
+            self.sparse_encoder = SparseTextEmbedding("Qdrant/bm42-all-minilm-l6-v2-attentions")
             # For hybrid search, we use direct Qdrant client instead of LlamaIndex wrapper
             self.vector_db = VectorDBQdrant("prod_remote")
             self.collection_name = "web_assistant_hybrid"
@@ -60,7 +60,7 @@ class KiCampusRetriever:
             conditions.append(
                 models.FieldCondition(
                     key="source",
-                    match=models.MatchText(text="Drupal"),
+                    match=models.MatchValue(value="Drupal"),
                 )
             )
 
@@ -113,7 +113,11 @@ class KiCampusRetriever:
         dense_embedding = self.embedder.get_query_embedding(query)
         
         # Generate sparse embedding
-        sparse_embedding = self.sparse_encoder.encode(query)
+        sparse_result = list(self.sparse_encoder.embed([query]))[0]
+        sparse_embedding = models.SparseVector(
+            indices=sparse_result.indices.tolist(),
+            values=sparse_result.values.tolist()
+        )
         
         # Build filter conditions
         conditions = []
@@ -122,7 +126,7 @@ class KiCampusRetriever:
             conditions.append(
                 models.FieldCondition(
                     key="source",
-                    match=models.MatchText(text="Drupal"),
+                    match=models.MatchValue(value="Drupal"),
                 )
             )
         

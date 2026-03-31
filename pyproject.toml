@@ -41,6 +41,7 @@ certifi = "^2025.11.12"
 pymupdf = "^1.26.7"
 vosk = "^0.3.45"
 ragas = "0.3.8"
+fastembed = "^0.8.0"
 
 [tool.poetry.group.api]
 optional = true
