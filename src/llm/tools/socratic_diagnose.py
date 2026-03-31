@@ -13,9 +13,12 @@ from src.llm.prompts.prompt_loader import load_prompt
 # Load prompt once at module level
 SOCRATIC_DIAGNOSE_PROMPT = load_prompt("socratic_diagnose")
 
+# Initialize LLM instance at module level
+_llm = LLM()
+
 
 @observe()
-def socratic_diagnose(state: GraphState) -> GraphState:
+def socratic_diagnose(state: GraphState) -> dict:
     """
     Diagnoses student's current understanding and identifies learning objective.
     
@@ -40,12 +43,12 @@ def socratic_diagnose(state: GraphState) -> GraphState:
     Returns:
         Updated state with learning objective and student model
     """
+    # Get necessary data from state
     user_query = state["user_query"]
-    chat_history = state["chat_history"]
+    chat_history = state.get("chat_history", [])
     model = state["runtime_config"]["model"]
     
     # LLM-Call to extract learning objective and diagnostic question
-    _llm = LLM()
     response = _llm.chat(
         query=user_query,
         chat_history=chat_history,
@@ -80,10 +83,8 @@ def socratic_diagnose(state: GraphState) -> GraphState:
     }
     
     return {
-        **state,
         "learning_objective": learning_objective,
         "student_model": student_model,
         "socratic_mode": "core",
-        "answer": diagnostic_question,
-        "citations_markdown": None,  # Clear citations from previous requests
+        "answer": diagnostic_question
     }

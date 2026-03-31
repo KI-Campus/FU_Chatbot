@@ -21,10 +21,11 @@ IMPORTANT: Multi-Turn Design
 from langgraph.graph import StateGraph, START, END
 
 from src.llm.state.models import GraphState
+from src.llm.tools.retrieve import retrieve_chunks
+from src.llm.tools.rerank import rerank_chunks
 from src.llm.tools.socratic_contract import socratic_contract
 from src.llm.tools.socratic_diagnose import socratic_diagnose
 from src.llm.tools.socratic_core import socratic_core
-from src.llm.tools.socratic_explain import socratic_explain
 
 
 def build_socratic_graph() -> StateGraph:
@@ -59,11 +60,14 @@ def build_socratic_graph() -> StateGraph:
     """
     graph = StateGraph(GraphState)
     
+    # Add retrieval nodes (shared by core and explain)
+    graph.add_node("retrieve", retrieve_chunks)
+    graph.add_node("rerank", rerank_chunks)
+    
     # Add socratic nodes (hinting and reflection are now part of core)
     graph.add_node("socratic_contract_node", socratic_contract)
     graph.add_node("socratic_diagnose_node", socratic_diagnose)
     graph.add_node("socratic_core_node", socratic_core)
-    graph.add_node("socratic_explain_node", socratic_explain)
     
     # Router function: Selects ONE node based on socratic_mode
     def route_socratic_mode(state: GraphState) -> str:
@@ -73,18 +77,17 @@ def build_socratic_graph() -> StateGraph:
         Called at START of each request to determine which single node to execute.
         Default to "contract" if no socratic_mode set (first entry).
         """
-        mode = state.get("socratic_mode")
+        mode = state["socratic_mode"]
         
         # Default to contract for first entry into socratic workflow
         if mode is None:
             return "socratic_contract_node"
         
-        # Map socratic_mode to node names
+        # Map socratic_mode to node names (core/explain need retrieval first)
         mode_to_node = {
             "contract": "socratic_contract_node",
             "diagnose": "socratic_diagnose_node",
-            "core": "socratic_core_node",
-            "explain": "socratic_explain_node",
+            "core": "retrieve",  # Retrieval path
         }
         
         return mode_to_node.get(mode, "socratic_contract_node")
@@ -96,15 +99,17 @@ def build_socratic_graph() -> StateGraph:
         {
             "socratic_contract_node": "socratic_contract_node",
             "socratic_diagnose_node": "socratic_diagnose_node",
-            "socratic_core_node": "socratic_core_node",
-            "socratic_explain_node": "socratic_explain_node",
+            "retrieve": "retrieve",
         }
     )
+    
+    # Retrieval path: retrieve → rerank → core
+    graph.add_edge("retrieve", "rerank")
+    graph.add_edge("rerank", "socratic_core_node")
     
     # ALL nodes lead directly to END (return to user after each node)
     graph.add_edge("socratic_contract_node", END)
     graph.add_edge("socratic_diagnose_node", END)
     graph.add_edge("socratic_core_node", END)
-    graph.add_edge("socratic_explain_node", END)
     
     return graph.compile()

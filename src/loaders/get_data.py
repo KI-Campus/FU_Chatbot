@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from src.env import env
 from src.llm.objects.LLMs import LLM
-from src.vectordb.sparse_encoder import BM25SparseEncoder
+from fastembed import SparseTextEmbedding
 from src.loaders.drupal import Drupal
 from src.loaders.moochup import Moochup
 from src.loaders.moodle import MODULE_FINGERPRINT_VERSION, Moodle
@@ -103,7 +103,7 @@ class Fetch_Data:
     def __init__(self, run_id: str | None = None, preset_log_url: str | None = None):
         self.DATA_PATH = "./data"
         self.embedder = LLM().get_embedder()
-        self.sparse_encoder = BM25SparseEncoder()  # NEW: Sparse encoder for hybrid retrieval
+        self.sparse_encoder = SparseTextEmbedding("Qdrant/bm42-all-minilm-l6-v2-attentions")  # NEW: FastEmbed BM42 sparse encoder
         self.logger = logging.getLogger("loader")
         self.logger.propagate = False
         if not self.logger.handlers:

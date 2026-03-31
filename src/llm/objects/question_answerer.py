@@ -1,12 +1,13 @@
-import json
 import sys
 
 from langfuse.decorators import observe
-from llama_index.core.llms import ChatMessage, MessageRole
+from llama_index.core.llms import MessageRole
 from llama_index.core.schema import TextNode
 
+from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
+from src.llm.streaming import StreamPhaseContext
 
 ANSWER_NOT_FOUND_FIRST_TIME = """Entschuldige, ich habe deine Frage nicht ganz verstanden. Könntest du dein Problem bitte noch einmal etwas genauer erklären oder anders formulieren?
 """
@@ -31,8 +32,10 @@ Metadata: {metadata}
 def format_sources(sources: list[TextNode], max_length: int = 8000) -> str:
     sources_text = ""
     for i, source in enumerate(sources):
+        # Handle both TextNode (with get_text()) and SerializableTextNode (with .text attribute)
+        content = source.get_text() if hasattr(source, 'get_text') else source.text
         source_entry = USER_QUERY_WITH_SOURCES_PROMPT.format(
-            index=i + 1, content=source.get_text(), metadata=source.metadata
+            index=i + 1, content=content, metadata=source.metadata
         )
         # max_length must not exceed 8k for non-GPT models, otherwise the output will be garbled
         if len(sources_text) + len(source_entry) > max_length:
@@ -53,13 +56,14 @@ class QuestionAnswerer:
     def answer_question(
         self,
         query: str,
-        chat_history: list[ChatMessage],
+        chat_history: list[SerializableChatMessage],
         sources: list[TextNode],
         model: Models,
         language: str,
         is_moodle: bool,
         course_id: int,
-    ) -> ChatMessage:
+    ) -> SerializableChatMessage:
+        
         if model != Models.GPT4:
             system_prompt = SHORT_SYSTEM_PROMPT.format(language=language)
             formatted_sources = format_sources(sources, max_length=8000)
@@ -67,25 +71,15 @@ class QuestionAnswerer:
             system_prompt = SYSTEM_PROMPT.format(language=language)
             formatted_sources = format_sources(sources, max_length=sys.maxsize)
 
-        prompted_user_query = f"<QUERY>:\n {query}\n---\n\n{formatted_sources}"
+        prompted_user_query = f"<QUERY>:\n {query}\n\n{formatted_sources}"
 
-        response = self.llm.chat(
-            query=prompted_user_query,
-            chat_history=chat_history,
-            model=model,
-            system_prompt=system_prompt,
-        )
-
-        try:
-            response.content = response.content.replace("```json\n", "").replace("\n```", "")
-            response_json = json.loads(response.content)
-            response.content = response_json["answer"]
-
-        except (json.JSONDecodeError, KeyError) as e:
-            # LLM forgets to respond with JSON or missing "answer" key - use response as-is
-            # Log the issue for monitoring
-            print(f"Warning: Failed to parse JSON response: {e}. Using raw response.")
-            pass
+        with StreamPhaseContext("final"):
+            response = self.llm.chat(
+                query=prompted_user_query,
+                chat_history=chat_history,
+                model=model,
+                system_prompt=system_prompt,
+            )
 
         # Check if this is the second "NO ANSWER FOUND" in a row
         # Look for ASSISTANT messages (bot responses) in history to check if we already said we can't help
@@ -113,4 +107,5 @@ class QuestionAnswerer:
 
         if response is None:
             raise ValueError(f"LLM produced no response. Please check the LLM implementation. Response: {response}")
+        
         return response

@@ -3,9 +3,9 @@ Node wrapper for parallel retrieval of multiple sub-queries (Multi-Hop).
 """
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import List
+from src.api.models.serializable_text_node import SerializableTextNode
 from langfuse.decorators import observe
-
-from src.llm.state.models import GraphState
 
 # Module-level singleton
 _retriever_instance = None
@@ -20,7 +20,7 @@ def get_retriever(use_hybrid: bool = True, n_chunks: int = 10):
 
 
 @observe()
-def retrieve_multi_parallel(state: GraphState) -> dict:
+def retrieve_multi_parallel_eval(subqueries: List[str], course_id: int, module_id: int, retrieve_top_n: int) -> List[SerializableTextNode]:
     """
     Retrieves relevant chunks for all sub-queries in parallel.
     
@@ -31,19 +31,14 @@ def retrieve_multi_parallel(state: GraphState) -> dict:
     - Sets state["multi_contexts"] (list of lists of TextNode, one per sub-query)
     
     Args:
-        state: Current graph state with sub_queries and optional filters in runtime_config
+        subqueries: List of sub-queries to retrieve context for
+        course_id: ID of the course for retrieval context
+        module_id: ID of the module for retrieval context
+        retrieve_top_n: Number of top chunks to retrieve per sub-query
         
     Returns:
         Updated state with multi_contexts
     """
-    # Guard: If no sub_queries, skip
-    if "sub_queries" not in state or not state["sub_queries"]:
-        return {"multi_contexts": []}
-    
-    # Get necessary variables from state
-    course_id = state["runtime_config"]["course_id"]
-    module_id = state["runtime_config"]["module_id"]
-    retrieve_top_n = state["system_config"]["retrieve_top_n"]
     
     # Get singleton retriever
     retriever = get_retriever(use_hybrid=True, n_chunks=retrieve_top_n)
@@ -59,11 +54,11 @@ def retrieve_multi_parallel(state: GraphState) -> dict:
     
     # Execute all retrievals in parallel
     multi_contexts = []
-    with ThreadPoolExecutor(max_workers=min(len(state["sub_queries"]), 5)) as executor:
+    with ThreadPoolExecutor(max_workers=min(len(subqueries), 5)) as executor:
         # Submit all tasks
         future_to_query = {
             executor.submit(retrieve_for_query, sq): sq 
-            for sq in state["sub_queries"]
+            for sq in subqueries
         }
         
         # Collect results in order of completion (then sort by original order)
@@ -78,8 +73,8 @@ def retrieve_multi_parallel(state: GraphState) -> dict:
                 results[query] = []
         
         # Restore original order
-        for sq in state["sub_queries"]:
+        for sq in subqueries:
             multi_contexts.append(results.get(sq, []))
     
     # Already SerializableTextNode from retriever
-    return {"multi_contexts": multi_contexts}
+    return multi_contexts

@@ -3,10 +3,10 @@ Node for decomposing complex queries into sub-queries (Multi-Hop).
 """
 
 import json
+from typing import List
 from langfuse.decorators import observe
 
-from src.llm.objects.LLMs import LLM
-from src.llm.state.models import GraphState
+from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
 
 # Load prompt
@@ -17,7 +17,7 @@ _llm = LLM()
 
 
 @observe()
-def decompose_query(state: GraphState) -> dict:
+def decompose_query_eval(model: Models, query: str) -> List[str]:
     """
     Decomposes complex query into multiple sub-queries for multi-hop retrieval.
     
@@ -28,20 +28,17 @@ def decompose_query(state: GraphState) -> dict:
     - Sets state["sub_queries"] (list of self-contained questions)
     
     Args:
-        state: Current graph state with contextualized_query and runtime_config
+        model: The language model to use for decomposition
+        query: The complex query string to decompose
         
     Returns:
         Updated state with sub_queries
     """
-    # Extract model from runtime_config
-    model = state["runtime_config"]["model"]
-    query = state["user_query"]
-    chat_history = state["chat_history"]
     
     # Call LLM to decompose query
     response = _llm.chat(
         query=query,
-        chat_history=chat_history,
+        chat_history=[],
         model=model,
         system_prompt=DECOMPOSE_PROMPT
     )
@@ -56,4 +53,4 @@ def decompose_query(state: GraphState) -> dict:
         # Fallback: use original query
         sub_queries = [query]
     
-    return {"sub_queries": sub_queries}
+    return sub_queries

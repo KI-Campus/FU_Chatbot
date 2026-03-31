@@ -56,7 +56,7 @@ class VectorDBQdrant:
     def as_llama_vector_store(self, collection_name) -> QdrantVectorStore:
         return QdrantVectorStore(client=self.client, collection_name=collection_name, max_retries=10)
 
-    def create_collection(self, collection_name, vector_size, enable_sparse: bool = False) -> None:
+    def create_collection(self, collection_name, vector_size, enable_sparse: bool = True) -> None:
         """Create a Qdrant collection with optional sparse vector support.
         
         Args:
@@ -81,17 +81,57 @@ class VectorDBQdrant:
                 _ = self.client.create_collection(
                     collection_name=collection_name,
                     vectors_config={
-                        "dense": VectorParams(size=vector_size, distance=Distance.COSINE),
+                        "dense": VectorParams(
+                            size=vector_size,
+                            # Normalized vectors are expected for cosine similiarity
+                            # Ensure embeddings are normalized before upsert
+                            distance=Distance.COSINE),
                     },
                     sparse_vectors_config={
-                        "sparse": SparseVectorParams(),
+                        "sparse": SparseVectorParams(
+                            index=models.SparseIndexParams(
+                                on_disk=True,
+                            ),
+                            # IMPORTANT: Use IDF weighting for sparse vectors to improve relevance in hybrid search
+                            modifier=models.Modifier.IDF
+                        ),
                     },
+                    # quantize vectors to reduce storage and improve search speed, with minimal impact on relevance
+                    quantization_config=models.ScalarQuantization(
+                        scalar=models.ScalarQuantizationConfig(
+                            type=models.ScalarType.INT8,
+                            quantile=0.99,
+                            always_ram=True
+                        )
+                    ),
+                    on_disk_payload=True
                 )
-                self.logger.info(
-                    "Created hybrid collection '%s' with dense(size=%s) + sparse vectors.",
-                    collection_name,
-                    vector_size,
+                # Create payload indexes for efficient filtering on 'source', 'course_id', and 'module_id'
+                _ = self.client.create_payload_index(
+                    collection_name=collection_name,
+                    field_name="source",
+                    field_schema=models.PayloadSchemaParams(
+                        type="keyword"
+                    )
                 )
+
+                _ = self.client.create_payload_index(
+                    collection_name=collection_name,
+                    field_name="course_id",
+                    field_schema=models.PayloadSchemaParams(
+                        type="keyword"
+                    )
+                )
+
+                _ = self.client.create_payload_index(
+                    collection_name=collection_name,
+                    field_name="module_id",
+                    field_schema=models.PayloadSchemaParams(
+                        type="keyword"
+                    )
+                )
+
+                print(f"Created hybrid collection '{collection_name}' with dense (size={vector_size}) and sparse vectors.")
             else:
                 # Legacy: Dense-only collection
                 _ = self.client.create_collection(
@@ -126,15 +166,11 @@ class VectorDBQdrant:
         """
         qdrant_points = [PointStruct(**point) for point in points]
         try:
-            self.logger.debug(
-                "Qdrant upsert request: collection=%s points=%s",
-                collection_name,
-                len(points),
-            )
-            operation_info = self.client.upsert(
+            operation_info = self.client.upload_points(
                 collection_name=collection_name,
-                wait=True,
                 points=qdrant_points,
+                parallel=4,
+                max_retries=3
             )
         except ResponseHandlingException as e:
             # Z.B. httpx.RemoteProtocolError: "Server disconnected without sending a response".

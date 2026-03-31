@@ -4,8 +4,18 @@ Node wrapper for detecting user's language.
 
 from langfuse.decorators import observe
 
-from src.llm.objects.language_detector import LanguageDetector
 from src.llm.state.models import GraphState
+
+# Module-level singleton
+_language_detector_instance = None
+
+def get_language_detector():
+    """Get or create singleton language detector instance."""
+    global _language_detector_instance
+    if _language_detector_instance is None:
+        from src.llm.objects.language_detector import LanguageDetector
+        _language_detector_instance = LanguageDetector()
+    return _language_detector_instance
 
 
 @observe()
@@ -22,11 +32,16 @@ def detect_language(state: GraphState) -> GraphState:
     Returns:
         Updated state with detected_language
     """
-    detector = LanguageDetector()
+    # Get singleton language detector
+    detector = get_language_detector()
+
+    # Get necessary variables from state
+    query = state["user_query"]
+    chat_history = state["chat_history"]
     
     language = detector.detect(
-        query=state["user_query"],
-        chat_history=state["chat_history"]
+        query=query,
+        chat_history=chat_history
     )
     
-    return {**state, "detected_language": language}
+    return {"detected_language": language}

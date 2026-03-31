@@ -2,13 +2,14 @@
 Node for synthesizing contexts from multiple retrieval rounds (Multi-Hop).
 """
 
+from src.api.models.serializable_text_node import SerializableTextNode
 from langfuse.decorators import observe
 
 from src.llm.state.models import GraphState
 
 
 @observe()
-def synthesize_answer(state: GraphState) -> dict:
+def synthesize_answer_eval(retrieved_nodes: list[SerializableTextNode]) -> list[SerializableTextNode]:
     """
     Synthesizes contexts from multiple sub-query retrievals into unified context.
     
@@ -27,14 +28,14 @@ def synthesize_answer(state: GraphState) -> dict:
         Updated state with combined retrieved nodes for reranking
     """
     # Guard: If no multi_contexts, skip synthesis
-    if "multi_contexts" not in state or not state["multi_contexts"]:
-        return {"retrieved": []}
+    if not retrieved_nodes:
+        return []
     
     # Flatten all contexts (already SerializableTextNode) and deduplicate by id_
     seen_ids = set()
     combined_nodes = []
     
-    for context_list in state["multi_contexts"]:
+    for context_list in retrieved_nodes:
         for node in context_list:
             node_id = node.id_ if node.id_ else id(node)
             if node_id not in seen_ids:
@@ -43,4 +44,4 @@ def synthesize_answer(state: GraphState) -> dict:
     
     # Pass ALL deduplicated nodes to reranker (it will select top_n)
     # SINNVOLL ODER SOLLTE DER RERANKER GEZWUNGEN WERDEN DOKUMENTE DIE FÜR JEDE SUBQUERY RETRIEVED WURDEN ZU NUTZEN?
-    return {"retrieved": combined_nodes}
+    return combined_nodes

@@ -1,7 +1,13 @@
 from typing import Annotated
 
+import json
+import queue
+import threading
+import uuid
+
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from fastapi.security import APIKeyHeader
 from langfuse import Langfuse
 from langfuse.decorators import langfuse_context, observe
@@ -13,6 +19,7 @@ from src.env import env
 from src.llm.assistant import KICampusAssistant
 from src.llm.objects.LLMs import Models
 from src.vectordb.qdrant import VectorDBQdrant
+from src.llm.streaming import TokenCallbackContext
 
 # Singleton instances for performance - avoid recreating on every request
 _vector_db = VectorDBQdrant()
@@ -78,20 +85,15 @@ class RetrievalRequest(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    messages: list[SerializableChatMessage] = Field(
-        description="All chat messages of the current conversation. The most recent should be a user message.",
+    user_query: SerializableChatMessage = Field(
+        description="The new user message. Should contain exactly one USER message.",
         examples=[
-            [
-                SerializableChatMessage(content="Hello", role=MessageRole.USER),
-                SerializableChatMessage(content="Hi, how can I help?", role=MessageRole.ASSISTANT),
-                SerializableChatMessage(content="I need help with my assignment", role=MessageRole.USER),
-            ]
+            SerializableChatMessage(content="I need help with my assignment", role=MessageRole.USER)
         ],
-        min_length=1,
     )
-    conversation_id: str | None = Field(
+    thread_id: str | None = Field(
         default=None,
-        description="Optional conversation/thread ID for persistent conversations. If None, a new conversation is created.",
+        description="Thread ID for persistent conversations. If provided, chat history is loaded from backend checkpoint. If None, a new thread is created.",
         examples=["550e8400-e29b-41d4-a716-446655440000"],
     )
     course_id: int | None = Field(
@@ -110,21 +112,9 @@ class ChatRequest(BaseModel):
         examples=[Models.GPT4, Models.MISTRAL8],
     )
 
-    @field_validator("messages", mode="after")
-    @classmethod
-    def final_message_is_user(cls, messages: list[SerializableChatMessage]) -> list[SerializableChatMessage]:
-        if messages[-1].role != MessageRole.USER:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="The last message must be a user message.",
-            )
-        return messages
-
-    def get_chat_history(self) -> list[ChatMessage]:
-        return [message.to_chat_message() for message in self.messages[:-1]]
-
     def get_user_query(self) -> str:
-        return self.messages[-1].content
+        """Extract the query string from user_query SerializableChatMessage."""
+        return self.user_query.content
 
     @model_validator(mode="after")
     def validate_module_id(self):
@@ -158,6 +148,10 @@ class ChatResponse(BaseModel):
         examples=["I can help you with that. What is the assignment about?"],
     )
     response_id: str = Field(description="An ID for the response, that is needed for using the feedback endpoint.")
+    thread_id: str = Field(
+        description="The thread ID. Use this for subsequent requests to continue the conversation.",
+        examples=["550e8400-e29b-41d4-a716-446655440000"],
+    )
 
 
 @app.post("/api/chat", dependencies=[Depends(api_key_auth)])
@@ -168,30 +162,107 @@ def chat(chat_request: ChatRequest) -> ChatResponse:
     
     if chat_request.course_id is not None:
         # Chat with course content (with or without module filter)
-        llm_response = _assistant.chat_with_course(
+        llm_response, thread_id = _assistant.chat_with_course(
             query=chat_request.get_user_query(),
-            chat_history=chat_request.get_chat_history(),
             model=chat_request.model,
             course_id=chat_request.course_id,
             module_id=chat_request.module_id,  # Can be None
-            conversation_id=chat_request.conversation_id,
+            thread_id=chat_request.thread_id,
         )
     else:
         # General chat (Drupal content)
-        llm_response = _assistant.chat(
+        llm_response, thread_id = _assistant.chat(
             query=chat_request.get_user_query(), 
-            chat_history=chat_request.get_chat_history(), 
             model=chat_request.model,
-            conversation_id=chat_request.conversation_id,
+            thread_id=chat_request.thread_id,
         )
 
     trace_id = langfuse_context.get_current_trace_id()
     if not trace_id:
         trace_id = "TRACING_UNAVAILABLE"
+    
+    # llm_response is SerializableChatMessage, extract content string
     chat_response = ChatResponse(
-        message=SerializableChatMessage.from_chat_message(llm_response).content, response_id=trace_id
+        message=llm_response.content,
+        response_id=trace_id,
+        thread_id=thread_id
     )
     return chat_response
+
+
+@app.post("/api/chat/stream", dependencies=[Depends(api_key_auth)])
+def chat_stream(chat_request: ChatRequest) -> StreamingResponse:
+    """Stream the assistant response token-by-token as NDJSON.
+
+    Response (application/x-ndjson):
+      - {"type":"meta", "thread_id":..., "response_id":...}
+      - {"type":"token", "token":...}  (many)
+      - {"type":"final", "message":..., "thread_id":..., "response_id":...}
+      - {"type":"error", "message":...} (optional)
+    """
+
+    # Ensure we control the thread_id that will be used for checkpointing.
+    thread_id = chat_request.thread_id or str(uuid.uuid4())
+
+    # Create a stable trace_id that will be used as Langfuse trace id.
+    # We set it as "root trace id" before invoking @observe-decorated code.
+    trace_id = str(uuid.uuid4())
+
+    q: queue.Queue[object] = queue.Queue()
+    DONE = object()
+
+    def token_callback(token: str) -> None:
+        q.put({"type": "token", "token": token})
+
+    def worker() -> None:
+        try:
+            # Make all nested @observe spans use our predefined trace_id.
+            # This is important because the streaming response needs the ID early.
+            langfuse_context._set_root_trace_id(trace_id)
+
+            with TokenCallbackContext(token_callback):
+                if chat_request.course_id is not None:
+                    llm_response, _thread_id = _assistant.chat_with_course(
+                        query=chat_request.get_user_query(),
+                        model=chat_request.model,
+                        course_id=chat_request.course_id,
+                        module_id=chat_request.module_id,
+                        thread_id=thread_id,
+                    )
+                else:
+                    llm_response, _thread_id = _assistant.chat(
+                        query=chat_request.get_user_query(),
+                        model=chat_request.model,
+                        thread_id=thread_id,
+                    )
+
+            q.put(
+                {
+                    "type": "final",
+                    "message": llm_response.content,
+                    "response_id": trace_id,
+                    "thread_id": _thread_id,
+                }
+            )
+        except Exception as e:
+            q.put({"type": "error", "message": str(e), "response_id": trace_id, "thread_id": thread_id})
+        finally:
+            q.put(DONE)
+
+    threading.Thread(target=worker, daemon=True).start()
+
+    def gen():
+        # Send metadata first so the client can store ids immediately.
+        yield (json.dumps({"type": "meta", "thread_id": thread_id, "response_id": trace_id}) + "\n").encode(
+            "utf-8"
+        )
+        while True:
+            item = q.get()
+            if item is DONE:
+                break
+            yield (json.dumps(item, ensure_ascii=False) + "\n").encode("utf-8")
+
+    return StreamingResponse(gen(), media_type="application/x-ndjson")
 
 
 class FeedbackRequest(BaseModel):
