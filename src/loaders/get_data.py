@@ -46,13 +46,19 @@ class Fetch_Data:
         dense_embeddings = self.embedder.get_text_embedding_batch(texts_to_embed)
 
         hybrid_points: list[dict] = []
-        for node, dense_vec in zip(nodes, dense_embeddings):
+        sparse_embeddings_batch = list(self.sparse_encoder.embed(texts_to_embed))
+        
+        for index, (node, dense_vec) in enumerate(zip(nodes, dense_embeddings)):
             text = node.get_content()
-            sparse_vec = self.sparse_encoder.encode(text)
+            sparse_result = sparse_embeddings_batch[index]
+            sparse_dict = {
+                "indices": sparse_result.indices.tolist(),
+                "values": sparse_result.values.tolist()
+            }
             hybrid_points.append(
                 {
                     "id": node.node_id or str(uuid.uuid4()),
-                    "vector": {"dense": dense_vec, "sparse": sparse_vec},
+                    "vector": {"dense": dense_vec, "sparse": sparse_dict},
                     "payload": {"text": text, **node.metadata},
                 }
             )
