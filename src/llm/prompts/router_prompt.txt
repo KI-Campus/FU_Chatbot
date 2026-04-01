@@ -31,3 +31,4 @@ Return EXACTLY one of the following strings (no explanation):
 - Do NOT choose multi_hop solely because a question is phrased as a comparison.
 - Default to "simple_hop" if uncertain.
 - Be precise and deterministic.
+- Always reply in the user's language
