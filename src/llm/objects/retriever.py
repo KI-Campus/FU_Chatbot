@@ -1,10 +1,7 @@
 from langfuse.decorators import observe
-from llama_index.core.schema import NodeWithScore, TextNode
-from llama_index.core.vector_stores import VectorStoreQuery
-from qdrant_client.models import Prefetch, Query, Fusion, FusionQuery
+from qdrant_client.models import Prefetch, Fusion, FusionQuery
 
 from src.llm.objects.LLMs import LLM
-from fastembed import SparseTextEmbedding
 from src.vectordb.qdrant import VectorDBQdrant, models
 from src.api.models.serializable_text_node import SerializableTextNode
 
@@ -21,14 +18,20 @@ class KiCampusRetriever:
         self.use_hybrid = use_hybrid
         self.n_chunks = n_chunks
         self.embedder = LLM().get_embedder()
+        self.sparse_encoder = None
+        self.vector_db = VectorDBQdrant("prod_remote")
+        self.collection_name = "web_assistant_hybrid"
         
         if use_hybrid:
-            self.sparse_encoder = SparseTextEmbedding("Qdrant/bm42-all-minilm-l6-v2-attentions")
-            # For hybrid search, we use direct Qdrant client instead of LlamaIndex wrapper
-            self.vector_db = VectorDBQdrant("prod_remote")
-            self.collection_name = "web_assistant_hybrid"
-        else:
-            self.vector_store = VectorDBQdrant("prod_remote").as_llama_vector_store(collection_name="web_assistant_hybrid")
+            try:
+                from fastembed import SparseTextEmbedding
+
+                self.sparse_encoder = SparseTextEmbedding("Qdrant/bm42-all-minilm-l6-v2-attentions")
+            except Exception as e:
+                # Fastembed/onnxruntime can fail on some Windows setups.
+                # Fall back to dense retrieval so chat remains usable.
+                print(f"Hybrid retrieval unavailable ({e}). Falling back to dense-only retrieval.")
+                self.use_hybrid = False
 
     @observe()
     def retrieve(self, query: str, course_id: int | None = None, module_id: int | None = None) -> list[SerializableTextNode]:
@@ -47,13 +50,8 @@ class KiCampusRetriever:
         else:
             return self._retrieve_dense_only(query, course_id, module_id)
     
-    def _retrieve_dense_only(self, query: str, course_id: int | list[int] | tuple[int, ...] | None, module_id: int | None) -> list[SerializableTextNode]:
-        """Legacy dense-only retrieval using LlamaIndex wrapper."""
-
-        # Generate query embedding
-        embedding = self.embedder.get_query_embedding(query)
-
-        # Build filter conditions
+    def _build_filter(self, course_id: int | list[int] | tuple[int, ...] | None, module_id: int | None):
+        """Build Qdrant payload filter shared by dense and hybrid retrieval."""
         conditions = []
 
         if course_id is None and module_id is None:
@@ -89,19 +87,42 @@ class KiCampusRetriever:
                 )
             )
 
-        filter = models.Filter(must=conditions) if conditions else None
+        return models.Filter(must=conditions) if conditions else None
 
-        # Perform vector store query
-        vector_store_query = VectorStoreQuery(query_embedding=embedding, similarity_top_k=self.n_chunks)
+    def _points_to_serializable_nodes(self, points) -> list[SerializableTextNode]:
+        """Convert Qdrant search points into SerializableTextNodes."""
+        nodes = []
 
-        # Get results
-        query_result = self.vector_store.query(vector_store_query, qdrant_filters=filter)
+        for result in points:
+            text = result.payload.get("text", result.payload.get("content", ""))
+            metadata = {k: v for k, v in result.payload.items() if k not in ("text", "content")}
+            nodes.append(
+                SerializableTextNode(
+                    text=text,
+                    id_=str(result.id),
+                    metadata=metadata,
+                    score=result.score if hasattr(result, "score") else None,
+                )
+            )
 
-        if query_result.nodes is None:
-            return []
+        return nodes
 
-        # Convert to SerializableTextNode
-        return [SerializableTextNode.from_text_node(node) for node in query_result.nodes]
+    def _retrieve_dense_only(self, query: str, course_id: int | list[int] | tuple[int, ...] | None, module_id: int | None) -> list[SerializableTextNode]:
+        """Dense-only retrieval using named vector 'dense'."""
+
+        dense_embedding = self.embedder.get_query_embedding(query)
+        query_filter = self._build_filter(course_id, module_id)
+
+        search_results = self.vector_db.client.query_points(
+            collection_name=self.collection_name,
+            query=dense_embedding,
+            using="dense",
+            query_filter=query_filter,
+            limit=self.n_chunks,
+            with_payload=True,
+        )
+
+        return self._points_to_serializable_nodes(search_results.points)
     
     def _retrieve_hybrid(self, query: str, course_id: int | list[int] | tuple[int, ...] | None, module_id: int | None) -> list[SerializableTextNode]:
         """Hybrid retrieval using both dense and sparse vectors.
@@ -113,48 +134,17 @@ class KiCampusRetriever:
         dense_embedding = self.embedder.get_query_embedding(query)
         
         # Generate sparse embedding
-        sparse_result = list(self.sparse_encoder.embed([query]))[0]
-        sparse_embedding = models.SparseVector(
-            indices=sparse_result.indices.tolist(),
-            values=sparse_result.values.tolist()
-        )
-        
-        # Build filter conditions
-        conditions = []
-        
-        if course_id is None and module_id is None:
-            conditions.append(
-                models.FieldCondition(
-                    key="source",
-                    match=models.MatchValue(value="Drupal"),
-                )
+        try:
+            sparse_result = list(self.sparse_encoder.embed([query]))[0]
+            sparse_embedding = models.SparseVector(
+                indices=sparse_result.indices.tolist(),
+                values=sparse_result.values.tolist()
             )
+        except Exception as e:
+            print(f"Hybrid sparse embedding failed ({e}). Falling back to dense-only retrieval for this request.")
+            return self._retrieve_dense_only(query, course_id, module_id)
         
-        if course_id is not None:
-            if isinstance(course_id, (list, tuple)):
-                conditions.append(
-                    models.FieldCondition(
-                        key="course_id",
-                        match=models.MatchAny(any=list(course_id)),
-                    )
-                )
-            else:
-                conditions.append(
-                    models.FieldCondition(
-                        key="course_id",
-                        match=models.MatchValue(value=course_id),
-                    )
-                )
-        
-        if module_id is not None:
-            conditions.append(
-                models.FieldCondition(
-                    key="module_id",
-                    match=models.MatchValue(value=module_id),
-                )
-            )
-        
-        query_filter = models.Filter(must=conditions) if conditions else None
+        query_filter = self._build_filter(course_id, module_id)
         
         # Hybrid search using prefetch + fusion
         # Qdrant performs automatic RRF (Reciprocal Rank Fusion)
@@ -180,23 +170,4 @@ class KiCampusRetriever:
             with_payload=True,
         )
         
-        # Convert Qdrant results to SerializableTextNodes
-        nodes = []
-        for result in search_results.points:
-            # Extract text from payload
-            text = result.payload.get("text", result.payload.get("content", ""))
-            
-            # Create metadata without text/content (avoid duplication)
-            metadata = {k: v for k, v in result.payload.items() if k not in ("text", "content")}
-            
-            # Create SerializableTextNode
-            node = SerializableTextNode(
-                text=text,
-                id_=str(result.id),
-                metadata=metadata,
-                score=result.score if hasattr(result, 'score') else None,
-            )
-            
-            nodes.append(node)
-        
-        return nodes
+        return self._points_to_serializable_nodes(search_results.points)

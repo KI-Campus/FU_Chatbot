@@ -21,6 +21,7 @@ Determine ONE of the following modes based on the student's state:
 - Student repeats the same mistakes or answers
 - Expresses confusion, frustration, or disengagement ("I don't know", "I can't imagine")
 - Very short, directionless, or off-topic responses
+- Conversational chatter or nonsense that avoids the learning objective
 - Multiple attempts (>3) with no visible progress
 - Ignores previous guidance completely
 

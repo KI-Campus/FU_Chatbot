@@ -2,6 +2,7 @@ from langfuse.decorators import observe
 
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
+from src.llm.streaming import StreamPhaseContext
 
 # Load prompt once at module level
 llm = LLM()
@@ -25,9 +26,8 @@ def socratic_explain(learning_objective: str,
     - Offer follow-up practice or move to reflection
     
     Triggers:
-    - hint_level == 3 AND contract.allow_explain == True
     - Explicit student request ("Gib mir einfach die Antwort")
-    - Fail-policy: Too many attempts without progress
+    - Too many attempts/hints without progress
     
     Strategy:
     - Use reranked chunks to provide fact-based explanation
@@ -40,10 +40,8 @@ def socratic_explain(learning_objective: str,
     - → "reflection": If student satisfied or goal achieved
     
     Changes:
-    - Sets answer with structured explanation
-    - Updates student_model (marks topic as explained)
-    - Resets hint_level to 0 (for potential practice round)
-    - Sets socratic_mode for next step
+    - Returns a structured explanation grounded in retrieved content
+    - Serves as the final core step before forced feedback
     
     Args:
         state: Current graph state with reranked chunks, chat_history, number_given_hints
@@ -69,12 +67,13 @@ Retrieved Course Materials:
 {course_materials}"""
     
     # Generate explanation using LLM
-    llm_response = llm.chat(
-        query=query_for_llm,
-        chat_history=chat_history,
-        model=model,
-        system_prompt=SOCRATIC_EXPLAIN_PROMPT
-    )
+    with StreamPhaseContext("final"):
+        llm_response = llm.chat(
+            query=query_for_llm,
+            chat_history=chat_history,
+            model=model,
+            system_prompt=SOCRATIC_EXPLAIN_PROMPT
+        )
     
     if llm_response.content is None:
         # Fallback if LLM fails
@@ -86,8 +85,4 @@ Retrieved Course Materials:
     else:
         explanation = llm_response.content.strip()
     
-    # Add closing text encouraging continuation
-    closing_text = "\nFalls du weiterhin im Lernmodus bleiben möchtest, lasse mich wissen, bei welchem Thema ich dir weiterhin helfen kann! Andernfalls verlasse den Lernmodus mit 'quit'."
-    full_response = explanation + closing_text
-    
-    return full_response
+    return explanation

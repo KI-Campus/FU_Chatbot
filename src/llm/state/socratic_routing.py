@@ -3,6 +3,7 @@ from typing import Dict, Any, List
 from src.api.models.serializable_chat_message import SerializableChatMessage
 from src.llm.objects.LLMs import LLM, Models
 from src.llm.prompts.prompt_loader import load_prompt
+from src.llm.state.models import build_inactive_socratic_agent_state
 
 # Initiate LLm instance
 llm = LLM()
@@ -76,30 +77,5 @@ def reset_socratic_state() -> Dict[str, Any]:
         Dict with all socratic fields reset to None/0/False
     """
     return {
-        "socratic_mode": None,
-        "socratic_contract": None,
-        "learning_objective": None,
-        "attempt_count": 0,
-        "number_given_hints": 0,
-        "goal_achieved": False
-    }
-
-def answer_and_reset_socratic_state(next_mode: str, response: str) -> Dict[str, Any]:
-    """
-    Reset all socratic-specific state fields to initial/clean state.
-    
-    Called when socratic mode ends (reflection, explain, or contextualizer exit).
-    Ensures clean slate for next socratic or non-socratic interaction.
-    
-    Returns:
-        Dict with all socratic fields reset to None/0/False
-    """
-    return {
-        "socratic_mode": next_mode,
-        "socratic_contract": None,
-        "learning_objective": None,
-        "attempt_count": 0,
-        "number_given_hints": 0,
-        "goal_achieved": False,
-        "answer": response
+        "socratic_agent": build_inactive_socratic_agent_state()
     }

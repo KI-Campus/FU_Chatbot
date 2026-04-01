@@ -2,6 +2,7 @@ from langfuse.decorators import observe
 
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
+from src.llm.streaming import StreamPhaseContext
 
 # Load prompt once at module level
 SOCRATIC_HINTING_PROMPT = load_prompt("socratic_hinting")
@@ -45,12 +46,13 @@ Retrieved Course Materials:
     
     # Generate hint using LLM
     _llm = LLM()
-    llm_response = _llm.chat(
-        query=query_for_llm,
-        chat_history=chat_history,
-        model=model,
-        system_prompt=SOCRATIC_HINTING_PROMPT
-    )
+    with StreamPhaseContext("final"):
+        llm_response = _llm.chat(
+            query=query_for_llm,
+            chat_history=chat_history,
+            model=model,
+            system_prompt=SOCRATIC_HINTING_PROMPT
+        )
     
     if llm_response.content is None:
         # Fallback if LLM fails

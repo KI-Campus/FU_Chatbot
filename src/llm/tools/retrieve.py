@@ -12,7 +12,11 @@ _retriever_instance = None
 def get_retriever(use_hybrid: bool = True, n_chunks: int = 10):
     """Get or create singleton retriever instance."""
     global _retriever_instance
-    if _retriever_instance is None:
+    if (
+        _retriever_instance is None
+        or _retriever_instance.use_hybrid != use_hybrid
+        or _retriever_instance.n_chunks != n_chunks
+    ):
         from src.llm.objects.retriever import KiCampusRetriever
         _retriever_instance = KiCampusRetriever(use_hybrid=use_hybrid, n_chunks=n_chunks)
     return _retriever_instance
@@ -21,7 +25,7 @@ def get_retriever(use_hybrid: bool = True, n_chunks: int = 10):
 @observe()
 def retrieve_chunks(state: GraphState) -> dict:
     """
-    Retrieves relevant document chunks using hybrid search.
+    Retrieves relevant document chunks using dense search.
     
     Changes:
     - Sets state.retrieved (list of TextNode)
@@ -39,7 +43,7 @@ def retrieve_chunks(state: GraphState) -> dict:
     retrieve_top_n = state["system_config"]["retrieve_top_n"]
     
     # Get singleton retriever
-    retriever = get_retriever(use_hybrid=True, n_chunks=retrieve_top_n)
+    retriever = get_retriever(use_hybrid=False, n_chunks=retrieve_top_n)
     
     # Retrieve chunks (returns SerializableTextNode)
     nodes = retriever.retrieve(

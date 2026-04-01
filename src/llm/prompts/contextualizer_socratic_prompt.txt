@@ -24,6 +24,7 @@ Transform the student's current response into a retrieval query that:
    - Invent knowledge gaps
    - Interpret beyond what is explicitly said
 4. Query must be suitable for retrieval from a vector database, not directly answer the concept.
+5. If the Current Response is conversational, off-topic, or nonsense, ignore it and build the query from Learning Objective + relevant Chat History only.
 
 # OUTPUT #
 Return ONE concise retrieval query (natural language, 1 sentence).

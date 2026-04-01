@@ -6,9 +6,10 @@ Second step in socratic workflow: Diagnostic assessment to establish baseline.
 
 from langfuse.decorators import observe
 
-from src.llm.state.models import GraphState
+from src.llm.state.models import GraphState, build_active_socratic_agent_state
 from src.llm.objects.LLMs import LLM
 from src.llm.prompts.prompt_loader import load_prompt
+from src.llm.streaming import StreamPhaseContext
 
 # Load prompt once at module level
 SOCRATIC_DIAGNOSE_PROMPT = load_prompt("socratic_diagnose")
@@ -33,8 +34,8 @@ def socratic_diagnose(state: GraphState) -> dict:
     
     Changes:
     - Sets learning_objective (extracted from query)
-    - Initializes student_model with baseline assessment
-    - Sets socratic_mode = "core" for next step
+    - Fills diagnosis_artifact in socratic_agent state
+    - Sets agent phase to core
     - Sets answer with diagnostic question
     
     Args:
@@ -49,42 +50,51 @@ def socratic_diagnose(state: GraphState) -> dict:
     model = state["runtime_config"]["model"]
     
     # LLM-Call to extract learning objective and diagnostic question
-    response = _llm.chat(
-        query=user_query,
-        chat_history=chat_history,
-        model=model,
-        system_prompt=SOCRATIC_DIAGNOSE_PROMPT
-    )
+    with StreamPhaseContext("final"):
+        response = _llm.chat(
+            query=user_query,
+            chat_history=chat_history,
+            model=model,
+            system_prompt=SOCRATIC_DIAGNOSE_PROMPT
+        )
     
     # Parse response
+    diagnosis_ready = False
     learning_objective = ""
     diagnostic_question = ""
     
     if response.content:
         lines = response.content.strip().split('\n')
         for line in lines:
-            if line.startswith('LEARNING_OBJECTIVE:'):
+            if line.startswith('DIAGNOSIS_READY:'):
+                diagnosis_ready = line.split(':', 1)[1].strip().upper() == "YES"
+            elif line.startswith('LEARNING_OBJECTIVE:'):
                 learning_objective = line.split(':', 1)[1].strip()
             elif line.startswith('DIAGNOSTIC_QUESTION:'):
                 diagnostic_question = line.split(':', 1)[1].strip()
     
     # Fallback if parsing fails
-    if not learning_objective:
-        learning_objective = f"Verstehe: {user_query}"
     if not diagnostic_question:
-        diagnostic_question = "Was weißt du bereits über dieses Thema?"
+        diagnostic_question = "Welches konkrete Thema möchtest du im Lernmodus verstehen?"
+
+    # Require explicit diagnosis readiness and non-empty objective before entering core.
+    if not learning_objective or learning_objective.upper() == "NONE":
+        diagnosis_ready = False
     
-    # Initialize student model with unknown baseline
-    student_model = {
-        "mastery": "unknown",
-        "misconceptions": [],
-        "affect": "neutral",
-        "prior_knowledge": None,
+    existing_agent = state.get("socratic_agent") or {}
+    agent = {
+        **build_active_socratic_agent_state(),
+        **existing_agent,
+        "active": True,
+        "phase": "core" if diagnosis_ready else "diagnosis",
+        "diagnosis_artifact": f"diagnosis_completed:{learning_objective}" if diagnosis_ready else None,
+        "learning_objective": learning_objective if diagnosis_ready else None,
+        "last_executed_tool": "diagnosis",
+        "planned_tool": None,
     }
     
     return {
-        "learning_objective": learning_objective,
-        "student_model": student_model,
-        "socratic_mode": "core",
-        "answer": diagnostic_question
+        "socratic_agent": agent,
+        "answer": diagnostic_question,
+        "citations_markdown": None,
     }
