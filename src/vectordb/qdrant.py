@@ -64,10 +64,9 @@ class VectorDBQdrant:
             vector_size: Size of dense vectors
             enable_sparse: If True, enables sparse vectors for hybrid search
         """
-        try:
-            _ = self.client.get_collection(collection_name=collection_name)
+        if self.client.collection_exists(collection_name=collection_name):
             self.logger.info("Qdrant collection '%s' already exists.", collection_name)
-        except UnexpectedResponse as e:
+        else:
             self.logger.info(
                 "Qdrant create_collection %s",
                 {

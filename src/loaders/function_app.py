@@ -71,16 +71,27 @@ async def start_ingest(req: func.HttpRequest, client: df.DurableOrchestrationCli
     # Return the standard Durable status URLs + our run metadata so the caller can
     # open the log URL while the run is still executing.
     status_response = client.create_check_status_response(req, instance_id)
+    
+    try:
+        urls = json.loads(status_response.get_body().decode('utf-8'))
+    except Exception:
+        urls = {}
+
     body = {
         "instanceId": instance_id,
         "run_id": run_id,
         "log_url": log_url,
-        "statusQueryGetUri": status_response.headers.get("Location"),
-        "sendEventPostUri": status_response.headers.get("Location"),
-        "terminatePostUri": status_response.headers.get("Location"),
-        "purgeHistoryDeleteUri": status_response.headers.get("Location"),
+        "statusQueryGetUri": urls.get("statusQueryGetUri") or status_response.headers.get("Location"),
+        "sendEventPostUri": urls.get("sendEventPostUri"),
+        "terminatePostUri": urls.get("terminatePostUri"),
+        "purgeHistoryDeleteUri": urls.get("purgeHistoryDeleteUri"),
     }
-    return func.HttpResponse(json.dumps(body), status_code=202, mimetype="application/json")
+    return func.HttpResponse(
+        json.dumps(body), 
+        status_code=202, 
+        headers=status_response.headers,
+        mimetype="application/json"
+    )
 
 
 # 2. Orchestrator - Coordinates the workflow, survives restarts
@@ -137,6 +148,30 @@ async def check_status(req: func.HttpRequest, client: df.DurableOrchestrationCli
             mimetype="application/json"
         )
     return func.HttpResponse("Instance not found", status_code=404)
+
+
+# 5. Stop Endpoint - Manually terminate the orchestration
+@app.function_name(name="stop_ingest")
+@app.route(route="stop_ingest/{instance_id}", methods=["POST"], auth_level=func.AuthLevel.FUNCTION)
+@app.durable_client_input(client_name="client")
+async def stop_ingest(req: func.HttpRequest, client: df.DurableOrchestrationClient) -> func.HttpResponse:
+    """Manually terminate a running durable data ingestion orchestration."""
+    instance_id = req.route_params.get("instance_id")
+    if not instance_id:
+        # Default to the singleton instance ID if not provided in route
+        instance_id = "ingest_singleton"
+
+    status = await client.get_status(instance_id)
+    if not status or status.runtime_status.name not in {"Running", "Pending"}:
+        return func.HttpResponse(f"Instance '{instance_id}' is not currently running.", status_code=400)
+
+    reason = req.params.get("reason") or "Terminated by user request"
+    await client.terminate(instance_id, reason)
+    
+    return func.HttpResponse(
+        f"Termination request sent for instance '{instance_id}'.",
+        status_code=202
+    )
 
 
 # =============================================================================

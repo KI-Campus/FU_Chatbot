@@ -19,7 +19,7 @@ from src.loaders.helper import iter_nodes_from_document_hierarchical
 from src.vectordb.qdrant import VectorDBQdrant
 from src.loaders.run_logger import Heartbeat, RunContext, RunLogger, StageTimer, Watchdog, format_kv
 
-DEFAULT_COLLECTION = "web_assistant_hybrid_test"
+DEFAULT_COLLECTION = "web_assistant_hybrid_v2"
 SNAPSHOTS_TO_KEEP = 3
 
 
