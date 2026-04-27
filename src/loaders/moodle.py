@@ -41,55 +41,6 @@ from src.loaders.run_logger import RunContext, format_kv
 from src.loaders.helper import normalize_text_for_rag
 
 
-MODULE_FINGERPRINT_VERSION = 1
-
-
-def compute_module_fingerprint(module) -> str:
-    """Compute a stable fingerprint for a Moodle module.
-
-    We intentionally use *only* timestamps from Moodle (no text), so we can detect
-    changes before expensive extraction.
-
-    Sources (in priority order):
-      1) module.contentsinfo.lastmodified (from core_course_get_contents)
-      2) max(module.contents[].timemodified)
-
-    Returns:
-        sha256 hex digest string.
-    """
-    lastmodified = None
-    try:
-        ci = getattr(module, "contentsinfo", None) or {}
-        if isinstance(ci, dict):
-            lastmodified = ci.get("lastmodified")
-    except Exception:
-        lastmodified = None
-
-    if lastmodified is None:
-        try:
-            contents = getattr(module, "contents", None) or []
-            ts = []
-            for c in contents:
-                # DownloadableContent is a pydantic model; moodle raw dicts have timemodified.
-                v = getattr(c, "timemodified", None)
-                if v is None and isinstance(c, dict):
-                    v = c.get("timemodified")
-                if isinstance(v, int):
-                    ts.append(v)
-            lastmodified = max(ts) if ts else 0
-        except Exception:
-            lastmodified = 0
-
-    payload = {
-        "v": MODULE_FINGERPRINT_VERSION,
-        "module_id": int(getattr(module, "id", 0) or 0),
-        "modname": str(getattr(module, "modname", "") or ""),
-        "lastmodified": int(lastmodified) if isinstance(lastmodified, int) else 0,
-    }
-    raw = json.dumps(payload, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
-    return hashlib.sha256(raw).hexdigest()
-
-
 class Moodle:
     """class for Moodle API clients
     base_url: base url of moodle instance
@@ -174,12 +125,7 @@ class Moodle:
         return docs
 
 
-    def iter_course_documents_stream(
-        self,
-        *,
-        existing_module_fingerprints: dict[int, dict[int, str]] | None = None,
-        delta_by_module: bool = True,
-    ) -> Iterable[tuple[MoodleCourse, Document]]:
+    def iter_course_documents_stream(self) -> Iterable[tuple[MoodleCourse, Document]]:
         """Yield Moodle documents as a stream: (course_obj, doc).
 
         This is a bounded-memory iterator designed for ingestion:
@@ -206,66 +152,9 @@ class Moodle:
         for i, course in enumerate(courses):
             self.logger.debug("Processing course id=%s (%s/%s)", course.id, i + 1, len(courses))
 
-            # Load the lightweight course structure first. This is required both for
-            # extraction and for delta fingerprinting.
+            # Load the lightweight course structure first.
             course.topics = self.get_course_contents(course.id)
             self.logger.info("Moodle: course_id=%s topics=%s", course.id, len(course.topics))
-
-            # Compute current module fingerprints from timestamps only.
-            current_module_fps: dict[int, str] = {}
-            current_module_ids: set[int] = set()
-            for topic in course.topics or []:
-                for m in getattr(topic, "modules", None) or []:
-                    if m is None:
-                        continue
-                    try:
-                        mid = int(getattr(m, "id", 0) or 0)
-                    except Exception:
-                        continue
-                    if mid <= 0:
-                        continue
-                    current_module_ids.add(mid)
-                    try:
-                        current_module_fps[mid] = compute_module_fingerprint(m)
-                    except Exception:
-                        # best-effort: missing contentsinfo etc.
-                        current_module_fps[mid] = compute_module_fingerprint(m)
-
-            existing_for_course: dict[int, str] = {}
-            if delta_by_module and existing_module_fingerprints:
-                existing_for_course = existing_module_fingerprints.get(int(course.id), {}) or {}
-
-            changed_module_ids: set[int] = set(current_module_ids)
-            removed_module_ids: list[int] = []
-            if delta_by_module:
-                removed_module_ids = sorted(set(existing_for_course.keys()) - current_module_ids)
-                changed_module_ids = {mid for mid, fp in current_module_fps.items() if existing_for_course.get(mid) != fp}
-
-                if not changed_module_ids and not removed_module_ids and existing_for_course:
-                    # Nothing changed - skip the entire course without any heavy extraction.
-                    self.logger.info(
-                        "Moodle: course_id=%s unchanged (modules=%s). Skipping extraction.",
-                        course.id,
-                        len(current_module_ids),
-                    )
-                    if self.run_ctx:
-                        self.run_ctx.inc("moodle_courses_done")
-                        self.run_ctx.set_last(course_id=course.id)
-                        self.run_ctx.checkpoint()
-                    # Release memory
-                    try:
-                        course.topics = []
-                    except Exception:
-                        pass
-                    continue
-
-                self.logger.info(
-                    "Moodle delta: course_id=%s modules_total=%s changed=%s removed=%s",
-                    course.id,
-                    len(current_module_ids),
-                    len(changed_module_ids),
-                    len(removed_module_ids),
-                )
 
             if self.run_ctx:
                 self.run_ctx.set_last(course_id=course.id)
@@ -301,33 +190,7 @@ class Moodle:
                 "url": course.url,
                 **({"language": course.lang} if getattr(course, "lang", None) else {}),
             }
-            if delta_by_module:
-                course_doc_md.update(
-                    {
-                        "delta_mode": "module_fingerprint",
-                        "module_fingerprint_version": MODULE_FINGERPRINT_VERSION,
-                        "modules_total": len(current_module_ids),
-                        "modules_changed": len(changed_module_ids),
-                        "modules_removed": len(removed_module_ids),
-                        "removed_module_ids": removed_module_ids,
-                    }
-                )
             yield course, Document(text=str(course), metadata=course_doc_md)
-
-            # If delta mode is enabled, reduce the work we do by extracting only changed modules.
-            if delta_by_module:
-                for topic in course.topics or []:
-                    filtered = []
-                    for m in getattr(topic, "modules", None) or []:
-                        if m is None:
-                            continue
-                        try:
-                            mid = int(getattr(m, "id", 0) or 0)
-                        except Exception:
-                            continue
-                        if mid in changed_module_ids:
-                            filtered.append(m)
-                    topic.modules = filtered
 
             # Process each topic and module (this fills module objects with extracted content)
             for topic in course.topics:
@@ -369,15 +232,6 @@ class Moodle:
                             continue
                         try:
                             doc = module.to_document(course.id)
-                            # Attach module fingerprint for the ingestion pipeline, so it can upsert
-                            # the companion ModuleFingerprint point in Qdrant.
-                            try:
-                                mid = int(getattr(module, "id", 0) or 0)
-                            except Exception:
-                                mid = None
-                            if delta_by_module and mid and mid in current_module_fps:
-                                doc.metadata["module_fingerprint"] = current_module_fps[mid]
-                                doc.metadata["module_fingerprint_version"] = MODULE_FINGERPRINT_VERSION
                             yield course, doc
                         except Exception as e:
                             self.logger.warning(

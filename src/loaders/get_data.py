@@ -14,7 +14,7 @@ from src.llm.objects.LLMs import LLM
 from fastembed import SparseTextEmbedding
 from src.loaders.drupal import Drupal
 from src.loaders.moochup import Moochup
-from src.loaders.moodle import MODULE_FINGERPRINT_VERSION, Moodle
+from src.loaders.moodle import Moodle
 from src.loaders.helper import iter_nodes_from_document_hierarchical
 from src.vectordb.qdrant import VectorDBQdrant
 from src.loaders.run_logger import Heartbeat, RunContext, RunLogger, StageTimer, Watchdog, format_kv
@@ -433,7 +433,7 @@ class Fetch_Data:
 
             # Moochup: delete by source and upsert
             with StageTimer(self.logger, self.ctx, "MOOCHUP"):
-                if run_sources is None or "MOOCHUP" in run_sources:
+                if False: # run_sources is None or "MOOCHUP" in run_sources:
                     self.logger.info("Loading Moodle data from Moochup API...")
                     moochup_docs = Moochup(env.DATA_SOURCE_MOOCHUP_MOODLE_URL).get_course_documents()
                     moochup_documents = len(moochup_docs)
@@ -460,77 +460,6 @@ class Fetch_Data:
                     self.logger.info("Streaming Moodle data (per course)...")
                     moodle = Moodle(run_ctx=self.ctx)
 
-                    # Delta mode: skip unchanged modules/courses by comparing Moodle timestamps against
-                    # stored ModuleFingerprint points in Qdrant.
-                    delta_by_module = os.getenv("RUN_MOODLE_DELTA_BY_MODULE", "true").lower() in {"1", "true", "yes"}
-                    existing_module_fingerprints: dict[int, dict[int, str]] = {}
-                    if delta_by_module:
-                        try:
-                            scroll_filter = models.Filter(
-                                must=[
-                                    models.FieldCondition(
-                                        key="source", match=models.MatchValue(value="Moodle")
-                                    ),
-                                    models.FieldCondition(
-                                        key="type", match=models.MatchValue(value="ModuleFingerprint")
-                                    ),
-                                ]
-                            )
-                            offset = None
-                            scanned = 0
-                            while True:
-                                records, next_offset = self.dev_vector_store.client.scroll(
-                                    collection_name=DEFAULT_COLLECTION,
-                                    scroll_filter=scroll_filter,
-                                    with_payload=True,
-                                    with_vectors=False,
-                                    limit=512,
-                                    offset=offset,
-                                )
-                                for r in records or []:
-                                    scanned += 1
-                                    try:
-                                        payload = r.payload or {}
-                                        cid = payload.get("course_id")
-                                        mid = payload.get("module_id")
-                                        fp = payload.get("module_fingerprint")
-                                        v = payload.get("module_fingerprint_version")
-                                        if (
-                                            isinstance(cid, int)
-                                            and isinstance(mid, int)
-                                            and isinstance(fp, str)
-                                            and (v is None or int(v) == MODULE_FINGERPRINT_VERSION)
-                                        ):
-                                            existing_module_fingerprints.setdefault(int(cid), {})[int(mid)] = fp
-                                    except Exception:
-                                        continue
-                                if not next_offset:
-                                    break
-                                offset = next_offset
-
-                            self.logger.info(
-                                "MOODLE_DELTA %s",
-                                format_kv(
-                                    RUN_ID=self.run_id,
-                                    ENABLED=True,
-                                    MODULE_FP_VERSION=MODULE_FINGERPRINT_VERSION,
-                                    FINGERPRINT_POINTS=scanned,
-                                    COURSES_WITH_FPS=len(existing_module_fingerprints),
-                                ),
-                            )
-                            self.ctx.set_counter("moodle_modulefingerprint_points", scanned)
-                        except Exception as e:
-                            self.logger.warning(
-                                "MOODLE_DELTA %s",
-                                format_kv(
-                                    RUN_ID=self.run_id,
-                                    ENABLED=True,
-                                    EVENT="FAILED_TO_QUERY_MODULE_FPS",
-                                    EXC=str(e),
-                                ),
-                            )
-                            existing_module_fingerprints = {}
-
                     # Best-effort: count total courses early for progress
                     try:
                         moodle_courses_total = len(moodle.get_courses())
@@ -541,13 +470,8 @@ class Fetch_Data:
                     prev_course_id: int | None = None
                     # Track per-course state to avoid duplicate deletes within a run
                     deleted_course_summary: set[int] = set()
-                    deleted_module_chunks: set[tuple[int, int]] = set()  # (course_id, module_id)
-                    processed_removed_modules: set[int] = set()
 
-                    for course, doc in moodle.iter_course_documents_stream(
-                        existing_module_fingerprints=existing_module_fingerprints or None,
-                        delta_by_module=delta_by_module,
-                    ):
+                    for course, doc in moodle.iter_course_documents_stream():
                         course_id = int(getattr(course, "id", 0))
 
                         # Determine whether this is the per-course summary doc or a module doc.
@@ -562,7 +486,7 @@ class Fetch_Data:
                         prev_course_id = course_id
 
                         # Maintain a stable single course summary point per course by deleting old
-                        # summaries (type=Kurs) before inserting the new one.
+                        # summaries and chunks before inserting the new ones.
                         if module_id is None and course_id not in deleted_course_summary:
                             deleted_course_summary.add(course_id)
                             moodle_courses_done += 1
@@ -573,70 +497,15 @@ class Fetch_Data:
                                     must=[
                                         models.FieldCondition(key="source", match=models.MatchValue(value="Moodle")),
                                         models.FieldCondition(key="course_id", match=models.MatchValue(value=course_id)),
-                                        models.FieldCondition(key="type", match=models.MatchValue(value="Kurs")),
                                     ]
                                 ),
                             )
-
-                            # If delta mode detected removed modules, delete their chunks + fingerprint points.
-                            if delta_by_module and getattr(doc, "metadata", None):
-                                removed = doc.metadata.get("removed_module_ids") or []
-                                if isinstance(removed, list) and removed:
-                                    for rm in removed:
-                                        try:
-                                            rm_id = int(rm)
-                                        except Exception:
-                                            continue
-                                        if rm_id <= 0 or rm_id in processed_removed_modules:
-                                            continue
-                                        processed_removed_modules.add(rm_id)
-                                        # delete module chunks
-                                        self.dev_vector_store.delete_by_filter(
-                                            DEFAULT_COLLECTION,
-                                            models.Filter(
-                                                must=[
-                                                    models.FieldCondition(key="source", match=models.MatchValue(value="Moodle")),
-                                                    models.FieldCondition(key="course_id", match=models.MatchValue(value=course_id)),
-                                                    models.FieldCondition(key="module_id", match=models.MatchValue(value=rm_id)),
-                                                    models.FieldCondition(key="type", match=models.MatchValue(value="module")),
-                                                ]
-                                            ),
-                                        )
-                                        # delete ModuleFingerprint point
-                                        self.dev_vector_store.delete_by_filter(
-                                            DEFAULT_COLLECTION,
-                                            models.Filter(
-                                                must=[
-                                                    models.FieldCondition(key="source", match=models.MatchValue(value="Moodle")),
-                                                    models.FieldCondition(key="course_id", match=models.MatchValue(value=course_id)),
-                                                    models.FieldCondition(key="module_id", match=models.MatchValue(value=rm_id)),
-                                                    models.FieldCondition(key="type", match=models.MatchValue(value="ModuleFingerprint")),
-                                                ]
-                                            ),
-                                        )
 
                         # Skip per-course "Kurs" docs after first insert (avoids duplicates)
                         if module_id is None:
                             if course_id in ingested_course_summaries:
                                 continue
                             ingested_course_summaries.add(course_id)
-
-                        # In delta mode, delete only the affected module's chunks right before upsert.
-                        if delta_by_module and module_id is not None:
-                            key = (course_id, int(module_id))
-                            if key not in deleted_module_chunks:
-                                deleted_module_chunks.add(key)
-                                self.dev_vector_store.delete_by_filter(
-                                    DEFAULT_COLLECTION,
-                                    models.Filter(
-                                        must=[
-                                            models.FieldCondition(key="source", match=models.MatchValue(value="Moodle")),
-                                            models.FieldCondition(key="course_id", match=models.MatchValue(value=course_id)),
-                                            models.FieldCondition(key="module_id", match=models.MatchValue(value=int(module_id))),
-                                            models.FieldCondition(key="type", match=models.MatchValue(value="module")),
-                                        ]
-                                    ),
-                                )
 
                         moodle_documents += 1
                         self.ctx.set_counter("moodle_documents", moodle_documents)
@@ -660,33 +529,6 @@ class Fetch_Data:
                             ),
                         )
 
-                        # Upsert companion ModuleFingerprint point (metadata-only) once the module
-                        # chunks are safely written.
-                        if delta_by_module and module_id is not None and getattr(doc, "metadata", None):
-                            fp = doc.metadata.get("module_fingerprint")
-                            fp_v = doc.metadata.get("module_fingerprint_version")
-                            if isinstance(fp, str) and (fp_v is None or int(fp_v) == MODULE_FINGERPRINT_VERSION):
-                                fp_point_id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"moodle_module_fingerprint:{course_id}:{int(module_id)}"))
-                                fp_point = {
-                                    "id": fp_point_id,
-                                    "vector": {
-                                        "dense": zero_dense_vec,
-                                        "sparse": models.SparseVector(indices=[], values=[]),
-                                    },
-                                    "payload": {
-                                        "type": "ModuleFingerprint",
-                                        "source": "Moodle",
-                                        "course_id": course_id,
-                                        "module_id": int(module_id),
-                                        "module_fingerprint": fp,
-                                        "module_fingerprint_version": MODULE_FINGERPRINT_VERSION,
-                                        # Keep a url for debugging / manual inspection
-                                        "url": doc.metadata.get("url"),
-                                        "fullname": doc.metadata.get("fullname"),
-                                    },
-                                }
-                                self.dev_vector_store.upsert(DEFAULT_COLLECTION, [fp_point])
-
                         # Additional periodic cleanup handled by _maybe_cleanup and course-boundary cleanup above
 
                 watchdog.stop()
@@ -697,7 +539,7 @@ class Fetch_Data:
             # Drupal: delete by source and upsert
             with StageTimer(self.logger, self.ctx, "DRUPAL"):
                 self.logger.info("Loading Drupal data from Drupal API...")
-                if run_sources is None or "DRUPAL" in run_sources:
+                if False: # run_sources is None or "DRUPAL" in run_sources:
                     drupal_docs = Drupal(
                         base_url=env.DRUPAL_URL,
                         username=env.DRUPAL_USERNAME,

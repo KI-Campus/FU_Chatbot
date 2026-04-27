@@ -15,7 +15,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
 WORKDIR /home/site/wwwroot
 
 # Install Poetry via pip instead of the bootstrap script (more reliable in this base image)
-RUN pip install "poetry==${POETRY_VERSION}"
+RUN pip install --default-timeout=100 "poetry==${POETRY_VERSION}"
 
 COPY poetry.lock pyproject.toml ./
 RUN poetry config virtualenvs.create false && poetry install --with azfunction --no-interaction --no-ansi

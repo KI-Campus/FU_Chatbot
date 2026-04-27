@@ -142,14 +142,6 @@ class VectorDBQdrant:
                     collection_name,
                     vector_size,
                 )
-        except Exception as e:
-            self.logger.exception(
-                "Failed to create Qdrant collection '%s' (enable_sparse=%s): %s",
-                collection_name,
-                enable_sparse,
-                e,
-            )
-            raise
 
     def upsert(self, collection_name, points: list[dict]) -> None:
         """Upsert points into Qdrant collection.
