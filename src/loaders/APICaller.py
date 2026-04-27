@@ -50,8 +50,10 @@ class APICaller:
             self.logger.warn(f"Failed to retrieve {self.url}")
             raise err
         response_json = self.response.json()
-        if "exception" in response_json:
-            raise Exception(f"{response_json['errorcode']}: {response_json['message']}")
+        if isinstance(response_json, dict) and "exception" in response_json:
+            errorcode = response_json.get("errorcode", "UnknownError")
+            message = response_json.get("message", "No message provided")
+            raise Exception(f"{errorcode}: {message}")
         return response_json
 
     def getText(self, **kwargs) -> str:
