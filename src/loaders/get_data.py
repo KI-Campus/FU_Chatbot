@@ -433,7 +433,7 @@ class Fetch_Data:
 
             # Moochup: delete by source and upsert
             with StageTimer(self.logger, self.ctx, "MOOCHUP"):
-                if False: # run_sources is None or "MOOCHUP" in run_sources:
+                if run_sources is None or "MOOCHUP" in run_sources:
                     self.logger.info("Loading Moodle data from Moochup API...")
                     moochup_docs = Moochup(env.DATA_SOURCE_MOOCHUP_MOODLE_URL).get_course_documents()
                     moochup_documents = len(moochup_docs)
@@ -539,7 +539,7 @@ class Fetch_Data:
             # Drupal: delete by source and upsert
             with StageTimer(self.logger, self.ctx, "DRUPAL"):
                 self.logger.info("Loading Drupal data from Drupal API...")
-                if False: # run_sources is None or "DRUPAL" in run_sources:
+                if run_sources is None or "DRUPAL" in run_sources:
                     drupal_docs = Drupal(
                         base_url=env.DRUPAL_URL,
                         username=env.DRUPAL_USERNAME,
